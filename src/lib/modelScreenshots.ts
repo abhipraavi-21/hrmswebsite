@@ -1,0 +1,14 @@
+export const modelScreenshots = {
+  attendanceDashboard: "/hrms-models/attendance-dashboard.png",
+  workforceDashboard: "/hrms-models/workforce-dashboard.png",
+  coreHrTable: "/hrms-models/core-hr-table.png",
+  leaveDashboard: "/hrms-models/leave-dashboard.png",
+  resignations: "/hrms-models/resignations.png",
+  positions: "/hrms-models/positions.png",
+  generatedDocuments: "/hrms-models/generated-documents.png",
+  payrollDashboard: "/hrms-models/payroll-dashboard.png",
+  performanceEvaluations: "/hrms-models/performance-evaluations.png",
+  assetsDashboard: "/hrms-models/assets-dashboard.png",
+  employeeReport: "/hrms-models/employee-report.png",
+  salaryReport: "/hrms-models/salary-report.png",
+} as const;
