@@ -414,8 +414,8 @@ export default function ExpenseManagementPage() {
         </section>
 
         <section className="bg-surface py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12">
-            <div className="soft-card p-6 lg:col-span-7">
+          <div className="container-x grid gap-6 lg:grid-cols-12 lg:items-start">
+            <div className="soft-card p-6 lg:col-span-7 lg:self-start">
               <div className="text-xs font-bold uppercase tracking-wider text-primary">FAQ</div>
               <h3 className="mt-2 text-2xl font-bold text-ink">
                 The questions teams usually ask before rolling expense software out
@@ -430,7 +430,7 @@ export default function ExpenseManagementPage() {
               </div>
             </div>
 
-            <div className="soft-card p-6 lg:col-span-5">
+            <div className="soft-card p-6 lg:col-span-5 lg:self-start">
               <div className="text-xs font-bold uppercase tracking-wider text-primary">
                 Final summary
               </div>
@@ -454,7 +454,7 @@ export default function ExpenseManagementPage() {
           </div>
         </section>
 
-        <section className="py-20">
+        <section className="pt-8 pb-16">
           <div className="container-x">
             <div className="soft-card relative overflow-hidden p-8 md:p-10">
               <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/10 blur-3xl" />

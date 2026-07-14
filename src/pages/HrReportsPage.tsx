@@ -1128,24 +1128,24 @@ function DashboardMetric({
 
 function HeroDashboard() {
   return (
-    <div className="relative mx-auto max-w-2xl">
+    <div className="relative mx-auto max-w-lg">
       <div className="absolute -inset-5 rounded-[2.25rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-      <div className="relative overflow-visible rounded-[2.25rem] border border-border bg-white p-5 shadow-float">
-        <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[1.75rem] border border-border bg-surface p-5">
+      <div className="relative overflow-visible rounded-[2.25rem] border border-border bg-white p-3 shadow-float">
+        <div className="grid gap-2.5 lg:grid-cols-[1.08fr_0.92fr]">
+          <div className="rounded-[1.75rem] border border-border bg-surface p-3.5">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <div className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
                   Dashboard mockup
                 </div>
-                <div className="mt-1 text-2xl font-bold text-ink">HR reports command center</div>
+                <div className="mt-1 text-lg font-bold text-ink">HR reports command center</div>
               </div>
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-white">
-                <LayoutDashboard className="h-5 w-5" />
+              <div className="grid h-9 w-9 place-items-center rounded-2xl bg-primary text-white">
+                <LayoutDashboard className="h-3.5 w-3.5" />
               </div>
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <div className="mt-3.5 grid gap-2.5 sm:grid-cols-2">
               <DashboardMetric
                 label="Total employees"
                 value={312}
@@ -1170,33 +1170,33 @@ function HeroDashboard() {
             </div>
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-2.5">
             <MiniBarChart
               values={[34, 42, 38, 52, 61, 58, 66]}
               labels={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
             />
 
-            <div className="rounded-[1.5rem] border border-border bg-white p-5 shadow-card">
+            <div className="rounded-[1.5rem] border border-border bg-white p-3.5 shadow-card">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
                     Department distribution
                   </div>
-                  <div className="mt-1 text-lg font-bold text-ink">Headcount by team</div>
+                  <div className="mt-1 text-sm font-bold text-ink">Headcount by team</div>
                 </div>
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#ecfdf3] text-success">
-                  <PieChart className="h-5 w-5" />
+                <div className="grid h-9 w-9 place-items-center rounded-2xl bg-[#ecfdf3] text-success">
+                  <PieChart className="h-3.5 w-3.5" />
                 </div>
               </div>
 
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
                 {[
                   ["Operations", "112"],
                   ["Sales", "64"],
                   ["Finance", "38"],
                   ["People Ops", "26"],
                 ].map(([label, value], index) => (
-                  <div key={label} className="rounded-2xl bg-surface p-4">
+                  <div key={label} className="rounded-2xl bg-surface p-3.5">
                     <div className="flex items-center justify-between gap-3">
                       <span className="text-sm font-semibold text-ink">{label}</span>
                       <span className="text-sm font-bold text-primary">{value}</span>
@@ -1214,12 +1214,12 @@ function HeroDashboard() {
           </div>
         </div>
 
-        <div className="mt-4 grid gap-4 md:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[1.5rem] border border-dashed border-primary/20 bg-primary-soft/35 p-4">
+        <div className="mt-3.5 grid gap-3 md:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-[1.5rem] border border-dashed border-primary/20 bg-primary-soft/35 p-3">
             <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
               Recent reports
             </div>
-            <div className="mt-3 space-y-3">
+            <div className="mt-2.5 space-y-2">
               {[
                 "Monthly Attendance Summary",
                 "Payroll Register - July",
@@ -1228,7 +1228,7 @@ function HeroDashboard() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="flex items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 shadow-sm"
+                  className="flex items-center justify-between gap-3 rounded-2xl bg-white px-3 py-2 shadow-sm"
                 >
                   <div className="text-sm font-medium text-ink">{item}</div>
                   <ArrowRight className="h-4 w-4 text-primary" />
@@ -1237,17 +1237,17 @@ function HeroDashboard() {
             </div>
           </div>
 
-          <div className="rounded-[1.5rem] border border-border bg-white p-4 shadow-card">
+          <div className="rounded-[1.5rem] border border-border bg-white p-3 shadow-card">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
                   Exports
                 </div>
-                <div className="mt-1 text-base font-bold text-ink">Supported formats</div>
+                <div className="mt-1 text-xs font-bold text-ink">Supported formats</div>
               </div>
-              <Download className="h-5 w-5 text-primary" />
+              <Download className="h-4 w-4 text-primary" />
             </div>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap gap-2">
               {reportFormats.map((format) => (
                 <span
                   key={format}
@@ -1257,7 +1257,7 @@ function HeroDashboard() {
                 </span>
               ))}
             </div>
-            <p className="mt-4 text-sm text-ink-soft">
+            <p className="mt-2.5 text-sm text-ink-soft">
               The current product pages surface Excel and PDF exports, so only those formats are
               shown here.
             </p>
@@ -2021,7 +2021,7 @@ export default function HrReportsPage() {
               </div>
             </div>
 
-            <div className="lg:col-span-6">
+            <div className="lg:col-span-4 lg:justify-self-end">
               <HeroDashboard />
             </div>
           </div>

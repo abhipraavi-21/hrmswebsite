@@ -869,7 +869,7 @@ function SectionVisual({ area }: { area: LearnArea }) {
           <img
             src={modelScreenshots.attendanceDashboard}
             alt="Attendance dashboard preview"
-            className="h-56 w-full rounded-[1.5rem] object-cover"
+            className="h-56 w-full rounded-[1.5rem] object-contain bg-white p-2"
             loading="lazy"
           />
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
@@ -1056,7 +1056,7 @@ function SectionVisual({ area }: { area: LearnArea }) {
           <img
             src={modelScreenshots.employeeReport}
             alt="Report preview"
-            className="h-52 w-full rounded-[1.5rem] object-cover"
+            className="h-52 w-full rounded-[1.5rem] object-contain bg-white p-2"
             loading="lazy"
           />
           <div className="mt-4 grid gap-3 sm:grid-cols-3">

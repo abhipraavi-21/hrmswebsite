@@ -54,25 +54,12 @@ type ReportCategory = {
 };
 
 const heroMetrics = [
-  { label: "Methods", value: 6 },
+  { label: "Methods", value: 4 },
   { label: "Locations", value: 7 },
   { label: "Focus", value: 100 },
 ];
 
 const attendanceMethods: Method[] = [
-  {
-    id: "biometric",
-    label: "Biometric Attendance",
-    title: "Biometric Attendance",
-    icon: <Fingerprint className="h-5 w-5" />,
-    desc: "Connect supported biometric devices to automatically capture employee check-in and check-out records.",
-    bullets: [
-      "Device-linked check-ins",
-      "Automatic swipe capture",
-      "Reliable time stamps",
-      "Works across multiple sites",
-    ],
-  },
   {
     id: "gps",
     label: "GPS Attendance",
@@ -113,19 +100,6 @@ const attendanceMethods: Method[] = [
     ],
   },
   {
-    id: "qr",
-    label: "QR Attendance",
-    title: "QR Code Attendance",
-    icon: <QrCode className="h-5 w-5" />,
-    desc: "Allow employees to mark attendance by scanning an authorized QR code.",
-    bullets: [
-      "Authorized QR scanning",
-      "Fast check-in flow",
-      "Good for front-desk setups",
-      "Easy to deploy on-site",
-    ],
-  },
-  {
     id: "mobile",
     label: "Mobile Attendance",
     title: "Mobile App Attendance",
@@ -141,10 +115,8 @@ const attendanceMethods: Method[] = [
 ];
 
 const methodsStrip = [
-  { label: "Biometric Attendance", icon: <Fingerprint className="h-4 w-4" /> },
   { label: "GPS Attendance", icon: <MapPin className="h-4 w-4" /> },
   { label: "Geofencing", icon: <ShieldCheck className="h-4 w-4" /> },
-  { label: "QR Attendance", icon: <QrCode className="h-4 w-4" /> },
   { label: "Mobile Attendance", icon: <Smartphone className="h-4 w-4" /> },
   { label: "Real-Time Reports", icon: <BarChart3 className="h-4 w-4" /> },
 ];
@@ -725,13 +697,15 @@ function SectionHeading({
   eyebrow,
   title,
   description,
+  className = "",
 }: {
   eyebrow: string;
   title: string;
   description: string;
+  className?: string;
 }) {
   return (
-    <div className="max-w-3xl">
+    <div className={`max-w-3xl ${className}`.trim()}>
       <span className="text-xs font-bold uppercase tracking-wider text-primary">{eyebrow}</span>
       <h2 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">{title}</h2>
       <p className="mt-3 text-ink-soft">{description}</p>
@@ -804,16 +778,16 @@ function DashboardMetric({
   icon: ReactNode;
 }) {
   return (
-    <div className="soft-card flex h-full flex-col p-4">
+    <div className="soft-card flex min-h-[112px] flex-col justify-between p-3 sm:min-h-[120px] sm:p-4">
       <div className="flex items-start justify-between gap-3">
-        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
+        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
           {icon}
         </div>
-        <div className="text-right text-2xl font-bold text-ink">
+        <div className="text-right text-xl font-bold text-ink sm:text-2xl">
           <CountUp value={value} suffix={suffix} />
         </div>
       </div>
-      <div className="mt-4 text-sm font-semibold text-ink">{title}</div>
+      <div className="text-sm font-semibold leading-tight text-ink">{title}</div>
     </div>
   );
 }
@@ -903,27 +877,16 @@ export default function AttendanceManagementPage() {
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
           <div className="pointer-events-none absolute left-1/3 top-1/3 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
 
-          <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-center lg:py-16">
-            <div className="lg:col-span-6 fade-up">
+          <div className="container-x py-10 lg:py-14">
+            <div className="mx-auto max-w-3xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Smart Attendance Management
               </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+              <h1 className="mt-3 text-4xl font-bold leading-[1.1] tracking-tight text-ink sm:text-5xl">
                 Smart Attendance Management Software for Modern Businesses
               </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
-                Simplify employee attendance with Altroz HRMS. Track attendance through biometric
-                devices, GPS, geolocation, geofencing, QR codes, and mobile applications from one
-                secure and centralized platform.
-              </p>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
-                Altroz HRMS helps businesses automate attendance tracking, reduce manual work,
-                improve attendance accuracy, and increase workforce productivity across offices,
-                factories, branches, project sites, and remote teams.
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-5 flex flex-wrap justify-center gap-3">
                 <a href="/company/book-demo" className="btn-primary">
                   Book Free Demo
                 </a>
@@ -932,7 +895,7 @@ export default function AttendanceManagementPage() {
                 </a>
               </div>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
                 {heroMetrics.map((metric) => (
                   <div key={metric.label} className="soft-card p-4">
                     <div className="text-xs font-semibold uppercase tracking-wider text-primary">
@@ -955,95 +918,17 @@ export default function AttendanceManagementPage() {
               </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="relative mx-auto max-w-2xl">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-                <div className="relative grid gap-4 rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                  <div className="relative overflow-hidden rounded-[1.5rem] border border-border bg-surface">
-                    <img
-                      src={modelScreenshots.attendanceDashboard}
-                      alt="Attendance management dashboard preview"
-                      className="block h-auto w-full object-contain bg-white"
-                      loading="eager"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/75 via-transparent to-transparent" />
-                    <div className="absolute left-4 top-4 rounded-2xl bg-white/95 p-3 shadow-card">
-                      <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                        GPS location
-                      </div>
-                      <div className="mt-1 text-sm font-semibold text-ink">
-                        Approved zone active
-                      </div>
-                    </div>
-                    <div className="absolute right-4 top-4 rounded-2xl bg-white/95 p-3 shadow-card">
-                      <div className="text-xs font-bold uppercase tracking-wider text-success">
-                        Attendance
-                      </div>
-                      <div className="mt-1 text-sm font-semibold text-ink">94% live rate</div>
-                    </div>
-                    <div className="absolute bottom-4 left-4 right-4 grid gap-3 sm:grid-cols-3">
-                      {[
-                        { label: "Present", value: 286, icon: <Users className="h-4 w-4" /> },
-                        { label: "Late", value: 22, icon: <Clock3 className="h-4 w-4" /> },
-                        {
-                          label: "On leave",
-                          value: 31,
-                          icon: <CalendarDays className="h-4 w-4" />,
-                        },
-                      ].map((item) => (
-                        <div key={item.label} className="rounded-2xl bg-white/95 p-3 shadow-card">
-                          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary">
-                            {item.icon}
-                            {item.label}
-                          </div>
-                          <div className="mt-2 text-2xl font-bold text-ink">
-                            <CountUp value={item.value} />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="grid gap-4 sm:grid-cols-3">
-                    <div className="rounded-2xl bg-primary/5 p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <BarChart3 className="h-4 w-4" />
-                        Monthly trend
-                      </div>
-                      <div className="mt-4 flex items-end gap-2">
-                        {[32, 54, 41, 68, 58, 72].map((bar, index) => (
-                          <div key={index} className="flex-1 rounded-full bg-white p-1">
-                            <div
-                              className="rounded-full bg-primary"
-                              style={{ height: `${bar}px` }}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="rounded-2xl bg-[#ecfdf3] p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-success">
-                        <MapPin className="h-4 w-4" />
-                        Recent check-ins
-                      </div>
-                      <div className="mt-3 space-y-2 text-sm text-ink-soft">
-                        <div>Aarav Shah - HQ - 08:45</div>
-                        <div>Riya Patel - Branch A - 08:52</div>
-                        <div>Sahil Khan - Plant 2 - 08:57</div>
-                      </div>
-                    </div>
-                    <div className="rounded-2xl bg-primary-soft p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <Globe2 className="h-4 w-4" />
-                        Workforce view
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Track attendance across branches, sites, and remote teams.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+            <div className="relative mt-8 overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
+              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className="relative flex min-h-[72vh] items-center overflow-hidden bg-white sm:min-h-[80vh] lg:min-h-[88vh]">
+                <img
+                  src={modelScreenshots.attendanceDashboard}
+                  alt="Attendance management dashboard preview"
+                  className="block h-full w-full object-contain object-top bg-white"
+                  loading="eager"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/35 via-transparent to-transparent" />
               </div>
             </div>
           </div>
@@ -1052,7 +937,7 @@ export default function AttendanceManagementPage() {
         <section className="py-6">
           <div className="container-x">
             <div className="rounded-[1.75rem] border border-border bg-white px-4 py-4 shadow-card">
-              <div className="flex flex-nowrap gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:overflow-visible">
+              <div className="flex w-full flex-nowrap justify-start gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:justify-center md:overflow-visible">
                 {methodsStrip.map((item, index) => (
                   <div
                     key={item.label}
@@ -1129,7 +1014,7 @@ export default function AttendanceManagementPage() {
           </div>
         </section>
 
-        <section className="bg-surface py-20">
+        <section id="attendance-features" className="bg-surface py-20 scroll-mt-24">
           <div className="container-x">
             <SectionHeading
               eyebrow="Attendance methods"
@@ -1429,118 +1314,108 @@ export default function AttendanceManagementPage() {
         </section>
 
         <section className="py-20">
-          <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-start">
-            <div className="lg:col-span-5">
-              <SectionHeading
-                eyebrow="Dashboard"
-                title="Complete Attendance Visibility from One Dashboard"
-                description="A large dashboard mockup helps teams understand daily activity, branch comparisons, and trends without switching between views."
-              />
+          <div className="container-x">
+            <SectionHeading
+              eyebrow="Dashboard"
+              title="Complete Attendance Visibility from One Dashboard"
+              description="A large dashboard mockup helps teams understand daily activity, branch comparisons, and trends without switching between views."
+              className="mx-auto max-w-4xl text-center"
+            />
+
+            <div className="mt-10 soft-card overflow-hidden p-4 md:p-6 lg:p-8">
+              <div className="overflow-hidden rounded-3xl border border-border bg-white">
+                <img
+                  src={modelScreenshots.workforceDashboard}
+                  alt="Attendance dashboard showcase"
+                  className="block h-auto w-full object-contain bg-white"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
             </div>
 
-            <div className="lg:col-span-7">
-              <div className="soft-card overflow-hidden p-0">
-                <div className="grid gap-0 lg:grid-cols-12">
-                  <div className="bg-surface p-5 lg:col-span-7">
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      {[
-                        { title: "Present today", value: 286, icon: <Users className="h-4 w-4" /> },
-                        { title: "Absent today", value: 14, icon: <Clock3 className="h-4 w-4" /> },
-                        {
-                          title: "Late arrivals",
-                          value: 22,
-                          icon: <CalendarDays className="h-4 w-4" />,
-                        },
-                        {
-                          title: "Employees on leave",
-                          value: 31,
-                          icon: <BadgeCheck className="h-4 w-4" />,
-                        },
-                        {
-                          title: "Missing punches",
-                          value: 19,
-                          icon: <Workflow className="h-4 w-4" />,
-                        },
-                        {
-                          title: "Overtime hours",
-                          value: 412,
-                          icon: <TrendingUp className="h-4 w-4" />,
-                        },
-                      ].map((item) => (
-                        <DashboardMetric
-                          key={item.title}
-                          title={item.title}
-                          value={item.value}
-                          icon={item.icon}
-                        />
-                      ))}
-                    </div>
-                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                      <div className="rounded-2xl bg-white p-4 shadow-card">
-                        <div className="text-sm font-semibold text-ink">Attendance percentage</div>
-                        <div className="mt-2 text-3xl font-bold text-primary">
-                          <CountUp value={94} suffix="%" />
-                        </div>
-                      </div>
-                      <div className="rounded-2xl bg-white p-4 shadow-card">
-                        <div className="text-sm font-semibold text-ink">
-                          Department attendance chart
-                        </div>
-                        <div className="mt-4 flex items-end gap-2">
-                          {[38, 64, 52, 78].map((bar, index) => (
-                            <div key={index} className="flex-1">
-                              <div
-                                className="rounded-t-xl bg-primary"
-                                style={{ height: `${bar}px` }}
-                              />
-                              <div className="mt-2 text-center text-xs text-ink-soft">
-                                {["HR", "IT", "Ops", "Sales"][index]}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {[
+                { title: "Present today", value: 286, icon: <Users className="h-4 w-4" /> },
+                { title: "Absent today", value: 14, icon: <Clock3 className="h-4 w-4" /> },
+                {
+                  title: "Late arrivals",
+                  value: 22,
+                  icon: <CalendarDays className="h-4 w-4" />,
+                },
+                {
+                  title: "Employees on leave",
+                  value: 31,
+                  icon: <BadgeCheck className="h-4 w-4" />,
+                },
+                {
+                  title: "Missing punches",
+                  value: 19,
+                  icon: <Workflow className="h-4 w-4" />,
+                },
+                {
+                  title: "Overtime hours",
+                  value: 412,
+                  icon: <TrendingUp className="h-4 w-4" />,
+                },
+              ].map((item) => (
+                <DashboardMetric
+                  key={item.title}
+                  title={item.title}
+                  value={item.value}
+                  icon={item.icon}
+                />
+              ))}
+            </div>
+
+            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+              <div className="rounded-2xl bg-white p-4 shadow-card">
+                <div className="text-sm font-semibold text-ink">Attendance percentage</div>
+                <div className="mt-2 text-3xl font-bold text-primary">
+                  <CountUp value={94} suffix="%" />
+                </div>
+              </div>
+              <div className="rounded-2xl bg-white p-4 shadow-card">
+                <div className="text-sm font-semibold text-ink">Department attendance chart</div>
+                <div className="mt-4 flex items-end gap-2">
+                  {[38, 64, 52, 78].map((bar, index) => (
+                    <div key={index} className="flex-1">
+                      <div className="rounded-t-xl bg-primary" style={{ height: `${bar}px` }} />
+                      <div className="mt-2 text-center text-xs text-ink-soft">
+                        {["HR", "IT", "Ops", "Sales"][index]}
                       </div>
                     </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-3 lg:grid-cols-2">
+              <div className="rounded-2xl bg-white/95 p-4 shadow-card">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  Branch comparison
+                </div>
+                <div className="mt-2 flex items-center gap-2">
+                  <div className="h-2 flex-1 rounded-full bg-surface">
+                    <div className="h-2 w-[82%] rounded-full bg-primary" />
                   </div>
-                  <div className="relative lg:col-span-5">
-                    <img
-                      src={modelScreenshots.workforceDashboard}
-                      alt="Attendance dashboard showcase"
-                      className="h-full w-full object-contain bg-white"
-                      loading="lazy"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent" />
-                    <div className="absolute bottom-4 left-4 right-4 grid gap-3">
-                      <div className="rounded-2xl bg-white/95 p-4 shadow-card">
-                        <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                          Branch comparison
-                        </div>
-                        <div className="mt-2 flex items-center gap-2">
-                          <div className="h-2 flex-1 rounded-full bg-surface">
-                            <div className="h-2 w-[82%] rounded-full bg-primary" />
-                          </div>
-                          <span className="text-sm font-semibold text-ink">HQ</span>
-                        </div>
-                        <div className="mt-2 flex items-center gap-2">
-                          <div className="h-2 flex-1 rounded-full bg-surface">
-                            <div className="h-2 w-[68%] rounded-full bg-success" />
-                          </div>
-                          <span className="text-sm font-semibold text-ink">Plant 2</span>
-                        </div>
-                      </div>
-                      <div className="rounded-2xl bg-white/95 p-4 shadow-card">
-                        <div className="text-xs font-bold uppercase tracking-wider text-success">
-                          Recent attendance activity
-                        </div>
-                        <div className="mt-2 space-y-1 text-sm text-ink-soft">
-                          <div>Aarav Shah checked in at 08:45</div>
-                          <div>Riya Patel regularization approved</div>
-                          <div>Sahil Khan missing punch corrected</div>
-                        </div>
-                      </div>
-                    </div>
+                  <span className="text-sm font-semibold text-ink">HQ</span>
+                </div>
+                <div className="mt-2 flex items-center gap-2">
+                  <div className="h-2 flex-1 rounded-full bg-surface">
+                    <div className="h-2 w-[68%] rounded-full bg-success" />
                   </div>
+                  <span className="text-sm font-semibold text-ink">Plant 2</span>
+                </div>
+              </div>
+              <div className="rounded-2xl bg-white/95 p-4 shadow-card">
+                <div className="text-xs font-bold uppercase tracking-wider text-success">
+                  Recent attendance activity
+                </div>
+                <div className="mt-2 space-y-1 text-sm text-ink-soft">
+                  <div>Aarav Shah checked in at 08:45</div>
+                  <div>Riya Patel regularization approved</div>
+                  <div>Sahil Khan missing punch corrected</div>
                 </div>
               </div>
             </div>
@@ -1548,50 +1423,46 @@ export default function AttendanceManagementPage() {
         </section>
 
         <section className="bg-surface py-20">
-          <div className="container-x grid gap-8 lg:grid-cols-12">
-            <div className="lg:col-span-4">
-              <SectionHeading
-                eyebrow="Reports"
-                title="Powerful Attendance Reports for Better Workforce Planning"
-                description="Use the report browser to compare daily, monthly, employee-wise, branch-wise, and exception-focused attendance views."
-              />
-
-              <div className="mt-6 md:hidden">
-                <select
-                  value={activeReport}
-                  onChange={(event) => setActiveReport(event.target.value)}
-                  className="w-full rounded-2xl border border-border bg-white px-4 py-3 text-sm font-medium text-ink shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-                >
-                  {reportCategories.map((report) => (
-                    <option key={report.id} value={report.id}>
-                      {report.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="mt-6 hidden space-y-2 md:block">
-                {reportCategories.map((report) => (
-                  <button
-                    key={report.id}
-                    type="button"
-                    onClick={() => setActiveReport(report.id)}
-                    className={`w-full rounded-2xl border px-4 py-3 text-left transition-colors ${
-                      activeReport === report.id
-                        ? "border-primary bg-primary-soft text-primary"
-                        : "border-border bg-white text-ink hover:bg-surface"
-                    }`}
+          <div className="container-x">
+            <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
+              <div className="lg:col-span-4 lg:self-start">
+                <div className="md:hidden">
+                  <select
+                    value={activeReport}
+                    onChange={(event) => setActiveReport(event.target.value)}
+                    className="w-full rounded-2xl border border-border bg-white px-4 py-3 text-sm font-medium text-ink shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                   >
-                    <div className="text-sm font-semibold">{report.label}</div>
-                    <div className="mt-1 text-xs text-ink-soft">{report.desc}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
+                    {reportCategories.map((report) => (
+                      <option key={report.id} value={report.id}>
+                        {report.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            <div className="lg:col-span-8">
-              <div className="soft-card p-6 md:p-8">
-                <ReportPreview report={currentReport} />
+                <div className="hidden space-y-2 md:block">
+                  {reportCategories.map((report) => (
+                    <button
+                      key={report.id}
+                      type="button"
+                      onClick={() => setActiveReport(report.id)}
+                      className={`w-full rounded-2xl border px-4 py-3 text-left transition-colors ${
+                        activeReport === report.id
+                          ? "border-primary bg-primary-soft text-primary"
+                          : "border-border bg-white text-ink hover:bg-surface"
+                      }`}
+                    >
+                      <div className="text-sm font-semibold">{report.label}</div>
+                      <div className="mt-1 text-xs text-ink-soft">{report.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="lg:col-span-8 lg:self-start">
+                <div className="soft-card p-6 md:p-8">
+                  <ReportPreview report={currentReport} />
+                </div>
               </div>
             </div>
           </div>
@@ -1811,6 +1682,7 @@ export default function AttendanceManagementPage() {
               eyebrow="Industries"
               title="Attendance Management for Every Industry"
               description="Attendance management works across office, factory, branch, and field-driven organizations."
+              className="mx-auto max-w-4xl text-center"
             />
 
             <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">

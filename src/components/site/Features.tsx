@@ -113,6 +113,7 @@ const features = [
     icon: <MapPin />,
     title: "Attendance Features",
     desc: "Use GPS, geo-fencing and shift rules for precision.",
+    href: "/attendance-management#attendance-features",
   },
   {
     id: "reports",

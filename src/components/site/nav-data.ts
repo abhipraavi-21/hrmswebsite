@@ -26,7 +26,7 @@ export const featureMenuColumns = [
       { label: "Employee Self Service", href: "/products/employee-self-service" },
       { label: "HR Analytics", href: "/hr-analytics" },
       { label: "HR Automation", href: "/hr-automation" },
-      { label: "Attendance Features", href: "#attendance-features" },
+      { label: "Attendance Features", href: "/attendance-management#attendance-features" },
       { label: "Reports", href: "/hr-reports" },
       { label: "Security", href: "/hrms-security" },
     ],
@@ -38,7 +38,6 @@ export const solutionMenuItems = [
   { label: "Workforce Management", href: "/products/workforce-management" },
   { label: "Business Apps", href: "/integrations/business-apps" },
   { label: "Accounting", href: "/integrations/accounting" },
-  { label: "Asset Management", href: "/integrations/asset-management#asset-management" },
 ];
 
 export const resourcesMenuItems = [{ label: "Learn", href: "/learn" }];
@@ -56,7 +55,6 @@ export const companyMenuColumns = [
     title: "Stories",
     links: [
       { label: "Testimonials", href: "/company/testimonials" },
-      { label: "Partner With Us", href: "/partner-with-us" },
       { label: "Careers", href: "/careers" },
     ],
   },

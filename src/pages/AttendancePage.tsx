@@ -176,21 +176,21 @@ export default function AttendancePage() {
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-          <div className="container-x grid gap-8 py-12 lg:grid-cols-12 lg:items-start lg:py-16">
-            <div className="lg:col-span-6 fade-up">
+          <div className="container-x py-12 lg:py-16">
+            <div className="mx-auto max-w-4xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Attendance Management
               </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+              <h1 className="mt-4 text-4xl font-bold leading-tight text-ink sm:text-5xl">
                 Real-time attendance that keeps workforce operations moving
               </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
+              <p className="mx-auto mt-4 max-w-2xl text-base text-ink-soft">
                 A live attendance system helps teams work with less friction, better discipline, and
                 clearer control across shifts, sites, and policies.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <a href="/company/book-demo" className="btn-primary">
                   Explore now
                 </a>
@@ -198,71 +198,69 @@ export default function AttendancePage() {
                   View attendance methods
                 </a>
               </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {[
-                  { label: "Capture", value: "real-time swipes" },
-                  { label: "Control", value: "rules and shifts" },
-                  { label: "Outcome", value: "better discipline" },
-                ].map((item) => (
-                  <div key={item.label} className="soft-card p-4">
-                    <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      {item.label}
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="relative mx-auto max-w-2xl">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-                <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                  <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface">
-                    <img
-                      src={heroImage}
-                      alt="Attendance management dashboard preview"
-                      className="block h-auto w-full object-contain bg-white"
-                      loading="eager"
-                      referrerPolicy="no-referrer"
-                    />
+            <div className="relative mx-auto mt-10 max-w-7xl">
+              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className="relative overflow-hidden rounded-[2.25rem] border border-border bg-white shadow-float">
+                <div className="overflow-hidden border-b border-border bg-surface">
+                  <img
+                    src={heroImage}
+                    alt="Attendance management dashboard preview"
+                    className="block h-auto w-full object-contain bg-white"
+                    loading="eager"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+
+                <div className="grid gap-4 p-5 sm:grid-cols-3">
+                  <div className="rounded-2xl bg-primary/5 p-5">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                      <Clock3 className="h-4 w-4" />
+                      Real time matters
+                    </div>
+                    <p className="mt-3 text-sm text-ink-soft">
+                      Attendance data is most useful when it is captured and processed without
+                      delay.
+                    </p>
                   </div>
 
-                  <div className="mt-4 grid gap-4 sm:grid-cols-3">
-                    <div className="rounded-2xl bg-primary/5 p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <Clock3 className="h-4 w-4" />
-                        Real time matters
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Attendance data is most useful when it is captured and processed without
-                        delay.
-                      </p>
+                  <div className="rounded-2xl bg-[#ecfdf3] p-5">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-success">
+                      <ShieldCheck className="h-4 w-4" />
+                      Policy control
                     </div>
+                    <p className="mt-3 text-sm text-ink-soft">
+                      Rules for lateness, absences, overtime, and permissions stay centralized.
+                    </p>
+                  </div>
 
-                    <div className="rounded-2xl bg-[#ecfdf3] p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-success">
-                        <ShieldCheck className="h-4 w-4" />
-                        Policy control
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Rules for lateness, absences, overtime, and permissions stay centralized.
-                      </p>
+                  <div className="rounded-2xl bg-primary-soft p-5">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                      <Globe className="h-4 w-4" />
+                      Multi-location fit
                     </div>
-
-                    <div className="rounded-2xl bg-primary-soft p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <Globe className="h-4 w-4" />
-                        Multi-location fit
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Support teams in offices, field roles, and shift-based operations.
-                      </p>
-                    </div>
+                    <p className="mt-3 text-sm text-ink-soft">
+                      Support teams in offices, field roles, and shift-based operations.
+                    </p>
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {[
+                { label: "Capture", value: "real-time swipes" },
+                { label: "Control", value: "rules and shifts" },
+                { label: "Outcome", value: "better discipline" },
+              ].map((item) => (
+                <div key={item.label} className="soft-card p-4">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+                    {item.label}
+                  </div>
+                  <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -496,11 +494,11 @@ export default function AttendancePage() {
                 ))}
               </div>
 
-              <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-white">
+              <div className="mt-6 overflow-visible rounded-2xl border border-border bg-white p-3">
                 <img
                   src="https://www.datocms-assets.com/40521/1705306168-statutory-compliance-simplified.png"
                   alt="Statutory compliance simplified"
-                  className="h-full w-full object-cover"
+                  className="block h-auto w-full scale-[1.06] object-contain bg-white"
                   loading="lazy"
                   referrerPolicy="no-referrer"
                 />
@@ -511,34 +509,40 @@ export default function AttendancePage() {
 
         <section className="bg-surface py-20">
           <div className="container-x grid gap-6 lg:grid-cols-12">
-            <div className="soft-card overflow-hidden lg:col-span-4">
-              <img
-                src="https://www.datocms-assets.com/40521/1705306073-comprehensive-overtime-management.png"
-                alt="Comprehensive overtime management"
-                className="h-full w-full object-cover"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
+            <div className="soft-card overflow-visible lg:col-span-4">
+              <div className="bg-white p-3">
+                <img
+                  src="https://www.datocms-assets.com/40521/1705306073-comprehensive-overtime-management.png"
+                  alt="Comprehensive overtime management"
+                  className="block h-auto w-full scale-[1.1] object-contain bg-white"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
             </div>
 
-            <div className="soft-card overflow-hidden lg:col-span-4">
-              <img
-                src="https://www.datocms-assets.com/40521/1705306126-attendance-permissions.png"
-                alt="Attendance permissions"
-                className="h-full w-full object-cover"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
+            <div className="soft-card overflow-visible lg:col-span-4">
+              <div className="bg-white p-3">
+                <img
+                  src="https://www.datocms-assets.com/40521/1705306126-attendance-permissions.png"
+                  alt="Attendance permissions"
+                  className="block h-auto w-full scale-[1.1] object-contain bg-white"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
             </div>
 
-            <div className="soft-card overflow-hidden lg:col-span-4">
-              <img
-                src="https://www.datocms-assets.com/40521/1705560459-customizable-attendance-policies.png"
-                alt="Customisable attendance policies"
-                className="h-full w-full object-cover"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
+            <div className="soft-card overflow-visible lg:col-span-4">
+              <div className="bg-white p-3">
+                <img
+                  src="https://www.datocms-assets.com/40521/1705560459-customizable-attendance-policies.png"
+                  alt="Customisable attendance policies"
+                  className="block h-auto w-full scale-[1.1] object-contain bg-white"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
             </div>
           </div>
         </section>

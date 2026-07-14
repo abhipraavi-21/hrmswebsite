@@ -21,8 +21,13 @@ const overviewImage = modelScreenshots.workforceDashboard;
 const policyImage = "https://www.datocms-assets.com/40521/1705411395-leave-policies.png";
 const essImage = "https://www.datocms-assets.com/40521/1705410950-leave-ess.png";
 const leaveMgmtImage = "https://www.datocms-assets.com/40521/1705411327-leave-management.png";
-const analyticsImage = "https://www.datocms-assets.com/40521/1707912004-leave-overview-1.png";
+const analyticsImage = modelScreenshots.employeeReport;
 const g2Logo = "https://www.datocms-assets.com/40521/1703066650-g2_logo_red_rgb.png";
+const heroDashboardFrameClass =
+  "relative mx-auto max-w-5xl overflow-hidden rounded-[2.25rem] border border-border bg-white p-3 shadow-float sm:p-4";
+const dashboardFrameClass =
+  "relative mx-auto max-w-7xl overflow-hidden rounded-[2.25rem] border border-border bg-white shadow-float";
+const dashboardImageClass = "block h-auto w-full object-contain bg-white";
 
 const heroMetrics = [
   { label: "Save", value: "time and effort" },
@@ -128,21 +133,16 @@ export default function LeaveManagementPage() {
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-          <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-center lg:py-16">
-            <div className="lg:col-span-6 fade-up">
+          <div className="container-x py-8 lg:py-10">
+            <div className="mx-auto max-w-3xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Leave Management System
               </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+              <h1 className="mt-4 text-4xl font-bold leading-tight text-ink sm:text-5xl">
                 Leave management that saves time, improves control, and feels easy to use
               </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
-                Automate leave policies, approvals, accounting, and self-service so your HR team can
-                keep operations moving without spreadsheet overload.
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <a href="/company/book-demo" className="btn-primary">
                   Explore now
                 </a>
@@ -150,55 +150,29 @@ export default function LeaveManagementPage() {
                   View leave policy flow
                 </a>
               </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {heroMetrics.map((item) => (
-                  <div key={item.label} className="soft-card p-4">
-                    <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      {item.label}
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="relative mx-auto max-w-2xl">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-                <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                  <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface">
-                    <img
-                      src={heroImage}
-                      alt="Leave management overview"
-                      className="block h-auto w-full object-contain bg-white"
-                      loading="eager"
-                      referrerPolicy="no-referrer"
-                    />
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {heroMetrics.map((item) => (
+                <div key={item.label} className="soft-card p-4 text-center">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+                    {item.label}
                   </div>
-
-                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-2xl bg-primary/5 p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <CalendarDays className="h-4 w-4" />
-                        Leave is visible
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        HR, managers, and employees can see balances and requests in one place.
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl bg-[#ecfdf3] p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-success">
-                        <Workflow className="h-4 w-4" />
-                        Approvals flow
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Requests move through rules, escalations, and notifications automatically.
-                      </p>
-                    </div>
-                  </div>
+                  <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
                 </div>
+              ))}
+            </div>
+
+            <div className="relative mx-auto mt-10 max-w-7xl">
+              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className={heroDashboardFrameClass}>
+                <img
+                  src={heroImage}
+                  alt="Leave management overview"
+                  className="block h-auto w-full object-contain bg-white"
+                  loading="eager"
+                  referrerPolicy="no-referrer"
+                />
               </div>
             </div>
           </div>
@@ -273,37 +247,30 @@ export default function LeaveManagementPage() {
         </section>
 
         <section className="py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12">
-            <div className="soft-card p-6 lg:col-span-7">
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                Leave automation
-              </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">
-                Leave processes that just happen once the policy is in place
-              </h3>
-              <p className="mt-3 text-sm text-ink-soft">
-                Leave grants, accounting, year-end actions, and encashment can be handled without
-                repetitive manual intervention.
-              </p>
-
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                {leaveAutomation.map((item) => (
-                  <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-4">
-                    <BadgeCheck className="mt-0.5 h-4 w-4 text-success" />
-                    <span className="text-sm text-ink">{item}</span>
-                  </div>
-                ))}
+          <div className="container-x">
+            <div className="relative mx-auto mt-10 max-w-7xl">
+              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className={dashboardFrameClass}>
+                <img
+                  src={overviewImage}
+                  alt="Leave dashboard"
+                  className={dashboardImageClass}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/25 via-transparent to-transparent" />
               </div>
             </div>
 
-            <div className="soft-card overflow-hidden lg:col-span-5">
-              <img
-                src={overviewImage}
-                alt="Leave dashboard"
-                className="block h-auto w-full object-contain bg-white"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
+            <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+              {leaveAutomation.map((item) => (
+                <div key={item} className="soft-card p-4">
+                  <div className="flex items-start gap-3">
+                    <BadgeCheck className="mt-0.5 h-4 w-4 text-success" />
+                    <span className="text-sm text-ink">{item}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -348,126 +315,151 @@ export default function LeaveManagementPage() {
         </section>
 
         <section className="py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12">
-            <div className="soft-card p-6 lg:col-span-7">
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                Statutory compliance
-              </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">
-                Keep leave records and holiday structures aligned with policy
-              </h3>
-              <div className="mt-6 space-y-3">
-                {compliancePoints.map((item) => (
-                  <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-4">
-                    <BadgeCheck className="mt-0.5 h-4 w-4 text-success" />
-                    <span className="text-sm text-ink">{item}</span>
-                  </div>
-                ))}
+          <div className="container-x">
+            <div className="relative mx-auto mt-10 max-w-7xl">
+              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className={dashboardFrameClass}>
+                <img
+                  src={leaveMgmtImage}
+                  alt="Leave management"
+                  className={dashboardImageClass}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
               </div>
             </div>
 
-            <div className="soft-card overflow-hidden lg:col-span-5">
-              <img
-                src={leaveMgmtImage}
-                alt="Leave management"
-                className="h-full w-full object-cover"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
+            <div className="mt-10 grid gap-6 lg:grid-cols-12 lg:items-start">
+              <div className="lg:col-span-5">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  Statutory compliance
+                </div>
+                <h3 className="mt-2 text-2xl font-bold text-ink">
+                  Keep leave records and holiday structures aligned with policy
+                </h3>
+              </div>
+
+              <div className="lg:col-span-7">
+                <div className="grid gap-3 md:grid-cols-2">
+                  {compliancePoints.map((item) => (
+                    <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-4">
+                      <BadgeCheck className="mt-0.5 h-4 w-4 text-success" />
+                      <span className="text-sm text-ink">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         <section className="bg-surface py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12">
-            <div className="soft-card overflow-hidden lg:col-span-5">
-              <img
-                src={analyticsImage}
-                alt="Leave analytics"
-                className="h-full w-full object-cover"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
+          <div className="container-x">
+            <div className="relative mx-auto mt-10 max-w-7xl">
+              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className={dashboardFrameClass}>
+                <img
+                  src={analyticsImage}
+                  alt="Leave analytics"
+                  className={dashboardImageClass}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
+              </div>
             </div>
 
-            <div className="soft-card p-6 lg:col-span-7">
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                Dashboards, reports and analytics
+            <div className="mt-10 grid gap-6 lg:grid-cols-12 lg:items-start">
+              <div className="lg:col-span-5">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  Dashboards, reports and analytics
+                </div>
+                <h3 className="mt-2 text-2xl font-bold text-ink">
+                  Use leave data to find patterns that matter to the business
+                </h3>
+                <p className="mt-3 text-sm text-ink-soft">
+                  Leave analytics can surface signals that support productivity, wellbeing, and
+                  operational planning.
+                </p>
               </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">
-                Use leave data to find patterns that matter to the business
-              </h3>
-              <p className="mt-3 text-sm text-ink-soft">
-                Leave analytics can surface signals that support productivity, wellbeing, and
-                operational planning.
-              </p>
 
-              <div className="mt-6 grid gap-4 md:grid-cols-3">
-                {analyticsPoints.map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-start gap-3 rounded-xl border border-border p-4"
-                  >
-                    <BarChart3 className="mt-0.5 h-4 w-4 text-primary" />
-                    <span className="text-sm text-ink">{item}</span>
-                  </div>
-                ))}
+              <div className="lg:col-span-7">
+                <div className="grid gap-4 md:grid-cols-3">
+                  {analyticsPoints.map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-start gap-3 rounded-xl border border-border bg-white p-4 shadow-card"
+                    >
+                      <BarChart3 className="mt-0.5 h-4 w-4 text-primary" />
+                      <span className="text-sm text-ink">{item}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         <section className="py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12">
-            <div className="soft-card overflow-hidden lg:col-span-6">
-              <img
-                src={heroImage}
-                alt="Leave management overview"
-                className="block h-auto w-full object-contain bg-white"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
+          <div className="container-x">
+            <div className="relative mx-auto mt-10 max-w-7xl">
+              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className={dashboardFrameClass}>
+                <img
+                  src={heroImage}
+                  alt="Leave management overview"
+                  className={dashboardImageClass}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/25 via-transparent to-transparent" />
+              </div>
             </div>
 
-            <div className="soft-card p-6 lg:col-span-6">
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                Customer proof
+            <div className="mt-10 grid gap-6 lg:grid-cols-12 lg:items-start">
+              <div className="lg:col-span-5">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  Customer proof
+                </div>
+                <h3 className="mt-2 text-2xl font-bold text-ink">
+                  HR teams want clarity, fewer follow-ups, and better leave visibility
+                </h3>
               </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">
-                HR teams want clarity, fewer follow-ups, and better leave visibility
-              </h3>
 
-              <div className="mt-6 flex items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3 shadow-card">
-                <img src={g2Logo} alt="G2 logo" className="h-10 w-auto" />
-                <div>
-                  <div className="text-sm font-semibold text-ink">
-                    Leave management trusted by growing teams
-                  </div>
-                  <div className="text-xs text-ink-soft">
-                    A trust marker inspired by the source page.
+              <div className="lg:col-span-7">
+                <div className="flex items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3 shadow-card">
+                  <img src={g2Logo} alt="G2 logo" className="h-10 w-auto" />
+                  <div>
+                    <div className="text-sm font-semibold text-ink">
+                      Leave management trusted by growing teams
+                    </div>
+                    <div className="text-xs text-ink-soft">
+                      A trust marker inspired by the source page.
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="mt-6 space-y-4">
-                {testimonialCards.map((testimonial) => (
-                  <article key={testimonial.name} className="rounded-2xl border border-border p-4">
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="h-14 w-14 rounded-full object-cover"
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div>
-                        <div className="text-base font-semibold text-ink">{testimonial.name}</div>
-                        <div className="text-sm text-ink-soft">{testimonial.role}</div>
+                <div className="mt-6 space-y-4">
+                  {testimonialCards.map((testimonial) => (
+                    <article key={testimonial.name} className="rounded-2xl border border-border p-4">
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          className="h-14 w-14 rounded-full object-cover"
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div>
+                          <div className="text-base font-semibold text-ink">{testimonial.name}</div>
+                          <div className="text-sm text-ink-soft">{testimonial.role}</div>
+                        </div>
                       </div>
-                    </div>
-                    <p className="mt-3 text-sm text-ink-soft">{testimonial.quote}</p>
-                  </article>
-                ))}
+                      <p className="mt-3 text-sm text-ink-soft">{testimonial.quote}</p>
+                    </article>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

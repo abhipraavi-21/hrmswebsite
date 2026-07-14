@@ -133,22 +133,22 @@ export default function WorkforceManagementPage() {
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-          <div className="container-x grid gap-8 py-12 lg:grid-cols-12 lg:items-center lg:py-16">
-            <div className="lg:col-span-6 fade-up">
+          <div className="container-x py-12 lg:py-16">
+            <div className="mx-auto max-w-3xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Workforce Management
               </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+              <h1 className="mt-4 text-4xl font-bold leading-tight text-ink sm:text-5xl">
                 Simplify scheduling, tracking, and approvals
               </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
+              <p className="mt-4 text-base text-ink-soft">
                 Plan, deploy, and optimize your workforce across regions and business units with
                 shift planning, demand-aware rostering, attendance tracking, overtime management,
                 policy automation, and payroll-ready workforce data.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <a href="/company/book-demo" className="btn-primary">
                   Schedule a demo
                 </a>
@@ -156,70 +156,36 @@ export default function WorkforceManagementPage() {
                   Explore WFM
                 </a>
               </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {[
-                  { label: "Plan", value: "smarter shifts" },
-                  { label: "Track", value: "real-time attendance" },
-                  { label: "Approve", value: "with less manual work" },
-                ].map((item) => (
-                  <div key={item.label} className="soft-card p-4">
-                    <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      {item.label}
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="relative mx-auto max-w-2xl">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-                <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                  <picture>
-                    <source media="(max-width: 767px)" srcSet={heroImageMobile} />
-                    <img
-                      src={heroImage}
-                      alt="Workforce management dashboard preview"
-                      className="block h-auto w-full rounded-[1.5rem] object-contain bg-white"
-                      loading="eager"
-                      referrerPolicy="no-referrer"
-                    />
-                  </picture>
-
-                  <div className="mt-4 grid gap-4 sm:grid-cols-3">
-                    <div className="rounded-2xl bg-primary/5 p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <Clock3 className="h-4 w-4" />
-                        Shift-aware
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Align schedules and capture with operational demand.
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl bg-[#ecfdf3] p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-success">
-                        <Users className="h-4 w-4" />
-                        Employee self-service
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Let people check schedules, mark attendance, and request leave easily.
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl bg-primary-soft p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <BarChart3 className="h-4 w-4" />
-                        Real-time visibility
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Keep workforce decisions connected to live operational data.
-                      </p>
-                    </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {[
+                { label: "Plan", value: "smarter shifts" },
+                { label: "Track", value: "real-time attendance" },
+                { label: "Approve", value: "with less manual work" },
+              ].map((item) => (
+                <div key={item.label} className="soft-card p-4 text-center">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+                    {item.label}
                   </div>
+                  <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
                 </div>
+              ))}
+            </div>
+
+            <div className="relative mt-10 overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
+              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className="flex h-[92vh] items-center overflow-hidden bg-white sm:h-[96vh]">
+                <picture className="block h-full w-full">
+                  <source media="(max-width: 767px)" srcSet={heroImageMobile} />
+                  <img
+                    src={heroImage}
+                    alt="Workforce management dashboard preview"
+                    className="block h-full w-full origin-top scale-[1.58] transform-gpu rounded-none object-cover bg-white sm:scale-[1.68] lg:scale-[1.82]"
+                    loading="eager"
+                    referrerPolicy="no-referrer"
+                  />
+                </picture>
               </div>
             </div>
           </div>

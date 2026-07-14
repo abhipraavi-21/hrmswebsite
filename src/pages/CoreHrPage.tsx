@@ -26,47 +26,61 @@ const heroImages = {
     "https://a-us.storyblok.com/f/1019507/1728x972/638c6764cb/darwinbox-sapien-video-thumbnail.webp",
 };
 
+const capabilityImages = {
+  organization:
+    "https://images.pexels.com/photos/7693734/pexels-photo-7693734.jpeg?cs=srgb&dl=pexels-yankrukov-7693734.jpg&fm=jpg",
+  profiles:
+    "https://images.pexels.com/photos/7989139/pexels-photo-7989139.jpeg?cs=srgb&dl=pexels-mikhail-nilov-7989139.jpg&fm=jpg",
+  workflow:
+    "https://images.pexels.com/photos/7213548/pexels-photo-7213548.jpeg?cs=srgb&dl=pexels-ivan-s-7213548.jpg&fm=jpg",
+  compliance:
+    "https://images.pexels.com/photos/7640478/pexels-photo-7640478.jpeg?cs=srgb&dl=pexels-yankrukov-7640478.jpg&fm=jpg",
+  extensibility:
+    "https://images.pexels.com/photos/4623365/pexels-photo-4623365.jpeg?cs=srgb&dl=pexels-ketut-subiyanto-4623365.jpg&fm=jpg",
+  analytics:
+    "https://images.pexels.com/photos/8117466/pexels-photo-8117466.jpeg?cs=srgb&dl=pexels-ivan-s-8117466.jpg&fm=jpg",
+};
+
 const capabilityCards = [
   {
     title: "Organization management",
     desc: "Shape reporting lines, units, locations, and ownership rules in one place so the org chart stays dependable as the company grows.",
-    image: "https://a-us.storyblok.com/f/1019507/624x484/e4373f73c6/organization-management.webp",
+    image: capabilityImages.organization,
     alt: "Organization management",
     icon: <Building2 className="h-5 w-5" />,
   },
   {
     title: "Unified employee profiles",
     desc: "Keep each person's profile, job history, identifiers, documents, and employment data connected instead of scattered across tools.",
-    image: "https://a-us.storyblok.com/f/1019507/624x484/c5a4d2098c/unified-employee-profiles.webp",
+    image: capabilityImages.profiles,
     alt: "Unified employee profiles",
     icon: <ScanText className="h-5 w-5" />,
   },
   {
     title: "No-code workflow automation",
     desc: "Turn routine HR actions into guided flows for onboarding, changes, approvals, and handoffs without writing custom code.",
-    image: "https://a-us.storyblok.com/f/1019507/624x484/c487c3b685/no-code-workflows.webp",
+    image: capabilityImages.workflow,
     alt: "No-code HR workflow automation",
     icon: <Workflow className="h-5 w-5" />,
   },
   {
     title: "Global compliance and security",
     desc: "Apply role-based access, policy guardrails, and audit trails so sensitive people data stays protected across regions.",
-    image:
-      "https://a-us.storyblok.com/f/1019507/624x484/a8c19b7431/global-compliance-security.webp",
+    image: capabilityImages.compliance,
     alt: "Global Compliance & Security",
     icon: <ShieldCheck className="h-5 w-5" />,
   },
   {
     title: "Extensibility ecosystem",
     desc: "Connect Core HR to the rest of your stack through APIs, integrations, and configuration-friendly extensions.",
-    image: "https://a-us.storyblok.com/f/1019507/624x484/33aa7a45af/extensibility-ecosystem.webp",
+    image: capabilityImages.extensibility,
     alt: "Extensibility & Ecosystem",
     icon: <CircleGauge className="h-5 w-5" />,
   },
   {
     title: "Reports and visual analytics",
     desc: "Turn trusted workforce data into dashboards and reporting views that help leaders make faster decisions.",
-    image: "https://a-us.storyblok.com/f/1019507/624x484/ba272f568d/reports-visual-analytics.webp",
+    image: capabilityImages.analytics,
     alt: "Reports & Visual Analytics",
     icon: <BarChart3 className="h-5 w-5" />,
   },
@@ -114,21 +128,21 @@ export default function CoreHrPage() {
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-          <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-center lg:py-16">
-            <div className="lg:col-span-6 fade-up">
+          <div className="container-x py-12 lg:py-16">
+            <div className="mx-auto max-w-4xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Global HR Core
               </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+              <h1 className="mt-4 text-4xl font-bold leading-tight text-ink sm:text-5xl">
                 One Core HR foundation for people data, workflows, and global control
               </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
+              <p className="mx-auto mt-4 max-w-2xl text-base text-ink-soft">
                 Keep employee records, org structures, approval flows, and reporting in a single
                 system so HR can stay accurate as the business expands into new markets.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <a href="/company/book-demo" className="btn-primary">
                   Book a demo
                 </a>
@@ -136,86 +150,86 @@ export default function CoreHrPage() {
                   Explore core capabilities
                 </a>
               </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {highlights.map((item) => (
-                  <div key={item.label} className="soft-card p-4">
-                    <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      {item.label}
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {[
-                  "Central source of truth",
-                  "No-code HR orchestration",
-                  "Secure self-service updates",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="inline-flex items-center gap-2 rounded-2xl border border-border bg-white/80 px-4 py-3 text-sm font-medium text-ink shadow-card"
-                  >
-                    <CheckCircle2 className="h-4 w-4 text-success" />
-                    {item}
-                  </div>
-                ))}
-              </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="relative mx-auto max-w-2xl">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-                <div className="relative grid gap-4 rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                  <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface">
+            <div className="relative mx-auto mt-10 max-w-7xl">
+              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className="relative overflow-hidden rounded-[2.25rem] border border-border bg-white p-4 shadow-float sm:p-5">
+                <div className="overflow-hidden rounded-[1.75rem] border border-border bg-surface">
+                  <div className="aspect-[3/1] w-full bg-white p-2 sm:p-3">
                     <img
                       src={heroImages.desktop}
                       alt="Darwinbox Core HR dashboard hero"
-                      className="hidden h-auto w-full object-contain bg-white md:block"
+                      className="hidden h-full w-full object-contain bg-white md:block lg:object-cover lg:object-top"
                     />
                     <img
                       src={heroImages.mobile}
                       alt="Darwinbox Core HR mobile hero"
-                      className="h-auto w-full object-contain bg-white md:hidden"
+                      className="h-full w-full object-contain bg-white md:hidden"
                     />
                   </div>
+                </div>
 
-                  <div className="grid gap-4 sm:grid-cols-3">
-                    <div className="rounded-2xl bg-primary/5 p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <Users className="h-4 w-4" />
-                        System of record
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Keep employee details, job history, and structure aligned across every HR
-                        touchpoint.
-                      </p>
+                <div className="mt-5 grid gap-4 sm:grid-cols-3">
+                  <div className="rounded-2xl bg-primary/5 p-5">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                      <Users className="h-4 w-4" />
+                      System of record
                     </div>
-
-                    <div className="rounded-2xl bg-[#ecfdf3] p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-success">
-                        <Lock className="h-4 w-4" />
-                        Guardrails built in
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Make sensitive data available only to the right people with clear
-                        permissions and trails.
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl bg-primary-soft p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <Workflow className="h-4 w-4" />
-                        Action layer
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Move updates, approvals, and exceptions through guided workflows instead of
-                        manual chase-ups.
-                      </p>
-                    </div>
+                    <p className="mt-3 text-sm text-ink-soft">
+                      Keep employee details, job history, and structure aligned across every HR
+                      touchpoint.
+                    </p>
                   </div>
+
+                  <div className="rounded-2xl bg-[#ecfdf3] p-5">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-success">
+                      <Lock className="h-4 w-4" />
+                      Guardrails built in
+                    </div>
+                    <p className="mt-3 text-sm text-ink-soft">
+                      Make sensitive data available only to the right people with clear permissions
+                      and trails.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl bg-primary-soft p-5">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                      <Workflow className="h-4 w-4" />
+                      Action layer
+                    </div>
+                    <p className="mt-3 text-sm text-ink-soft">
+                      Move updates, approvals, and exceptions through guided workflows instead of
+                      manual chase-ups.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  {highlights.map((item) => (
+                    <div key={item.label} className="soft-card p-4">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+                        {item.label}
+                      </div>
+                      <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  {[
+                    "Central source of truth",
+                    "No-code HR orchestration",
+                    "Secure self-service updates",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="inline-flex items-center gap-2 rounded-2xl border border-border bg-white/80 px-4 py-3 text-sm font-medium text-ink shadow-card"
+                    >
+                      <CheckCircle2 className="h-4 w-4 text-success" />
+                      {item}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -260,86 +274,143 @@ export default function CoreHrPage() {
               ))}
             </div>
 
-            <div className="mt-10 grid gap-6 lg:grid-cols-12">
-              <div className="soft-card p-6 lg:col-span-7">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                      What it covers
-                    </div>
-                    <h3 className="mt-1 text-2xl font-bold text-ink">
-                      A practical set of Core HR controls for global teams
-                    </h3>
-                  </div>
-                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-success text-white">
-                    <BadgeCheck className="h-6 w-6" />
-                  </div>
+            <div className="mt-8 grid gap-6 lg:grid-cols-12 lg:items-start">
+              <div className="soft-card p-5 lg:col-span-4 lg:self-start">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  AI-ready visuals
                 </div>
+                <h3 className="mt-2 text-2xl font-bold text-ink">
+                  Add a proper AI image story under the core capabilities
+                </h3>
+                <p className="mt-3 text-sm text-ink-soft">
+                  This visual block uses a real project asset so the section feels more grounded,
+                  more modern, and less like a placeholder illustration strip.
+                </p>
 
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <div className="mt-5 space-y-3">
                   {[
-                    "Employee master data that stays consistent across the organization",
-                    "Document storage with traceable record updates and approvals",
-                    "Role-based access that matches how different teams operate",
-                    "Regional policy handling for distributed and multi-country orgs",
-                    "Self-service updates that reduce repetitive HR admin work",
-                    "Reporting-ready data that flows into analytics and planning",
+                    "AI-assisted capture that feels product-first",
+                    "Real dashboard visuals instead of generic stock art",
                   ].map((item) => (
                     <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-4">
-                      <div className="mt-0.5 grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] font-bold text-white">
-                        <CheckCircle2 className="h-3.5 w-3.5" />
-                      </div>
-                      <span className="text-sm font-medium text-ink">{item}</span>
+                      <BadgeCheck className="mt-0.5 h-4 w-4 text-success" />
+                      <span className="text-sm text-ink">{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="soft-card overflow-hidden lg:col-span-5">
-                <div className="overflow-hidden bg-surface">
+              <div className="grid gap-4 lg:col-span-8 sm:grid-cols-2">
+                <article className="soft-card overflow-hidden p-0">
+                  <div className="aspect-[624/484] bg-white">
+                    <img
+                      src={modelScreenshots.demoFormAi}
+                      alt="AI-generated HRMS dashboard illustration"
+                      className="h-full w-full object-cover object-center"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                </article>
+
+                <article className="soft-card overflow-hidden p-0">
+                  <div className="aspect-[624/484] bg-surface">
+                    <img
+                      src={modelScreenshots.coreHrTable}
+                      alt="Core HR data table preview"
+                      className="h-full w-full object-cover object-center"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <div className="mt-10 overflow-hidden rounded-[2.5rem] border border-border bg-white shadow-float">
+              <div className="overflow-hidden border-b border-border bg-surface">
+                <div className="aspect-[18/7] w-full bg-white">
                   <img
                     src={modelScreenshots.generatedDocuments}
                     alt="Generated documents dashboard preview"
-                    className="block h-auto w-full object-contain bg-white"
+                    className="h-full w-full object-contain object-top bg-white lg:object-cover lg:object-top"
                     loading="lazy"
                     referrerPolicy="no-referrer"
                   />
                 </div>
+              </div>
 
-                <div className="p-6">
-                  <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                    Document records
+              <div className="grid gap-6 p-6 lg:grid-cols-12">
+                <div className="soft-card p-6 lg:col-span-7">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                        What it covers
+                      </div>
+                      <h3 className="mt-1 text-2xl font-bold text-ink">
+                        A practical set of Core HR controls for global teams
+                      </h3>
+                    </div>
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-success text-white">
+                      <BadgeCheck className="h-6 w-6" />
+                    </div>
                   </div>
-                  <div className="mt-2 text-2xl font-bold text-ink">
-                    A single HR core that connects records, actions, and insights
-                  </div>
-                  <p className="mt-3 text-sm text-ink-soft">
-                    Core HR works best when documents, approvals, and change history stay tied to
-                    the employee record. That is the story this page is built around.
-                  </p>
 
-                  <div className="mt-6 space-y-4">
+                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
                     {[
-                      "Consistent employee records across every business unit",
-                      "Permissions and approvals that match real operating structures",
-                      "Audit-friendly change history for sensitive HR updates",
+                      "Employee master data that stays consistent across the organization",
+                      "Document storage with traceable record updates and approvals",
+                      "Role-based access that matches how different teams operate",
+                      "Regional policy handling for distributed and multi-country orgs",
+                      "Self-service updates that reduce repetitive HR admin work",
+                      "Reporting-ready data that flows into analytics and planning",
                     ].map((item) => (
-                      <div
-                        key={item}
-                        className="flex items-center gap-3 rounded-xl border border-border p-3"
-                      >
-                        <FileText className="h-4 w-4 text-primary" />
-                        <span className="text-sm text-ink">{item}</span>
+                      <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-4">
+                        <div className="mt-0.5 grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] font-bold text-white">
+                          <CheckCircle2 className="h-3.5 w-3.5" />
+                        </div>
+                        <span className="text-sm font-medium text-ink">{item}</span>
                       </div>
                     ))}
                   </div>
+                </div>
 
-                  <a
-                    href="#guiding-principles"
-                    className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:gap-2 transition-all"
-                  >
-                    See the wider platform story <ArrowRight className="h-4 w-4" />
-                  </a>
+                <div className="soft-card overflow-hidden lg:col-span-5">
+                  <div className="p-6">
+                    <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                      Document records
+                    </div>
+                    <div className="mt-2 text-2xl font-bold text-ink">
+                      A single HR core that connects records, actions, and insights
+                    </div>
+                    <p className="mt-3 text-sm text-ink-soft">
+                      Core HR works best when documents, approvals, and change history stay tied to
+                      the employee record. That is the story this page is built around.
+                    </p>
+
+                    <div className="mt-6 space-y-4">
+                      {[
+                        "Consistent employee records across every business unit",
+                        "Permissions and approvals that match real operating structures",
+                        "Audit-friendly change history for sensitive HR updates",
+                      ].map((item) => (
+                        <div
+                          key={item}
+                          className="flex items-center gap-3 rounded-xl border border-border p-3"
+                        >
+                          <FileText className="h-4 w-4 text-primary" />
+                          <span className="text-sm text-ink">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <a
+                      href="#guiding-principles"
+                      className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
+                    >
+                      See the wider platform story <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

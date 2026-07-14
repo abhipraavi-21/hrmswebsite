@@ -1,40 +1,42 @@
-import HomePage from "./pages/HomePage";
-import CoreHrPage from "./pages/CoreHrPage";
-import WorkforceManagementPage from "./pages/WorkforceManagementPage";
-import AttendancePage from "./pages/AttendancePage";
-import PayrollPage from "./pages/PayrollPage";
-import LeaveManagementPage from "./pages/LeaveManagementPage";
-import PerformanceManagementPage from "./pages/PerformanceManagementPage";
-import IndustrySolutionsPage from "./pages/IndustrySolutionsPage";
-import HrAnalyticsPage from "./pages/HrAnalyticsPage";
-import HrAutomationPage from "./pages/HrAutomationPage";
-import AttendanceManagementPage from "./pages/AttendanceManagementPage";
-import ExpenseManagementPage from "./pages/ExpenseManagementPage";
-import RecruitmentPage from "./pages/RecruitmentPage";
-import VisitorManagementPage from "./pages/VisitorManagementPage";
-import ExitManagementPage from "./pages/ExitManagementPage";
-import EmployeeSelfServicePage from "./pages/EmployeeSelfServicePage";
-import HrReportsPage from "./pages/HrReportsPage";
-import HrSecurityPage from "./pages/HrSecurityPage";
-import PricingPage from "./pages/PricingPage";
-import BusinessAppsPage from "./pages/integrations/BusinessAppsPage";
-import AccountingPage from "./pages/integrations/AccountingPage";
-import AssetManagementPage from "./pages/integrations/AssetManagementPage";
-import DevicesApiPage from "./pages/integrations/DevicesApiPage";
-import LearnPage from "./pages/LearnPage";
-import SupportPage from "./pages/resources/SupportPage";
-import AboutUsPage from "./pages/company/AboutUsPage";
-import WhyAltozPage from "./pages/company/WhyAltozPage";
-import CustomersPage from "./pages/company/CustomersPage";
-import TestimonialsPage from "./pages/company/TestimonialsPage";
-import PartnerProgramPage from "./pages/company/PartnerProgramPage";
-import PartnerWithUsPage from "./pages/company/PartnerWithUsPage";
-import CareersPage from "./pages/company/CareersPage";
-import ContactUsPage from "./pages/company/ContactUsPage";
-import CompanySupportPage from "./pages/company/CompanySupportPage";
-import BookDemoPage from "./pages/company/BookDemoPage";
+import { lazy, Suspense } from "react";
 import FreeDemoPopup from "./components/site/FreeDemoPopup";
 import WhatsAppFloatingButton from "./components/site/WhatsAppFloatingButton";
+
+const HomePage = lazy(() => import("./pages/HomePage"));
+const CoreHrPage = lazy(() => import("./pages/CoreHrPage"));
+const WorkforceManagementPage = lazy(() => import("./pages/WorkforceManagementPage"));
+const AttendancePage = lazy(() => import("./pages/AttendancePage"));
+const PayrollPage = lazy(() => import("./pages/PayrollPage"));
+const LeaveManagementPage = lazy(() => import("./pages/LeaveManagementPage"));
+const PerformanceManagementPage = lazy(() => import("./pages/PerformanceManagementPage"));
+const IndustrySolutionsPage = lazy(() => import("./pages/IndustrySolutionsPage"));
+const HrAnalyticsPage = lazy(() => import("./pages/HrAnalyticsPage"));
+const HrAutomationPage = lazy(() => import("./pages/HrAutomationPage"));
+const AttendanceManagementPage = lazy(() => import("./pages/AttendanceManagementPage"));
+const ExpenseManagementPage = lazy(() => import("./pages/ExpenseManagementPage"));
+const RecruitmentPage = lazy(() => import("./pages/RecruitmentPage"));
+const VisitorManagementPage = lazy(() => import("./pages/VisitorManagementPage"));
+const ExitManagementPage = lazy(() => import("./pages/ExitManagementPage"));
+const EmployeeSelfServicePage = lazy(() => import("./pages/EmployeeSelfServicePage"));
+const HrReportsPage = lazy(() => import("./pages/HrReportsPage"));
+const HrSecurityPage = lazy(() => import("./pages/HrSecurityPage"));
+const PricingPage = lazy(() => import("./pages/PricingPage"));
+const BusinessAppsPage = lazy(() => import("./pages/integrations/BusinessAppsPage"));
+const AccountingPage = lazy(() => import("./pages/integrations/AccountingPage"));
+const AssetManagementPage = lazy(() => import("./pages/integrations/AssetManagementPage"));
+const DevicesApiPage = lazy(() => import("./pages/integrations/DevicesApiPage"));
+const LearnPage = lazy(() => import("./pages/LearnPage"));
+const SupportPage = lazy(() => import("./pages/resources/SupportPage"));
+const AboutUsPage = lazy(() => import("./pages/company/AboutUsPage"));
+const WhyAltozPage = lazy(() => import("./pages/company/WhyAltozPage"));
+const CustomersPage = lazy(() => import("./pages/company/CustomersPage"));
+const TestimonialsPage = lazy(() => import("./pages/company/TestimonialsPage"));
+const PartnerProgramPage = lazy(() => import("./pages/company/PartnerProgramPage"));
+const PartnerWithUsPage = lazy(() => import("./pages/company/PartnerWithUsPage"));
+const CareersPage = lazy(() => import("./pages/company/CareersPage"));
+const ContactUsPage = lazy(() => import("./pages/company/ContactUsPage"));
+const CompanySupportPage = lazy(() => import("./pages/company/CompanySupportPage"));
+const BookDemoPage = lazy(() => import("./pages/company/BookDemoPage"));
 
 function normalizePath(pathname: string) {
   const trimmed = pathname.replace(/\/+$/, "");
@@ -120,7 +122,15 @@ export default function App() {
     <>
       {isHomePage ? <FreeDemoPopup /> : null}
       <WhatsAppFloatingButton />
-      {page}
+      <Suspense
+        fallback={
+          <div className="grid min-h-screen place-items-center bg-background text-sm text-ink-soft">
+            Loading page...
+          </div>
+        }
+      >
+        {page}
+      </Suspense>
     </>
   );
 }

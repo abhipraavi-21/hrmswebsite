@@ -950,7 +950,7 @@ function HeroVisual() {
               <img
                 src={modelScreenshots.attendanceDashboard}
                 alt="Altroz HRMS attendance dashboard preview"
-                className="block h-full w-full object-cover object-[center_34%]"
+                className="block h-full w-full object-contain bg-white p-2"
                 loading="eager"
               />
             </div>

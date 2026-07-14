@@ -1307,17 +1307,19 @@ export default function HrSecurityPage() {
             </div>
 
             <div className="lg:col-span-6">
-              <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
-                <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface">
-                  <img
-                    src={modelScreenshots.generatedDocuments}
-                    alt="Generated HR documents preview"
-                    className="block h-auto w-full object-contain bg-white"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                  />
+              <div className="overflow-hidden rounded-[1.75rem] border border-border bg-white shadow-card">
+                <div className="overflow-hidden border-b border-border bg-surface">
+                  <div className="aspect-[18/7] w-full bg-white">
+                    <img
+                      src={modelScreenshots.generatedDocuments}
+                      alt="Generated HR documents preview"
+                      className="h-full w-full object-contain object-top bg-white lg:object-cover lg:object-top"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
                 </div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="grid gap-3 p-5 sm:grid-cols-2">
                   {[
                     "Offer letters",
                     "Appointment letters",
@@ -1503,113 +1505,125 @@ export default function HrSecurityPage() {
         </section>
 
         <section className="py-20">
-          <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-start">
-            <div className="lg:col-span-6">
-              <SectionHeading
-                eyebrow="Leave protection"
-                title="Leave and compliance data protection"
-                description="Keep leave records and compliance records organized while limiting access according to role."
-              />
+          <div className="container-x">
+            <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
+              <div className="lg:col-span-6">
+                <SectionHeading
+                  eyebrow="Leave protection"
+                  title="Leave and compliance data protection"
+                  description="Keep leave records and compliance records organized while limiting access according to role."
+                />
 
-              <div className="mt-6 grid gap-4 lg:grid-cols-2">
-                <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
-                  <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                    Leave data protection
-                  </div>
-                  <div className="mt-4 grid gap-3">
-                    {leavePoints.map((item) => (
-                      <div key={item} className="flex items-start gap-3 rounded-2xl bg-surface p-4">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-                        <span className="text-sm text-ink">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {["Employee", "Manager", "HR"].map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold text-primary"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
-                  <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                    Compliance data protection
-                  </div>
-                  <div className="mt-4 grid gap-3">
-                    {compliancePoints.map((item) => (
-                      <div key={item} className="flex items-start gap-3 rounded-2xl bg-surface p-4">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-                        <span className="text-sm text-ink">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-6">
-              <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
+                <div className="mt-6 grid gap-4 lg:grid-cols-2">
+                  <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
                     <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                      Leave and compliance snapshot
-                    </div>
-                    <div className="mt-1 text-lg font-bold text-ink">Controlled records view</div>
-                  </div>
-                  <FileBarChart2 className="h-5 w-5 text-primary" />
-                </div>
-
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-[1.5rem] bg-primary-soft/35 p-5">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                          Leave status
-                        </div>
-                        <div className="mt-1 text-lg font-bold text-ink">Role-aware access</div>
-                      </div>
-                      <CalendarDays className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="mt-4 space-y-2 text-sm text-ink-soft">
-                      <div>Employees see their own balances and requests.</div>
-                      <div>Managers see team leave and approval history.</div>
-                      <div>HR sees organization-wide leave records.</div>
-                    </div>
-                  </div>
-
-                  <div className="rounded-[1.5rem] bg-white p-5 shadow-sm">
-                    <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                      Compliance status
+                      Leave data protection
                     </div>
                     <div className="mt-4 grid gap-3">
-                      {[
-                        ["PF", "Organized"],
-                        ["ESIC", "Organized"],
-                        ["TDS", "Organized"],
-                        ["Compliance reports", "Available"],
-                      ].map(([label, value]) => (
+                      {leavePoints.map((item) => (
                         <div
-                          key={label}
-                          className="flex items-center justify-between gap-3 rounded-2xl bg-surface px-4 py-3"
+                          key={item}
+                          className="flex items-start gap-3 rounded-2xl bg-surface p-4"
                         >
-                          <span className="text-sm font-medium text-ink">{label}</span>
-                          <span className="text-sm font-bold text-primary">{value}</span>
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                          <span className="text-sm text-ink">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {["Employee", "Manager", "HR"].map((item) => (
+                        <span
+                          key={item}
+                          className="rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold text-primary"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
+                    <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                      Compliance data protection
+                    </div>
+                    <div className="mt-4 grid gap-3">
+                      {compliancePoints.map((item) => (
+                        <div
+                          key={item}
+                          className="flex items-start gap-3 rounded-2xl bg-surface p-4"
+                        >
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                          <span className="text-sm text-ink">{item}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="mt-4 overflow-hidden rounded-[1.5rem] border border-border bg-surface">
+              <div className="lg:col-span-6">
+                <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                        Leave and compliance snapshot
+                      </div>
+                      <div className="mt-1 text-lg font-bold text-ink">Controlled records view</div>
+                    </div>
+                    <FileBarChart2 className="h-5 w-5 text-primary" />
+                  </div>
+
+                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-[1.5rem] bg-primary-soft/35 p-5">
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                            Leave status
+                          </div>
+                          <div className="mt-1 text-lg font-bold text-ink">Role-aware access</div>
+                        </div>
+                        <CalendarDays className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="mt-4 space-y-2 text-sm text-ink-soft">
+                        <div>Employees see their own balances and requests.</div>
+                        <div>Managers see team leave and approval history.</div>
+                        <div>HR sees organization-wide leave records.</div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-[1.5rem] bg-white p-5 shadow-sm">
+                      <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                        Compliance status
+                      </div>
+                      <div className="mt-4 grid gap-3">
+                        {[
+                          ["PF", "Organized"],
+                          ["ESIC", "Organized"],
+                          ["TDS", "Organized"],
+                          ["Compliance reports", "Available"],
+                        ].map(([label, value]) => (
+                          <div
+                            key={label}
+                            className="flex items-center justify-between gap-3 rounded-2xl bg-surface px-4 py-3"
+                          >
+                            <span className="text-sm font-medium text-ink">{label}</span>
+                            <span className="text-sm font-bold text-primary">{value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative mt-8 overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
+              <div className="mx-auto max-w-none px-0">
+                <div className="flex h-[88vh] items-center overflow-hidden border-y border-border bg-white shadow-card sm:h-[92vh]">
                   <img
                     src={modelScreenshots.salaryReport}
                     alt="Compliance report preview"
-                    className="block h-auto w-full object-contain bg-white"
+                    className="block h-full w-full origin-top scale-[1.45] transform-gpu object-contain bg-white sm:scale-[1.55] lg:scale-[1.7]"
                     loading="lazy"
                     referrerPolicy="no-referrer"
                   />
@@ -1863,16 +1877,6 @@ export default function HrSecurityPage() {
                   <FileBarChart2 className="h-5 w-5 text-primary" />
                 </div>
 
-                <div className="mt-5 overflow-hidden rounded-[1.5rem] border border-border bg-surface">
-                  <img
-                    src={modelScreenshots.employeeReport}
-                    alt="HR report preview"
-                    className="block h-auto w-full object-contain bg-white"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   {[
                     "Employee reports",
@@ -1894,6 +1898,20 @@ export default function HrSecurityPage() {
                       {item}
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="relative mt-8 overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
+              <div className="mx-auto max-w-none px-0">
+                <div className="overflow-hidden border-y border-border bg-white shadow-card">
+                  <img
+                    src={modelScreenshots.employeeReport}
+                    alt="HR report preview"
+                    className="block h-auto w-full object-contain bg-white"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
               </div>
             </div>
@@ -1969,17 +1987,19 @@ export default function HrSecurityPage() {
             </div>
 
             <div className="lg:col-span-7">
-              <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
-                <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface">
-                  <img
-                    src={modelScreenshots.generatedDocuments}
-                    alt="Protected HR documents dashboard preview"
-                    className="block h-auto w-full object-contain bg-white"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                  />
+              <div className="overflow-hidden rounded-[1.75rem] border border-border bg-white shadow-card">
+                <div className="overflow-hidden border-b border-border bg-surface">
+                  <div className="aspect-[18/7] w-full bg-white">
+                    <img
+                      src={modelScreenshots.generatedDocuments}
+                      alt="Protected HR documents dashboard preview"
+                      className="h-full w-full object-contain object-top bg-white lg:object-cover lg:object-top"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
                 </div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                <div className="grid gap-3 p-5 sm:grid-cols-3">
                   {[
                     "Controlled employee data access",
                     "Secure report access",

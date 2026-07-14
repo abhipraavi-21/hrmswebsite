@@ -434,27 +434,27 @@ export default function HrAnalyticsPage() {
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
           <div className="pointer-events-none absolute right-1/3 top-1/4 h-28 w-28 rounded-full bg-primary/10 blur-2xl" />
 
-          <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-center lg:py-16">
-            <div className="lg:col-span-6 fade-up">
+          <div className="container-x py-12 lg:py-16">
+            <div className="mx-auto max-w-3xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 HR Analytics Dashboard
               </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+              <h1 className="mt-4 text-4xl font-bold leading-tight text-ink sm:text-5xl">
                 Make Better HR Decisions with Smart HR Analytics
               </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
+              <p className="mt-4 text-base text-ink-soft">
                 Transform your workforce data into actionable insights with Altroz HRMS HR
                 Analytics. Track attendance, payroll, leave, recruitment, employee performance,
                 compliance, and workforce trends from one centralized dashboard.
               </p>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
+              <p className="mt-4 text-base text-ink-soft">
                 Whether you are a growing business or a large enterprise, Altroz HRMS helps you make
                 data-driven decisions, improve operational efficiency, and optimize workforce
                 productivity.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <a href="/company/book-demo" className="btn-primary">
                   Book Free Demo
                 </a>
@@ -462,98 +462,39 @@ export default function HrAnalyticsPage() {
                   Talk to an Expert
                 </a>
               </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {heroStats.map((stat) => (
-                  <StatPill key={stat.label} label={stat.label} value={stat.value} />
-                ))}
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-2">
-                {["Attendance", "Payroll", "Leave", "Recruitment", "Performance", "Compliance"].map(
-                  (item) => (
-                    <span
-                      key={item}
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-white/80 px-3 py-2 text-sm font-medium text-ink shadow-sm"
-                    >
-                      <CheckCircle2 className="h-4 w-4 text-success" />
-                      {item}
-                    </span>
-                  ),
-                )}
-              </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="relative mx-auto max-w-2xl">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-                <div className="relative grid gap-4 rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                  <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface">
-                    <img
-                      src={modelScreenshots.employeeReport}
-                      alt="HR analytics dashboard preview"
-                      className="block h-auto w-full object-contain bg-white"
-                      loading="eager"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {heroStats.map((stat) => (
+                <StatPill key={stat.label} label={stat.label} value={stat.value} />
+              ))}
+            </div>
 
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-2xl bg-primary/5 p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <LineChart className="h-4 w-4" />
-                        Smart workforce view
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Bring attendance, payroll, leave, and hiring signals into a single reporting
-                        flow for better visibility.
-                      </p>
-                    </div>
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              {["Attendance", "Payroll", "Leave", "Recruitment", "Performance", "Compliance"].map(
+                (item) => (
+                  <span
+                    key={item}
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-white/80 px-3 py-2 text-sm font-medium text-ink shadow-sm"
+                  >
+                    <CheckCircle2 className="h-4 w-4 text-success" />
+                    {item}
+                  </span>
+                ),
+              )}
+            </div>
 
-                    <div className="rounded-2xl bg-[#ecfdf3] p-5">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-success">
-                        <Download className="h-4 w-4" />
-                        Easy exports
-                      </div>
-                      <p className="mt-3 text-sm text-ink-soft">
-                        Share dashboards and reports in Excel or PDF with a few clicks.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="rounded-2xl border border-dashed border-primary/25 bg-primary-soft/40 p-4">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div>
-                        <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                          Reporting pulse
-                        </div>
-                        <div className="mt-1 text-sm font-semibold text-ink">
-                          Live visibility that helps leaders stay ahead of issues.
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                        <ArrowRight className="h-4 w-4" />
-                        Updated in real time
-                      </div>
-                    </div>
-
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                      {dashboardPulse.map((item) => (
-                        <div key={item.label} className="rounded-xl bg-white p-3 shadow-sm">
-                          <div className="flex items-center justify-between gap-2 text-sm font-medium text-ink">
-                            <span>{item.label}</span>
-                            <span className="text-primary">{item.value}%</span>
-                          </div>
-                          <div className="mt-2 h-2 rounded-full bg-surface">
-                            <div
-                              className="h-2 rounded-full bg-gradient-to-r from-primary to-success"
-                              style={{ width: `${item.value}%` }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+            <div className="relative mt-10 overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
+              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className="relative overflow-hidden border-y border-border bg-white shadow-float">
+                <div className="overflow-hidden bg-surface">
+                  <img
+                    src={modelScreenshots.employeeReport}
+                    alt="HR analytics dashboard preview"
+                    className="block h-auto w-full object-contain bg-white"
+                    loading="eager"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
               </div>
             </div>

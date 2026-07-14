@@ -205,47 +205,49 @@ export default function RecruitmentPage() {
                 ))}
               </div>
 
-              <div className="mt-6 max-w-xl rounded-[1.5rem] border border-border bg-white/80 p-5 shadow-card backdrop-blur-sm">
-                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
-                  What this ATS handles
-                </div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {[
-                    "Post jobs and manage openings",
-                    "Screen candidates with AI support",
-                    "Schedule interviews without chaos",
-                    "Track offers and hiring progress",
-                  ].map((item) => (
-                    <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-3">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
-                      <span className="text-sm text-ink">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-6 max-w-xl rounded-[1.5rem] border border-border bg-white/80 p-5 shadow-card backdrop-blur-sm">
-                <div className="flex items-center justify-between gap-3">
+              <div className="mt-6 grid gap-6 lg:grid-cols-2 lg:items-stretch">
+                <div className="rounded-[1.5rem] border border-border bg-white/80 p-5 shadow-card backdrop-blur-sm">
                   <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
-                    Recruitment outcomes
+                    What this ATS handles
                   </div>
-                  <div className="rounded-full bg-[#ecfdf3] px-3 py-1 text-xs font-semibold text-success">
-                    Better control
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {[
+                      "Post jobs and manage openings",
+                      "Screen candidates with AI support",
+                      "Schedule interviews without chaos",
+                      "Track offers and hiring progress",
+                    ].map((item) => (
+                      <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-3">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
+                        <span className="text-sm text-ink">{item}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {[
-                    { title: "Pipeline view", value: "Track every candidate stage" },
-                    { title: "Team alignment", value: "Keep recruiters and managers synced" },
-                    { title: "Fast follow-up", value: "Reduce lag between steps" },
-                    { title: "Hiring insight", value: "Spot bottlenecks early" },
-                  ].map((item) => (
-                    <div key={item.title} className="rounded-xl bg-surface p-4">
-                      <div className="text-sm font-semibold text-ink">{item.title}</div>
-                      <div className="mt-1 text-xs text-ink-soft">{item.value}</div>
+                <div className="rounded-[1.5rem] border border-border bg-white/80 p-5 shadow-card backdrop-blur-sm">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                      Recruitment outcomes
                     </div>
-                  ))}
+                    <div className="rounded-full bg-[#ecfdf3] px-3 py-1 text-xs font-semibold text-success">
+                      Better control
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {[
+                      { title: "Pipeline view", value: "Track every candidate stage" },
+                      { title: "Team alignment", value: "Keep recruiters and managers synced" },
+                      { title: "Fast follow-up", value: "Reduce lag between steps" },
+                      { title: "Hiring insight", value: "Spot bottlenecks early" },
+                    ].map((item) => (
+                      <div key={item.title} className="rounded-xl bg-surface p-4">
+                        <div className="text-sm font-semibold text-ink">{item.title}</div>
+                        <div className="mt-1 text-xs text-ink-soft">{item.value}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

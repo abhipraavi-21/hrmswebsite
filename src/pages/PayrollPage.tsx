@@ -149,24 +149,21 @@ export default function PayrollPage() {
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-          <div
-            className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-center lg:py-16"
-            style={{ paddingLeft: "0.25rem", paddingRight: "0.75rem" }}
-          >
-            <div className="lg:col-span-6 fade-up">
+          <div className="container-x py-12 lg:py-16">
+            <div className="mx-auto max-w-3xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Payroll Management
               </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+              <h1 className="mt-4 text-4xl font-bold leading-tight text-ink sm:text-5xl">
                 Faster payroll runs with accurate payouts and less month-end pressure
               </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
+              <p className="mt-4 text-base text-ink-soft">
                 Keep salary calculation, compliance, disbursement, and employee visibility in one
                 clean flow so payroll teams can work with more confidence.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <a href="/company/book-demo" className="btn-primary">
                   Explore payroll
                 </a>
@@ -174,46 +171,43 @@ export default function PayrollPage() {
                   See the payroll cycle
                 </a>
               </div>
+            </div>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {heroMetrics.map((item) => (
-                  <div key={item.label} className="soft-card p-4">
-                    <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      {item.label}
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {heroMetrics.map((item) => (
+                <div key={item.label} className="soft-card p-4 text-center">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+                    {item.label}
                   </div>
-                ))}
+                  <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="relative mt-10 overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
+              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className="relative h-screen min-h-[100svh] overflow-hidden bg-white shadow-float">
+                <img
+                  src={heroImage}
+                  alt="Payroll management overview"
+                  className="absolute inset-0 block h-full w-full object-contain object-center bg-white p-4 sm:p-6"
+                  loading="eager"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
               </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="relative mx-auto max-w-2xl">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-                <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                  <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface">
-                    <img
-                      src={heroImage}
-                      alt="Payroll management overview"
-                      className="block h-auto w-full object-contain bg-white"
-                      loading="eager"
-                      referrerPolicy="no-referrer"
-                    />
+            <div className="mt-8 grid gap-4 sm:grid-cols-4">
+              {highlightCards.map((card) => (
+                <div key={card.title} className="soft-card p-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                    {card.icon}
+                    {card.title}
                   </div>
-
-                  <div className="mt-4 grid gap-4 sm:grid-cols-4">
-                    {highlightCards.map((card) => (
-                      <div key={card.title} className="rounded-2xl bg-surface p-4">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                          {card.icon}
-                          {card.title}
-                        </div>
-                        <p className="mt-2 text-sm text-ink-soft">{card.desc}</p>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="mt-2 text-sm text-ink-soft">{card.desc}</p>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -248,7 +242,7 @@ export default function PayrollPage() {
         </section>
 
         <section id="payroll-flow" className="bg-surface py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12">
+          <div className="container-x grid gap-6 lg:grid-cols-12 lg:items-start">
             <div className="soft-card overflow-hidden lg:col-span-5">
               <img
                 src={payrollCycleImage}
@@ -287,43 +281,51 @@ export default function PayrollPage() {
         </section>
 
         <section className="py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12 lg:items-start">
-            <div className="soft-card p-6 lg:col-span-7">
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                Statutory compliance
-              </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">
-                Compliance handling that removes a lot of manual tracking
-              </h3>
-              <p className="mt-3 text-sm text-ink-soft">
-                Payroll teams need rules for PF, ESI, PT, TDS, bonus, and labour welfare to stay
-                current. This page keeps that full coverage in view.
-              </p>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                {compliancePoints.map((item) => (
-                  <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-4">
-                    <FileText className="mt-0.5 h-4 w-4 text-primary" />
-                    <span className="text-sm text-ink">{item}</span>
-                  </div>
-                ))}
+          <div className="container-x">
+            <div className="relative overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
+              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+              <div className="relative h-screen min-h-[100svh] overflow-hidden bg-white shadow-float">
+                <img
+                  src={complianceImage}
+                  alt="Statutory compliance"
+                  className="absolute inset-0 block h-full w-full object-contain object-center bg-white p-4 sm:p-6"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
               </div>
             </div>
 
-            <div className="soft-card overflow-hidden lg:col-span-5 lg:self-start">
-              <img
-                src={complianceImage}
-                alt="Statutory compliance"
-                className="block h-auto w-full object-contain bg-white"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
+            <div className="mt-10 grid gap-6 lg:grid-cols-12 lg:items-start">
+              <div className="lg:col-span-5">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  Statutory compliance
+                </div>
+                <h3 className="mt-2 text-2xl font-bold text-ink">
+                  Compliance handling that removes a lot of manual tracking
+                </h3>
+                <p className="mt-3 text-sm text-ink-soft">
+                  Payroll teams need rules for PF, ESI, PT, TDS, bonus, and labour welfare to stay
+                  current. This page keeps that full coverage in view.
+                </p>
+              </div>
+
+              <div className="lg:col-span-7">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {compliancePoints.map((item) => (
+                    <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-4">
+                      <FileText className="mt-0.5 h-4 w-4 text-primary" />
+                      <span className="text-sm text-ink">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         <section className="bg-surface py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12">
+          <div className="container-x grid gap-6 lg:grid-cols-12 lg:items-start">
             <div className="soft-card overflow-hidden lg:col-span-5">
               <img
                 src={paydayImage}
@@ -397,40 +399,49 @@ export default function PayrollPage() {
           </div>
         </section>
 
-        <section className="bg-surface py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12 lg:items-start">
-            <div className="soft-card overflow-hidden lg:col-span-5 lg:self-start">
-              <img
-                src={analyticsImage}
-                alt="Payroll reports and analytics"
-                className="block h-auto w-full object-contain bg-white"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
+        <section className="bg-surface py-12">
+          <div className="container-x">
+            <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
+            <img
+              src={analyticsImage}
+              alt="Payroll reports and analytics"
+              className="block h-auto w-full object-contain object-center bg-white p-3 sm:p-4 md:p-6"
+              loading="eager"
+              referrerPolicy="no-referrer"
+            />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
             </div>
+          </div>
+        </section>
 
-            <div className="soft-card p-6 lg:col-span-7">
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                Reports and analytics
+        <section className="bg-surface py-20">
+          <div className="container-x">
+            <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
+              <div className="lg:col-span-5">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  Reports and analytics
+                </div>
+                <h3 className="mt-2 text-2xl font-bold text-ink">
+                  Turn payroll data into reports teams can actually use
+                </h3>
+                <p className="mt-3 text-sm text-ink-soft">
+                  Add ready-made MIS views, compliance reporting, and ad hoc queries so finance and
+                  HR can make faster decisions with the same data set.
+                </p>
               </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">
-                Turn payroll data into reports teams can actually use
-              </h3>
-              <p className="mt-3 text-sm text-ink-soft">
-                Add ready-made MIS views, compliance reporting, and ad hoc queries so finance and HR
-                can make faster decisions with the same data set.
-              </p>
 
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                {reportPoints.map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-start gap-3 rounded-xl border border-border p-4"
-                  >
-                    <BarChart3 className="mt-0.5 h-4 w-4 text-success" />
-                    <span className="text-sm text-ink">{item}</span>
-                  </div>
-                ))}
+              <div className="lg:col-span-7">
+                <div className="grid gap-4 md:grid-cols-2">
+                  {reportPoints.map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-start gap-3 rounded-xl border border-border bg-white p-4 shadow-card"
+                    >
+                      <BarChart3 className="mt-0.5 h-4 w-4 text-success" />
+                      <span className="text-sm text-ink">{item}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
