@@ -11,5 +11,5 @@ export const modelScreenshots = {
   assetsDashboard: "/hrms-models/assets-dashboard.png",
   employeeReport: "/hrms-models/employee-report.png",
   salaryReport: "/hrms-models/salary-report.png",
-  demoFormAi: "/hrms-models/demo-form-ai.png",
+  demoFormAi: "/hrms-models/demo-form-ai.jpg",
 } as const;

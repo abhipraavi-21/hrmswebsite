@@ -133,8 +133,12 @@ export default function FreeDemoPopup() {
               <aside className="hidden border-r border-border bg-[radial-gradient(circle_at_top_left,_rgba(11,92,255,0.12),_transparent_44%),linear-gradient(180deg,_#f8fbff_0%,_#eef5ff_100%)] p-6 lg:block">
                 <div className="relative h-full overflow-hidden rounded-[1.5rem] border border-white/70 bg-white shadow-[0_20px_50px_rgba(11,92,255,0.12)]">
                   <img
-                    src="/hrms-models/demo-form-ai.png"
+                    src="/hrms-models/demo-form-ai.jpg"
                     alt="AI-generated HRMS dashboard illustration"
+                    width={768}
+                    height={1152}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover"
                   />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/25 via-transparent to-transparent" />
@@ -144,8 +148,12 @@ export default function FreeDemoPopup() {
               <div className="max-h-[88vh] overflow-y-auto p-5 sm:p-6">
                 <div className="mb-4 overflow-hidden rounded-[1.25rem] border border-border bg-surface shadow-card lg:hidden">
                   <img
-                    src="/hrms-models/demo-form-ai.png"
+                    src="/hrms-models/demo-form-ai.jpg"
                     alt="AI-generated HRMS dashboard illustration"
+                    width={768}
+                    height={1152}
+                    loading="lazy"
+                    decoding="async"
                     className="h-56 w-full object-cover object-center"
                   />
                 </div>

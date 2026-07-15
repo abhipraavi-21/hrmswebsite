@@ -250,10 +250,14 @@ export default function EmployeeSelfServicePage() {
                 <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-5 shadow-float">
                   <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface">
                     <img
-                      src="/employee-self-service/hero.png"
+                      src="/employee-self-service/hero.jpg"
                       alt="Employee self service portal preview"
-                      className="h-full w-full object-cover"
+                      width={1200}
+                      height={640}
                       loading="eager"
+                      fetchPriority="high"
+                      decoding="async"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                 </div>
@@ -321,10 +325,13 @@ export default function EmployeeSelfServicePage() {
             <div className="lg:col-span-5">
               <div className="relative mx-auto max-w-xl overflow-hidden rounded-[2rem] border border-border bg-white p-4 shadow-float">
                 <img
-                  src="/employee-self-service/mobile-access.png"
+                  src="/employee-self-service/mobile-access.jpg"
                   alt="Mobile self service portal preview"
-                  className="h-full w-full rounded-[1.5rem] object-cover"
+                  width={768}
+                  height={1152}
                   loading="lazy"
+                  decoding="async"
+                  className="h-full w-full rounded-[1.5rem] object-cover"
                 />
               </div>
             </div>
