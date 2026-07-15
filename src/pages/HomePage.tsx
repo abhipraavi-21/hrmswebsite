@@ -8,10 +8,16 @@ import DashboardShowcase from "@/components/site/DashboardShowcase";
 import WhyChooseUs from "@/components/site/WhyChooseUs";
 import CTA from "@/components/site/CTA";
 import Footer from "@/components/site/Footer";
+import PageSEO from "@/components/site/PageSEO";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
+      <PageSEO
+        title="Altroz HRMS | HR, Payroll, Attendance and Bulk Email Platform"
+        description="Altroz HRMS helps businesses manage employees, attendance, payroll, leave, recruitment, analytics, and bulk email from one modern platform."
+        canonicalPath="/"
+      />
       <TopNavbar />
       <MainNavbar />
       <main>

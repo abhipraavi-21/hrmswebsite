@@ -46,11 +46,11 @@ export default function Hero() {
           </p>
 
           <div className="mt-5 flex flex-wrap gap-3">
-            <a href="#trial" className="btn-success">
-              Start Free Trial
+            <a href="/company/book-demo" className="btn-success">
+              Book Free Demo
             </a>
-            <a href="#demo" className="btn-outline">
-              Request Demo
+            <a href="#solutions" className="btn-outline">
+              Explore Features
             </a>
           </div>
 

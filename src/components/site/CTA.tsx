@@ -15,13 +15,13 @@ export default function CTA() {
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <a
-                href="#demo"
+                href="/company/book-demo"
                 className="inline-flex items-center px-6 py-3 rounded-lg bg-white text-primary font-semibold hover:bg-primary-soft transition-colors"
               >
                 Book Free Demo
               </a>
-              <a href="#trial" className="btn-success">
-                Start Free Trial
+              <a href="/pricing" className="btn-success">
+                View Pricing
               </a>
             </div>
           </div>

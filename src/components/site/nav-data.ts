@@ -83,9 +83,9 @@ export const hrmsLinks = [
 ];
 
 export const emailLinks = [
-  { label: "Campaigns", desc: "Send at scale" },
-  { label: "Templates", desc: "Drag & drop builder" },
-  { label: "Contacts", desc: "Segmentation & lists" },
-  { label: "Analytics", desc: "Open & click tracking" },
-  { label: "Automation", desc: "Drip workflows" },
+  { label: "Campaigns", desc: "Send at scale", href: "/company/book-demo" },
+  { label: "Templates", desc: "Drag & drop builder", href: "/learn" },
+  { label: "Contacts", desc: "Segmentation & lists", href: "/customers" },
+  { label: "Analytics", desc: "Open & click tracking", href: "/hr-analytics" },
+  { label: "Automation", desc: "Drip workflows", href: "/hr-automation" },
 ];

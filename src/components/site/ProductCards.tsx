@@ -23,6 +23,7 @@ const products = [
     eyebrow: "Bulk Email Platform",
     title: "Send campaigns that get opened",
     desc: "Build, send and track marketing emails at scale with deep analytics.",
+    href: "/learn",
     features: [
       "Drag-and-drop campaign creation",
       "Beautiful email templates",
@@ -123,7 +124,7 @@ export default function ProductCards() {
                   </ul>
 
                   <a
-                    href={p.href ?? "#learn"}
+                    href={p.href ?? "/learn"}
                     className={`mt-6 inline-flex items-center gap-1 text-sm font-semibold ${
                       isPrimary ? "text-primary" : "text-success"
                     } hover:gap-2 transition-all`}

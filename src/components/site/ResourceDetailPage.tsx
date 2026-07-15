@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Footer from "@/components/site/Footer";
+import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import MainNavbar from "@/components/site/MainNavbar";
 
@@ -34,8 +35,11 @@ export default function ResourceDetailPage({
   primaryAction,
   secondaryAction,
 }: ResourceDetailPageProps) {
+  const canonicalPath = typeof window !== "undefined" ? window.location.pathname : "/";
+
   return (
     <div className="min-h-screen bg-background">
+      <PageSEO title={title} description={description} canonicalPath={canonicalPath} />
       <TopNavbar />
       <MainNavbar />
 

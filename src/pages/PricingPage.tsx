@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
+import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -289,6 +290,11 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageSEO
+        title="Pricing | Altroz HRMS"
+        description="View flexible pricing for Altroz HRMS, compare plan totals by team size, and explore the right fit for HR, attendance, payroll, and workforce operations."
+        canonicalPath="/pricing"
+      />
       <TopNavbar />
       <MainNavbar />
 

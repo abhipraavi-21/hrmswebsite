@@ -49,6 +49,17 @@ export default function TopNavbar() {
 
   useEffect(() => () => clearCloseTimer(), []);
 
+  useEffect(() => {
+    const { overflow } = document.body.style;
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, [mobileOpen]);
+
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/90">
       <div className="container-x flex items-center justify-between gap-3 py-3 lg:hidden">
@@ -142,18 +153,18 @@ export default function TopNavbar() {
 
                 <div className="mt-8 grid gap-3">
                   <a
-                    href="/partner-with-us"
+                    href="/company/book-demo"
                     onClick={() => setMobileOpen(false)}
                     className="btn-ghost justify-center text-sm"
                   >
                     Request Demo
                   </a>
                   <a
-                    href="/partner-with-us"
+                    href="/pricing"
                     onClick={() => setMobileOpen(false)}
                     className="btn-primary justify-center text-sm"
                   >
-                    Start Free Trial
+                    View Pricing
                   </a>
                 </div>
               </div>
@@ -198,22 +209,22 @@ export default function TopNavbar() {
 
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:flex lg:items-center lg:justify-end lg:gap-2">
           <a
-            href="#contact"
+            href="/company/contact-us"
             className="btn-ghost text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 justify-center"
           >
             Contact Sales
           </a>
           <a
-            href="#login"
+            href="/company/support"
             className="btn-ghost text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 justify-center"
           >
-            Login
+            Support
           </a>
           <a
-            href="#trial"
+            href="/company/book-demo"
             className="btn-success text-xs sm:text-sm px-3 sm:px-5 py-2 justify-center"
           >
-            Start Free Trial
+            Book Free Demo
           </a>
         </div>
       </div>
