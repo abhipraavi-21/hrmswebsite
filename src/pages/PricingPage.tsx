@@ -169,7 +169,7 @@ function PricingCard({
 
   return (
     <article
-      className={`soft-card relative overflow-hidden p-6 ${
+      className={`soft-card relative flex h-full flex-col overflow-hidden p-6 ${
         plan.featured ? "border-primary/35 shadow-pop" : ""
       }`}
     >
@@ -402,8 +402,8 @@ export default function PricingPage() {
               </p>
             </div>
 
-            <div className="mt-10 grid gap-6 lg:grid-cols-12">
-              <div className="soft-card p-6 lg:col-span-5">
+            <div className="mt-10 grid gap-6 lg:grid-cols-12 lg:items-start">
+              <div className="soft-card flex h-full flex-col p-6 lg:col-span-5">
                 <div className="flex items-center gap-2 text-sm font-semibold text-primary">
                   <Users className="h-4 w-4" />
                   Subscription duration
@@ -414,12 +414,12 @@ export default function PricingPage() {
                     value={billingTermValue}
                     onValueChange={(value) => setBillingTermValue(value as BillingTerm["value"])}
                   >
-                    <TabsList className="relative h-auto gap-1 rounded-2xl bg-surface p-1.5">
+                    <TabsList className="relative grid h-auto w-full max-w-md grid-cols-3 gap-1.5 rounded-2xl bg-surface p-1.5">
                       {billingTerms.map((term) => (
                         <div key={term.value} className="relative">
                           <TabsTrigger
                             value={term.value}
-                            className="relative rounded-xl px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-white data-[state=active]:text-ink data-[state=active]:shadow-sm"
+                            className="relative w-full rounded-xl px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-white data-[state=active]:text-ink data-[state=active]:shadow-sm"
                           >
                             {term.label}
                           </TabsTrigger>
@@ -458,7 +458,12 @@ export default function PricingPage() {
                       min={1}
                       max={500}
                       step={1}
-                      onValueChange={([value]) => setEmployeeCount(value)}
+                      onValueChange={(value) => {
+                        const nextValue = value[0];
+                        if (typeof nextValue === "number") {
+                          setEmployeeCount(nextValue);
+                        }
+                      }}
                     />
                     <div className="mt-2 flex justify-between px-1 text-[11px] font-medium text-ink-soft">
                       <span>1</span>
@@ -469,7 +474,7 @@ export default function PricingPage() {
                     </div>
                   </div>
 
-                  <div className="mt-5 flex flex-wrap justify-center gap-2">
+                  <div className="mt-5 grid grid-cols-2 gap-2 md:grid-cols-3">
                     {employeePresets.map((preset) => (
                       <button
                         key={preset}
@@ -511,7 +516,7 @@ export default function PricingPage() {
               </div>
 
               <div className="lg:col-span-7">
-                <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                <div className="grid items-stretch gap-5 md:grid-cols-2 xl:grid-cols-3">
                   {pricingPlans.map((plan) => (
                     <PricingCard
                       key={plan.name}
