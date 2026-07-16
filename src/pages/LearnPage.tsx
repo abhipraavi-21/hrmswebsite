@@ -1359,7 +1359,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="py-12 lg:py-16">
+        <section className="py-10 lg:py-12">
           <div className="container-x grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
             <div>
               <SectionHeading
@@ -1451,7 +1451,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="py-12 lg:py-16">
+        <section className="py-10 lg:py-12">
           <div className="container-x grid gap-10 lg:grid-cols-12 lg:items-center">
             <Reveal className="lg:col-span-6">
               <SectionHeading
@@ -1486,7 +1486,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section id="resource-categories" className="scroll-mt-28 py-12 lg:py-16">
+        <section id="resource-categories" className="scroll-mt-28 py-10 lg:py-12">
           <div className="container-x">
             <SectionHeading
               eyebrow="Categories"
@@ -1629,7 +1629,7 @@ export default function LearnPage() {
           </Reveal>
         ))}
 
-        <section className="py-12 lg:py-16 bg-surface/40">
+        <section className="py-10 lg:py-12 bg-surface/40">
           <div className="container-x">
             <SectionHeading
               eyebrow="Featured resources"
@@ -1650,7 +1650,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="py-12 lg:py-16">
+        <section className="py-10 lg:py-12">
           <div className="container-x">
             <SectionHeading
               eyebrow="Paths"
@@ -1700,7 +1700,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="py-12 lg:py-16 bg-surface/40">
+        <section className="py-10 lg:py-12 bg-surface/40">
           <div className="container-x">
             <SectionHeading
               eyebrow="Formats"
@@ -1726,7 +1726,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="py-12 lg:py-16">
+        <section className="py-10 lg:py-12">
           <div className="container-x">
             <SectionHeading
               eyebrow="Topics"
@@ -1750,7 +1750,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="py-12 lg:py-16 bg-surface/40">
+        <section className="py-10 lg:py-12 bg-surface/40">
           <div className="container-x">
             <SectionHeading
               eyebrow="Audience"
@@ -1835,7 +1835,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="py-12 lg:py-16">
+        <section className="py-10 lg:py-12">
           <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-start">
             <Reveal className="lg:col-span-7">
               <div className="rounded-[2rem] border border-border bg-white p-6 shadow-float">
@@ -1890,7 +1890,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="py-12 lg:py-16 bg-surface/40">
+        <section className="py-10 lg:py-12 bg-surface/40">
           <div className="container-x">
             <SectionHeading
               eyebrow="FAQ"
@@ -1920,7 +1920,7 @@ export default function LearnPage() {
           </div>
         </section>
 
-        <section className="py-12 lg:py-16">
+        <section className="py-10 lg:py-12">
           <div className="container-x">
             <div className="relative overflow-hidden rounded-[2.25rem] bg-gradient-to-br from-primary to-[#0a4fda] p-8 text-center text-white md:p-12">
               <div className="absolute -right-16 top-0 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
