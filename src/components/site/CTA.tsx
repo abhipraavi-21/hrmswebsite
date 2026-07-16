@@ -1,8 +1,10 @@
+import { ScrollReveal } from "./ScrollReveal";
+
 export default function CTA() {
   return (
     <section id="trial" className="cta-section bg-white scroll-mt-24">
       <div className="site-container">
-        <div className="cta-box relative overflow-hidden bg-gradient-to-br from-primary to-[#0a4fda] text-center">
+        <ScrollReveal variant="scale" className="cta-box relative overflow-hidden bg-gradient-to-br from-primary to-[#0a4fda] text-center">
           <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
           <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-success/30 blur-3xl" />
           <div className="relative">
@@ -25,7 +27,7 @@ export default function CTA() {
               </a>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

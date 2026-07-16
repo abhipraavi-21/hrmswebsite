@@ -1,5 +1,6 @@
 import { Linkedin, Facebook, Instagram, Youtube, Mail } from "lucide-react";
 import BrandMark from "./BrandMark";
+import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 
 const footerColumns = [
   {
@@ -80,7 +81,7 @@ export default function Footer() {
     <footer id="company" className="site-footer bg-ink text-white scroll-mt-24">
       <div className="site-container">
         <div className="footer-grid grid lg:grid-cols-12">
-          <div className="lg:col-span-4">
+          <ScrollReveal variant="fade-up" className="lg:col-span-4">
             <BrandMark variant="dark" className="scale-[0.8] origin-left" />
             <p className="mt-2 max-w-xs text-xs leading-5 text-white/70">
               The all-in-one HRMS and bulk email platform for modern Indian businesses.
@@ -105,9 +106,9 @@ export default function Footer() {
                 </button>
               </div>
             </form>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:col-span-8">
+          <StaggerReveal step={70} className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:col-span-8">
             {footerColumns.map((c) => (
               <div key={c.title}>
                 <div className="text-[10px] font-bold uppercase tracking-wider text-white/60">
@@ -127,10 +128,10 @@ export default function Footer() {
                 </ul>
               </div>
             ))}
-          </div>
+          </StaggerReveal>
         </div>
 
-        <div className="footer-bottom border-t border-white/10 pt-4">
+        <ScrollReveal variant="fade-up" delay={100} className="footer-bottom border-t border-white/10 pt-4">
           <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
             <div className="text-xs text-white/60 md:justify-self-start">
               (c) {new Date().getFullYear()} HRMS. All rights reserved. Designed By{" "}
@@ -159,7 +160,7 @@ export default function Footer() {
             </div>
             <div className="hidden md:block" />
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </footer>
   );

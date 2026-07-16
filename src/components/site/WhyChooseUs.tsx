@@ -1,4 +1,5 @@
 import { Timer, ShieldCheck, Eye, MapPin, Layers } from "lucide-react";
+import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 
 const reasons = [
   {
@@ -28,7 +29,7 @@ const reasons = [
   {
     icon: <Layers />,
     title: "HR + marketing in one place",
-    desc: "Stop juggling tools â€” one login, one bill, one platform.",
+    desc: "Stop juggling tools - one login, one bill, one platform.",
     tone: "primary",
   },
 ];
@@ -37,16 +38,16 @@ export default function WhyChooseUs() {
   return (
     <section id="resources" className="section bg-surface scroll-mt-24">
       <div className="site-container">
-        <div className="section-heading">
+        <ScrollReveal variant="fade-up" className="section-heading">
           <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
             Why teams switch to us
           </span>
           <h2 className="text-3xl font-bold text-ink md:text-4xl">
             Designed for outcomes, not just features
           </h2>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <StaggerReveal step={80} className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {reasons.map((r, i) => {
             const isPrimary = r.tone === "primary";
             const accentClass = isPrimary
@@ -69,7 +70,7 @@ export default function WhyChooseUs() {
               </div>
             );
           })}
-        </div>
+        </StaggerReveal>
       </div>
     </section>
   );

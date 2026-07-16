@@ -24,6 +24,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { useScrolled } from "@/hooks/useScrolled";
 
 const companyLinks = companyMenuColumns.flatMap((column) => column.links);
 
@@ -31,6 +33,7 @@ export default function TopNavbar() {
   const [activeTab, setActiveTab] = useState<"hrms" | "email">("hrms");
   const [open, setOpen] = useState<null | "hrms" | "email">(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const scrolled = useScrolled(12);
   const closeTimerRef = useRef<number | null>(null);
 
   const clearCloseTimer = () => {
@@ -61,7 +64,12 @@ export default function TopNavbar() {
   }, [mobileOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/90">
+    <header
+      className={cn(
+        "sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur-md transition-shadow duration-300 supports-[backdrop-filter]:bg-white/90",
+        scrolled && "shadow-[0_10px_28px_rgba(15,23,42,0.08)]",
+      )}
+    >
       <div className="site-container flex items-center justify-between gap-3 py-3 lg:hidden">
         <a href="/" className="flex items-center gap-2 shrink-0">
           <BrandMark />
@@ -173,7 +181,12 @@ export default function TopNavbar() {
         </Sheet>
       </div>
 
-      <div className="site-container hidden lg:grid grid-cols-1 gap-2 py-2 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0 lg:h-16">
+      <div
+        className={cn(
+          "site-container hidden grid-cols-1 gap-2 py-2 transition-[height,padding] duration-300 lg:grid lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0",
+          scrolled ? "lg:h-14" : "lg:h-16",
+        )}
+      >
         <a href="/" className="flex items-center gap-2 shrink-0">
           <BrandMark />
         </a>
@@ -210,19 +223,19 @@ export default function TopNavbar() {
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:flex lg:items-center lg:justify-end lg:gap-2">
           <a
             href="/company/contact-us"
-            className="btn-ghost text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 justify-center"
+            className="nav-link btn-ghost justify-center px-2.5 py-1.5 text-xs sm:px-3 sm:text-sm"
           >
             Contact Sales
           </a>
           <a
             href="/company/support"
-            className="btn-ghost text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 justify-center"
+            className="nav-link btn-ghost justify-center px-2.5 py-1.5 text-xs sm:px-3 sm:text-sm"
           >
             Support
           </a>
           <a
             href="/company/book-demo"
-            className="btn-success text-xs sm:text-sm px-3 sm:px-5 py-2 justify-center"
+            className="btn-success justify-center px-3 py-2 text-xs sm:px-5 sm:text-sm"
           >
             Book Free Demo
           </a>
@@ -255,20 +268,20 @@ function ProductTab({
     <div className="relative max-lg:w-full lg:w-auto" onMouseEnter={onHover} onMouseLeave={onLeave}>
       <button
         onClick={onClick}
-        className={`flex w-full items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors lg:w-auto ${
-          active ? "bg-primary-soft text-primary" : "text-ink hover:bg-surface"
-        }`}
+        className={cn(
+          "nav-link flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors lg:w-auto sm:text-sm",
+          active ? "bg-primary-soft text-primary" : "text-ink hover:bg-surface",
+        )}
+        data-active={active || isOpen ? "true" : "false"}
       >
         {icon}
         {label}
         <ChevronDown
-          className={`h-3.5 w-3.5 transition-transform duration-200 opacity-60 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={cn("h-3.5 w-3.5 opacity-60 transition-transform duration-200", isOpen && "rotate-180")}
         />
       </button>
       <div
-        className={`absolute left-0 top-full z-50 w-full origin-top transition-[opacity,transform] duration-240 ease-out lg:w-72 ${
+        className={`absolute left-0 top-full z-50 w-full origin-top transition-[opacity,transform] duration-[240ms] ease-out lg:w-72 ${
           isOpen
             ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
             : "pointer-events-none translate-y-3 scale-[0.975] opacity-0"

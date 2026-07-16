@@ -1,4 +1,5 @@
 import { Users, Mail, Check, ArrowRight, Building2, UsersRound } from "lucide-react";
+import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 
 const products = [
   {
@@ -76,17 +77,17 @@ export default function ProductCards() {
   return (
     <section id="solutions" className="section bg-white scroll-mt-24">
       <div className="site-container">
-        <div className="section-heading">
+        <ScrollReveal variant="fade-up" className="section-heading">
           <h2 className="text-3xl font-bold text-ink md:text-4xl">
             Two powerful products. One unified platform.
           </h2>
           <p className="text-ink-soft">
-            Built to work seamlessly together â€” manage your people and your communication from a
+            Built to work seamlessly together - manage your people and your communication from a
             single dashboard.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <StaggerReveal step={90} className="grid gap-6 md:grid-cols-2">
           {products.map((p) => {
             const isPrimary = p.color === "primary";
             return (
@@ -141,19 +142,19 @@ export default function ProductCards() {
               </div>
             );
           })}
-        </div>
+        </StaggerReveal>
 
         <div className="mt-14">
-          <div className="section-heading text-left">
+          <ScrollReveal variant="fade-up" className="section-heading text-left">
             <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
               Solutions by need
             </span>
             <h3 className="text-2xl font-bold text-ink md:text-3xl">
               Industry and workforce experiences for the teams that use them
             </h3>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <StaggerReveal step={90} className="grid gap-6 md:grid-cols-2">
             {solutionTracks.map((track) => {
               const isPrimary = track.tone === "primary";
               const cardInner = (
@@ -229,7 +230,7 @@ export default function ProductCards() {
                 </article>
               );
             })}
-          </div>
+          </StaggerReveal>
         </div>
       </div>
     </section>

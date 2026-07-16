@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import FreeDemoPopup from "./components/site/FreeDemoPopup";
+import ScrollRevealManager from "./components/site/ScrollRevealManager";
 import WhatsAppFloatingButton from "./components/site/WhatsAppFloatingButton";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -122,6 +123,7 @@ export default function App() {
     <>
       {isHomePage ? <FreeDemoPopup /> : null}
       <WhatsAppFloatingButton />
+      <ScrollRevealManager />
       <Suspense
         fallback={
           <div className="grid min-h-screen place-items-center bg-background text-sm text-ink-soft">
@@ -129,7 +131,9 @@ export default function App() {
           </div>
         }
       >
-        {page}
+        <div key={pathname} className="page-enter">
+          {page}
+        </div>
       </Suspense>
     </>
   );

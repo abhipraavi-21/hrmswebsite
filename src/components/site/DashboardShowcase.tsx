@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
-import { Users, Clock, Wallet, Mail, TrendingUp, CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Clock, Mail, TrendingUp, Users, Wallet } from "lucide-react";
+import AnimatedCounter from "./AnimatedCounter";
+import { ScrollReveal } from "./ScrollReveal";
 
 export default function DashboardShowcase() {
   return (
     <section id="integrations" className="section bg-white scroll-mt-24">
       <div className="site-container">
-        <div className="section-heading">
+        <ScrollReveal variant="fade-up" className="section-heading">
           <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
             Live Dashboard
           </span>
@@ -13,9 +15,9 @@ export default function DashboardShowcase() {
           <p className="text-ink-soft">
             Get a complete view of your workforce and campaigns in real time.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="relative mt-8">
+        <ScrollReveal variant="scale" delay={120} className="relative mt-8">
           <div className="absolute inset-0 -m-4 rounded-3xl hero-gradient" />
           <div className="relative overflow-hidden rounded-2xl border border-border bg-white shadow-float">
             <div className="flex items-center gap-2 border-b border-border bg-surface px-4 py-3">
@@ -27,34 +29,35 @@ export default function DashboardShowcase() {
 
             <div className="grid gap-4 p-5 md:grid-cols-12">
               <div className="space-y-1.5 md:col-span-3">
-                {[
-                  "Overview",
-                  "Attendance",
-                  "Payroll",
-                  "Employees",
-                  "Leaves",
-                  "Campaigns",
-                  "Reports",
-                ].map((it, i) => (
-                  <div
-                    key={it}
-                    className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
-                      i === 0
-                        ? "bg-primary-soft font-semibold text-primary"
-                        : "text-ink-soft hover:bg-surface"
-                    }`}
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-current" /> {it}
-                  </div>
-                ))}
+                {["Overview", "Attendance", "Payroll", "Employees", "Leaves", "Campaigns", "Reports"].map(
+                  (it, i) => (
+                    <div
+                      key={it}
+                      className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${
+                        i === 0
+                          ? "bg-primary-soft font-semibold text-primary"
+                          : "text-ink-soft hover:bg-surface"
+                      }`}
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-current" /> {it}
+                    </div>
+                  ),
+                )}
               </div>
 
               <div className="space-y-4 md:col-span-9">
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                  <MiniStat icon={<Clock />} label="Present" value="248" tone="primary" />
-                  <MiniStat icon={<Users />} label="Total" value="312" tone="primary" />
-                  <MiniStat icon={<Wallet />} label="Payroll" value="₹18.4L" tone="success" />
-                  <MiniStat icon={<Mail />} label="Sent" value="42.3K" tone="success" />
+                  <MiniStat icon={<Clock />} label="Present" value={248} tone="primary" />
+                  <MiniStat icon={<Users />} label="Total" value={312} tone="primary" />
+                  <MiniStat
+                    icon={<Wallet />}
+                    label="Payroll"
+                    value={18.4}
+                    prefix="₹"
+                    suffix="L"
+                    tone="success"
+                  />
+                  <MiniStat icon={<Mail />} label="Sent" value={42.3} suffix="K" tone="success" />
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
@@ -101,14 +104,18 @@ export default function DashboardShowcase() {
           <div className="hidden md:block">
             <div className="absolute -left-6 top-1/3 soft-card p-3 float-slow">
               <div className="text-xs text-ink-soft">Late arrivals today</div>
-              <div className="text-lg font-bold text-ink">7</div>
+              <div className="text-lg font-bold text-ink">
+                <AnimatedCounter value={7} />
+              </div>
             </div>
             <div className="absolute -right-6 bottom-12 soft-card p-3 float-slow">
               <div className="text-xs text-ink-soft">Email delivery rate</div>
-              <div className="text-lg font-bold text-success">99.2%</div>
+              <div className="text-lg font-bold text-success">
+                <AnimatedCounter value={99.2} decimals={1} suffix="%" />
+              </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
@@ -118,11 +125,15 @@ function MiniStat({
   icon,
   label,
   value,
+  prefix = "",
+  suffix = "",
   tone,
 }: {
   icon: ReactNode;
   label: string;
-  value: string;
+  value: number;
+  prefix?: string;
+  suffix?: string;
   tone: "primary" | "success";
 }) {
   return (
@@ -135,7 +146,10 @@ function MiniStat({
         {icon}
       </div>
       <div className="mt-2 text-xs text-ink-soft">{label}</div>
-      <div className="text-lg font-bold text-ink">{value}</div>
+      <div className="text-lg font-bold text-ink">
+        <AnimatedCounter value={value} prefix={prefix} suffix={suffix} decimals={suffix ? 1 : 0} />
+      </div>
     </div>
   );
 }
+

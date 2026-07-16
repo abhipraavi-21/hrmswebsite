@@ -4,6 +4,7 @@ import Footer from "@/components/site/Footer";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import MainNavbar from "@/components/site/MainNavbar";
+import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 
 type Stat = {
   label: string;
@@ -69,28 +70,36 @@ export default function IntegrationDetailPage({
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
           <div className="site-container grid gap-10 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-6 fade-up">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
-                {eyebrow}
-              </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
-                {title}
-              </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
+            <div className="lg:col-span-6">
+              <ScrollReveal variant="fade-up">
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
+                  {eyebrow}
+                </span>
+              </ScrollReveal>
+              <ScrollReveal variant="fade-up" delay={100}>
+                <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+                  {title}
+                </h1>
+              </ScrollReveal>
+              <ScrollReveal variant="fade-up" delay={180}>
+                <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
+              </ScrollReveal>
 
-              <div className="button-group mt-6">
-                <a href={primaryAction.href} className="btn-primary">
-                  {primaryAction.label}
-                </a>
-                <a href={secondaryAction.href} className="btn-outline">
-                  {secondaryAction.label}
-                </a>
-                <a href={backHref} className="btn-outline">
-                  {backLabel}
-                </a>
-              </div>
+              <ScrollReveal variant="fade-up" delay={260}>
+                <div className="button-group mt-6">
+                  <a href={primaryAction.href} className="btn-primary">
+                    {primaryAction.label}
+                  </a>
+                  <a href={secondaryAction.href} className="btn-outline">
+                    {secondaryAction.label}
+                  </a>
+                  <a href={backHref} className="btn-outline">
+                    {backLabel}
+                  </a>
+                </div>
+              </ScrollReveal>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <StaggerReveal step={70} className="mt-6 grid gap-3 sm:grid-cols-3">
                 {stats.map((item) => (
                   <div key={item.label} className="soft-card p-4">
                     <div className="text-xs font-semibold uppercase tracking-wider text-primary">
@@ -99,10 +108,10 @@ export default function IntegrationDetailPage({
                     <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
                   </div>
                 ))}
-              </div>
+              </StaggerReveal>
             </div>
 
-            <div className="lg:col-span-6">
+            <ScrollReveal variant="fade-left" delay={320} className="lg:col-span-6">
               <div className="relative mx-auto max-w-2xl">
                 <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
                 <div className="relative grid gap-4 rounded-[2rem] border border-border bg-white p-5 shadow-float sm:grid-cols-2">
@@ -138,13 +147,13 @@ export default function IntegrationDetailPage({
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </section>
 
         <section className="section">
           <div className="site-container">
-            <div className="section-heading text-left">
+            <ScrollReveal variant="fade-up" className="section-heading text-left">
               <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
                 What it includes
               </span>
@@ -155,9 +164,9 @@ export default function IntegrationDetailPage({
                 The pages below keep the structure simple: a focused workflow, a few practical
                 capabilities, and a clear next step back to the integrations hub.
               </p>
-            </div>
+            </ScrollReveal>
 
-            <div className="card-grid mt-8 md:grid-cols-2 xl:grid-cols-4">
+            <StaggerReveal step={80} className="card-grid mt-8 md:grid-cols-2 xl:grid-cols-4">
               {capabilities.map((capability) => (
                 <article key={capability.title} className="content-card soft-card">
                   <div className="card-icon grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
@@ -167,13 +176,13 @@ export default function IntegrationDetailPage({
                   <p className="mt-2 text-sm text-ink-soft">{capability.desc}</p>
                 </article>
               ))}
-            </div>
+            </StaggerReveal>
           </div>
         </section>
 
         <section className="section bg-surface">
           <div className="site-container grid gap-6 lg:grid-cols-12">
-            <div className="content-card soft-card lg:col-span-7">
+            <ScrollReveal variant="fade-up" className="content-card soft-card lg:col-span-7">
               <div className="text-xs font-bold uppercase tracking-wider text-primary">
                 Common use cases
               </div>
@@ -191,9 +200,9 @@ export default function IntegrationDetailPage({
                   </div>
                 ))}
               </div>
-            </div>
+            </ScrollReveal>
 
-            <div className="content-card soft-card lg:col-span-5">
+            <ScrollReveal variant="fade-up" delay={120} className="content-card soft-card lg:col-span-5">
               <div className="text-xs font-bold uppercase tracking-wider text-primary">
                 Next step
               </div>
@@ -208,7 +217,7 @@ export default function IntegrationDetailPage({
                   {backLabel}
                 </a>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </section>
       </main>

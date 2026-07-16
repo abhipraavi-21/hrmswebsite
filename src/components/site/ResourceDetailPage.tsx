@@ -4,6 +4,7 @@ import Footer from "@/components/site/Footer";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import MainNavbar from "@/components/site/MainNavbar";
+import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 
 type ResourceDetailPageProps = {
   eyebrow: string;
@@ -46,26 +47,34 @@ export default function ResourceDetailPage({
       <main>
         <section className="page-banner hero-gradient relative overflow-hidden">
           <div className="site-container grid gap-10 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-6 fade-up">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
-                {eyebrow}
-              </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
-                {title}
-              </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
+            <div className="lg:col-span-6">
+              <ScrollReveal variant="fade-up">
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
+                  {eyebrow}
+                </span>
+              </ScrollReveal>
+              <ScrollReveal variant="fade-up" delay={100}>
+                <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+                  {title}
+                </h1>
+              </ScrollReveal>
+              <ScrollReveal variant="fade-up" delay={180}>
+                <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
+              </ScrollReveal>
 
-              <div className="button-group mt-6">
-                <a href={primaryAction.href} className="btn-primary">
-                  {primaryAction.label}
-                </a>
-                <a href={secondaryAction.href} className="btn-outline">
-                  {secondaryAction.label}
-                </a>
-              </div>
+              <ScrollReveal variant="fade-up" delay={260}>
+                <div className="button-group mt-6">
+                  <a href={primaryAction.href} className="btn-primary">
+                    {primaryAction.label}
+                  </a>
+                  <a href={secondaryAction.href} className="btn-outline">
+                    {secondaryAction.label}
+                  </a>
+                </div>
+              </ScrollReveal>
             </div>
 
-            <div className="lg:col-span-6">
+            <ScrollReveal variant="fade-left" delay={320} className="lg:col-span-6">
               <div className="relative mx-auto max-w-xl rounded-[2rem] border border-border bg-white p-5 shadow-float">
                 <div className="soft-card p-5">
                   <div className="flex items-start justify-between gap-4">
@@ -92,36 +101,38 @@ export default function ResourceDetailPage({
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </section>
 
         <section className="section">
           <div className="site-container">
-            <div className="section-heading text-left">
+            <ScrollReveal variant="fade-up" className="section-heading text-left">
               <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
                 Explore
               </span>
               <h2 className="text-3xl font-bold text-ink sm:text-4xl">
                 Resources built for clear next steps
               </h2>
-            </div>
+            </ScrollReveal>
 
-            <div className="card-grid mt-8 md:grid-cols-3">
+            <StaggerReveal step={80} className="card-grid mt-8 md:grid-cols-3">
               {cards.map((card) => (
                 <article key={card.title} className="content-card soft-card">
                   <h3 className="text-lg font-bold text-ink">{card.title}</h3>
                   <p className="mt-2 text-sm text-ink-soft">{card.desc}</p>
                 </article>
               ))}
-            </div>
+            </StaggerReveal>
 
-            <a
-              href={secondaryAction.href}
-              className="card-action mt-8 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
-            >
-              {secondaryAction.label} <ArrowRight className="h-4 w-4" />
-            </a>
+            <ScrollReveal variant="fade-up" delay={120}>
+              <a
+                href={secondaryAction.href}
+                className="card-action mt-8 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
+              >
+                {secondaryAction.label} <ArrowRight className="h-4 w-4" />
+              </a>
+            </ScrollReveal>
           </div>
         </section>
       </main>

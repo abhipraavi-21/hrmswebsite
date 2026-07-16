@@ -22,6 +22,7 @@ import {
   Workflow,
 } from "lucide-react";
 import Footer from "@/components/site/Footer";
+import AnimatedCounter from "@/components/site/AnimatedCounter";
 import MainNavbar from "@/components/site/MainNavbar";
 import TopNavbar from "@/components/site/TopNavbar";
 import {
@@ -713,59 +714,6 @@ function SectionHeading({
   );
 }
 
-function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
-  const ref = useRef<HTMLSpanElement | null>(null);
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const el = ref.current;
-    if (!el) return undefined;
-
-    if (reduceMotion) {
-      setDisplay(value);
-      return undefined;
-    }
-
-    let raf = 0;
-    let started = false;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (started || !entries.some((entry) => entry.isIntersecting)) return;
-        started = true;
-        const duration = 900;
-        const start = performance.now();
-
-        const tick = (now: number) => {
-          const progress = Math.min((now - start) / duration, 1);
-          setDisplay(Math.round(value * progress));
-          if (progress < 1) {
-            raf = window.requestAnimationFrame(tick);
-          }
-        };
-
-        raf = window.requestAnimationFrame(tick);
-        observer.disconnect();
-      },
-      { threshold: 0.35 },
-    );
-
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-      window.cancelAnimationFrame(raf);
-    };
-  }, [value]);
-
-  return (
-    <span ref={ref}>
-      {display}
-      {suffix}
-    </span>
-  );
-}
-
 function DashboardMetric({
   title,
   value,
@@ -784,7 +732,7 @@ function DashboardMetric({
           {icon}
         </div>
         <div className="text-right text-xl font-bold text-ink sm:text-2xl">
-          <CountUp value={value} suffix={suffix} />
+          <AnimatedCounter value={value} suffix={suffix} />
         </div>
       </div>
       <div className="text-sm font-semibold leading-tight text-ink">{title}</div>
@@ -814,7 +762,7 @@ function ReportPreview({ report }: { report: ReportCategory }) {
               {metric.label}
             </div>
             <div className="mt-2 text-2xl font-bold text-ink">
-              <CountUp value={metric.value} suffix={metric.suffix} />
+              <AnimatedCounter value={metric.value} suffix={metric.suffix} />
             </div>
           </div>
         ))}
@@ -902,7 +850,7 @@ export default function AttendanceManagementPage() {
                       {metric.label}
                     </div>
                     <div className="mt-1 text-sm font-semibold text-ink">
-                      <CountUp
+                      <AnimatedCounter
                         value={metric.value}
                         suffix={
                           metric.label === "Focus"
@@ -1372,7 +1320,7 @@ export default function AttendanceManagementPage() {
               <div className="rounded-2xl bg-white p-4 shadow-card">
                 <div className="text-sm font-semibold text-ink">Attendance percentage</div>
                 <div className="mt-2 text-3xl font-bold text-primary">
-                  <CountUp value={94} suffix="%" />
+                  <AnimatedCounter value={94} suffix="%" />
                 </div>
               </div>
               <div className="rounded-2xl bg-white p-4 shadow-card">

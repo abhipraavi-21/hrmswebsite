@@ -4,6 +4,7 @@ import Footer from "@/components/site/Footer";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import MainNavbar from "@/components/site/MainNavbar";
+import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 
 type CompanyDetailPageProps = {
   eyebrow: string;
@@ -43,26 +44,34 @@ export default function CompanyDetailPage({
       <main>
         <section className="page-banner hero-gradient">
           <div className="site-container grid gap-10 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-6 fade-up">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
-                {eyebrow}
-              </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
-                {title}
-              </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
+            <div className="lg:col-span-6">
+              <ScrollReveal variant="fade-up">
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
+                  {eyebrow}
+                </span>
+              </ScrollReveal>
+              <ScrollReveal variant="fade-up" delay={100}>
+                <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+                  {title}
+                </h1>
+              </ScrollReveal>
+              <ScrollReveal variant="fade-up" delay={180}>
+                <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
+              </ScrollReveal>
 
-              <div className="button-group mt-6">
-                <a href={primaryAction.href} className="btn-primary">
-                  {primaryAction.label}
-                </a>
-                <a href="/" className="btn-outline">
-                  Back to home
-                </a>
-              </div>
+              <ScrollReveal variant="fade-up" delay={260}>
+                <div className="button-group mt-6">
+                  <a href={primaryAction.href} className="btn-primary">
+                    {primaryAction.label}
+                  </a>
+                  <a href="/" className="btn-outline">
+                    Back to home
+                  </a>
+                </div>
+              </ScrollReveal>
             </div>
 
-            <div className="lg:col-span-6">
+            <ScrollReveal variant="fade-right" delay={320} className="lg:col-span-6">
               <div className="rounded-[2rem] border border-border bg-white p-5 shadow-float">
                 {visual ? (
                   <>{visual}</>
@@ -83,10 +92,11 @@ export default function CompanyDetailPage({
                     </div>
 
                     <div className="mt-5 space-y-3">
-                      {highlights.map((item) => (
+                      {highlights.map((item, index) => (
                         <div
                           key={item}
                           className="flex items-center gap-3 rounded-xl bg-surface p-3"
+                          style={{ transitionDelay: `${index * 50}ms` }}
                         >
                           <CheckCircle2 className="h-4 w-4 text-primary" />
                           <span className="text-sm text-ink">{item}</span>
@@ -96,36 +106,38 @@ export default function CompanyDetailPage({
                   </div>
                 )}
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </section>
 
         <section className="section">
           <div className="site-container">
-            <div className="section-heading text-left">
+            <ScrollReveal variant="fade-up" className="section-heading text-left">
               <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
                 Details
               </span>
               <h2 className="text-3xl font-bold text-ink sm:text-4xl">
                 Everything visitors need to understand the next step
               </h2>
-            </div>
+            </ScrollReveal>
 
-            <div className="card-grid mt-8 md:grid-cols-3">
+            <StaggerReveal step={80} className="card-grid mt-8 md:grid-cols-3">
               {sections.map((section) => (
                 <article key={section.title} className="content-card soft-card">
                   <h3 className="text-lg font-bold text-ink">{section.title}</h3>
                   <p className="mt-2 text-sm text-ink-soft">{section.desc}</p>
                 </article>
               ))}
-            </div>
+            </StaggerReveal>
 
-            <a
-              href="/company/contact-us"
-              className="card-action mt-8 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
-            >
-              Contact us <ArrowRight className="h-4 w-4" />
-            </a>
+            <ScrollReveal variant="fade-up" delay={120}>
+              <a
+                href="/company/contact-us"
+                className="card-action mt-8 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
+              >
+                Contact us <ArrowRight className="h-4 w-4" />
+              </a>
+            </ScrollReveal>
           </div>
         </section>
       </main>

@@ -8,15 +8,28 @@ import {
   resourcesMenuItems,
   solutionMenuItems,
 } from "./nav-data";
+import { cn } from "@/lib/utils";
+import { useScrolled } from "@/hooks/useScrolled";
 
 export default function MainNavbar() {
   const [openMenu, setOpenMenu] = useState<
     null | "features" | "solutions" | "resources" | "company"
   >(null);
+  const scrolled = useScrolled(12);
 
   return (
-    <div className="sticky top-16 z-40 hidden border-b border-border bg-primary-soft/70 backdrop-blur-md lg:block">
-      <div className="site-container grid grid-cols-1 gap-2 py-2 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0 lg:h-12 overflow-visible">
+    <div
+      className={cn(
+        "sticky top-16 z-40 hidden border-b border-border bg-primary-soft/70 backdrop-blur-md transition-shadow duration-300 lg:block",
+        scrolled && "shadow-[0_10px_28px_rgba(15,23,42,0.08)]",
+      )}
+    >
+      <div
+        className={cn(
+          "site-container grid grid-cols-1 gap-2 overflow-visible py-2 transition-[height,padding] duration-300 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0",
+          scrolled ? "lg:h-10" : "lg:h-12",
+        )}
+      >
         <a href="/" className="flex items-center gap-2 shrink-0">
           <BrandMark className="scale-90 origin-left" />
         </a>
@@ -32,15 +45,21 @@ export default function MainNavbar() {
               onClick={() =>
                 setOpenMenu((current) => (current === "solutions" ? null : "solutions"))
               }
-              className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-medium transition-colors ${
+              className={cn(
+                "nav-link flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
                 openMenu === "solutions"
                   ? "bg-white/70 text-primary"
-                  : "text-ink hover:bg-white/70 hover:text-primary"
-              }`}
+                  : "text-ink hover:bg-white/70 hover:text-primary",
+              )}
               aria-expanded={openMenu === "solutions"}
             >
               Solutions
-              <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+              <ChevronDown
+                className={cn(
+                  "h-3.5 w-3.5 opacity-60 transition-transform duration-200",
+                  openMenu === "solutions" && "rotate-180",
+                )}
+              />
             </button>
 
             <div
@@ -84,11 +103,12 @@ export default function MainNavbar() {
             <button
               type="button"
               onClick={() => setOpenMenu((current) => (current === "features" ? null : "features"))}
-              className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-medium transition-colors ${
+              className={cn(
+                "nav-link flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
                 openMenu === "features"
                   ? "bg-white/70 text-primary"
-                  : "text-ink hover:bg-white/70 hover:text-primary"
-              }`}
+                  : "text-ink hover:bg-white/70 hover:text-primary",
+              )}
               aria-expanded={openMenu === "features"}
             >
               Features
@@ -100,7 +120,7 @@ export default function MainNavbar() {
             </button>
 
             <div
-              className={`absolute left-0 top-full z-50 w-[min(920px,calc(100vw-1rem))] origin-top-left pt-3 transition-[opacity,transform] duration-240 ease-out ${
+              className={`absolute left-0 top-full z-50 w-[min(920px,calc(100vw-1rem))] origin-top-left pt-3 transition-[opacity,transform] duration-[240ms] ease-out ${
                 openMenu === "features"
                   ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
                   : "pointer-events-none translate-y-3 scale-[0.975] opacity-0"
@@ -170,15 +190,21 @@ export default function MainNavbar() {
               onClick={() =>
                 setOpenMenu((current) => (current === "resources" ? null : "resources"))
               }
-              className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-medium transition-colors ${
+              className={cn(
+                "nav-link flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
                 openMenu === "resources"
                   ? "bg-white/70 text-primary"
-                  : "text-ink hover:bg-white/70 hover:text-primary"
-              }`}
+                  : "text-ink hover:bg-white/70 hover:text-primary",
+              )}
               aria-expanded={openMenu === "resources"}
             >
               Resources
-              <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+              <ChevronDown
+                className={cn(
+                  "h-3.5 w-3.5 opacity-60 transition-transform duration-200",
+                  openMenu === "resources" && "rotate-180",
+                )}
+              />
             </button>
 
             <div
@@ -224,15 +250,21 @@ export default function MainNavbar() {
             <button
               type="button"
               onClick={() => setOpenMenu((current) => (current === "company" ? null : "company"))}
-              className={`flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-medium transition-colors ${
+              className={cn(
+                "nav-link flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
                 openMenu === "company"
                   ? "bg-white/70 text-primary"
-                  : "text-ink hover:bg-white/70 hover:text-primary"
-              }`}
+                  : "text-ink hover:bg-white/70 hover:text-primary",
+              )}
               aria-expanded={openMenu === "company"}
             >
               Company
-              <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+              <ChevronDown
+                className={cn(
+                  "h-3.5 w-3.5 opacity-60 transition-transform duration-200",
+                  openMenu === "company" && "rotate-180",
+                )}
+              />
             </button>
 
             <div
@@ -281,7 +313,7 @@ export default function MainNavbar() {
             <a
               key={item.label}
               href={item.href}
-              className="order-6 rounded-lg px-2.5 py-1.5 text-xs sm:text-sm font-medium text-ink hover:bg-white/70 hover:text-primary transition-colors text-center lg:text-left lg:hover:bg-transparent"
+              className="nav-link order-6 rounded-lg px-2.5 py-1.5 text-center text-xs font-medium text-ink transition-colors hover:bg-white/70 hover:text-primary lg:text-left lg:hover:bg-transparent sm:text-sm"
             >
               {item.label}
             </a>
@@ -297,7 +329,7 @@ export default function MainNavbar() {
           </a>
           <a
             href="/partner-with-us"
-            className="inline-flex items-center justify-center px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-md bg-primary text-primary-foreground hover:bg-[#0a4fda] transition-colors"
+            className="btn-primary inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"
           >
             Start Free Trial
           </a>

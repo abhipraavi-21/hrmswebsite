@@ -16,6 +16,7 @@ import {
   Users,
   Wallet,
 } from "lucide-react";
+import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 
 const features = [
   {
@@ -133,7 +134,7 @@ export default function Features() {
   return (
     <section id="features" className="section bg-surface scroll-mt-24">
       <div className="site-container">
-        <div className="section-heading">
+        <ScrollReveal variant="fade-up" className="section-heading">
           <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
             Everything you need
           </span>
@@ -144,9 +145,9 @@ export default function Features() {
             Explore each capability as a dedicated section, so the feature menu can jump straight to
             the right area.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <StaggerReveal step={75} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f) =>
             f.href ? (
               <a
@@ -171,7 +172,7 @@ export default function Features() {
               </div>
             ),
           )}
-        </div>
+        </StaggerReveal>
       </div>
     </section>
   );
