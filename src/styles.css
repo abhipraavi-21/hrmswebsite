@@ -169,8 +169,8 @@
 }
 
 @utility page-banner {
-  min-height: 300px;
-  padding: 100px 0 60px;
+  min-height: 260px;
+  padding: 80px 0 48px;
   display: flex;
   align-items: center;
 }
@@ -431,8 +431,8 @@
   }
 
   main > section.page-banner {
-    min-height: 300px;
-    padding: 100px 0 60px !important;
+    min-height: 260px;
+    padding: 80px 0 48px !important;
     display: flex;
     align-items: center;
   }
@@ -442,15 +442,15 @@
   }
 
   main > section.hero-section {
-    min-height: 680px;
-    padding: 130px 0 80px !important;
+    min-height: 600px;
+    padding: 104px 0 64px !important;
     display: flex;
     align-items: center;
   }
 
   main > section:first-child:not(.hero-section) {
-    min-height: 300px;
-    padding: 100px 0 60px !important;
+    min-height: 260px;
+    padding: 80px 0 48px !important;
     display: flex;
     align-items: center;
   }
@@ -560,13 +560,13 @@
 
   @media (max-width: 768px) {
     main > section.page-banner {
-      min-height: 225px;
-      padding: 82px 0 42px !important;
+      min-height: 200px;
+      padding: 68px 0 36px !important;
     }
 
     main > section.hero-section {
       min-height: auto;
-      padding: 105px 0 52px !important;
+      padding: 88px 0 48px !important;
     }
 
     main > section.cta-section {
@@ -574,8 +574,8 @@
     }
 
     main > section:first-child:not(.hero-section) {
-      min-height: 225px;
-      padding: 82px 0 42px !important;
+      min-height: 200px;
+      padding: 68px 0 36px !important;
     }
   }
 

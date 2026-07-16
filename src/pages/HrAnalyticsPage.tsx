@@ -434,27 +434,27 @@ export default function HrAnalyticsPage() {
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
           <div className="pointer-events-none absolute right-1/3 top-1/4 h-28 w-28 rounded-full bg-primary/10 blur-2xl" />
 
-          <div className="container-x py-12 lg:py-16">
+          <div className="container-x py-8 lg:py-10">
             <div className="mx-auto max-w-3xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 HR Analytics Dashboard
               </span>
-              <h1 className="mt-4 text-4xl font-bold leading-tight text-ink sm:text-5xl">
+              <h1 className="mt-3 text-4xl font-bold leading-tight text-ink sm:text-5xl">
                 Make Better HR Decisions with Smart HR Analytics
               </h1>
-              <p className="mt-4 text-base text-ink-soft">
+              <p className="mt-3 text-base text-ink-soft">
                 Transform your workforce data into actionable insights with Altroz HRMS HR
                 Analytics. Track attendance, payroll, leave, recruitment, employee performance,
                 compliance, and workforce trends from one centralized dashboard.
               </p>
-              <p className="mt-4 text-base text-ink-soft">
+              <p className="mt-3 text-base text-ink-soft">
                 Whether you are a growing business or a large enterprise, Altroz HRMS helps you make
                 data-driven decisions, improve operational efficiency, and optimize workforce
                 productivity.
               </p>
 
-              <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <div className="mt-5 flex flex-wrap justify-center gap-3">
                 <a href="/company/book-demo" className="btn-primary">
                   Book Free Demo
                 </a>

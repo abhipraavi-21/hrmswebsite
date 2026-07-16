@@ -877,7 +877,7 @@ export default function AttendanceManagementPage() {
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
           <div className="pointer-events-none absolute left-1/3 top-1/3 h-24 w-24 rounded-full bg-primary/10 blur-2xl" />
 
-          <div className="container-x py-10 lg:py-14">
+          <div className="container-x py-8 lg:py-10">
             <div className="mx-auto max-w-3xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />

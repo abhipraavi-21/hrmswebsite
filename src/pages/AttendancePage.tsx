@@ -176,21 +176,21 @@ export default function AttendancePage() {
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-          <div className="container-x py-12 lg:py-16">
+          <div className="container-x py-8 lg:py-10">
             <div className="mx-auto max-w-4xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Attendance Management
               </span>
-              <h1 className="mt-4 text-4xl font-bold leading-tight text-ink sm:text-5xl">
+              <h1 className="mt-3 text-4xl font-bold leading-tight text-ink sm:text-5xl">
                 Real-time attendance that keeps workforce operations moving
               </h1>
-              <p className="mx-auto mt-4 max-w-2xl text-base text-ink-soft">
+              <p className="mx-auto mt-3 max-w-2xl text-base text-ink-soft">
                 A live attendance system helps teams work with less friction, better discipline, and
                 clearer control across shifts, sites, and policies.
               </p>
 
-              <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <div className="mt-5 flex flex-wrap justify-center gap-3">
                 <a href="/company/book-demo" className="btn-primary">
                   Explore now
                 </a>
@@ -200,7 +200,7 @@ export default function AttendancePage() {
               </div>
             </div>
 
-            <div className="relative mx-auto mt-10 max-w-7xl">
+            <div className="relative mx-auto mt-8 max-w-7xl">
               <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
               <div className="relative overflow-hidden rounded-[2.25rem] border border-border bg-white shadow-float">
                 <div className="overflow-hidden border-b border-border bg-surface">
