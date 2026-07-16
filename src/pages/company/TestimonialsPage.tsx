@@ -10,8 +10,14 @@ export default function TestimonialsPage() {
       icon={<MessageSquareQuote className="h-6 w-6" />}
       highlights={["Customer quotes", "HR team feedback", "Proof points for product trust"]}
       sections={[
-        { title: "Customer voice", desc: "Add quotes from teams that use Altoz in real operations." },
-        { title: "Use cases", desc: "Group testimonials by payroll, attendance, onboarding, or reporting." },
+        {
+          title: "Customer voice",
+          desc: "Add quotes from teams that use Altoz in real operations.",
+        },
+        {
+          title: "Use cases",
+          desc: "Group testimonials by payroll, attendance, onboarding, or reporting.",
+        },
         { title: "Trust signals", desc: "Turn positive feedback into clear proof for new buyers." },
       ]}
     />

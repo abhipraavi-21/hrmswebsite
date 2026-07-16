@@ -131,39 +131,39 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="py-20 bg-surface scroll-mt-24">
-      <div className="container-x">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-bold uppercase tracking-wider text-primary">
+    <section id="features" className="section bg-surface scroll-mt-24">
+      <div className="site-container">
+        <div className="section-heading">
+          <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
             Everything you need
           </span>
-          <h2 className="mt-2 text-3xl md:text-4xl font-bold text-ink">
+          <h2 className="text-3xl font-bold text-ink md:text-4xl">
             Powerful features, beautifully simple
           </h2>
-          <p className="mt-3 text-ink-soft">
+          <p className="text-ink-soft">
             Explore each capability as a dedicated section, so the feature menu can jump straight to
             the right area.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f) =>
             f.href ? (
               <a
                 key={f.title}
                 id={f.id}
                 href={f.href}
-                className="soft-card p-6 group scroll-mt-24 block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                className="content-card soft-card group scroll-mt-24 block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
               >
-                <div className="grid h-11 w-11 place-items-center rounded-lg bg-primary-soft text-primary group-hover:bg-primary group-hover:text-white transition-colors [&>svg]:h-5 [&>svg]:w-5">
+                <div className="card-icon grid h-11 w-11 place-items-center rounded-lg bg-primary-soft text-primary transition-colors group-hover:bg-primary group-hover:text-white [&>svg]:h-5 [&>svg]:w-5">
                   {f.icon}
                 </div>
                 <h3 className="mt-4 text-base font-bold text-ink">{f.title}</h3>
                 <p className="mt-1 text-sm text-ink-soft">{f.desc}</p>
               </a>
             ) : (
-              <div key={f.title} id={f.id} className="soft-card p-6 group scroll-mt-24">
-                <div className="grid h-11 w-11 place-items-center rounded-lg bg-primary-soft text-primary group-hover:bg-primary group-hover:text-white transition-colors [&>svg]:h-5 [&>svg]:w-5">
+              <div key={f.title} id={f.id} className="content-card soft-card group scroll-mt-24">
+                <div className="card-icon grid h-11 w-11 place-items-center rounded-lg bg-primary-soft text-primary transition-colors group-hover:bg-primary group-hover:text-white [&>svg]:h-5 [&>svg]:w-5">
                   {f.icon}
                 </div>
                 <h3 className="mt-4 text-base font-bold text-ink">{f.title}</h3>

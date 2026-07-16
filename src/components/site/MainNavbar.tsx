@@ -16,7 +16,7 @@ export default function MainNavbar() {
 
   return (
     <div className="sticky top-16 z-40 hidden border-b border-border bg-primary-soft/70 backdrop-blur-md lg:block">
-      <div className="container-x grid grid-cols-1 gap-2 py-2 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0 lg:h-12 overflow-visible">
+      <div className="site-container grid grid-cols-1 gap-2 py-2 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0 lg:h-12 overflow-visible">
         <a href="/" className="flex items-center gap-2 shrink-0">
           <BrandMark className="scale-90 origin-left" />
         </a>

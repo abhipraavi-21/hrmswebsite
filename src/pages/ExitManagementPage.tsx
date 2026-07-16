@@ -177,7 +177,7 @@ export default function ExitManagementPage() {
                 <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
                   What this page covers
                 </div>
-                      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   {[
                     "Capture resignation and notice dates",
                     "Track clearances across teams",
@@ -273,7 +273,10 @@ export default function ExitManagementPage() {
                             "IT removes access and tracks device return",
                             "Admin closes badges, documents, and records",
                           ].map((item) => (
-                            <div key={item} className="flex items-start gap-3 rounded-xl bg-white p-3">
+                            <div
+                              key={item}
+                              className="flex items-start gap-3 rounded-xl bg-white p-3"
+                            >
                               <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
                               <span className="text-sm text-ink">{item}</span>
                             </div>
@@ -388,7 +391,8 @@ export default function ExitManagementPage() {
                 A guided offboarding sequence that helps teams close cleanly
               </h3>
               <p className="mt-3 text-sm text-ink-soft">
-                This structure keeps the workflow readable on desktop and compact on smaller screens.
+                This structure keeps the workflow readable on desktop and compact on smaller
+                screens.
               </p>
 
               <div className="mt-6 space-y-3">

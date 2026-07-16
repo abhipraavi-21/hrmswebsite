@@ -14,8 +14,8 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Altroz HRMS | HR, Payroll, Attendance and Bulk Email Platform"
-        description="Altroz HRMS helps businesses manage employees, attendance, payroll, leave, recruitment, analytics, and bulk email from one modern platform."
+        title="Altroz HRMS | HR, Payroll and Attendance Platform"
+        description="Altroz HRMS helps businesses manage employees, attendance, payroll, leave, recruitment, and analytics from one modern platform."
         canonicalPath="/"
       />
       <TopNavbar />

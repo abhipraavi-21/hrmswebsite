@@ -402,13 +402,13 @@ export default function PayrollPage() {
         <section className="bg-surface py-12">
           <div className="container-x">
             <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
-            <img
-              src={analyticsImage}
-              alt="Payroll reports and analytics"
-              className="block h-auto w-full object-contain object-center bg-white p-3 sm:p-4 md:p-6"
-              loading="eager"
-              referrerPolicy="no-referrer"
-            />
+              <img
+                src={analyticsImage}
+                alt="Payroll reports and analytics"
+                className="block h-auto w-full object-contain object-center bg-white p-3 sm:p-4 md:p-6"
+                loading="eager"
+                referrerPolicy="no-referrer"
+              />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
             </div>
           </div>

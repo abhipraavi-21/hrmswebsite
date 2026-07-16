@@ -77,9 +77,9 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer id="company" className="bg-ink text-white scroll-mt-24">
-      <div className="container-x py-8 md:py-10">
-        <div className="grid gap-6 lg:grid-cols-12">
+    <footer id="company" className="site-footer bg-ink text-white scroll-mt-24">
+      <div className="site-container">
+        <div className="footer-grid grid lg:grid-cols-12">
           <div className="lg:col-span-4">
             <BrandMark variant="dark" className="scale-[0.8] origin-left" />
             <p className="mt-2 max-w-xs text-xs leading-5 text-white/70">
@@ -130,18 +130,18 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-6 border-t border-white/10 pt-4">
+        <div className="footer-bottom border-t border-white/10 pt-4">
           <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
             <div className="text-xs text-white/60 md:justify-self-start">
-            (c) {new Date().getFullYear()} HRMS. All rights reserved. Designed By{" "}
-            <a
-              href="https://webakoof.com/index.html"
-              target="_blank"
-              rel="noreferrer"
-              className="text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
-            >
-              Webakoof
-            </a>
+              (c) {new Date().getFullYear()} HRMS. All rights reserved. Designed By{" "}
+              <a
+                href="https://webakoof.com/index.html"
+                target="_blank"
+                rel="noreferrer"
+                className="text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
+              >
+                Webakoof
+              </a>
             </div>
             <div className="flex items-center justify-center gap-2 justify-self-center">
               {socialLinks.map(({ label, href, icon: Icon }) => (

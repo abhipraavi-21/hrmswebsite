@@ -236,9 +236,21 @@ export default function VisitorManagementPage() {
 
                     <div className="mt-5 space-y-3">
                       {[
-                        { label: "Expected", value: "Approved before arrival", tone: "bg-primary-soft text-primary" },
-                        { label: "Arrived", value: "Front desk check-in captured", tone: "bg-[#ecfdf3] text-success" },
-                        { label: "Departed", value: "Checkout and closure complete", tone: "bg-white text-ink" },
+                        {
+                          label: "Expected",
+                          value: "Approved before arrival",
+                          tone: "bg-primary-soft text-primary",
+                        },
+                        {
+                          label: "Arrived",
+                          value: "Front desk check-in captured",
+                          tone: "bg-[#ecfdf3] text-success",
+                        },
+                        {
+                          label: "Departed",
+                          value: "Checkout and closure complete",
+                          tone: "bg-white text-ink",
+                        },
                       ].map((item) => (
                         <div
                           key={item.label}
@@ -287,7 +299,10 @@ export default function VisitorManagementPage() {
                             "Host notified as soon as arrival is marked",
                             "Entry and exit logged in one place",
                           ].map((item) => (
-                            <div key={item} className="flex items-start gap-3 rounded-xl bg-white p-3">
+                            <div
+                              key={item}
+                              className="flex items-start gap-3 rounded-xl bg-white p-3"
+                            >
                               <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
                               <span className="text-sm text-ink">{item}</span>
                             </div>
@@ -301,17 +316,19 @@ export default function VisitorManagementPage() {
                         Status steps
                       </div>
                       <div className="mt-4 space-y-3">
-                        {["Pre-register", "Approve", "Check in", "Notify", "Check out"].map((step, index) => (
-                          <div
-                            key={step}
-                            className="flex items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3"
-                          >
-                            <div className="grid h-8 w-8 place-items-center rounded-full bg-primary-soft text-xs font-bold text-primary">
-                              0{index + 1}
+                        {["Pre-register", "Approve", "Check in", "Notify", "Check out"].map(
+                          (step, index) => (
+                            <div
+                              key={step}
+                              className="flex items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3"
+                            >
+                              <div className="grid h-8 w-8 place-items-center rounded-full bg-primary-soft text-xs font-bold text-primary">
+                                0{index + 1}
+                              </div>
+                              <div className="text-sm font-semibold text-ink">{step}</div>
                             </div>
-                            <div className="text-sm font-semibold text-ink">{step}</div>
-                          </div>
-                        ))}
+                          ),
+                        )}
                       </div>
                     </div>
                   </div>

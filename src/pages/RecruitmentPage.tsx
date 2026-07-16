@@ -177,8 +177,8 @@ export default function RecruitmentPage() {
                 Recruitment (ATS)
               </span>
               <h1 className="mt-4 max-w-xl text-3xl font-bold leading-tight text-ink sm:text-4xl lg:text-5xl">
-                Hire faster with a recruitment flow that keeps sourcing, screening, and interviews in
-                one place
+                Hire faster with a recruitment flow that keeps sourcing, screening, and interviews
+                in one place
               </h1>
               <p className="mt-4 max-w-xl text-base text-ink-soft">
                 Manage jobs, candidates, and offers without bouncing between tools. This page keeps
@@ -274,9 +274,21 @@ export default function RecruitmentPage() {
 
                       <div className="mt-5 space-y-3">
                         {[
-                          { label: "Jobs", value: "Create roles and publish openings", tone: "bg-primary-soft text-primary" },
-                          { label: "Candidates", value: "Centralize profiles and progress", tone: "bg-[#ecfdf3] text-success" },
-                          { label: "Offers", value: "Move from shortlist to hire", tone: "bg-white text-ink" },
+                          {
+                            label: "Jobs",
+                            value: "Create roles and publish openings",
+                            tone: "bg-primary-soft text-primary",
+                          },
+                          {
+                            label: "Candidates",
+                            value: "Centralize profiles and progress",
+                            tone: "bg-[#ecfdf3] text-success",
+                          },
+                          {
+                            label: "Offers",
+                            value: "Move from shortlist to hire",
+                            tone: "bg-white text-ink",
+                          },
                         ].map((item) => (
                           <div
                             key={item.label}
@@ -394,15 +406,21 @@ export default function RecruitmentPage() {
               <div className="mt-6 space-y-3">
                 <div className="flex items-start gap-3 rounded-xl bg-surface p-4">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
-                  <span className="text-sm text-ink">Centralize hiring tasks and reduce manual work.</span>
+                  <span className="text-sm text-ink">
+                    Centralize hiring tasks and reduce manual work.
+                  </span>
                 </div>
                 <div className="flex items-start gap-3 rounded-xl bg-surface p-4">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
-                  <span className="text-sm text-ink">Keep recruiters and hiring managers aligned.</span>
+                  <span className="text-sm text-ink">
+                    Keep recruiters and hiring managers aligned.
+                  </span>
                 </div>
                 <div className="flex items-start gap-3 rounded-xl bg-surface p-4">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
-                  <span className="text-sm text-ink">Use reporting to find delays and improve hiring speed.</span>
+                  <span className="text-sm text-ink">
+                    Use reporting to find delays and improve hiring speed.
+                  </span>
                 </div>
               </div>
             </div>
@@ -489,8 +507,8 @@ export default function RecruitmentPage() {
                 A recruitment toolkit that covers the full hiring journey
               </h2>
               <p className="mt-3 text-ink-soft">
-                These are the core capabilities surfaced from the reference page, reorganized into
-                a cleaner card layout.
+                These are the core capabilities surfaced from the reference page, reorganized into a
+                cleaner card layout.
               </p>
             </div>
 
@@ -543,7 +561,10 @@ export default function RecruitmentPage() {
                   { label: "Match", value: "Stronger" },
                   { label: "Control", value: "Cleaner" },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-2xl border border-border bg-surface p-4 text-center">
+                  <div
+                    key={item.label}
+                    className="rounded-2xl border border-border bg-surface p-4 text-center"
+                  >
                     <div className="text-xs font-semibold uppercase tracking-wider text-primary">
                       {item.label}
                     </div>

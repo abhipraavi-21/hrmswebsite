@@ -28,41 +28,39 @@ const reasons = [
   {
     icon: <Layers />,
     title: "HR + marketing in one place",
-    desc: "Stop juggling tools — one login, one bill, one platform.",
+    desc: "Stop juggling tools â€” one login, one bill, one platform.",
     tone: "primary",
   },
 ];
 
 export default function WhyChooseUs() {
   return (
-    <section id="resources" className="py-20 bg-surface scroll-mt-24">
-      <div className="container-x">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-bold uppercase tracking-wider text-primary">
+    <section id="resources" className="section bg-surface scroll-mt-24">
+      <div className="site-container">
+        <div className="section-heading">
+          <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
             Why teams switch to us
           </span>
-          <h2 className="mt-2 text-3xl md:text-4xl font-bold text-ink">
+          <h2 className="text-3xl font-bold text-ink md:text-4xl">
             Designed for outcomes, not just features
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {reasons.map((r, i) => {
             const isPrimary = r.tone === "primary";
             const accentClass = isPrimary
               ? "bg-primary-soft text-primary"
               : "bg-[#dcfce7] text-success";
-            const ringClass = isPrimary ? "hover:border-primary/30" : "hover:border-success/30";
+            const cardSpan = i === 4 ? "lg:col-span-1 md:col-span-2" : "";
             return (
               <div
                 key={r.title}
-                className={`soft-card relative overflow-hidden p-6 ${
-                  i === 4 ? "lg:col-span-1 md:col-span-2" : ""
-                } ${ringClass} transition-transform hover:scale-[1.02]`}
+                className={`content-card soft-card relative overflow-hidden ${cardSpan} transition-transform hover:scale-[1.02]`}
               >
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary/50 via-primary/20 to-success/40" />
                 <div
-                  className={`grid h-11 w-11 place-items-center rounded-lg ${accentClass} [&>svg]:h-5 [&>svg]:w-5`}
+                  className={`card-icon grid h-11 w-11 place-items-center rounded-lg ${accentClass} [&>svg]:h-5 [&>svg]:w-5`}
                 >
                   {r.icon}
                 </div>

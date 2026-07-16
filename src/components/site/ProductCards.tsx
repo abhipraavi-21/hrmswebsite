@@ -74,38 +74,44 @@ const solutionTracks = [
 
 export default function ProductCards() {
   return (
-    <section id="solutions" className="py-20 bg-white scroll-mt-24">
-      <div className="container-x">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-ink">
+    <section id="solutions" className="section bg-white scroll-mt-24">
+      <div className="site-container">
+        <div className="section-heading">
+          <h2 className="text-3xl font-bold text-ink md:text-4xl">
             Two powerful products. One unified platform.
           </h2>
-          <p className="mt-3 text-ink-soft">
-            Built to work seamlessly together — manage your people and your communication from a
+          <p className="text-ink-soft">
+            Built to work seamlessly together â€” manage your people and your communication from a
             single dashboard.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid gap-6 md:grid-cols-2">
           {products.map((p) => {
             const isPrimary = p.color === "primary";
             return (
-              <div id={p.id} key={p.eyebrow} className="soft-card p-8 relative overflow-hidden">
+              <div
+                id={p.id}
+                key={p.eyebrow}
+                className="content-card soft-card relative overflow-hidden"
+              >
                 <div
                   className={`absolute -top-12 -right-12 h-40 w-40 rounded-full opacity-50 ${
                     isPrimary ? "bg-primary-soft" : "bg-[#dcfce7]"
                   }`}
                 />
-                <div className="relative">
+                <div className="relative flex h-full flex-col">
                   <div
-                    className={`grid h-12 w-12 place-items-center rounded-xl ${
+                    className={`card-icon grid h-12 w-12 place-items-center rounded-xl ${
                       isPrimary ? "bg-primary text-white" : "bg-success text-white"
                     }`}
                   >
                     {p.icon}
                   </div>
                   <div
-                    className={`mt-4 text-xs font-bold uppercase tracking-wider ${isPrimary ? "text-primary" : "text-success"}`}
+                    className={`mt-4 text-xs font-bold uppercase tracking-wider ${
+                      isPrimary ? "text-primary" : "text-success"
+                    }`}
                   >
                     {p.eyebrow}
                   </div>
@@ -116,7 +122,7 @@ export default function ProductCards() {
                     {p.features.map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm text-ink">
                         <Check
-                          className={`h-4 w-4 mt-0.5 shrink-0 ${isPrimary ? "text-primary" : "text-success"}`}
+                          className={`mt-0.5 h-4 w-4 shrink-0 ${isPrimary ? "text-primary" : "text-success"}`}
                         />
                         <span id={featureAnchorIds[f]}>{f}</span>
                       </li>
@@ -125,9 +131,9 @@ export default function ProductCards() {
 
                   <a
                     href={p.href ?? "/learn"}
-                    className={`mt-6 inline-flex items-center gap-1 text-sm font-semibold ${
+                    className={`card-action mt-auto inline-flex items-center gap-1 text-sm font-semibold ${
                       isPrimary ? "text-primary" : "text-success"
-                    } hover:gap-2 transition-all`}
+                    } transition-all hover:gap-2`}
                   >
                     Learn more <ArrowRight className="h-4 w-4" />
                   </a>
@@ -138,115 +144,88 @@ export default function ProductCards() {
         </div>
 
         <div className="mt-14">
-          <div className="max-w-2xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">
+          <div className="section-heading text-left">
+            <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
               Solutions by need
             </span>
-            <h3 className="mt-2 text-2xl md:text-3xl font-bold text-ink">
+            <h3 className="text-2xl font-bold text-ink md:text-3xl">
               Industry and workforce experiences for the teams that use them
             </h3>
           </div>
 
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
-          {solutionTracks.map((track) => {
-            const isPrimary = track.tone === "primary";
-            if (track.href) {
+          <div className="grid gap-6 md:grid-cols-2">
+            {solutionTracks.map((track) => {
+              const isPrimary = track.tone === "primary";
+              const cardInner = (
+                <div className="relative flex h-full flex-col">
+                  <div
+                    className={`card-icon grid h-12 w-12 place-items-center rounded-xl ${
+                      isPrimary ? "bg-primary text-white" : "bg-success text-white"
+                    }`}
+                  >
+                    {track.icon}
+                  </div>
+                  <div
+                    className={`mt-4 text-xs font-bold uppercase tracking-wider ${
+                      isPrimary ? "text-primary" : "text-success"
+                    }`}
+                  >
+                    {track.eyebrow}
+                  </div>
+                  <h4 className="mt-1 text-2xl font-bold text-ink">{track.title}</h4>
+                  <p className="mt-2 text-ink-soft">{track.desc}</p>
+
+                  <ul className="mt-5 space-y-2.5">
+                    {track.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2 text-sm text-ink">
+                        <Check
+                          className={`mt-0.5 h-4 w-4 shrink-0 ${isPrimary ? "text-primary" : "text-success"}`}
+                        />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div
+                    className={`card-action mt-auto inline-flex items-center gap-1 text-sm font-semibold ${
+                      isPrimary ? "text-primary" : "text-success"
+                    } transition-all hover:gap-2`}
+                  >
+                    Learn more <ArrowRight className="h-4 w-4" />
+                  </div>
+                </div>
+              );
+
+              if (track.href) {
+                return (
+                  <a
+                    key={track.id}
+                    id={track.id}
+                    href={track.href}
+                    className="content-card soft-card relative overflow-hidden scroll-mt-24 block"
+                  >
+                    <div
+                      className={`absolute -top-12 -right-12 h-40 w-40 rounded-full opacity-50 ${
+                        isPrimary ? "bg-primary-soft" : "bg-[#dcfce7]"
+                      }`}
+                    />
+                    {cardInner}
+                  </a>
+                );
+              }
+
               return (
-                <a
+                <article
                   key={track.id}
                   id={track.id}
-                  href={track.href}
-                  className="soft-card p-8 relative overflow-hidden scroll-mt-24 block"
+                  className="content-card soft-card relative overflow-hidden scroll-mt-24"
                 >
                   <div
                     className={`absolute -top-12 -right-12 h-40 w-40 rounded-full opacity-50 ${
                       isPrimary ? "bg-primary-soft" : "bg-[#dcfce7]"
                     }`}
                   />
-                  <div className="relative">
-                    <div
-                      className={`grid h-12 w-12 place-items-center rounded-xl ${
-                        isPrimary ? "bg-primary text-white" : "bg-success text-white"
-                      }`}
-                    >
-                      {track.icon}
-                    </div>
-                    <div
-                      className={`mt-4 text-xs font-bold uppercase tracking-wider ${
-                        isPrimary ? "text-primary" : "text-success"
-                      }`}
-                    >
-                      {track.eyebrow}
-                    </div>
-                    <h4 className="mt-1 text-2xl font-bold text-ink">{track.title}</h4>
-                    <p className="mt-2 text-ink-soft">{track.desc}</p>
-
-                    <ul className="mt-5 space-y-2.5">
-                      {track.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-2 text-sm text-ink">
-                          <Check
-                            className={`h-4 w-4 mt-0.5 shrink-0 ${
-                              isPrimary ? "text-primary" : "text-success"
-                            }`}
-                          />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div
-                      className={`mt-6 inline-flex items-center gap-1 text-sm font-semibold ${
-                        isPrimary ? "text-primary" : "text-success"
-                      } hover:gap-2 transition-all`}
-                    >
-                      Learn more <ArrowRight className="h-4 w-4" />
-                    </div>
-                  </div>
-                </a>
-              );
-            }
-            return (
-              <article
-                key={track.id}
-                id={track.id}
-                  className="soft-card p-8 relative overflow-hidden scroll-mt-24"
-                >
-                  <div
-                    className={`absolute -top-12 -right-12 h-40 w-40 rounded-full opacity-50 ${
-                      isPrimary ? "bg-primary-soft" : "bg-[#dcfce7]"
-                    }`}
-                  />
-                  <div className="relative">
-                    <div
-                      className={`grid h-12 w-12 place-items-center rounded-xl ${
-                        isPrimary ? "bg-primary text-white" : "bg-success text-white"
-                      }`}
-                    >
-                      {track.icon}
-                    </div>
-                    <div
-                      className={`mt-4 text-xs font-bold uppercase tracking-wider ${
-                        isPrimary ? "text-primary" : "text-success"
-                      }`}
-                    >
-                      {track.eyebrow}
-                    </div>
-                    <h4 className="mt-1 text-2xl font-bold text-ink">{track.title}</h4>
-                    <p className="mt-2 text-ink-soft">{track.desc}</p>
-
-                    <ul className="mt-5 space-y-2.5">
-                      {track.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-2 text-sm text-ink">
-                          <Check
-                            className={`h-4 w-4 mt-0.5 shrink-0 ${
-                              isPrimary ? "text-primary" : "text-success"
-                            }`}
-                          />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {cardInner}
                 </article>
               );
             })}

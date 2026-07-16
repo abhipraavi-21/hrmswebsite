@@ -41,8 +41,8 @@ export default function CompanyDetailPage({
       <MainNavbar />
 
       <main>
-        <section className="hero-gradient">
-          <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-center lg:py-16">
+        <section className="page-banner hero-gradient">
+          <div className="site-container grid gap-10 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-6 fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 {eyebrow}
@@ -52,7 +52,7 @@ export default function CompanyDetailPage({
               </h1>
               <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="button-group mt-6">
                 <a href={primaryAction.href} className="btn-primary">
                   {primaryAction.label}
                 </a>
@@ -100,20 +100,20 @@ export default function CompanyDetailPage({
           </div>
         </section>
 
-        <section className="py-20">
-          <div className="container-x">
-            <div className="max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+        <section className="section">
+          <div className="site-container">
+            <div className="section-heading text-left">
+              <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
                 Details
               </span>
-              <h2 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">
+              <h2 className="text-3xl font-bold text-ink sm:text-4xl">
                 Everything visitors need to understand the next step
               </h2>
             </div>
 
-            <div className="mt-10 grid gap-5 md:grid-cols-3">
+            <div className="card-grid mt-8 md:grid-cols-3">
               {sections.map((section) => (
-                <article key={section.title} className="soft-card p-6">
+                <article key={section.title} className="content-card soft-card">
                   <h3 className="text-lg font-bold text-ink">{section.title}</h3>
                   <p className="mt-2 text-sm text-ink-soft">{section.desc}</p>
                 </article>
@@ -122,7 +122,7 @@ export default function CompanyDetailPage({
 
             <a
               href="/company/contact-us"
-              className="mt-10 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
+              className="card-action mt-8 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
             >
               Contact us <ArrowRight className="h-4 w-4" />
             </a>

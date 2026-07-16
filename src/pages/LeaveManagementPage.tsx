@@ -442,7 +442,10 @@ export default function LeaveManagementPage() {
 
                 <div className="mt-6 space-y-4">
                   {testimonialCards.map((testimonial) => (
-                    <article key={testimonial.name} className="rounded-2xl border border-border p-4">
+                    <article
+                      key={testimonial.name}
+                      className="rounded-2xl border border-border p-4"
+                    >
                       <div className="flex items-center gap-4">
                         <img
                           src={testimonial.image}

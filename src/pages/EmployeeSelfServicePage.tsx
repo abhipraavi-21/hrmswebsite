@@ -183,8 +183,7 @@ const faqs = [
   },
   {
     question: "Can employees download salary slips?",
-    answer:
-      "Yes. Employees can securely view and download salary slips whenever they need them.",
+    answer: "Yes. Employees can securely view and download salary slips whenever they need them.",
   },
   {
     question: "Can managers approve leave requests?",
@@ -219,8 +218,8 @@ export default function EmployeeSelfServicePage() {
                 Empower your employees with a smart self-service portal
               </h1>
               <p className="mt-4 max-w-xl text-base text-ink-soft">
-                Give employees control over attendance, leave, salary slips, announcements, and
-                more from a secure web portal or mobile app, anytime and anywhere.
+                Give employees control over attendance, leave, salary slips, announcements, and more
+                from a secure web portal or mobile app, anytime and anywhere.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
@@ -344,8 +343,8 @@ export default function EmployeeSelfServicePage() {
                 Manager self service keeps approvals moving
               </h2>
               <p className="mt-3 max-w-2xl text-ink-soft">
-                Managers can approve or reject leave, review attendance regularization, and keep
-                a close eye on team activity without digging through spreadsheets or email chains.
+                Managers can approve or reject leave, review attendance regularization, and keep a
+                close eye on team activity without digging through spreadsheets or email chains.
               </p>
 
               <div className="mt-8 grid gap-4 sm:grid-cols-2">

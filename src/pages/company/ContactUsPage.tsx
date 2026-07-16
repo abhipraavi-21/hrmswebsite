@@ -12,7 +12,10 @@ export default function ContactUsPage() {
       sections={[
         { title: "Sales", desc: "Help buyers ask about pricing, features, and demos." },
         { title: "Support", desc: "Route existing customers toward help and issue resolution." },
-        { title: "General inquiries", desc: "Provide a place for partnerships, media, and company questions." },
+        {
+          title: "General inquiries",
+          desc: "Provide a place for partnerships, media, and company questions.",
+        },
       ]}
     />
   );

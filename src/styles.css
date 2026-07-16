@@ -47,6 +47,23 @@
 
 :root {
   --radius: 0.75rem;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-18: 72px;
+  --space-22: 88px;
+  --container-width: 1180px;
+  --section-padding-desktop: 72px;
+  --section-padding-tablet: 56px;
+  --section-padding-mobile: 44px;
 
   --background: #ffffff;
   --foreground: #111827;
@@ -90,6 +107,7 @@
   }
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
   }
   body {
     background-color: var(--color-background);
@@ -107,14 +125,106 @@
   }
 }
 
-@utility container-x {
-  width: 100%;
+@utility site-container {
+  width: min(var(--container-width), calc(100% - 40px));
   margin-inline: auto;
-  padding-inline: 1rem;
-  max-width: 80rem;
-  @media (min-width: 768px) {
-    padding-inline: 2rem;
-  }
+}
+
+@utility container-x {
+  width: min(var(--container-width), calc(100% - 40px));
+  margin-inline: auto;
+}
+
+@utility section {
+  padding-block: var(--section-padding-desktop);
+}
+
+@utility section-compact {
+  padding-block: var(--space-14);
+}
+
+@utility section-large {
+  padding-block: var(--space-22);
+}
+
+@utility section-heading {
+  max-width: 740px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+@utility hero-content {
+  max-width: 650px;
+}
+
+@utility button-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+@utility text-content {
+  max-width: 720px;
+}
+
+@utility page-banner {
+  min-height: 300px;
+  padding: 100px 0 60px;
+  display: flex;
+  align-items: center;
+}
+
+@utility cta-section {
+  padding-block: 64px;
+}
+
+@utility cta-box {
+  padding: 48px;
+  border-radius: 24px;
+}
+
+@utility site-footer {
+  padding: 64px 0 24px;
+}
+
+@utility footer-grid {
+  display: grid;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+@utility footer-bottom {
+  padding-top: 20px;
+}
+
+@utility content-card {
+  height: 100%;
+  padding: 28px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+@utility card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+@utility two-column-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: clamp(40px, 6vw, 80px);
+}
+
+@utility reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
 }
 
 @utility btn-primary {
@@ -267,6 +377,218 @@
 }
 @utility fade-up {
   animation: fade-up 0.6s ease-out both;
+}
+
+@layer components {
+  @media (max-width: 576px) {
+    .site-container,
+    .container-x {
+      width: min(100% - 32px, var(--container-width));
+    }
+  }
+
+  @media (max-width: 992px) {
+    .section,
+    .section-large {
+      padding-block: var(--section-padding-tablet);
+    }
+
+    .section-compact {
+      padding-block: var(--space-12);
+    }
+  }
+
+  @media (max-width: 576px) {
+    .section,
+    .section-large {
+      padding-block: var(--section-padding-mobile);
+    }
+
+    .section-compact {
+      padding-block: var(--space-10);
+    }
+
+    .cta-section {
+      padding-block: 48px;
+    }
+
+    .cta-box {
+      padding: 32px 20px;
+      border-radius: 18px;
+    }
+  }
+
+  main > section {
+    padding-block: var(--section-padding-desktop) !important;
+  }
+
+  main > section.section-compact {
+    padding-block: var(--space-14) !important;
+  }
+
+  main > section.section-large {
+    padding-block: var(--space-22) !important;
+  }
+
+  main > section.page-banner {
+    min-height: 300px;
+    padding: 100px 0 60px !important;
+    display: flex;
+    align-items: center;
+  }
+
+  main > section.cta-section {
+    padding-block: 64px !important;
+  }
+
+  main > section.hero-section {
+    min-height: 680px;
+    padding: 130px 0 80px !important;
+    display: flex;
+    align-items: center;
+  }
+
+  main > section:first-child:not(.hero-section) {
+    min-height: 300px;
+    padding: 100px 0 60px !important;
+    display: flex;
+    align-items: center;
+  }
+
+  .section-heading {
+    max-width: 740px;
+    margin: 0 auto 40px;
+    text-align: center;
+  }
+
+  .section-heading .eyebrow {
+    margin-bottom: 10px;
+  }
+
+  .section-heading h2 {
+    margin: 0 0 16px;
+  }
+
+  .section-heading p {
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .two-column-layout.reverse .content-column {
+    order: 2;
+  }
+
+  .two-column-layout.reverse .media-column {
+    order: 1;
+  }
+
+  .content-card .card-icon {
+    margin-bottom: 20px;
+  }
+
+  .content-card h3 {
+    margin: 0 0 12px;
+  }
+
+  .content-card p {
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .content-card .card-action {
+    margin-top: auto;
+    padding-top: 20px;
+  }
+
+  .text-content p,
+  .section-intro p {
+    line-height: 1.75;
+    margin: 0 0 16px;
+  }
+
+  .button-group .btn {
+    width: auto;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    .two-column-layout {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+
+    .two-column-layout.reverse .content-column,
+    .two-column-layout.reverse .media-column {
+      order: initial;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .card-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .card-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .content-card {
+      padding: 24px 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .button-group {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .button-group .btn,
+    .button-group > a,
+    .button-group > button {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    main > section.page-banner {
+      min-height: 225px;
+      padding: 82px 0 42px !important;
+    }
+
+    main > section.hero-section {
+      min-height: auto;
+      padding: 105px 0 52px !important;
+    }
+
+    main > section.cta-section {
+      padding-block: 48px !important;
+    }
+
+    main > section:first-child:not(.hero-section) {
+      min-height: 225px;
+      padding: 82px 0 42px !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

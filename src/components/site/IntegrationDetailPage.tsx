@@ -64,11 +64,11 @@ export default function IntegrationDetailPage({
       <MainNavbar />
 
       <main>
-        <section className="hero-gradient relative overflow-hidden">
+        <section className="page-banner hero-gradient relative overflow-hidden">
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-          <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-center lg:py-16">
+          <div className="site-container grid gap-10 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-6 fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 {eyebrow}
@@ -78,7 +78,7 @@ export default function IntegrationDetailPage({
               </h1>
               <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="button-group mt-6">
                 <a href={primaryAction.href} className="btn-primary">
                   {primaryAction.label}
                 </a>
@@ -142,25 +142,25 @@ export default function IntegrationDetailPage({
           </div>
         </section>
 
-        <section className="py-20">
-          <div className="container-x">
-            <div className="max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+        <section className="section">
+          <div className="site-container">
+            <div className="section-heading text-left">
+              <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
                 What it includes
               </span>
-              <h2 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">
+              <h2 className="text-3xl font-bold text-ink sm:text-4xl">
                 The pieces that keep the integration useful every day
               </h2>
-              <p className="mt-3 text-ink-soft">
+              <p className="text-ink-soft">
                 The pages below keep the structure simple: a focused workflow, a few practical
                 capabilities, and a clear next step back to the integrations hub.
               </p>
             </div>
 
-            <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            <div className="card-grid mt-8 md:grid-cols-2 xl:grid-cols-4">
               {capabilities.map((capability) => (
-                <article key={capability.title} className="soft-card p-6">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
+                <article key={capability.title} className="content-card soft-card">
+                  <div className="card-icon grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
                     {capability.icon}
                   </div>
                   <h3 className="mt-4 text-lg font-bold text-ink">{capability.title}</h3>
@@ -171,9 +171,9 @@ export default function IntegrationDetailPage({
           </div>
         </section>
 
-        <section className="bg-surface py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12">
-            <div className="soft-card p-6 lg:col-span-7">
+        <section className="section bg-surface">
+          <div className="site-container grid gap-6 lg:grid-cols-12">
+            <div className="content-card soft-card lg:col-span-7">
               <div className="text-xs font-bold uppercase tracking-wider text-primary">
                 Common use cases
               </div>
@@ -193,14 +193,14 @@ export default function IntegrationDetailPage({
               </div>
             </div>
 
-            <div className="soft-card p-6 lg:col-span-5">
+            <div className="content-card soft-card lg:col-span-5">
               <div className="text-xs font-bold uppercase tracking-wider text-primary">
                 Next step
               </div>
               <div className="mt-2 text-2xl font-bold text-ink">{footerTitle}</div>
               <p className="mt-3 text-sm text-ink-soft">{footerBody}</p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="button-group mt-6">
                 <a href={primaryAction.href} className="btn-primary">
                   {primaryAction.label}
                 </a>

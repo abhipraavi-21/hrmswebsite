@@ -62,7 +62,7 @@ export default function TopNavbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/90">
-      <div className="container-x flex items-center justify-between gap-3 py-3 lg:hidden">
+      <div className="site-container flex items-center justify-between gap-3 py-3 lg:hidden">
         <a href="/" className="flex items-center gap-2 shrink-0">
           <BrandMark />
         </a>
@@ -173,7 +173,7 @@ export default function TopNavbar() {
         </Sheet>
       </div>
 
-      <div className="hidden lg:grid container-x grid-cols-1 gap-2 py-2 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0 lg:h-16">
+      <div className="site-container hidden lg:grid grid-cols-1 gap-2 py-2 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0 lg:h-16">
         <a href="/" className="flex items-center gap-2 shrink-0">
           <BrandMark />
         </a>

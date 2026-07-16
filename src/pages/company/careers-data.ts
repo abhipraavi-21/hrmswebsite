@@ -62,10 +62,22 @@ export const capabilityStrip: ListItem[] = [
   { title: "Learning", description: "Grow through practical exposure", iconKey: "graduation" },
   { title: "Collaboration", description: "Work with product and business teams", iconKey: "users" },
   { title: "Innovation", description: "Improve workflows and experiences", iconKey: "lightbulb" },
-  { title: "Career Growth", description: "Expand your responsibilities over time", iconKey: "rocket" },
-  { title: "Real Business Exposure", description: "Support real HR operations", iconKey: "briefcase" },
+  {
+    title: "Career Growth",
+    description: "Expand your responsibilities over time",
+    iconKey: "rocket",
+  },
+  {
+    title: "Real Business Exposure",
+    description: "Support real HR operations",
+    iconKey: "briefcase",
+  },
   { title: "Product Development", description: "Build practical HRMS features", iconKey: "code" },
-  { title: "Customer Impact", description: "Help people use the platform better", iconKey: "handshake" },
+  {
+    title: "Customer Impact",
+    description: "Help people use the platform better",
+    iconKey: "handshake",
+  },
 ];
 
 export const whyWorkPoints = [
@@ -97,7 +109,8 @@ export const workplacePrinciples: ListItem[] = [
   },
   {
     title: "Open Communication",
-    description: "We encourage team members to share ideas, raise concerns, and communicate clearly.",
+    description:
+      "We encourage team members to share ideas, raise concerns, and communicate clearly.",
     iconKey: "message",
   },
   {
@@ -200,15 +213,7 @@ export const departments: CareerDepartment[] = [
       "Fix bugs and improve application performance",
       "Collaborate with product, design, QA, and support teams",
     ],
-    skills: [
-      "JavaScript",
-      "React",
-      "Node.js",
-      "HTML and CSS",
-      "REST APIs",
-      "Git",
-      "Debugging",
-    ],
+    skills: ["JavaScript", "React", "Node.js", "HTML and CSS", "REST APIs", "Git", "Debugging"],
     entryRoles: ["Junior Developer", "Associate Software Engineer"],
     experiencedRoles: ["Software Engineer", "Senior Engineer", "Tech Lead"],
   },
@@ -286,7 +291,13 @@ export const departments: CareerDepartment[] = [
       "Support issue resolution and customer communication",
       "Share feedback that helps improve the experience",
     ],
-    skills: ["Communication", "Problem-solving", "Product understanding", "Support tools", "Empathy"],
+    skills: [
+      "Communication",
+      "Problem-solving",
+      "Product understanding",
+      "Support tools",
+      "Empathy",
+    ],
     entryRoles: ["Support Associate", "Customer Success Associate"],
     experiencedRoles: ["Customer Success Executive", "Support Lead"],
   },
@@ -302,7 +313,13 @@ export const departments: CareerDepartment[] = [
       "Understand buyer needs and business context",
       "Maintain professional client relationships",
     ],
-    skills: ["Communication", "Presentation", "CRM workflow", "Follow-up discipline", "Business awareness"],
+    skills: [
+      "Communication",
+      "Presentation",
+      "CRM workflow",
+      "Follow-up discipline",
+      "Business awareness",
+    ],
     entryRoles: ["Sales Associate", "Business Development Associate"],
     experiencedRoles: ["Sales Executive", "Business Development Manager"],
   },
@@ -318,7 +335,13 @@ export const departments: CareerDepartment[] = [
       "Contribute to lead-generation and product awareness work",
       "Track performance and improve content quality",
     ],
-    skills: ["SEO fundamentals", "Content writing", "Analytics", "Social media", "Campaign planning"],
+    skills: [
+      "SEO fundamentals",
+      "Content writing",
+      "Analytics",
+      "Social media",
+      "Campaign planning",
+    ],
     entryRoles: ["Marketing Associate", "Content Associate"],
     experiencedRoles: ["SEO Specialist", "Digital Marketing Executive"],
   },
@@ -368,7 +391,16 @@ export const careerAreas: CareerArea[] = [
     description:
       "Work on frontend, backend, APIs, integrations, databases, performance, and HRMS product features.",
     iconKey: "code",
-    skills: ["JavaScript", "React", "Node.js", "HTML and CSS", "REST APIs", "Databases", "Git", "Debugging"],
+    skills: [
+      "JavaScript",
+      "React",
+      "Node.js",
+      "HTML and CSS",
+      "REST APIs",
+      "Databases",
+      "Git",
+      "Debugging",
+    ],
   },
   {
     title: "UI/UX Design",
@@ -442,14 +474,12 @@ export const skillsWeValue = [
 export const hiringSteps = [
   {
     title: "Application Review",
-    description:
-      "The team reviews submitted profiles based on current role requirements.",
+    description: "The team reviews submitted profiles based on current role requirements.",
     iconKey: "check",
   },
   {
     title: "Initial Discussion",
-    description:
-      "Selected candidates may be contacted for an introductory conversation.",
+    description: "Selected candidates may be contacted for an introductory conversation.",
     iconKey: "message",
   },
   {
@@ -460,8 +490,7 @@ export const hiringSteps = [
   },
   {
     title: "Interview",
-    description:
-      "Selected candidates may meet relevant team members or managers.",
+    description: "Selected candidates may meet relevant team members or managers.",
     iconKey: "users",
   },
   {
@@ -472,8 +501,7 @@ export const hiringSteps = [
   },
   {
     title: "Offer and Onboarding",
-    description:
-      "Successful candidates receive formal communication and onboarding instructions.",
+    description: "Successful candidates receive formal communication and onboarding instructions.",
     iconKey: "rocket",
   },
 ];
@@ -531,10 +559,7 @@ export const faqItems = [
 
 export const positionOptions = ["General Application", ...careerAreas.map((item) => item.title)];
 
-export const departmentOptions = [
-  "General Application",
-  ...departments.map((item) => item.title),
-];
+export const departmentOptions = ["General Application", ...departments.map((item) => item.title)];
 
 export const experienceOptions = [
   "Fresher",

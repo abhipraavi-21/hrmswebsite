@@ -1,10 +1,6 @@
 import * as React from "react";
 import Autoplay from "embla-carousel-autoplay";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 const customerLogos = [
   {
@@ -65,15 +61,15 @@ export default function CustomerLogos() {
   );
 
   return (
-    <section id="customers" className="py-16 md:py-20 bg-surface scroll-mt-24">
-      <div className="container-x">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="mt-3 text-3xl md:text-4xl font-bold text-ink">
+    <section id="customers" className="section-compact bg-surface scroll-mt-24">
+      <div className="site-container">
+        <div className="section-heading">
+          <h2 className="text-3xl md:text-4xl font-bold text-ink">
             Trusted by teams we've partnered with
           </h2>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-8">
           <Carousel
             opts={{
               align: "start",

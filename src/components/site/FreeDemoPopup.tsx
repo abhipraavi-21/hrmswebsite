@@ -6,15 +6,23 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 const DEMO_POPUP_SHOW_DELAY_MS = 900;
@@ -43,7 +51,11 @@ const demoFormSchema = z.object({
   employees: z.string().min(1, "Please select the number of employees."),
   industry: z.string().min(1, "Please select your industry."),
   city: z.string().min(2, "Please enter your city."),
-  message: z.string().max(500, "Please keep your message under 500 characters.").optional().or(z.literal("")),
+  message: z
+    .string()
+    .max(500, "Please keep your message under 500 characters.")
+    .optional()
+    .or(z.literal("")),
 });
 
 type DemoFormValues = z.infer<typeof demoFormSchema>;
@@ -221,7 +233,11 @@ export default function FreeDemoPopup() {
                             <FormControl>
                               <div className="relative">
                                 <Phone className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input className="pl-9" placeholder="Enter mobile number" {...field} />
+                                <Input
+                                  className="pl-9"
+                                  placeholder="Enter mobile number"
+                                  {...field}
+                                />
                               </div>
                             </FormControl>
                             <FormMessage />

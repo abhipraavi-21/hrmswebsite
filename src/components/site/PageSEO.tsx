@@ -116,13 +116,16 @@ export default function PageSEO({ title, description, canonicalPath, image }: Pa
         document.title = previousTitle;
 
         if (canonical.created) canonical.element.remove();
-        else if (previous.canonicalHref !== null) canonical.element.setAttribute("href", previous.canonicalHref);
+        else if (previous.canonicalHref !== null)
+          canonical.element.setAttribute("href", previous.canonicalHref);
 
         if (descriptionTag.created) descriptionTag.element.remove();
-        else if (previous.description !== null) descriptionTag.element.setAttribute("content", previous.description);
+        else if (previous.description !== null)
+          descriptionTag.element.setAttribute("content", previous.description);
 
         if (ogTitleTag.created) ogTitleTag.element.remove();
-        else if (previous.ogTitle !== null) ogTitleTag.element.setAttribute("content", previous.ogTitle);
+        else if (previous.ogTitle !== null)
+          ogTitleTag.element.setAttribute("content", previous.ogTitle);
 
         if (ogDescriptionTag.created) ogDescriptionTag.element.remove();
         else if (previous.ogDescription !== null)
@@ -132,7 +135,8 @@ export default function PageSEO({ title, description, canonicalPath, image }: Pa
         else if (previous.ogUrl !== null) ogUrlTag.element.setAttribute("content", previous.ogUrl);
 
         if (ogTypeTag.created) ogTypeTag.element.remove();
-        else if (previous.ogType !== null) ogTypeTag.element.setAttribute("content", previous.ogType);
+        else if (previous.ogType !== null)
+          ogTypeTag.element.setAttribute("content", previous.ogType);
 
         if (ogSiteNameTag.created) ogSiteNameTag.element.remove();
         else if (previous.ogSiteName !== null)
@@ -151,7 +155,8 @@ export default function PageSEO({ title, description, canonicalPath, image }: Pa
           twitterDescriptionTag.element.setAttribute("content", previous.twitterDescription);
 
         if (ogImageTag.created) ogImageTag.element.remove();
-        else if (previousImage.ogImage !== null) ogImageTag.element.setAttribute("content", previousImage.ogImage);
+        else if (previousImage.ogImage !== null)
+          ogImageTag.element.setAttribute("content", previousImage.ogImage);
 
         if (twitterImageTag.created) twitterImageTag.element.remove();
         else if (previousImage.twitterImage !== null)
@@ -163,13 +168,16 @@ export default function PageSEO({ title, description, canonicalPath, image }: Pa
       document.title = previousTitle;
 
       if (canonical.created) canonical.element.remove();
-      else if (previous.canonicalHref !== null) canonical.element.setAttribute("href", previous.canonicalHref);
+      else if (previous.canonicalHref !== null)
+        canonical.element.setAttribute("href", previous.canonicalHref);
 
       if (descriptionTag.created) descriptionTag.element.remove();
-      else if (previous.description !== null) descriptionTag.element.setAttribute("content", previous.description);
+      else if (previous.description !== null)
+        descriptionTag.element.setAttribute("content", previous.description);
 
       if (ogTitleTag.created) ogTitleTag.element.remove();
-      else if (previous.ogTitle !== null) ogTitleTag.element.setAttribute("content", previous.ogTitle);
+      else if (previous.ogTitle !== null)
+        ogTitleTag.element.setAttribute("content", previous.ogTitle);
 
       if (ogDescriptionTag.created) ogDescriptionTag.element.remove();
       else if (previous.ogDescription !== null)
@@ -182,7 +190,8 @@ export default function PageSEO({ title, description, canonicalPath, image }: Pa
       else if (previous.ogType !== null) ogTypeTag.element.setAttribute("content", previous.ogType);
 
       if (ogSiteNameTag.created) ogSiteNameTag.element.remove();
-      else if (previous.ogSiteName !== null) ogSiteNameTag.element.setAttribute("content", previous.ogSiteName);
+      else if (previous.ogSiteName !== null)
+        ogSiteNameTag.element.setAttribute("content", previous.ogSiteName);
 
       if (twitterCardTag.created) twitterCardTag.element.remove();
       else if (previous.twitterCard !== null)

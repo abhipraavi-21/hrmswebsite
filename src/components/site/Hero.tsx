@@ -15,37 +15,33 @@ import {
 
 export default function Hero() {
   return (
-    <section id="demo" className="hero-gradient relative overflow-hidden scroll-mt-24">
+    <section id="demo" className="hero-section hero-gradient relative overflow-hidden scroll-mt-24">
       {/* decorative blobs */}
       <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-      <div className="container-x py-8 md:py-10 lg:py-12 grid lg:grid-cols-12 gap-8 lg:gap-10 items-center min-h-[calc(100vh-7rem)]">
+      <div className="site-container grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
         {/* LEFT */}
-        <div className="lg:col-span-6 fade-up">
+        <div className="hero-content lg:col-span-6 fade-up">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-primary/20 text-primary text-xs font-semibold shadow-sm">
             <Sparkles className="h-3.5 w-3.5" /> All-in-one cloud platform
           </span>
 
-          <h1 className="mt-4 text-[2rem] sm:text-4xl lg:text-[2.85rem] xl:text-5xl font-bold text-ink leading-[1.08]">
+          <h1 className="mt-4 max-w-3xl text-balance text-[2rem] sm:text-4xl lg:text-[2.85rem] xl:text-5xl font-bold text-ink leading-[1.08]">
             Complete{" "}
             <span className="relative inline-block">
               <span className="relative z-10">HRMS</span>
               <span className="absolute inset-x-0 bottom-1 h-2.5 bg-success/25 -z-0 rounded" />
             </span>
-            , Payroll &{" "}
-            <span className="bg-gradient-to-r from-primary to-[#0a4fda] bg-clip-text text-transparent">
-              Bulk Email
-            </span>{" "}
-            Platform for Growing Teams
+            , Payroll & Attendance
+            <span className="block">Platform for Growing Teams</span>
           </h1>
 
           <p className="mt-3 text-sm md:text-base text-ink-soft max-w-xl">
-            Manage employees, attendance, payroll, leaves and marketing campaigns from one powerful
-            cloud platform.
+            Manage employees, attendance, payroll and leaves from one powerful cloud platform.
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="button-group mt-5">
             <a href="/company/book-demo" className="btn-success">
               Book Free Demo
             </a>
@@ -73,7 +69,11 @@ export default function Hero() {
 
           <div className="relative grid grid-cols-6 gap-3">
             {/* Big featured card */}
-            <div className="col-span-6 sm:col-span-4 soft-card p-4 float-slow">
+            <a
+              href="/products/attendance"
+              aria-label="Open Attendance page"
+              className="group col-span-6 sm:col-span-4 soft-card p-4 float-slow block cursor-pointer transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-white">
@@ -99,11 +99,13 @@ export default function Hero() {
                   />
                 ))}
               </div>
-            </div>
+            </a>
 
             {/* Payroll */}
-            <div
-              className="col-span-6 sm:col-span-2 soft-card p-3 float-slow"
+            <a
+              href="/products/payroll"
+              aria-label="Open Payroll page"
+              className="group col-span-6 sm:col-span-2 soft-card p-3 float-slow block cursor-pointer transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg"
               style={{ animationDelay: "0.4s" }}
             >
               <div className="grid h-8 w-8 place-items-center rounded-lg bg-[#dcfce7] text-success">
@@ -114,11 +116,13 @@ export default function Hero() {
               <div className="text-[10px] text-success flex items-center gap-1">
                 <TrendingUp className="h-3 w-3" /> processed
               </div>
-            </div>
+            </a>
 
             {/* Employees */}
-            <div
-              className="col-span-3 sm:col-span-2 soft-card p-3 float-slow"
+            <a
+              href="/products/core-hr"
+              aria-label="Open Core HR page"
+              className="group col-span-3 sm:col-span-2 soft-card p-3 float-slow block cursor-pointer transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg"
               style={{ animationDelay: "0.8s" }}
             >
               <div className="flex items-center justify-between">
@@ -136,11 +140,13 @@ export default function Hero() {
                   />
                 ))}
               </div>
-            </div>
+            </a>
 
             {/* Email campaign */}
-            <div
-              className="col-span-3 sm:col-span-2 soft-card p-3 float-slow"
+            <a
+              href="/hr-automation"
+              aria-label="Open HR Automation page"
+              className="group col-span-3 sm:col-span-2 soft-card p-3 float-slow block cursor-pointer transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg"
               style={{ animationDelay: "1.2s" }}
             >
               <div className="flex items-center justify-between">
@@ -153,10 +159,15 @@ export default function Hero() {
                 <div className="h-full w-[38%] bg-success rounded-full" />
               </div>
               <div className="text-[10px] text-ink-soft mt-0.5">38% open rate</div>
-            </div>
+            </a>
 
             {/* Leave + Reports row */}
-            <div className="col-span-3 soft-card p-3 float-slow" style={{ animationDelay: "1.6s" }}>
+            <a
+              href="/products/leave-management"
+              aria-label="Open Leave Management page"
+              className="group col-span-3 soft-card p-3 float-slow block cursor-pointer transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+              style={{ animationDelay: "1.6s" }}
+            >
               <div className="flex items-center justify-between">
                 <CalendarDays className="h-4 w-4 text-primary" />
                 <TrendingDown className="h-3 w-3 text-destructive" />
@@ -165,16 +176,21 @@ export default function Hero() {
               <div className="text-lg font-bold text-ink leading-tight">
                 14 <span className="text-[10px] font-medium text-ink-soft">· 6 pending</span>
               </div>
-            </div>
+            </a>
 
-            <div className="col-span-3 soft-card p-3 float-slow" style={{ animationDelay: "2s" }}>
+            <a
+              href="/hr-reports"
+              aria-label="Open HR Reports page"
+              className="group col-span-3 soft-card p-3 float-slow block cursor-pointer transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+              style={{ animationDelay: "2s" }}
+            >
               <div className="flex items-center justify-between">
                 <BarChart3 className="h-4 w-4 text-success" />
                 <span className="text-[10px] text-success">auto</span>
               </div>
               <div className="mt-1 text-[11px] text-ink-soft">Monthly Reports</div>
               <div className="text-lg font-bold text-ink leading-tight">28</div>
-            </div>
+            </a>
           </div>
 
           {/* Floating badge */}

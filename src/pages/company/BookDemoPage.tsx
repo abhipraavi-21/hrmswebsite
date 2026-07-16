@@ -10,9 +10,18 @@ export default function BookDemoPage() {
       icon={<CalendarCheck className="h-6 w-6" />}
       highlights={["Product walkthrough", "HRMS fit discussion", "Clear next steps for buyers"]}
       sections={[
-        { title: "What you will see", desc: "Walk through HR, attendance, payroll, reports, and employee workflows." },
-        { title: "Who should join", desc: "Invite HR, finance, operations, or leadership stakeholders." },
-        { title: "After the demo", desc: "Define next steps for setup, pricing, and implementation planning." },
+        {
+          title: "What you will see",
+          desc: "Walk through HR, attendance, payroll, reports, and employee workflows.",
+        },
+        {
+          title: "Who should join",
+          desc: "Invite HR, finance, operations, or leadership stakeholders.",
+        },
+        {
+          title: "After the demo",
+          desc: "Define next steps for setup, pricing, and implementation planning.",
+        },
       ]}
       primaryAction={{ label: "Contact us", href: "/company/contact-us" }}
     />
