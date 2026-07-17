@@ -327,89 +327,87 @@ export default function CoreHrPage() {
               </div>
             </div>
 
-            <div className="mt-10 overflow-hidden rounded-[2.5rem] border border-border bg-white shadow-float">
-              <div className="overflow-hidden border-b border-border bg-surface">
-                <div className="aspect-[18/7] w-full bg-white">
-                  <img
-                    src={modelScreenshots.generatedDocuments}
-                    alt="Generated documents dashboard preview"
-                    className="h-full w-full object-contain object-top bg-white lg:object-cover lg:object-top"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                  />
+            <div className="mt-10 grid gap-6 lg:grid-cols-12 lg:items-start">
+              <div className="soft-card p-6 lg:col-span-5">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  Document records
                 </div>
+                <h3 className="mt-2 text-2xl font-bold text-ink">
+                  A single HR core that connects records, actions, and insights
+                </h3>
+                <p className="mt-3 text-sm text-ink-soft">
+                  Core HR works best when documents, approvals, and change history stay tied to the
+                  employee record. That is the story this page is built around.
+                </p>
+
+                <div className="mt-6 space-y-4">
+                  {[
+                    "Consistent employee records across every business unit",
+                    "Permissions and approvals that match real operating structures",
+                    "Audit-friendly change history for sensitive HR updates",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-3 rounded-xl border border-border p-3"
+                    >
+                      <FileText className="h-4 w-4 text-primary" />
+                      <span className="text-sm text-ink">{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <a
+                  href="#guiding-principles"
+                  className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
+                >
+                  See the wider platform story <ArrowRight className="h-4 w-4" />
+                </a>
               </div>
 
-              <div className="grid gap-6 p-6 lg:grid-cols-12">
-                <div className="soft-card p-6 lg:col-span-7">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                        What it covers
-                      </div>
-                      <h3 className="mt-1 text-2xl font-bold text-ink">
-                        A practical set of Core HR controls for global teams
-                      </h3>
+              <div className="lg:col-span-7">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="soft-card p-5">
+                    <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
+                      <BadgeCheck className="h-5 w-5" />
                     </div>
-                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-success text-white">
-                      <BadgeCheck className="h-6 w-6" />
-                    </div>
-                  </div>
-
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                    {[
-                      "Employee master data that stays consistent across the organization",
-                      "Document storage with traceable record updates and approvals",
-                      "Role-based access that matches how different teams operate",
-                      "Regional policy handling for distributed and multi-country orgs",
-                      "Self-service updates that reduce repetitive HR admin work",
-                      "Reporting-ready data that flows into analytics and planning",
-                    ].map((item) => (
-                      <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-4">
-                        <div className="mt-0.5 grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] font-bold text-white">
-                          <CheckCircle2 className="h-3.5 w-3.5" />
-                        </div>
-                        <span className="text-sm font-medium text-ink">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="soft-card overflow-hidden lg:col-span-5">
-                  <div className="p-6">
-                    <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                      Document records
-                    </div>
-                    <div className="mt-2 text-2xl font-bold text-ink">
-                      A single HR core that connects records, actions, and insights
-                    </div>
-                    <p className="mt-3 text-sm text-ink-soft">
-                      Core HR works best when documents, approvals, and change history stay tied to
-                      the employee record. That is the story this page is built around.
+                    <h4 className="mt-4 text-lg font-bold text-ink">Clean record ownership</h4>
+                    <p className="mt-2 text-sm text-ink-soft">
+                      Employee data, job history, and attachments stay linked to one governed
+                      profile instead of being scattered across separate files.
                     </p>
+                  </div>
 
-                    <div className="mt-6 space-y-4">
-                      {[
-                        "Consistent employee records across every business unit",
-                        "Permissions and approvals that match real operating structures",
-                        "Audit-friendly change history for sensitive HR updates",
-                      ].map((item) => (
-                        <div
-                          key={item}
-                          className="flex items-center gap-3 rounded-xl border border-border p-3"
-                        >
-                          <FileText className="h-4 w-4 text-primary" />
-                          <span className="text-sm text-ink">{item}</span>
-                        </div>
-                      ))}
+                  <div className="soft-card p-5">
+                    <div className="grid h-11 w-11 place-items-center rounded-xl bg-[#ecfdf3] text-success">
+                      <ShieldCheck className="h-5 w-5" />
                     </div>
+                    <h4 className="mt-4 text-lg font-bold text-ink">Access by role</h4>
+                    <p className="mt-2 text-sm text-ink-soft">
+                      The right team members can view or update the right records without exposing
+                      sensitive information to everyone.
+                    </p>
+                  </div>
 
-                    <a
-                      href="#guiding-principles"
-                      className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
-                    >
-                      See the wider platform story <ArrowRight className="h-4 w-4" />
-                    </a>
+                  <div className="soft-card p-5">
+                    <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
+                      <Workflow className="h-5 w-5" />
+                    </div>
+                    <h4 className="mt-4 text-lg font-bold text-ink">Approval friendly</h4>
+                    <p className="mt-2 text-sm text-ink-soft">
+                      Updates, changes, and exceptions can move through structured approval flows
+                      instead of ad hoc follow-ups.
+                    </p>
+                  </div>
+
+                  <div className="soft-card p-5">
+                    <div className="grid h-11 w-11 place-items-center rounded-xl bg-surface text-ink">
+                      <Users className="h-5 w-5" />
+                    </div>
+                    <h4 className="mt-4 text-lg font-bold text-ink">Reporting-ready data</h4>
+                    <p className="mt-2 text-sm text-ink-soft">
+                      Core HR information stays organized so it can support analytics, exports, and
+                      everyday workforce planning.
+                    </p>
                   </div>
                 </div>
               </div>
