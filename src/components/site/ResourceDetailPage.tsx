@@ -48,33 +48,25 @@ export default function ResourceDetailPage({
         <section className="page-banner hero-gradient relative overflow-hidden">
           <div className="site-container grid gap-10 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-6">
-              <ScrollReveal variant="fade-up">
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
-                  {eyebrow}
-                </span>
-              </ScrollReveal>
-              <ScrollReveal variant="fade-up" delay={100}>
-                <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
-                  {title}
-                </h1>
-              </ScrollReveal>
-              <ScrollReveal variant="fade-up" delay={180}>
-                <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
-              </ScrollReveal>
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
+                {eyebrow}
+              </span>
+              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+                {title}
+              </h1>
+              <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
 
-              <ScrollReveal variant="fade-up" delay={260}>
-                <div className="button-group mt-6">
-                  <a href={primaryAction.href} className="btn-primary">
-                    {primaryAction.label}
-                  </a>
-                  <a href={secondaryAction.href} className="btn-outline">
-                    {secondaryAction.label}
-                  </a>
-                </div>
-              </ScrollReveal>
+              <div className="button-group mt-6">
+                <a href={primaryAction.href} className="btn-primary">
+                  {primaryAction.label}
+                </a>
+                <a href={secondaryAction.href} className="btn-outline">
+                  {secondaryAction.label}
+                </a>
+              </div>
             </div>
 
-            <ScrollReveal variant="fade-left" delay={320} className="lg:col-span-6">
+            <div className="lg:col-span-6">
               <div className="relative mx-auto max-w-xl rounded-[2rem] border border-border bg-white p-5 shadow-float">
                 <div className="soft-card p-5">
                   <div className="flex items-start justify-between gap-4">
@@ -101,7 +93,7 @@ export default function ResourceDetailPage({
                   </div>
                 </div>
               </div>
-            </ScrollReveal>
+            </div>
           </div>
         </section>
 

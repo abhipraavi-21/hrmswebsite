@@ -45,33 +45,25 @@ export default function CompanyDetailPage({
         <section className="page-banner hero-gradient">
           <div className="site-container grid gap-10 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-6">
-              <ScrollReveal variant="fade-up">
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
-                  {eyebrow}
-                </span>
-              </ScrollReveal>
-              <ScrollReveal variant="fade-up" delay={100}>
-                <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
-                  {title}
-                </h1>
-              </ScrollReveal>
-              <ScrollReveal variant="fade-up" delay={180}>
-                <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
-              </ScrollReveal>
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
+                {eyebrow}
+              </span>
+              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
+                {title}
+              </h1>
+              <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
 
-              <ScrollReveal variant="fade-up" delay={260}>
-                <div className="button-group mt-6">
-                  <a href={primaryAction.href} className="btn-primary">
-                    {primaryAction.label}
-                  </a>
-                  <a href="/" className="btn-outline">
-                    Back to home
-                  </a>
-                </div>
-              </ScrollReveal>
+              <div className="button-group mt-6">
+                <a href={primaryAction.href} className="btn-primary">
+                  {primaryAction.label}
+                </a>
+                <a href="/" className="btn-outline">
+                  Back to home
+                </a>
+              </div>
             </div>
 
-            <ScrollReveal variant="fade-right" delay={320} className="lg:col-span-6">
+            <div className="lg:col-span-6">
               <div className="rounded-[2rem] border border-border bg-white p-5 shadow-float">
                 {visual ? (
                   <>{visual}</>
@@ -106,7 +98,7 @@ export default function CompanyDetailPage({
                   </div>
                 )}
               </div>
-            </ScrollReveal>
+            </div>
           </div>
         </section>
 

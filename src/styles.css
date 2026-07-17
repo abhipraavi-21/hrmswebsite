@@ -630,16 +630,6 @@
     will-change: opacity, transform;
   }
 
-  .scroll-reveal[data-reveal-visible="true"],
-  .fade-up[data-reveal-visible="true"],
-  .fade-down[data-reveal-visible="true"],
-  .fade-left[data-reveal-visible="true"],
-  .fade-right[data-reveal-visible="true"],
-  .fade-scale[data-reveal-visible="true"] {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-
   .scroll-reveal[data-scroll-reveal="fade-up"],
   .fade-up {
     opacity: 0;
@@ -668,6 +658,20 @@
   .fade-scale {
     opacity: 0;
     transform: translateY(18px) scale(0.96);
+  }
+
+  .scroll-reveal[data-scroll-reveal="fade-up"][data-reveal-visible="true"],
+  .scroll-reveal[data-scroll-reveal="fade-down"][data-reveal-visible="true"],
+  .scroll-reveal[data-scroll-reveal="fade-left"][data-reveal-visible="true"],
+  .scroll-reveal[data-scroll-reveal="fade-right"][data-reveal-visible="true"],
+  .scroll-reveal[data-scroll-reveal="scale"][data-reveal-visible="true"],
+  .fade-up[data-reveal-visible="true"],
+  .fade-down[data-reveal-visible="true"],
+  .fade-left[data-reveal-visible="true"],
+  .fade-right[data-reveal-visible="true"],
+  .fade-scale[data-reveal-visible="true"] {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
   }
 
   .scroll-reveal,

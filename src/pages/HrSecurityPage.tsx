@@ -37,6 +37,7 @@ import {
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import TopNavbar from "@/components/site/TopNavbar";
+import { cn } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
@@ -292,7 +293,6 @@ const payrollAccessCards = [
 ];
 
 const attendanceMethods = [
-  { label: "Biometric", icon: <Fingerprint className="h-4 w-4" /> },
   { label: "GPS", icon: <MapPin className="h-4 w-4" /> },
   { label: "Geolocation", icon: <Globe2 className="h-4 w-4" /> },
   { label: "Geofencing", icon: <Shield className="h-4 w-4" /> },
@@ -645,6 +645,63 @@ function AccessStateBadge({ state }: { state: AccessState }) {
   return <span className={`rounded-full px-3 py-1.5 text-xs font-semibold ${tone}`}>{state}</span>;
 }
 
+function RoleAccessCard({
+  role,
+  states,
+  isSelected,
+  onSelect,
+}: {
+  role: (typeof roles)[number];
+  states: AccessState[];
+  isSelected: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={isSelected}
+      className={`w-full rounded-[1.75rem] border p-5 text-left shadow-card transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 ${
+        isSelected
+          ? "border-primary bg-primary-soft/20 shadow-md"
+          : "border-border bg-white hover:-translate-y-0.5 hover:border-primary/30"
+      }`}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary-soft text-primary">
+            <UserCog className="h-4 w-4" />
+          </span>
+          <span>
+            <span className="block text-base font-semibold text-ink">{role}</span>
+            <span className="block text-xs text-ink-soft">Example interface, not real user data</span>
+          </span>
+        </div>
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+            isSelected ? "bg-primary text-white" : "bg-surface text-ink-soft"
+          }`}
+        >
+          {isSelected ? "Selected" : "Tap to view"}
+        </span>
+      </div>
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        {permissionAreas.map((area, index) => (
+          <div key={area} className="rounded-2xl border border-border bg-surface p-3">
+            <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+              {area}
+            </div>
+            <div className="mt-2">
+              <AccessStateBadge state={states[index]} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </button>
+  );
+}
+
 function HeroSecurityVisual() {
   return (
     <div className="relative mx-auto max-w-2xl">
@@ -974,7 +1031,7 @@ export default function HrSecurityPage() {
               <div className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
                 Security capability strip
               </div>
-              <div className="flex flex-1 gap-3 overflow-x-auto pb-2">
+              <div className="flex flex-1 flex-wrap gap-3">
                 {capabilityStrip.map((item) => (
                   <StatusChip key={item.label} label={item.label} icon={item.icon} />
                 ))}
@@ -1094,56 +1151,21 @@ export default function HrSecurityPage() {
               ))}
             </div>
 
-            <div className="mt-8 overflow-x-auto rounded-[1.75rem] border border-border bg-white shadow-card">
-              <div className="min-w-[980px]">
-                <div className="grid grid-cols-[220px_repeat(9,minmax(110px,1fr))] border-b border-border bg-surface/70 text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                  <div className="px-4 py-3">Role / Permission</div>
-                  {permissionAreas.map((area) => (
-                    <div key={area} className="px-4 py-3 text-center">
-                      {area}
-                    </div>
-                  ))}
-                </div>
+            <div className="mt-8 grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+              {roles.map((role) => {
+                const isSelected = role === selectedRole;
+                const states = roleMatrix[role];
 
-                {roles.map((role) => {
-                  const isSelected = role === selectedRole;
-                  const states = roleMatrix[role];
-
-                  return (
-                    <div
-                      key={role}
-                      className={`grid grid-cols-[220px_repeat(9,minmax(110px,1fr))] border-b border-border last:border-b-0 ${
-                        isSelected ? "bg-primary-soft/30" : "bg-white"
-                      }`}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => setSelectedRole(role)}
-                        className="flex h-full items-center gap-3 px-4 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-                        aria-pressed={isSelected}
-                      >
-                        <span className="grid h-10 w-10 place-items-center rounded-xl bg-white text-primary shadow-sm">
-                          <UserCog className="h-4 w-4" />
-                        </span>
-                        <span>
-                          <span className="block text-sm font-semibold text-ink">{role}</span>
-                          <span className="block text-xs text-ink-soft">
-                            Example interface, not real user data
-                          </span>
-                        </span>
-                      </button>
-                      {states.map((state, index) => (
-                        <div
-                          key={`${role}-${permissionAreas[index]}`}
-                          className="flex items-center justify-center px-3 py-4"
-                        >
-                          <AccessStateBadge state={state} />
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })}
-              </div>
+                return (
+                  <RoleAccessCard
+                    key={role}
+                    role={role}
+                    states={states}
+                    isSelected={isSelected}
+                    onSelect={() => setSelectedRole(role)}
+                  />
+                );
+              })}
             </div>
           </div>
         </section>
@@ -1462,14 +1484,22 @@ export default function HrSecurityPage() {
               />
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                {attendanceMethods.map((method) => (
-                  <div key={method.label} className="soft-card flex items-center gap-3 p-4">
-                    <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary-soft text-primary">
-                      {method.icon}
-                    </span>
-                    <span className="text-sm font-medium text-ink">{method.label}</span>
-                  </div>
-                ))}
+                {attendanceMethods.map((method, index) => {
+                  const isLastOddCard =
+                    attendanceMethods.length % 2 === 1 && index === attendanceMethods.length - 1;
+                  const cardClassName = isLastOddCard
+                    ? "soft-card flex items-center gap-3 p-4 sm:col-span-2 sm:w-[calc(50%-0.375rem)] sm:justify-self-center"
+                    : "soft-card flex items-center gap-3 p-4";
+
+                  return (
+                    <div key={method.label} className={cardClassName}>
+                      <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary-soft text-primary">
+                        {method.icon}
+                      </span>
+                      <span className="text-sm font-medium text-ink">{method.label}</span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -1562,71 +1592,71 @@ export default function HrSecurityPage() {
               </div>
 
               <div className="lg:col-span-6">
-                <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                        Leave and compliance snapshot
-                      </div>
-                      <div className="mt-1 text-lg font-bold text-ink">Controlled records view</div>
-                    </div>
-                    <FileBarChart2 className="h-5 w-5 text-primary" />
-                  </div>
-
-                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-[1.5rem] bg-primary-soft/35 p-5">
-                      <div className="flex items-center justify-between gap-3">
-                        <div>
-                          <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                            Leave status
-                          </div>
-                          <div className="mt-1 text-lg font-bold text-ink">Role-aware access</div>
+                <div className="grid gap-4">
+                  <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                          Leave and compliance snapshot
                         </div>
-                        <CalendarDays className="h-5 w-5 text-primary" />
+                        <div className="mt-1 text-lg font-bold text-ink">Controlled records view</div>
                       </div>
-                      <div className="mt-4 space-y-2 text-sm text-ink-soft">
-                        <div>Employees see their own balances and requests.</div>
-                        <div>Managers see team leave and approval history.</div>
-                        <div>HR sees organization-wide leave records.</div>
-                      </div>
+                      <FileBarChart2 className="h-5 w-5 text-primary" />
                     </div>
 
-                    <div className="rounded-[1.5rem] bg-white p-5 shadow-sm">
-                      <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                        Compliance status
-                      </div>
-                      <div className="mt-4 grid gap-3">
-                        {[
-                          ["PF", "Organized"],
-                          ["ESIC", "Organized"],
-                          ["TDS", "Organized"],
-                          ["Compliance reports", "Available"],
-                        ].map(([label, value]) => (
-                          <div
-                            key={label}
-                            className="flex items-center justify-between gap-3 rounded-2xl bg-surface px-4 py-3"
-                          >
-                            <span className="text-sm font-medium text-ink">{label}</span>
-                            <span className="text-sm font-bold text-primary">{value}</span>
+                    <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-[1.5rem] bg-primary-soft/35 p-5">
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                              Leave status
+                            </div>
+                            <div className="mt-1 text-lg font-bold text-ink">Role-aware access</div>
                           </div>
-                        ))}
+                          <CalendarDays className="h-5 w-5 text-primary" />
+                        </div>
+                        <div className="mt-4 space-y-2 text-sm text-ink-soft">
+                          <div>Employees see their own balances and requests.</div>
+                          <div>Managers see team leave and approval history.</div>
+                          <div>HR sees organization-wide leave records.</div>
+                        </div>
+                      </div>
+
+                      <div className="rounded-[1.5rem] bg-white p-5 shadow-sm">
+                        <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                          Compliance status
+                        </div>
+                        <div className="mt-4 grid gap-3">
+                          {[
+                            ["PF", "Organized"],
+                            ["ESIC", "Organized"],
+                            ["TDS", "Organized"],
+                            ["Compliance reports", "Available"],
+                          ].map(([label, value]) => (
+                            <div
+                              key={label}
+                              className="flex items-center justify-between gap-3 rounded-2xl bg-surface px-4 py-3"
+                            >
+                              <span className="text-sm font-medium text-ink">{label}</span>
+                              <span className="text-sm font-bold text-primary">{value}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
 
-            <div className="relative mt-8 overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
-              <div className="mx-auto max-w-none px-0">
-                <div className="flex h-[88vh] items-center overflow-hidden border-y border-border bg-white shadow-card sm:h-[92vh]">
-                  <img
-                    src={modelScreenshots.salaryReport}
-                    alt="Compliance report preview"
-                    className="block h-full w-full origin-top scale-[1.45] transform-gpu object-contain bg-white sm:scale-[1.55] lg:scale-[1.7]"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                  />
+                  <div className="overflow-hidden rounded-[2.25rem] border border-border bg-white p-4 shadow-float md:p-5">
+                    <div className="overflow-hidden rounded-[1.75rem] border border-border bg-surface">
+                      <img
+                        src={modelScreenshots.salaryReport}
+                        alt="Compliance report preview"
+                        className="block h-auto w-full object-contain bg-white"
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1666,22 +1696,13 @@ export default function HrSecurityPage() {
               <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
                 <div className="relative overflow-hidden rounded-[1.5rem] border border-border bg-surface p-5">
                   <div className="absolute inset-x-0 top-0 h-[3px] popup-blue-band" />
-                  <div className="grid gap-4 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+                  <div className="grid gap-4 lg:grid-cols-2 lg:items-start">
                     <div className="grid gap-3">
                       {["Core HR", "Attendance", "Payroll", "Leave"].map((item) => (
                         <div key={item} className="rounded-2xl bg-white px-4 py-3 shadow-sm">
                           <div className="text-sm font-semibold text-ink">{item}</div>
                         </div>
                       ))}
-                    </div>
-
-                    <div className="relative grid h-32 w-32 place-items-center rounded-full border border-primary/20 bg-white shadow-float">
-                      <div className="text-center">
-                        <Database className="mx-auto h-8 w-8 text-primary" />
-                        <div className="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                          Central HR
-                        </div>
-                      </div>
                     </div>
 
                     <div className="grid gap-3">
@@ -1902,9 +1923,9 @@ export default function HrSecurityPage() {
               </div>
             </div>
 
-            <div className="relative mt-8 overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
-              <div className="mx-auto max-w-none px-0">
-                <div className="overflow-hidden border-y border-border bg-white shadow-card">
+            <div className="mt-8">
+              <div className="mx-auto max-w-7xl overflow-hidden rounded-[2.25rem] border border-border bg-white p-4 shadow-float md:p-5">
+                <div className="overflow-hidden rounded-[1.75rem] border border-border bg-surface">
                   <img
                     src={modelScreenshots.employeeReport}
                     alt="HR report preview"
@@ -1987,28 +2008,51 @@ export default function HrSecurityPage() {
             </div>
 
             <div className="lg:col-span-7">
-              <div className="overflow-hidden rounded-[1.75rem] border border-border bg-white shadow-card">
-                <div className="overflow-hidden border-b border-border bg-surface">
-                  <div className="aspect-[18/7] w-full bg-white">
-                    <img
-                      src={modelScreenshots.generatedDocuments}
-                      alt="Protected HR documents dashboard preview"
-                      className="h-full w-full object-contain object-top bg-white lg:object-cover lg:object-top"
-                      loading="lazy"
-                      referrerPolicy="no-referrer"
-                    />
+              <div className="grid gap-4">
+                <div className="overflow-hidden rounded-[1.75rem] border border-border bg-white shadow-card">
+                  <div className="overflow-hidden border-b border-border bg-surface">
+                    <div className="aspect-[18/7] w-full bg-white">
+                      <img
+                        src={modelScreenshots.generatedDocuments}
+                        alt="Protected HR documents dashboard preview"
+                        className="h-full w-full object-contain object-top bg-white lg:object-cover lg:object-top"
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-3 p-5 sm:grid-cols-3">
+                    {[
+                      "Controlled employee data access",
+                      "Secure report access",
+                      "Centralized HR database",
+                    ].map((item) => (
+                      <div key={item} className="rounded-2xl bg-primary-soft/35 p-4">
+                        <div className="text-sm font-semibold text-primary">{item}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div className="grid gap-3 p-5 sm:grid-cols-3">
-                  {[
-                    "Controlled employee data access",
-                    "Secure report access",
-                    "Centralized HR database",
-                  ].map((item) => (
-                    <div key={item} className="rounded-2xl bg-primary-soft/35 p-4">
-                      <div className="text-sm font-semibold text-primary">{item}</div>
+
+                <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                        Supporting controls
+                      </div>
+                      <div className="mt-1 text-lg font-bold text-ink">More reasons to choose Altroz</div>
                     </div>
-                  ))}
+                    <ShieldCheck className="h-5 w-5 text-primary" />
+                  </div>
+
+                  <div className="mt-4 grid gap-3 md:grid-cols-2">
+                    {whyChooseItems.slice(3).map((item) => (
+                      <div key={item} className="flex items-start gap-3 rounded-2xl bg-surface p-4">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                        <span className="text-sm text-ink">{item}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -2054,23 +2098,64 @@ export default function HrSecurityPage() {
               description="A concise accordion keeps common questions easy to scan while maintaining accessible keyboard behavior."
             />
 
-            <div className="mt-10">
-              <Accordion type="single" collapsible className="space-y-3">
-                {faqItems.map((item) => (
-                  <AccordionItem
-                    key={item.q}
-                    value={item.q}
-                    className="rounded-2xl border border-border bg-white px-4 shadow-sm"
-                  >
-                    <AccordionTrigger className="py-4 text-left text-base font-semibold text-ink no-underline hover:no-underline [&>svg]:text-primary">
-                      {item.q}
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-4 text-sm leading-6 text-ink-soft">
-                      {item.a}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+            <div className="mt-10 grid gap-8 lg:grid-cols-12 lg:items-start">
+              <div className="lg:col-span-7">
+                <Accordion type="single" collapsible className="space-y-3">
+                  {faqItems.map((item) => (
+                    <AccordionItem
+                      key={item.q}
+                      value={item.q}
+                      className="w-full rounded-2xl border border-border bg-white px-4 shadow-sm"
+                    >
+                      <AccordionTrigger className="py-4 text-left text-base font-semibold text-ink no-underline hover:no-underline [&>svg]:text-primary">
+                        {item.q}
+                      </AccordionTrigger>
+                      <AccordionContent className="pb-4 text-sm leading-6 text-ink-soft">
+                        {item.a}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+
+              <div className="lg:col-span-5">
+                <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
+                  <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                    Quick answers
+                  </div>
+                  <div className="mt-2 text-2xl font-bold tracking-tight text-ink">
+                    Security details in one place
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-ink-soft">
+                    Use this panel to highlight the most important security points while the FAQ
+                    list stays easy to scan on the left.
+                  </p>
+
+                  <div className="mt-5 grid gap-3">
+                    {[
+                      "Role-based access limits visibility to approved users.",
+                      "Payroll and document data stay restricted to authorized teams.",
+                      "Employee and manager views can be separated by responsibility.",
+                      "Reports can stay available only to selected roles.",
+                    ].map((item) => (
+                      <div key={item} className="flex items-start gap-3 rounded-2xl bg-surface p-4">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                        <span className="text-sm text-ink">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-5 rounded-2xl bg-primary-soft/35 p-4">
+                    <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                      Need more help?
+                    </div>
+                    <p className="mt-2 text-sm text-ink-soft">
+                      Book a demo or talk to our team for a walkthrough of security and access
+                      controls.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

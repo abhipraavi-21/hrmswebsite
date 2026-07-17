@@ -1246,7 +1246,7 @@ export default function PartnerWithUsPage() {
           <div className="pointer-events-none absolute -bottom-24 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
           <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-center lg:py-16">
-            <div className="lg:col-span-6 fade-up">
+            <div className="lg:col-span-6">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Grow Your Business with Altroz HRMS

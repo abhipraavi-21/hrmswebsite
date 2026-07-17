@@ -742,55 +742,127 @@ function DashboardMetric({
 
 function ReportPreview({ report }: { report: ReportCategory }) {
   return (
-    <div key={report.id} className="fade-up space-y-5">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-primary">Preview</div>
-          <h3 className="mt-1 text-2xl font-bold text-ink">{report.title}</h3>
-          <p className="mt-2 max-w-2xl text-sm text-ink-soft">{report.desc}</p>
-        </div>
-        <div className="rounded-2xl bg-primary-soft px-4 py-3 text-right">
-          <div className="text-xs font-bold uppercase tracking-wider text-primary">Filters</div>
-          <div className="mt-1 text-sm font-semibold text-ink">{report.filters.join("  |  ")}</div>
-        </div>
-      </div>
-
-      <div className="grid gap-3 md:grid-cols-4">
-        {report.metrics.map((metric) => (
-          <div key={metric.label} className="rounded-2xl bg-surface p-4">
-            <div className="text-xs font-bold uppercase tracking-wider text-primary">
-              {metric.label}
+    <div key={report.id} className="space-y-5">
+      <div className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
+        <div className="space-y-5">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider text-primary">Preview</div>
+              <h3 className="mt-1 text-2xl font-bold text-ink">{report.title}</h3>
+              <p className="mt-2 max-w-2xl text-sm text-ink-soft">{report.desc}</p>
             </div>
-            <div className="mt-2 text-2xl font-bold text-ink">
-              <AnimatedCounter value={metric.value} suffix={metric.suffix} />
+            <div className="rounded-2xl bg-primary-soft px-4 py-3 text-right">
+              <div className="text-xs font-bold uppercase tracking-wider text-primary">Filters</div>
+              <div className="mt-1 text-sm font-semibold text-ink">{report.filters.join("  |  ")}</div>
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="overflow-hidden rounded-3xl border border-border bg-white shadow-card">
-        <div className="grid grid-cols-4 gap-0 border-b border-border bg-surface px-4 py-3 text-xs font-bold uppercase tracking-wider text-ink-soft">
-          <div>Employee</div>
-          <div>Branch</div>
-          <div>Status</div>
-          <div className="text-right">Hours</div>
-        </div>
-        <div className="divide-y divide-border">
-          {report.rows.map((row) => (
-            <div
-              key={`${row.employee}-${row.branch}`}
-              className="grid grid-cols-4 gap-0 px-4 py-3 text-sm"
-            >
-              <div className="font-medium text-ink">{row.employee}</div>
-              <div className="text-ink-soft">{row.branch}</div>
-              <div className="text-primary">{row.status}</div>
-              <div className="text-right font-semibold text-ink">{row.hours}</div>
+          <div className="grid gap-3 md:grid-cols-4">
+            {report.metrics.map((metric) => (
+              <div key={metric.label} className="rounded-2xl bg-surface p-4">
+                <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                  {metric.label}
+                </div>
+                <div className="mt-2 text-2xl font-bold text-ink">
+                  <AnimatedCounter value={metric.value} suffix={metric.suffix} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="overflow-hidden rounded-3xl border border-border bg-white shadow-card">
+            <div className="grid grid-cols-4 gap-0 border-b border-border bg-surface px-4 py-3 text-xs font-bold uppercase tracking-wider text-ink-soft">
+              <div>Employee</div>
+              <div>Branch</div>
+              <div>Status</div>
+              <div className="text-right">Hours</div>
             </div>
-          ))}
+            <div className="divide-y divide-border">
+              {report.rows.map((row) => (
+                <div
+                  key={`${row.employee}-${row.branch}`}
+                  className="grid grid-cols-4 gap-0 px-4 py-3 text-sm"
+                >
+                  <div className="font-medium text-ink">{row.employee}</div>
+                  <div className="text-ink-soft">{row.branch}</div>
+                  <div className="text-primary">{row.status}</div>
+                  <div className="text-right font-semibold text-ink">{row.hours}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex h-full flex-col rounded-[1.75rem] border border-border bg-gradient-to-br from-primary-soft/35 via-white to-surface p-4 shadow-card">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                Report visual
+              </div>
+              <div className="mt-1 text-lg font-bold text-ink">Attendance dashboard preview</div>
+            </div>
+            <div className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-primary shadow-sm">
+              Live summary
+            </div>
+          </div>
+
+          <div className="mt-4 overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-sm">
+            <div className="bg-surface/70 px-4 py-3 text-xs font-bold uppercase tracking-wider text-ink-soft">
+              {currentReportTitle(report)}
+            </div>
+            <div className="border-t border-border bg-white">
+              <img
+                src={modelScreenshots.attendanceDashboard}
+                alt="Attendance dashboard preview"
+                className="block min-h-[300px] w-full object-cover object-top bg-white"
+                loading="lazy"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {[
+              "Daily status snapshot",
+              "Monthly trend view",
+              "Employee-wise analysis",
+              "Department-wise comparison",
+            ].map((item) => (
+              <div
+                key={item}
+                className="rounded-2xl border border-white/70 bg-white/90 px-4 py-3 text-sm font-medium text-ink shadow-sm"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 rounded-2xl bg-white/90 p-4 shadow-sm">
+            <div className="text-xs font-bold uppercase tracking-wider text-primary">
+              Selected report focus
+            </div>
+            <div className="mt-3 grid gap-2">
+              {[
+                "Attendance status and exceptions",
+                "Branch and department comparisons",
+                "Employee-level working hours",
+                "Payroll-ready attendance summaries",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 rounded-xl bg-surface px-3 py-2">
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-success" />
+                  <span className="text-sm text-ink">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
+}
+
+function currentReportTitle(report: ReportCategory) {
+  return report.title;
 }
 
 export default function AttendanceManagementPage() {
@@ -1407,7 +1479,7 @@ export default function AttendanceManagementPage() {
                 </div>
               </div>
 
-              <div className="lg:col-span-8 lg:self-start">
+              <div className="lg:col-span-8 lg:self-stretch">
                 <div className="soft-card p-6 md:p-8">
                   <ReportPreview report={currentReport} />
                 </div>

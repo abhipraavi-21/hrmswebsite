@@ -1061,7 +1061,7 @@ export default function AboutUsPage() {
           <div className="pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full bg-primary/12 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/12 blur-3xl" />
           <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-start lg:py-14">
-            <Reveal className="lg:col-span-6 lg:pt-8">
+            <div className="lg:col-span-6 lg:pt-8">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Empowering Businesses with Smart HR Technology
@@ -1104,11 +1104,11 @@ export default function AboutUsPage() {
                   </span>
                 ))}
               </div>
-            </Reveal>
+            </div>
 
-            <Reveal className="lg:col-span-6" delay={120}>
+            <div className="lg:col-span-6">
               <HeroVisual />
-            </Reveal>
+            </div>
           </div>
         </section>
 
