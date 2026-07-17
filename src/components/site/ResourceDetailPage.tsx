@@ -69,28 +69,49 @@ export default function ResourceDetailPage({
 
             <div className="lg:col-span-6">
               <div className="relative mx-auto max-w-xl rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                <div className="soft-card p-5">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                        Resource center
+                <div className="grid gap-4">
+                  <div className="rounded-[1.75rem] border border-border bg-surface p-5">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                          {eyebrow}
+                        </div>
+                        <div className="mt-2 text-2xl font-bold text-ink">{title}</div>
+                        <p className="mt-3 text-sm leading-6 text-ink-soft">{description}</p>
                       </div>
-                      <div className="mt-2 text-2xl font-bold text-ink">
-                        Practical help for stronger HR operations
+                      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary text-white shadow-sm">
+                        {icon}
                       </div>
                     </div>
-                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-white">
-                      {icon}
+
+                    <div className="mt-5 space-y-3">
+                      {highlights.map((item) => (
+                        <div key={item} className="flex items-center gap-3 rounded-xl bg-white p-3">
+                          <CheckCircle2 className="h-4 w-4 text-primary" />
+                          <span className="text-sm text-ink">{item}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
-                  <div className="mt-5 space-y-3">
-                    {highlights.map((item) => (
-                      <div key={item} className="flex items-center gap-3 rounded-xl bg-surface p-3">
-                        <CheckCircle2 className="h-4 w-4 text-primary" />
-                        <span className="text-sm text-ink">{item}</span>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {cards.slice(0, 2).map((card) => (
+                      <div key={card.title} className="soft-card p-4">
+                        <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                          {card.title}
+                        </div>
+                        <div className="mt-1 text-sm text-ink-soft">{card.desc}</div>
                       </div>
                     ))}
+                  </div>
+
+                  <div className="rounded-2xl bg-primary-soft/35 p-4">
+                    <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                      Page focus
+                    </div>
+                    <div className="mt-1 text-sm font-medium text-ink-soft">
+                      Clear navigation, useful content, and a stronger top section.
+                    </div>
                   </div>
                 </div>
               </div>

@@ -68,30 +68,48 @@ export default function CompanyDetailPage({
                 {visual ? (
                   <>{visual}</>
                 ) : (
-                  <div className="soft-card p-5">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                          Company
+                  <div className="grid gap-4">
+                    <div className="rounded-[1.75rem] border border-border bg-primary-soft/25 p-5">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                            {eyebrow}
+                          </div>
+                          <div className="mt-2 text-2xl font-bold text-ink">{title}</div>
+                          <p className="mt-3 text-sm leading-6 text-ink-soft">{description}</p>
                         </div>
-                        <div className="mt-2 text-2xl font-bold text-ink">
-                          People-first HR technology with practical support
+                        <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary text-white shadow-sm">
+                          {icon}
                         </div>
                       </div>
-                      <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-white">
-                        {icon}
+
+                      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                        {highlights.map((item, index) => (
+                          <div
+                            key={item}
+                            className="flex items-center gap-3 rounded-xl bg-white/80 p-3 shadow-sm"
+                            style={{ transitionDelay: `${index * 50}ms` }}
+                          >
+                            <CheckCircle2 className="h-4 w-4 text-primary" />
+                            <span className="text-sm text-ink">{item}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
-                    <div className="mt-5 space-y-3">
-                      {highlights.map((item, index) => (
-                        <div
-                          key={item}
-                          className="flex items-center gap-3 rounded-xl bg-surface p-3"
-                          style={{ transitionDelay: `${index * 50}ms` }}
-                        >
-                          <CheckCircle2 className="h-4 w-4 text-primary" />
-                          <span className="text-sm text-ink">{item}</span>
+                    <div className="grid gap-3 sm:grid-cols-3">
+                      {[
+                        "Fast response",
+                        "Tailored next steps",
+                        "Simple rollout planning",
+                      ].map((item) => (
+                        <div key={item} className="soft-card p-4">
+                          <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                            {item}
+                          </div>
+                          <div className="mt-1 text-sm font-medium text-ink-soft">
+                            Built to keep this page feeling complete.
+                          </div>
                         </div>
                       ))}
                     </div>
