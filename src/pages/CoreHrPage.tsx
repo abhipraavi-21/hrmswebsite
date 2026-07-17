@@ -130,7 +130,7 @@ export default function CoreHrPage() {
 
           <div className="container-x py-6 lg:py-8">
             <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
-              <div className="lg:col-span-5 fade-up">
+              <div className="lg:col-span-5">
                 <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                   <Sparkles className="h-3.5 w-3.5" />
                   Global HR Core
