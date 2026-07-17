@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Footer from "@/components/site/Footer";
@@ -57,12 +58,12 @@ export default function ResourceDetailPage({
               <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
 
               <div className="button-group mt-6">
-                <a href={primaryAction.href} className="btn-primary">
+                <Link to={primaryAction.href} className="btn-primary">
                   {primaryAction.label}
-                </a>
-                <a href={secondaryAction.href} className="btn-outline">
+                </Link>
+                <Link to={secondaryAction.href} className="btn-outline">
                   {secondaryAction.label}
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -118,12 +119,12 @@ export default function ResourceDetailPage({
             </StaggerReveal>
 
             <ScrollReveal variant="fade-up" delay={120}>
-              <a
-                href={secondaryAction.href}
+              <Link
+                to={secondaryAction.href}
                 className="card-action mt-8 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
               >
                 {secondaryAction.label} <ArrowRight className="h-4 w-4" />
-              </a>
+              </Link>
             </ScrollReveal>
           </div>
         </section>

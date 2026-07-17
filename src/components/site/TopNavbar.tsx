@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, ChevronDown, Mail, Menu, Users, X } from "lucide-react";
 import BrandMark from "./BrandMark";
@@ -26,6 +27,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useScrolled } from "@/hooks/useScrolled";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 const companyLinks = companyMenuColumns.flatMap((column) => column.links);
 
@@ -71,9 +73,9 @@ export default function TopNavbar() {
       )}
     >
       <div className="site-container flex items-center justify-between gap-3 py-3 lg:hidden">
-        <a href="/" className="flex items-center gap-2 shrink-0">
+        <Link to={ROUTES.home} className="flex items-center gap-2 shrink-0">
           <BrandMark />
-        </a>
+        </Link>
 
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
@@ -148,32 +150,32 @@ export default function TopNavbar() {
                     />
                     <MobileTopLevelLink
                       label="Pricing"
-                      href="/pricing"
+                      href={ROUTES.pricing}
                       onNavigate={() => setMobileOpen(false)}
                     />
                     <MobileTopLevelLink
                       label="Partner With Us"
-                      href="/partner-with-us"
+                      href={ROUTES.partner}
                       onNavigate={() => setMobileOpen(false)}
                     />
                   </Accordion>
                 </div>
 
                 <div className="mt-8 grid gap-3">
-                  <a
-                    href="/company/book-demo"
+                  <Link
+                    to={ROUTES.bookDemo}
                     onClick={() => setMobileOpen(false)}
                     className="btn-ghost justify-center text-sm"
                   >
                     Request Demo
-                  </a>
-                  <a
-                    href="/pricing"
+                  </Link>
+                  <Link
+                    to={ROUTES.pricing}
                     onClick={() => setMobileOpen(false)}
                     className="btn-primary justify-center text-sm"
                   >
                     View Pricing
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -187,9 +189,9 @@ export default function TopNavbar() {
           scrolled ? "lg:h-14" : "lg:h-16",
         )}
       >
-        <a href="/" className="flex items-center gap-2 shrink-0">
+        <Link to={ROUTES.home} className="flex items-center gap-2 shrink-0">
           <BrandMark />
-        </a>
+        </Link>
 
         <nav className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-row lg:items-center lg:gap-1">
           <ProductTab
@@ -221,24 +223,24 @@ export default function TopNavbar() {
         </nav>
 
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:flex lg:items-center lg:justify-end lg:gap-2">
-          <a
-            href="/company/contact-us"
+          <Link
+            to={ROUTES.contact}
             className="nav-link btn-ghost justify-center px-2.5 py-1.5 text-xs sm:px-3 sm:text-sm"
           >
             Contact Sales
-          </a>
-          <a
-            href="/company/support"
+          </Link>
+          <Link
+            to={ROUTES.support}
             className="nav-link btn-ghost justify-center px-2.5 py-1.5 text-xs sm:px-3 sm:text-sm"
           >
             Support
-          </a>
-          <a
-            href="/company/book-demo"
+          </Link>
+          <Link
+            to={ROUTES.bookDemo}
             className="btn-success justify-center px-3 py-2 text-xs sm:px-5 sm:text-sm"
           >
             Book Free Demo
-          </a>
+          </Link>
         </div>
       </div>
     </header>
@@ -292,9 +294,9 @@ function ProductTab({
         <div className="popup-blue-surface relative overflow-hidden rounded-[1.35rem] border border-white/70 p-2 shadow-[0_18px_50px_rgba(11,92,255,0.14)] backdrop-blur-xl ring-1 ring-white/60">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] popup-blue-band" />
           {(items as { label: string; desc?: string; href?: string }[]).map((it, index) => (
-            <a
+            <Link
               key={it.label}
-              href={it.href ?? `#${it.label}`}
+              to={it.href ?? `#${it.label}`}
               tabIndex={isOpen ? 0 : -1}
               style={{ transitionDelay: isOpen ? `${index * 35}ms` : "0ms" }}
               className={`group flex items-center justify-between gap-3 rounded-lg px-2 py-2.5 transition-all duration-300 ${
@@ -310,7 +312,7 @@ function ProductTab({
                   className="h-4 w-4 -translate-x-0.5 opacity-0 transition-[transform,opacity] duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
                 />
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -397,14 +399,14 @@ function MobileTopLevelLink({
   onNavigate: () => void;
 }) {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       onClick={onNavigate}
       className="flex items-center justify-between rounded-2xl border border-border/70 px-4 py-3 text-left text-sm font-semibold text-ink transition-colors hover:bg-surface hover:text-primary"
     >
       <span className="text-sm font-semibold tracking-tight text-ink">{label}</span>
       <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0 text-primary" />
-    </a>
+    </Link>
   );
 }
 
@@ -422,8 +424,8 @@ function MobileLink({
   onNavigate: () => void;
 }) {
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       onClick={onNavigate}
       className="group flex items-center justify-between gap-3 rounded-lg px-2 py-3 text-left transition-colors active:bg-white/60 active:text-primary sm:hover:bg-white/60 sm:hover:text-primary"
     >
@@ -439,6 +441,6 @@ function MobileLink({
         aria-hidden="true"
         className="h-4 w-4 shrink-0 text-primary opacity-80 transition-[transform,opacity] duration-200 ease-out group-active:translate-x-1 sm:opacity-0 sm:-translate-x-0.5 sm:group-hover:translate-x-0 sm:group-hover:opacity-100"
       />
-    </a>
+    </Link>
   );
 }

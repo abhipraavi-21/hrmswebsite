@@ -30,6 +30,7 @@ import {
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import TopNavbar from "@/components/site/TopNavbar";
+import { ROUTES } from "@/routes/routeConfig.js";
 import {
   Accordion,
   AccordionContent,
@@ -476,7 +477,7 @@ function MetricCard({ label, value }: MetaItem) {
 }
 
 export default function WhyAltozPage() {
-  usePageMeta(pageTitle, pageDescription, "/why-altroz");
+  usePageMeta(pageTitle, pageDescription, ROUTES.whyAltroz);
 
   const [selectedModule, setSelectedModule] = useState(moduleOptions[0].id);
   const [selectedIndustry, setSelectedIndustry] = useState(industryOptions[0].id);

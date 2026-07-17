@@ -42,6 +42,7 @@ import { z } from "zod";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import TopNavbar from "@/components/site/TopNavbar";
+import { ROUTES } from "@/routes/routeConfig.js";
 import { cn } from "@/lib/utils";
 import { modelScreenshots } from "@/lib/modelScreenshots";
 import { Button } from "@/components/ui/button";
@@ -1196,7 +1197,7 @@ function PseudoCard({
 }
 
 export default function PartnerWithUsPage() {
-  usePageMeta(pageTitle, pageDescription, "/partner-with-us");
+  usePageMeta(pageTitle, pageDescription, ROUTES.partner);
 
   const [selectedOpportunity, setSelectedOpportunity] = useState(businessOpportunityCards[0].id);
   const [selectedPartnerType, setSelectedPartnerType] = useState(partnerTypes[0].id);

@@ -1,3 +1,4 @@
+import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import BrandMark from "./BrandMark";
@@ -10,6 +11,7 @@ import {
 } from "./nav-data";
 import { cn } from "@/lib/utils";
 import { useScrolled } from "@/hooks/useScrolled";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 export default function MainNavbar() {
   const [openMenu, setOpenMenu] = useState<
@@ -30,9 +32,9 @@ export default function MainNavbar() {
           scrolled ? "lg:h-10" : "lg:h-12",
         )}
       >
-        <a href="/" className="flex items-center gap-2 shrink-0">
+        <Link to={ROUTES.home} className="flex items-center gap-2 shrink-0">
           <BrandMark className="scale-90 origin-left" />
-        </a>
+        </Link>
 
         <nav className="flex flex-wrap items-center gap-1 pl-3 sm:pl-4 lg:pl-0 lg:flex-nowrap lg:mx-auto">
           <div
@@ -75,8 +77,8 @@ export default function MainNavbar() {
                 <ul className="space-y-1">
                   {solutionMenuItems.map((item) => (
                     <li key={item.label}>
-                      <a
-                        href={item.href}
+                      <Link
+                        to={item.href}
                         tabIndex={openMenu === "solutions" ? 0 : -1}
                         className="group block rounded-lg px-2 py-1.5 text-sm text-ink transition-colors hover:bg-white/70 hover:text-primary"
                       >
@@ -87,7 +89,7 @@ export default function MainNavbar() {
                             className="h-4 w-4 -translate-x-0.5 opacity-0 transition-[transform,opacity] duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
                           />
                         </span>
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -149,8 +151,8 @@ export default function MainNavbar() {
                       <ul className="mt-3 space-y-1.5">
                         {column.links.map((link, linkIndex) => (
                           <li key={link.label}>
-                            <a
-                              href={link.href}
+                            <Link
+                              to={link.href}
                               tabIndex={openMenu === "features" ? 0 : -1}
                               style={{
                                 transitionDelay:
@@ -169,7 +171,7 @@ export default function MainNavbar() {
                                   className="h-4 w-4 -translate-x-0.5 opacity-0 transition-[transform,opacity] duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
                                 />
                               </span>
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -221,8 +223,8 @@ export default function MainNavbar() {
                   <ul className="space-y-1">
                     {resourcesMenuItems.map((link) => (
                       <li key={link.label}>
-                        <a
-                          href={link.href}
+                        <Link
+                          to={link.href}
                           tabIndex={openMenu === "resources" ? 0 : -1}
                           className="group block rounded-lg px-2 py-1.5 text-sm text-ink transition-colors hover:bg-white/70 hover:text-primary"
                         >
@@ -233,7 +235,7 @@ export default function MainNavbar() {
                               className="h-4 w-4 -translate-x-0.5 opacity-0 transition-[transform,opacity] duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
                             />
                           </span>
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -286,8 +288,8 @@ export default function MainNavbar() {
                       <ul className="mt-3 space-y-1">
                         {column.links.map((link) => (
                           <li key={link.label}>
-                            <a
-                              href={link.href}
+                            <Link
+                              to={link.href}
                               tabIndex={openMenu === "company" ? 0 : -1}
                               className="group block rounded-lg px-2 py-1.5 text-sm text-ink transition-colors hover:bg-white/70 hover:text-primary"
                             >
@@ -298,7 +300,7 @@ export default function MainNavbar() {
                                   className="h-4 w-4 -translate-x-0.5 opacity-0 transition-[transform,opacity] duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
                                 />
                               </span>
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -310,29 +312,37 @@ export default function MainNavbar() {
           </div>
 
           {navItems.map((item) => (
-            <a
+            <NavLink
               key={item.label}
-              href={item.href}
-              className="nav-link order-6 rounded-lg px-2.5 py-1.5 text-center text-xs font-medium text-ink transition-colors hover:bg-white/70 hover:text-primary lg:text-left lg:hover:bg-transparent sm:text-sm"
+              to={item.href}
+              end
+              className={({ isActive }) =>
+                cn(
+                  "nav-link order-6 rounded-lg px-2.5 py-1.5 text-center text-xs font-medium transition-colors lg:text-left sm:text-sm",
+                  isActive
+                    ? "bg-white/70 text-primary"
+                    : "text-ink hover:bg-white/70 hover:text-primary lg:hover:bg-transparent",
+                )
+              }
             >
               {item.label}
-            </a>
+            </NavLink>
           ))}
         </nav>
 
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 lg:flex lg:items-center lg:justify-end lg:gap-2">
-          <a
-            href="/partner-with-us"
+          <Link
+            to={ROUTES.bookDemo}
             className="text-xs sm:text-sm font-medium text-primary hover:underline"
           >
             Request Demo
-          </a>
-          <a
-            href="/partner-with-us"
+          </Link>
+          <Link
+            to={ROUTES.contact}
             className="btn-primary inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"
           >
             Start Free Trial
-          </a>
+          </Link>
         </div>
       </div>
     </div>

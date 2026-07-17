@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { ScrollReveal } from "./ScrollReveal";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 export default function CTA() {
   return (
@@ -16,15 +18,15 @@ export default function CTA() {
               platform.
             </p>
             <div className="button-group mt-7 justify-center">
-              <a
-                href="/company/book-demo"
+              <Link
+                to={ROUTES.bookDemo}
                 className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-semibold text-primary transition-colors hover:bg-primary-soft"
               >
                 Book Free Demo
-              </a>
-              <a href="/pricing" className="btn-success">
+              </Link>
+              <Link to={ROUTES.pricing} className="btn-success">
                 View Pricing
-              </a>
+              </Link>
             </div>
           </div>
         </ScrollReveal>

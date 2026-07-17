@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import { Users, Mail, Check, ArrowRight, Building2, UsersRound } from "lucide-react";
 import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 const products = [
   {
@@ -19,26 +21,26 @@ const products = [
     color: "primary",
   },
   {
-    id: "bulk-email-platform",
+    id: "hr-insights",
     icon: <Mail className="h-6 w-6" />,
-    eyebrow: "Bulk Email Platform",
-    title: "Send campaigns that get opened",
-    desc: "Build, send and track marketing emails at scale with deep analytics.",
-    href: "/learn",
+    eyebrow: "HR Insights",
+    title: "See workforce trends at a glance",
+    desc: "Track attendance, payroll, and approvals with reporting that keeps leaders informed.",
+    href: ROUTES.analytics,
     features: [
-      "Drag-and-drop campaign creation",
-      "Beautiful email templates",
-      "Smart contact lists & segmentation",
-      "Delivery & engagement analytics",
-      "Drip automation workflows",
+      "Workforce dashboards and summaries",
+      "Attendance and payroll visibility",
+      "Department and branch trends",
+      "Export-ready reporting views",
+      "Automated insights and alerts",
     ],
     color: "success",
   },
 ];
 
 const featureAnchorIds: Record<string, string> = {
-  "Beautiful email templates": "email-templates",
-  "Drip automation workflows": "automation",
+  "Workforce dashboards and summaries": "reports-dashboard",
+  "Automated insights and alerts": "automation",
 };
 
 const solutionTracks = [
@@ -130,14 +132,14 @@ export default function ProductCards() {
                     ))}
                   </ul>
 
-                  <a
-                    href={p.href ?? "/learn"}
+                  <Link
+                    to={p.href ?? ROUTES.learn}
                     className={`card-action mt-auto inline-flex items-center gap-1 text-sm font-semibold ${
                       isPrimary ? "text-primary" : "text-success"
                     } transition-all hover:gap-2`}
                   >
                     Learn more <ArrowRight className="h-4 w-4" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             );
@@ -187,13 +189,14 @@ export default function ProductCards() {
                     ))}
                   </ul>
 
-                  <div
+                  <Link
+                    to={track.href ?? ROUTES.workforce}
                     className={`card-action mt-auto inline-flex items-center gap-1 text-sm font-semibold ${
                       isPrimary ? "text-primary" : "text-success"
                     } transition-all hover:gap-2`}
                   >
                     Learn more <ArrowRight className="h-4 w-4" />
-                  </div>
+                  </Link>
                 </div>
               );
 

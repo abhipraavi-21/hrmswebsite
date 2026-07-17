@@ -1,5 +1,6 @@
 import { BookOpenCheck, FileBarChart2, Landmark, Repeat } from "lucide-react";
 import IntegrationDetailPage from "@/components/site/IntegrationDetailPage";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 export default function AccountingPage() {
   return (
@@ -42,11 +43,11 @@ export default function AccountingPage() {
         "Reduce month-end follow-up between HR and accounts teams",
         "Support a cleaner audit trail for salary and reimbursement data",
       ]}
-      backHref="/pricing"
-      primaryAction={{ label: "View business apps", href: "/integrations/business-apps" }}
+      backHref={ROUTES.integrations}
+      primaryAction={{ label: "View business apps", href: ROUTES.businessApps }}
       secondaryAction={{
         label: "View asset management",
-        href: "/integrations/asset-management#asset-management",
+        href: `${ROUTES.assetManagement}#asset-management`,
       }}
       footerTitle="Finance connections that stay practical"
       footerBody="This page can describe the exact data handoff story without turning the integrations section into a generic feature list."

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   ArrowUpRight,
   BarChart3,
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 import AnimatedCounter from "./AnimatedCounter";
 import { ScrollReveal } from "./ScrollReveal";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 export default function Hero() {
   return (
@@ -49,12 +51,12 @@ export default function Hero() {
 
           <ScrollReveal variant="fade-up" delay={280}>
             <div className="button-group mt-5">
-              <a href="/company/book-demo" className="btn-success">
+              <Link to={ROUTES.bookDemo} className="btn-success">
                 Book Free Demo
-              </a>
-              <a href="#solutions" className="btn-outline">
+              </Link>
+              <Link to="/#features" className="btn-outline">
                 Explore Features
-              </a>
+              </Link>
             </div>
           </ScrollReveal>
 
@@ -88,8 +90,8 @@ export default function Hero() {
             />
 
             <div className="hero-dashboard relative grid grid-cols-6 gap-3">
-              <a
-                href="/products/attendance"
+              <Link
+                to={ROUTES.attendance}
                 aria-label="Open Attendance page"
                 className="group col-span-6 block cursor-pointer rounded-2xl p-4 shadow-lg transition-transform duration-200 hover:-translate-y-0.5 sm:col-span-4 soft-card hover:shadow-lg"
               >
@@ -121,10 +123,10 @@ export default function Hero() {
                     />
                   ))}
                 </div>
-              </a>
+              </Link>
 
-              <a
-                href="/products/payroll"
+              <Link
+                to={ROUTES.payroll}
                 aria-label="Open Payroll page"
                 className="group col-span-6 block cursor-pointer rounded-2xl p-3 shadow-lg transition-transform duration-200 hover:-translate-y-0.5 sm:col-span-2 soft-card hover:shadow-lg"
                 style={{ animationDelay: "0.4s" }}
@@ -139,10 +141,10 @@ export default function Hero() {
                 <div className="flex items-center gap-1 text-[10px] text-success">
                   <TrendingUp className="h-3 w-3" /> processed
                 </div>
-              </a>
+              </Link>
 
-              <a
-                href="/products/core-hr"
+              <Link
+                to={ROUTES.coreHR}
                 aria-label="Open Core HR page"
                 className="group col-span-3 block cursor-pointer rounded-2xl p-3 shadow-lg transition-transform duration-200 hover:-translate-y-0.5 sm:col-span-2 soft-card hover:shadow-lg"
                 style={{ animationDelay: "0.8s" }}
@@ -164,10 +166,10 @@ export default function Hero() {
                     />
                   ))}
                 </div>
-              </a>
+              </Link>
 
-              <a
-                href="/hr-automation"
+              <Link
+                to={ROUTES.automation}
                 aria-label="Open HR Automation page"
                 className="group col-span-3 block cursor-pointer rounded-2xl p-3 shadow-lg transition-transform duration-200 hover:-translate-y-0.5 sm:col-span-2 soft-card hover:shadow-lg"
                 style={{ animationDelay: "1.2s" }}
@@ -184,10 +186,10 @@ export default function Hero() {
                   <div className="h-full w-[38%] rounded-full bg-success" />
                 </div>
                 <div className="mt-0.5 text-[10px] text-ink-soft">38% open rate</div>
-              </a>
+              </Link>
 
-              <a
-                href="/products/leave-management"
+              <Link
+                to={ROUTES.leaveManagement}
                 aria-label="Open Leave Management page"
                 className="group col-span-3 block cursor-pointer rounded-2xl p-3 shadow-lg transition-transform duration-200 hover:-translate-y-0.5 soft-card hover:shadow-lg"
                 style={{ animationDelay: "1.6s" }}
@@ -201,10 +203,10 @@ export default function Hero() {
                   <AnimatedCounter value={14} />{" "}
                   <span className="text-[10px] font-medium text-ink-soft">· 6 pending</span>
                 </div>
-              </a>
+              </Link>
 
-              <a
-                href="/hr-reports"
+              <Link
+                to={ROUTES.reports}
                 aria-label="Open HR Reports page"
                 className="group col-span-3 block cursor-pointer rounded-2xl p-3 shadow-lg transition-transform duration-200 hover:-translate-y-0.5 soft-card hover:shadow-lg"
                 style={{ animationDelay: "2s" }}
@@ -217,7 +219,7 @@ export default function Hero() {
                 <div className="text-lg font-bold leading-tight text-ink">
                   <AnimatedCounter value={28} />
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
 

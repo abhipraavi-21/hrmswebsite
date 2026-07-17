@@ -1,80 +1,67 @@
-import { Linkedin, Facebook, Instagram, Youtube, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Facebook, Instagram, Linkedin, Mail, Youtube } from "lucide-react";
 import BrandMark from "./BrandMark";
 import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
+import { ROUTES } from "@/routes/routeConfig.js";
+import { socialLinks } from "../../data/socialLinks.js";
 
 const footerColumns = [
   {
     title: "Products",
     links: [
-      { label: "Core HR", href: "/products/core-hr" },
-      { label: "Attendance", href: "/products/attendance" },
-      { label: "Workforce Management", href: "/products/workforce-management" },
-      { label: "Payroll", href: "/products/payroll" },
-      { label: "Leave Management", href: "/products/leave-management" },
-      { label: "HR Reports", href: "/hr-reports" },
+      { label: "Core HR", href: ROUTES.coreHR },
+      { label: "Attendance", href: ROUTES.attendance },
+      { label: "Workforce Management", href: ROUTES.workforce },
+      { label: "Payroll", href: ROUTES.payroll },
+      { label: "Leave Management", href: ROUTES.leaveManagement },
+      { label: "HR Reports", href: ROUTES.reports },
     ],
   },
   {
     title: "Features",
     links: [
-      { label: "Attendance Management", href: "/attendance-management" },
-      { label: "HR Automation", href: "/hr-automation" },
-      { label: "HR Analytics", href: "/hr-analytics" },
-      { label: "HR Security", href: "/hrms-security" },
-      { label: "Employee Self Service", href: "/products/employee-self-service" },
-      { label: "HR Reports", href: "/hr-reports" },
+      { label: "Attendance Management", href: ROUTES.attendanceManagement },
+      { label: "HR Automation", href: ROUTES.automation },
+      { label: "HR Analytics", href: ROUTES.analytics },
+      { label: "HR Security", href: ROUTES.security },
+      { label: "Employee Self Service", href: ROUTES.employeeSelfService },
+      { label: "HR Reports", href: ROUTES.reports },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About Us", href: "/about-us" },
-      { label: "Why Altroz", href: "/why-altroz" },
-      { label: "Customers", href: "/customers" },
-      { label: "Testimonials", href: "/company/testimonials" },
-      { label: "Careers", href: "/careers" },
-      { label: "Partner With Us", href: "/partner-with-us" },
-      { label: "Contact Us", href: "/company/contact-us" },
-      { label: "Support", href: "/company/support" },
+      { label: "About Us", href: ROUTES.about },
+      { label: "Why Altroz", href: ROUTES.whyAltroz },
+      { label: "Customers", href: ROUTES.customers },
+      { label: "Testimonials", href: ROUTES.testimonials },
+      { label: "Careers", href: ROUTES.careers },
+      { label: "Partner With Us", href: ROUTES.partner },
+      { label: "Contact Us", href: ROUTES.contact },
+      { label: "Support", href: ROUTES.support },
     ],
   },
   {
     title: "Resources",
     links: [
-      { label: "Learn", href: "/learn" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Industry Solutions", href: "/industry-solutions" },
-      { label: "Business Apps", href: "/integrations/business-apps" },
-      { label: "Accounting", href: "/integrations/accounting" },
-      { label: "Asset Management", href: "/integrations/asset-management" },
-      { label: "Devices API", href: "/integrations/devices-api" },
-      { label: "Book Demo", href: "/company/book-demo" },
+      { label: "Learn", href: ROUTES.learn },
+      { label: "Pricing", href: ROUTES.pricing },
+      { label: "Industry Solutions", href: ROUTES.industrySolutions },
+      { label: "Business Apps", href: ROUTES.businessApps },
+      { label: "Accounting", href: ROUTES.accounting },
+      { label: "Asset Management", href: ROUTES.assetManagement },
+      { label: "Devices API", href: ROUTES.devicesApi },
+      { label: "Book Demo", href: ROUTES.bookDemo },
     ],
   },
 ];
 
-const socialLinks = [
-  {
-    label: "Facebook",
-    href: "https://www.facebook.com/profile.php?id=61589382159854",
-    icon: Facebook,
-  },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/altrozhrms/",
-    icon: Instagram,
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/80272399/admin/dashboard/",
-    icon: Linkedin,
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/channel/UCvht-kbPRfOLllLrxt2v4pQ",
-    icon: Youtube,
-  },
-] as const;
+const socialIcons = {
+  Facebook,
+  Instagram,
+  LinkedIn: Linkedin,
+  YouTube: Youtube,
+} as const;
 
 export default function Footer() {
   return (
@@ -84,7 +71,7 @@ export default function Footer() {
           <ScrollReveal variant="fade-up" className="lg:col-span-4">
             <BrandMark variant="dark" className="scale-[0.8] origin-left" />
             <p className="mt-2 max-w-xs text-xs leading-5 text-white/70">
-              The all-in-one HRMS and bulk email platform for modern Indian businesses.
+              The all-in-one HRMS platform for modern Indian businesses.
             </p>
 
             <form className="mt-4" onSubmit={(e) => e.preventDefault()}>
@@ -109,20 +96,20 @@ export default function Footer() {
           </ScrollReveal>
 
           <StaggerReveal step={70} className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:col-span-8">
-            {footerColumns.map((c) => (
-              <div key={c.title}>
+            {footerColumns.map((column) => (
+              <div key={column.title}>
                 <div className="text-[10px] font-bold uppercase tracking-wider text-white/60">
-                  {c.title}
+                  {column.title}
                 </div>
                 <ul className="mt-2 space-y-1">
-                  {c.links.map((link) => (
+                  {column.links.map((link) => (
                     <li key={link.label}>
-                      <a
-                        href={link.href}
+                      <Link
+                        to={link.href}
                         className="text-[12px] text-white/80 transition-colors hover:text-white"
                       >
                         {link.label}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -134,29 +121,32 @@ export default function Footer() {
         <ScrollReveal variant="fade-up" delay={100} className="footer-bottom border-t border-white/10 pt-4">
           <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
             <div className="text-xs text-white/60 md:justify-self-start">
-              (c) {new Date().getFullYear()} HRMS. All rights reserved. Designed By{" "}
+              &copy; {new Date().getFullYear()} Altroz Technologies Pvt. Ltd. All rights reserved. Designed By{" "}
               <a
                 href="https://webakoof.com/index.html"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
               >
                 Webakoof
               </a>
             </div>
             <div className="flex items-center justify-center gap-2 justify-self-center">
-              {socialLinks.map(({ label, href, icon: Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="grid h-7 w-7 place-items-center rounded-md bg-white/10 transition-colors hover:bg-primary"
-                  aria-label={label}
-                >
-                  <Icon className="h-3 w-3" />
-                </a>
-              ))}
+              {socialLinks.map(({ label, href }) => {
+                const Icon = socialIcons[label as keyof typeof socialIcons];
+                return (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="grid h-7 w-7 place-items-center rounded-md bg-white/10 transition-colors hover:bg-primary"
+                    aria-label={label}
+                  >
+                    <Icon className="h-3 w-3" />
+                  </a>
+                );
+              })}
             </div>
             <div className="hidden md:block" />
           </div>

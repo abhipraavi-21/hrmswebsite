@@ -34,6 +34,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { modelScreenshots } from "@/lib/modelScreenshots";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 type LearnArea = {
   id: string;
@@ -1192,7 +1193,7 @@ function LearningAreaSection({ area, reverse = false }: { area: LearnArea; rever
 }
 
 export default function LearnPage() {
-  usePageSeo(seoTitle, seoDescription, "/learn");
+  usePageSeo(seoTitle, seoDescription, ROUTES.learn);
 
   const [query, setQuery] = useState("");
   const [selectedAreaId, setSelectedAreaId] = useState(learningAreas[0].id);

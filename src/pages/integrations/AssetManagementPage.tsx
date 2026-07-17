@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   ArrowRight,
   BarChart3,
@@ -18,6 +19,7 @@ import {
 import TopNavbar from "@/components/site/TopNavbar";
 import MainNavbar from "@/components/site/MainNavbar";
 import Footer from "@/components/site/Footer";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 const heroMetrics = [
   { label: "Visibility", value: "See every asset in one place" },
@@ -161,12 +163,12 @@ export default function AssetManagementPage() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <a href="/company/book-demo" className="btn-primary">
+                <Link to={ROUTES.bookDemo} className="btn-primary">
                   Book a demo
-                </a>
-                <a href="#workflow" className="btn-outline">
+                </Link>
+                <Link to={`${ROUTES.assetManagement}#workflow`} className="btn-outline">
                   See the asset workflow
-                </a>
+                </Link>
               </div>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
@@ -407,12 +409,12 @@ export default function AssetManagementPage() {
                 </div>
 
                 <div className="grid gap-3">
-                  <a href="/company/book-demo" className="btn-primary justify-center">
+                  <Link to={ROUTES.bookDemo} className="btn-primary justify-center">
                     Talk to us
-                  </a>
-                  <a href="/pricing" className="btn-outline justify-center">
-                    Back to pricing
-                  </a>
+                  </Link>
+                  <Link to={ROUTES.integrations} className="btn-outline justify-center">
+                    Back to integrations
+                  </Link>
                 </div>
               </div>
             </div>

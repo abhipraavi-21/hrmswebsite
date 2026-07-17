@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Footer from "@/components/site/Footer";
@@ -50,7 +51,7 @@ export default function IntegrationDetailPage({
   capabilities,
   points,
   backHref,
-  backLabel = "Back to pricing",
+  backLabel = "Back to integrations",
   primaryAction,
   secondaryAction,
   footerTitle,
@@ -80,15 +81,15 @@ export default function IntegrationDetailPage({
               <p className="mt-4 max-w-xl text-base text-ink-soft">{description}</p>
 
               <div className="button-group mt-6">
-                <a href={primaryAction.href} className="btn-primary">
+                <Link to={primaryAction.href} className="btn-primary">
                   {primaryAction.label}
-                </a>
-                <a href={secondaryAction.href} className="btn-outline">
+                </Link>
+                <Link to={secondaryAction.href} className="btn-outline">
                   {secondaryAction.label}
-                </a>
-                <a href={backHref} className="btn-outline">
+                </Link>
+                <Link to={backHref} className="btn-outline">
                   {backLabel}
-                </a>
+                </Link>
               </div>
 
               <StaggerReveal step={70} className="mt-6 grid gap-3 sm:grid-cols-3">
@@ -202,12 +203,12 @@ export default function IntegrationDetailPage({
               <p className="mt-3 text-sm text-ink-soft">{footerBody}</p>
 
               <div className="button-group mt-6">
-                <a href={primaryAction.href} className="btn-primary">
+                <Link to={primaryAction.href} className="btn-primary">
                   {primaryAction.label}
-                </a>
-                <a href={backHref} className="btn-outline">
+                </Link>
+                <Link to={backHref} className="btn-outline">
                   {backLabel}
-                </a>
+                </Link>
               </div>
             </ScrollReveal>
           </div>

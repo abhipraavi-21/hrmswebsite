@@ -1,5 +1,6 @@
 import { Bell, MessagesSquare, ShieldCheck, Workflow } from "lucide-react";
 import IntegrationDetailPage from "@/components/site/IntegrationDetailPage";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 export default function BusinessAppsPage() {
   return (
@@ -42,11 +43,11 @@ export default function BusinessAppsPage() {
         "Share status changes in the apps managers already monitor",
         "Keep sensitive HR data inside the correct permission boundaries",
       ]}
-      backHref="/pricing"
-      primaryAction={{ label: "View accounting", href: "/integrations/accounting" }}
+      backHref={ROUTES.integrations}
+      primaryAction={{ label: "View accounting", href: ROUTES.accounting }}
       secondaryAction={{
         label: "View asset management",
-        href: "/integrations/asset-management#asset-management",
+        href: `${ROUTES.assetManagement}#asset-management`,
       }}
       footerTitle="A cleaner collaboration layer for people operations"
       footerBody="This page is a good fit if you want to show how HRMS supports notifications, approvals, and daily teamwork without making the UI feel crowded."

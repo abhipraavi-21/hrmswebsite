@@ -1,5 +1,6 @@
 import { Headphones } from "lucide-react";
 import ResourceDetailPage from "@/components/site/ResourceDetailPage";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 export default function SupportPage() {
   return (
@@ -27,8 +28,8 @@ export default function SupportPage() {
           desc: "Keep support requests easy to explain, route, and resolve.",
         },
       ]}
-      primaryAction={{ label: "Start learning", href: "/learn" }}
-      secondaryAction={{ label: "Back to home", href: "/" }}
+      primaryAction={{ label: "Start learning", href: ROUTES.learn }}
+      secondaryAction={{ label: "Back to home", href: ROUTES.home }}
     />
   );
 }
