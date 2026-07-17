@@ -314,11 +314,11 @@ export default function CoreHrPage() {
                 </article>
 
                 <article className="soft-card overflow-hidden p-0">
-                  <div className="aspect-[624/484] bg-surface">
+                  <div className="aspect-[624/484] bg-white p-2 sm:p-3">
                     <img
                       src={modelScreenshots.coreHrTable}
                       alt="Core HR data table preview"
-                      className="h-full w-full object-cover object-center"
+                      className="h-full w-full object-contain object-top bg-white"
                       loading="lazy"
                       referrerPolicy="no-referrer"
                     />
