@@ -124,7 +124,10 @@ export default function CoreHrPage() {
       <MainNavbar />
 
       <main>
-        <section className="hero-gradient relative overflow-hidden">
+        <section
+          className="hero-gradient relative overflow-hidden"
+          style={{ display: "block", minHeight: "auto" }}
+        >
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
