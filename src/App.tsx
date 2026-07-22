@@ -133,6 +133,7 @@ function AppShell() {
           <Route path={ROUTES.coreHR} element={<CoreHrPage />} />
           <Route path={ROUTES.attendance} element={<AttendancePage />} />
           <Route path={ROUTES.attendanceManagement} element={<AttendanceManagementPage />} />
+          <Route path={ROUTES.workforce} element={<WorkforceManagementPage />} />
           <Route path={ROUTES.payroll} element={<PayrollPage />} />
           <Route path={ROUTES.leaveManagement} element={<LeaveManagementPage />} />
           <Route path={ROUTES.performance} element={<PerformanceManagementPage />} />

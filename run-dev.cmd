@@ -3,6 +3,6 @@ setlocal
 cd /d "%~dp0"
 
 echo Starting HRMS dev server on http://localhost:8080/
-echo If the browser does not open automatically, copy the URL above.
+echo Logs will be written to dev-server.out.log and dev-server.err.log.
 
-call npm.cmd run dev
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0run-dev.ps1"

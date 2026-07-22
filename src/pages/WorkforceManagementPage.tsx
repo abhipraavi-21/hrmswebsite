@@ -17,6 +17,9 @@ import { modelScreenshots } from "@/lib/modelScreenshots";
 
 const heroImage = modelScreenshots.workforceDashboard;
 const heroImageMobile = modelScreenshots.workforceDashboard;
+const heroDashboardFrameClass =
+  "relative mx-auto max-w-7xl overflow-hidden rounded-[2.25rem] border border-border bg-white p-3 shadow-float sm:p-4";
+const dashboardImageClass = "block h-auto w-full object-contain bg-white";
 const tabImages = [
   {
     title: "Cutting Edge Yet Easy-To-Use",
@@ -173,15 +176,21 @@ export default function WorkforceManagementPage() {
               ))}
             </div>
 
-            <div className="relative mt-10 overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
+            <div className="relative mx-auto mt-10 max-w-7xl">
               <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-              <div className="flex h-[92vh] items-center overflow-hidden bg-white sm:h-[96vh]">
-                <picture className="block h-full w-full">
+              <div className={heroDashboardFrameClass}>
+                <div className="flex items-center justify-between gap-3 border-b border-border bg-surface/70 px-4 py-3 text-xs font-bold uppercase tracking-wider text-ink-soft sm:px-5">
+                  <span>Workforce dashboard preview</span>
+                  <span className="rounded-full bg-white px-3 py-1 text-primary shadow-sm">
+                    Live workflow
+                  </span>
+                </div>
+                <picture className="block">
                   <source media="(max-width: 767px)" srcSet={heroImageMobile} />
                   <img
                     src={heroImage}
                     alt="Workforce management dashboard preview"
-                    className="block h-full w-full origin-top scale-[1.58] transform-gpu rounded-none object-cover bg-white sm:scale-[1.68] lg:scale-[1.82]"
+                    className={dashboardImageClass}
                     loading="eager"
                     referrerPolicy="no-referrer"
                   />
