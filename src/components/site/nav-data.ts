@@ -5,7 +5,7 @@ export const featureMenuColumns = [
     title: "Core HR Suite",
     links: [
       { label: "Core HR", href: ROUTES.coreHR },
-      { label: "Attendance Management", href: ROUTES.attendanceManagement },
+      { label: "Attendance", href: ROUTES.attendanceManagement },
       { label: "Payroll", href: ROUTES.payroll },
       { label: "Leave Management", href: ROUTES.leaveManagement },
     ],
@@ -76,7 +76,7 @@ export const navItems = [
 
 export const hrmsLinks = [
   {
-    label: "Attendance Management",
+    label: "Attendance",
     desc: "GPS, biometric & shifts",
     href: ROUTES.attendanceManagement,
   },

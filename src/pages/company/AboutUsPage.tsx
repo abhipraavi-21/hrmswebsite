@@ -398,7 +398,7 @@ const capabilityGroups: {
         icon: <Users className="h-5 w-5" />,
       },
       {
-        title: "Attendance Management",
+        title: "Attendance",
         description:
           "Manage check-ins, check-outs, working hours, shifts, late marks, missing punches, overtime, and regularization.",
         icon: <Fingerprint className="h-5 w-5" />,

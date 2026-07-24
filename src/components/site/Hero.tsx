@@ -92,7 +92,7 @@ export default function Hero() {
             <div className="hero-dashboard relative grid grid-cols-6 gap-3">
               <Link
                 to={ROUTES.attendanceManagement}
-                aria-label="Open Attendance Management page"
+                aria-label="Open Attendance page"
                 className="group col-span-6 block cursor-pointer rounded-2xl p-4 shadow-lg transition-transform duration-200 hover:-translate-y-0.5 sm:col-span-4 soft-card hover:shadow-lg"
               >
                 <div className="flex items-center justify-between">
@@ -101,7 +101,7 @@ export default function Hero() {
                       <Clock className="h-4 w-4" />
                     </div>
                     <div>
-                      <div className="text-[11px] text-ink-soft">Attendance Management</div>
+                      <div className="text-[11px] text-ink-soft">Attendance</div>
                       <div className="text-xl leading-none font-bold text-ink">
                         <AnimatedCounter value={248} />{" "}
                         <span className="text-xs font-medium text-success">

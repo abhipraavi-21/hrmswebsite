@@ -30,7 +30,7 @@ const features = [
   {
     id: "attendance",
     icon: <Clock3 />,
-    title: "Attendance Management",
+    title: "Attendance",
     desc: "Track shifts, check-ins and time logs accurately in one dedicated module.",
     href: ROUTES.attendanceManagement,
   },

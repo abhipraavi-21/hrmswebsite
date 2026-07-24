@@ -484,7 +484,7 @@ export default function AttendancePage() {
                 Track Employee Attendance with Accuracy and Ease
               </h1>
               <p className="mx-auto mt-3 max-w-2xl text-base text-ink-soft">
-                Altroz HRMS Attendance Management Software helps businesses track employee
+                Altroz HRMS Attendance Software helps businesses track employee
                 attendance in real time using biometric devices, GPS, and shift-based tracking.
                 Reduce manual work, improve accuracy, and manage attendance from one secure
                 platform.

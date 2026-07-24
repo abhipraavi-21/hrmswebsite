@@ -84,7 +84,7 @@ export const serviceOptions = [
     label: "Product Demonstration",
     enquiryType: "Demo request",
     description: "See the platform in action and choose the modules you want to explore.",
-    modules: ["Complete HRMS", "Attendance Management", "Payroll Management", "Leave Management"],
+    modules: ["Complete HRMS", "Attendance", "Payroll Management", "Leave Management"],
   },
   {
     id: "consultation",
@@ -95,10 +95,10 @@ export const serviceOptions = [
   },
   {
     id: "attendance",
-    label: "Attendance Management",
+    label: "Attendance",
     enquiryType: "Attendance enquiry",
     description: "Talk about attendance rules, shifts, and capture workflows.",
-    modules: ["Attendance Management", "Employee Self-Service"],
+    modules: ["Attendance", "Employee Self-Service"],
   },
   {
     id: "payroll",
@@ -204,7 +204,7 @@ export const employeeRangeOptions = [
 export const moduleOptions = [
   "Complete HRMS",
   "Employee Management",
-  "Attendance Management",
+  "Attendance",
   "Payroll Management",
   "Leave Management",
   "Recruitment Management",
@@ -265,7 +265,7 @@ export const demoModules = [
   },
   {
     id: "attendance-management",
-    label: "Attendance Management",
+    label: "Attendance",
     description:
       "Review attendance capture, shifts, regularization, and attendance reporting workflows.",
   },

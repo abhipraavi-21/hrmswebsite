@@ -133,8 +133,8 @@ const learningAreas: LearnArea[] = [
   },
   {
     id: "attendance-management",
-    navLabel: "Attendance Management",
-    title: "Attendance Management Guides",
+    navLabel: "Attendance",
+    title: "Attendance Guides",
     icon: CalendarDays,
     description:
       "Learn how businesses can track attendance, manage shifts, handle missing punches, and keep overtime and attendance corrections organized.",
@@ -347,10 +347,10 @@ const featuredResources: LearningResource[] = [
   {
     id: "attendance-guide",
     type: "Step-by-Step Tutorial",
-    title: "How Attendance Management Works",
+    title: "How Attendance Works",
     description:
       "Learn about attendance methods, shifts, missing punches, overtime, and attendance corrections in a structured way.",
-    category: "Attendance Management",
+    category: "Attendance",
     difficulty: "Beginner",
     cta: "View Topic",
     href: "/attendance-management",
@@ -621,7 +621,7 @@ const audienceGroups: AudienceGroup[] = [
 
 const popularTopics: PopularTopic[] = [
   { label: "What is HRMS Software?", areaId: "hrms-fundamentals" },
-  { label: "What is Attendance Management?", areaId: "attendance-management" },
+  { label: "What is Attendance?", areaId: "attendance-management" },
   { label: "What is Payroll Management?", areaId: "payroll-management" },
   { label: "How Employee Self-Service Works", areaId: "employee-management" },
   { label: "What Is HR Automation?", areaId: "hr-automation" },

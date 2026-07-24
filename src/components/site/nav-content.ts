@@ -28,7 +28,7 @@ export const productDropdownColumns: ProductColumn[] = [
         title: "Workforce Management",
         href: "/products/attendance-management",
         links: [
-          { label: "Attendance Management", href: "/products/attendance-management" },
+          { label: "Attendance", href: "/products/attendance-management" },
           { label: "Scheduling", href: "#scheduling" },
         ],
       },

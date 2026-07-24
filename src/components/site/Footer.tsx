@@ -10,7 +10,7 @@ const footerColumns = [
     title: "Products",
     links: [
       { label: "Core HR", href: ROUTES.coreHR },
-      { label: "Attendance Management", href: ROUTES.attendanceManagement },
+      { label: "Attendance", href: ROUTES.attendanceManagement },
       { label: "Workforce Management", href: ROUTES.workforce },
       { label: "Payroll", href: ROUTES.payroll },
       { label: "Leave Management", href: ROUTES.leaveManagement },
@@ -20,7 +20,7 @@ const footerColumns = [
   {
     title: "Features",
     links: [
-      { label: "Attendance Management", href: ROUTES.attendanceManagement },
+      { label: "Attendance", href: ROUTES.attendanceManagement },
       { label: "HR Automation", href: ROUTES.automation },
       { label: "HR Analytics", href: ROUTES.analytics },
       { label: "HR Security", href: ROUTES.security },
