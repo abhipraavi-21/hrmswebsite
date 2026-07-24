@@ -41,6 +41,11 @@ const challengeCards = [
     desc: "Long response times and unclear steps can push strong candidates toward other employers.",
     icon: <MailCheck className="h-5 w-5" />,
   },
+  {
+    title: "Hiring clarity",
+    desc: "Hiring teams often lose time to manual follow-up, unclear ownership, and slow movement between stages.",
+    icon: <Workflow className="h-5 w-5" />,
+  },
 ];
 
 const flowSteps = [
@@ -170,180 +175,189 @@ export default function RecruitmentPage() {
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-          <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-start lg:py-14">
-            <div className="lg:col-span-6 self-start fade-up">
+          <div className="container-x py-12 lg:py-14">
+            <div className="mx-auto max-w-4xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Recruitment (ATS)
               </span>
-              <h1 className="mt-4 max-w-xl text-3xl font-bold leading-tight text-ink sm:text-4xl lg:text-5xl">
+              <h1 className="mt-4 text-3xl font-bold leading-tight text-ink sm:text-4xl lg:text-5xl">
                 Hire faster with a recruitment flow that keeps sourcing, screening, and interviews
                 in one place
               </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
+              <p className="mx-auto mt-4 max-w-3xl text-base text-ink-soft">
                 Manage jobs, candidates, and offers without bouncing between tools. This page keeps
                 the hiring journey structured, visible, and easier for every role involved.
               </p>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a href="/company/book-demo" className="btn-primary">
-                  Get Recruit
-                </a>
-                <a href="#workflow" className="btn-outline">
-                  See the hiring flow
-                </a>
-              </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {heroMetrics.map((item) => (
-                  <div key={item.label} className="soft-card p-4">
-                    <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      {item.label}
-                    </div>
-                    <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 grid gap-6 lg:grid-cols-2 lg:items-stretch">
-                <div className="rounded-[1.5rem] border border-border bg-white/80 p-5 shadow-card backdrop-blur-sm">
-                  <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
-                    What this ATS handles
-                  </div>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                    {[
-                      "Post jobs and manage openings",
-                      "Screen candidates with AI support",
-                      "Schedule interviews without chaos",
-                      "Track offers and hiring progress",
-                    ].map((item) => (
-                      <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-3">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
-                        <span className="text-sm text-ink">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="rounded-[1.5rem] border border-border bg-white/80 p-5 shadow-card backdrop-blur-sm">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
-                      Recruitment outcomes
-                    </div>
-                    <div className="rounded-full bg-[#ecfdf3] px-3 py-1 text-xs font-semibold text-success">
-                      Better control
-                    </div>
-                  </div>
-
-                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                    {[
-                      { title: "Pipeline view", value: "Track every candidate stage" },
-                      { title: "Team alignment", value: "Keep recruiters and managers synced" },
-                      { title: "Fast follow-up", value: "Reduce lag between steps" },
-                      { title: "Hiring insight", value: "Spot bottlenecks early" },
-                    ].map((item) => (
-                      <div key={item.title} className="rounded-xl bg-surface p-4">
-                        <div className="text-sm font-semibold text-ink">{item.title}</div>
-                        <div className="mt-1 text-xs text-ink-soft">{item.value}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </div>
 
-            <div className="lg:col-span-6 self-start">
-              <div className="relative mx-auto max-w-2xl">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-                <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                  <div className="grid gap-4 md:grid-cols-[1.15fr_0.85fr]">
-                    <div className="rounded-[1.5rem] border border-border bg-surface p-5">
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
-                            Hiring cockpit
-                          </div>
-                          <div className="mt-1 text-lg font-bold text-ink">
-                            Setup, source, screen, engage, hire, report
-                          </div>
-                        </div>
-                        <div className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-success shadow-sm">
-                          3X faster
-                        </div>
-                      </div>
+            <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-start">
+              <div className="lg:col-span-6 self-start fade-up">
+                <p className="max-w-xl text-base text-ink-soft">
+                  Keep recruiters, hiring managers, and candidates moving through one shared flow
+                  instead of juggling disconnected tools and endless follow-up.
+                </p>
 
-                      <div className="mt-5 space-y-3">
-                        {[
-                          {
-                            label: "Jobs",
-                            value: "Create roles and publish openings",
-                            tone: "bg-primary-soft text-primary",
-                          },
-                          {
-                            label: "Candidates",
-                            value: "Centralize profiles and progress",
-                            tone: "bg-[#ecfdf3] text-success",
-                          },
-                          {
-                            label: "Offers",
-                            value: "Move from shortlist to hire",
-                            tone: "bg-white text-ink",
-                          },
-                        ].map((item) => (
-                          <div
-                            key={item.label}
-                            className="rounded-2xl border border-border bg-white p-4 shadow-card"
-                          >
-                            <div className="flex items-center justify-between gap-3">
-                              <div>
-                                <div className="text-sm font-bold text-ink">{item.label}</div>
-                                <div className="text-xs text-ink-soft">{item.value}</div>
-                              </div>
-                              <div
-                                className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${item.tone}`}
-                              >
-                                Live
-                              </div>
-                            </div>
-                          </div>
-                        ))}
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <a href="/company/book-demo" className="btn-primary">
+                    Get Recruit
+                  </a>
+                  <a href="#workflow" className="btn-outline">
+                    See the hiring flow
+                  </a>
+                </div>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                  {heroMetrics.map((item) => (
+                    <div key={item.label} className="soft-card p-4">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+                        {item.label}
+                      </div>
+                      <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 grid gap-6 lg:grid-cols-2 lg:items-stretch">
+                  <div className="rounded-[1.5rem] border border-border bg-white/80 p-5 shadow-card backdrop-blur-sm">
+                    <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                      What this ATS handles
+                    </div>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      {[
+                        "Post jobs and manage openings",
+                        "Screen candidates with AI support",
+                        "Schedule interviews without chaos",
+                        "Track offers and hiring progress",
+                      ].map((item) => (
+                        <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-3">
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
+                          <span className="text-sm text-ink">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="rounded-[1.5rem] border border-border bg-white/80 p-5 shadow-card backdrop-blur-sm">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                        Recruitment outcomes
+                      </div>
+                      <div className="rounded-full bg-[#ecfdf3] px-3 py-1 text-xs font-semibold text-success">
+                        Better control
                       </div>
                     </div>
 
-                    <div className="grid gap-4">
-                      <div className="rounded-[1.5rem] border border-border bg-white p-5 shadow-card">
-                        <div className="flex items-center gap-3">
-                          <div className="grid h-11 w-11 place-items-center rounded-2xl bg-primary-soft text-primary">
-                            <Bot className="h-5 w-5" />
-                          </div>
-                          <div>
-                            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                              AI support
-                            </div>
-                            <div className="text-lg font-bold text-ink">Smarter screening</div>
-                          </div>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      {[
+                        { title: "Pipeline view", value: "Track every candidate stage" },
+                        { title: "Team alignment", value: "Keep recruiters and managers synced" },
+                        { title: "Fast follow-up", value: "Reduce lag between steps" },
+                        { title: "Hiring insight", value: "Spot bottlenecks early" },
+                      ].map((item) => (
+                        <div key={item.title} className="rounded-xl bg-surface p-4">
+                          <div className="text-sm font-semibold text-ink">{item.title}</div>
+                          <div className="mt-1 text-xs text-ink-soft">{item.value}</div>
                         </div>
-                        <p className="mt-4 text-sm text-ink-soft">
-                          Use skill-based shortlisting and pre-screening to reduce manual effort.
-                        </p>
-                      </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <div className="lg:col-span-6 self-start">
+                <div className="relative mx-auto max-w-2xl">
+                  <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
+                  <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-5 shadow-float">
+                    <div className="grid gap-4 md:grid-cols-[1.15fr_0.85fr]">
                       <div className="rounded-[1.5rem] border border-border bg-surface p-5">
-                        <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
-                          Hiring stages
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                              Hiring cockpit
+                            </div>
+                            <div className="mt-1 text-lg font-bold text-ink">
+                              Setup, source, screen, engage, hire, report
+                            </div>
+                          </div>
+                          <div className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-success shadow-sm">
+                            3X faster
+                          </div>
                         </div>
-                        <div className="mt-4 space-y-3">
-                          {["Source", "Screen", "Engage", "Hire"].map((step, index) => (
+
+                        <div className="mt-5 space-y-3">
+                          {[
+                            {
+                              label: "Jobs",
+                              value: "Create roles and publish openings",
+                              tone: "bg-primary-soft text-primary",
+                            },
+                            {
+                              label: "Candidates",
+                              value: "Centralize profiles and progress",
+                              tone: "bg-[#ecfdf3] text-success",
+                            },
+                            {
+                              label: "Offers",
+                              value: "Move from shortlist to hire",
+                              tone: "bg-white text-ink",
+                            },
+                          ].map((item) => (
                             <div
-                              key={step}
-                              className="flex items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3"
+                              key={item.label}
+                              className="rounded-2xl border border-border bg-white p-4 shadow-card"
                             >
-                              <div className="grid h-8 w-8 place-items-center rounded-full bg-primary-soft text-xs font-bold text-primary">
-                                0{index + 1}
+                              <div className="flex items-center justify-between gap-3">
+                                <div>
+                                  <div className="text-sm font-bold text-ink">{item.label}</div>
+                                  <div className="text-xs text-ink-soft">{item.value}</div>
+                                </div>
+                                <div
+                                  className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${item.tone}`}
+                                >
+                                  Live
+                                </div>
                               </div>
-                              <div className="text-sm font-semibold text-ink">{step}</div>
                             </div>
                           ))}
+                        </div>
+                      </div>
+
+                      <div className="grid gap-4">
+                        <div className="rounded-[1.5rem] border border-border bg-white p-5 shadow-card">
+                          <div className="flex items-center gap-3">
+                            <div className="grid h-11 w-11 place-items-center rounded-2xl bg-primary-soft text-primary">
+                              <Bot className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                                AI support
+                              </div>
+                              <div className="text-lg font-bold text-ink">Smarter screening</div>
+                            </div>
+                          </div>
+                          <p className="mt-4 text-sm text-ink-soft">
+                            Use skill-based shortlisting and pre-screening to reduce manual effort.
+                          </p>
+                        </div>
+
+                        <div className="rounded-[1.5rem] border border-border bg-surface p-5">
+                          <div className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                            Hiring stages
+                          </div>
+                          <div className="mt-4 space-y-3">
+                            {["Source", "Screen", "Engage", "Hire"].map((step, index) => (
+                              <div
+                                key={step}
+                                className="flex items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3"
+                              >
+                                <div className="grid h-8 w-8 place-items-center rounded-full bg-primary-soft text-xs font-bold text-primary">
+                                  0{index + 1}
+                                </div>
+                                <div className="text-sm font-semibold text-ink">{step}</div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -355,8 +369,8 @@ export default function RecruitmentPage() {
         </section>
 
         <section className="py-20">
-          <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-start">
-            <div className="lg:col-span-4">
+          <div className="container-x">
+            <div className="mx-auto max-w-3xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
                 Hiring challenges
               </span>
@@ -369,7 +383,7 @@ export default function RecruitmentPage() {
               </p>
             </div>
 
-            <div className="lg:col-span-8 grid gap-5 md:grid-cols-2">
+            <div className="mt-10 grid gap-5 md:grid-cols-2">
               {challengeCards.map((card, index) => (
                 <article
                   key={card.title}
@@ -458,7 +472,7 @@ export default function RecruitmentPage() {
 
         <section className="py-20">
           <div className="container-x">
-            <div className="max-w-2xl">
+            <div className="mx-auto max-w-2xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
                 Benefits by role
               </span>
@@ -499,7 +513,7 @@ export default function RecruitmentPage() {
 
         <section className="bg-surface py-20">
           <div className="container-x">
-            <div className="max-w-2xl">
+            <div className="mx-auto max-w-2xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
                 Key features
               </span>
