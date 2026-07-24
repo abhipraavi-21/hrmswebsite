@@ -633,28 +633,25 @@ export default function AttendancePage() {
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/12 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/12 blur-3xl" />
 
-          <div className="container-x py-8 lg:py-10">
-            <div className="grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
-              <div className="fade-up text-center lg:text-left">
+          <div className="container-x py-10 lg:py-14">
+            <div className="mx-auto max-w-4xl text-center">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <BadgeCheck className="h-3.5 w-3.5" />
                 Attendance Management Software
               </span>
 
-              <h1 className="mx-auto mt-4 max-w-4xl text-balance text-4xl font-bold leading-[1.02] tracking-[-0.03em] text-ink sm:text-5xl lg:mx-0 lg:max-w-none lg:text-[4rem] xl:text-[4.4rem]">
-                <span className="block">Attendance Management</span>
-                <span className="block">Software That Simplifies</span>
-                <span className="block">Workforce Tracking</span>
+              <h1 className="mt-4 text-balance text-4xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
+                Attendance Management Software That Simplifies Workforce Tracking
               </h1>
 
-              <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-ink-soft sm:text-lg lg:mx-0">
+              <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-ink-soft sm:text-lg">
                 Track employee attendance with biometric devices, web attendance, GPS,
                 geo-fencing, geo-location and selfie verification from one centralized platform.
                 Altroz HR helps businesses automate attendance, manage shifts, calculate working
                 hours, monitor overtime and generate accurate attendance reports with ease.
               </p>
 
-              <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <Link to={ROUTES.bookDemo} className="btn-primary">
                   Book Free Demo
                 </Link>
@@ -663,7 +660,7 @@ export default function AttendancePage() {
                 </a>
               </div>
 
-              <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
                 {heroTags.map((tag) => (
                   <span
                     key={tag}
@@ -673,67 +670,16 @@ export default function AttendancePage() {
                   </span>
                 ))}
               </div>
-              </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-2xl">
-              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-              <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                <div className="flex items-center justify-between gap-3 border-b border-border pb-4">
-                  <div>
-                    <div className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
-                      Digital attendance hub
-                    </div>
-                    <div className="mt-1 text-lg font-bold text-ink">Clear records. Faster approvals.</div>
-                  </div>
-                  <div className="rounded-full bg-[#dcfce7] px-3 py-1 text-xs font-semibold text-success">
-                    Live sync
-                  </div>
-                </div>
-
-                <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                  {heroStats.map((stat) => (
-                    <article key={stat.label} className="soft-card p-4">
-                      <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-                        {stat.label}
-                      </div>
-                      <div className="mt-1 text-3xl font-bold text-ink">{stat.value}</div>
-                      <p className="mt-2 text-xs leading-5 text-ink-soft">{stat.note}</p>
-                    </article>
-                  ))}
-                </div>
-
-                <div className="mt-5 rounded-[1.5rem] border border-border bg-surface p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="text-sm font-semibold text-ink">Attendance capture mix</div>
-                    <div className="text-xs font-semibold text-primary">Methods</div>
-                  </div>
-                  <div className="mt-4 grid gap-2">
-                    {[
-                      ["Biometric", "Fingerprint and face recognition"],
-                      ["Web", "Browser-based attendance"],
-                      ["GPS", "Location-aware check-ins"],
-                      ["Selfie", "Identity verification"],
-                    ].map(([label, value], index) => (
-                      <div
-                        key={label}
-                        className="flex items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3"
-                      >
-                        <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary-soft text-primary">
-                          <span className="text-xs font-bold">{index + 1}</span>
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-ink">{label}</div>
-                          <div className="text-xs text-ink-soft">{value}</div>
-                        </div>
-                        <span className="ml-auto rounded-full bg-[#eff6ff] px-2.5 py-1 text-[11px] font-semibold text-primary">
-                          Active
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+            <div className="mt-10 grid gap-4 md:grid-cols-3">
+              {heroStats.map((stat) => (
+                <article key={stat.label} className="soft-card p-5">
+                  <div className="text-sm font-semibold text-ink-soft">{stat.label}</div>
+                  <div className="mt-2 text-4xl font-bold text-ink">{stat.value}</div>
+                  <p className="mt-2 text-sm text-ink-soft">{stat.note}</p>
+                </article>
+              ))}
             </div>
           </div>
         </section>
