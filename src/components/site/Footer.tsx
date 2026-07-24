@@ -69,7 +69,7 @@ export default function Footer() {
       <div className="site-container">
         <div className="footer-grid grid lg:grid-cols-12">
           <ScrollReveal variant="fade-up" className="lg:col-span-4">
-            <BrandMark variant="dark" className="scale-[0.8] origin-left" />
+            <BrandMark mode="compact" className="scale-[0.8] origin-left" />
             <p className="mt-2 max-w-xs text-xs leading-5 text-white/70">
               The all-in-one HRMS platform for modern Indian businesses.
             </p>

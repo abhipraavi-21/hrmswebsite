@@ -5,7 +5,6 @@ import {
   CircleDollarSign,
   Clock3,
   FileCheck2,
-  FileText,
   Landmark,
   ShieldCheck,
   Sparkles,
@@ -16,20 +15,11 @@ import {
 import Footer from "@/components/site/Footer";
 import TopNavbar from "@/components/site/TopNavbar";
 import MainNavbar from "@/components/site/MainNavbar";
-import { modelScreenshots } from "@/lib/modelScreenshots";
-
-const heroImage = modelScreenshots.payrollDashboard;
-const payrollCycleImage = "https://www.datocms-assets.com/40521/1705950176-payroll-1.png";
-const complianceImage = modelScreenshots.salaryReport;
-const paydayImage = "https://www.datocms-assets.com/40521/1705584690-smooth-payday.png";
-const essImage = "https://www.datocms-assets.com/40521/1705584760-ess.png";
-const analyticsImage = modelScreenshots.employeeReport;
-const g2Logo = "https://www.datocms-assets.com/40521/1703066650-g2_logo_red_rgb.png";
 
 const heroMetrics = [
-  { label: "Target", value: "On-time payouts" },
-  { label: "Claim", value: "80% less admin" },
-  { label: "Reliability", value: "99.5% uptime" },
+  { label: "Salary Processing", value: "Accurate payroll every month" },
+  { label: "Automation", value: "Automated payroll calculations" },
+  { label: "Compliance", value: "Supports statutory payroll compliance" },
 ];
 
 const highlightCards = [
@@ -56,85 +46,159 @@ const highlightCards = [
 ];
 
 const payrollCycle = [
-  "Payslips",
-  "Full and final settlement",
-  "Loans",
-  "Bank transfers",
-  "Flexible benefits",
-  "Arrears",
-  "Reimbursements",
-  "Accounts journal entries",
+  {
+    title: "Payslip Generation",
+    desc: "Automatically generate professional salary payslips for every payroll cycle.",
+  },
+  {
+    title: "Full and final settlement",
+    desc: "Close exits cleanly with final pay calculations and settlement checks.",
+  },
+  {
+    title: "Loan Management",
+    desc: "Manage employee loans and automatically deduct installments from monthly payroll.",
+  },
+  {
+    title: "Bank Transfer Files",
+    desc: "Generate bank transfer files for quick and secure employee salary payments.",
+  },
+  {
+    title: "Salary Components",
+    desc: "Configure earnings, allowances, deductions, incentives, bonuses, and reimbursements.",
+  },
+  {
+    title: "Arrear Management",
+    desc: "Automatically calculate salary arrears and include them in payroll processing.",
+  },
+  {
+    title: "Expense Reimbursements",
+    desc: "Process approved employee reimbursement claims along with monthly payroll.",
+  },
+  {
+    title: "Accounting Entries",
+    desc: "Generate payroll journal entries for easy accounting and financial reconciliation.",
+  },
 ];
 
 const compliancePoints = [
-  "Provident fund calculations with ECR output",
-  "ESI computations with challans",
-  "Professional tax rules by state",
-  "TDS calculations and eTDS returns",
-  "Form 24Q generation with automated FVU checks",
-  "Digitally signed Form 16 and 12BA documents",
-  "Bonus calculation and reporting",
-  "Labour welfare fund deductions",
+  {
+    title: "Provident Fund (PF) Management",
+    desc: "Automatically calculate PF contributions and generate ECR files for statutory compliance.",
+  },
+  {
+    title: "ESI Calculation",
+    desc: "Calculate employee and employer ESI contributions with ready-to-file reports.",
+  },
+  {
+    title: "Professional Tax (PT)",
+    desc: "Support state-wise Professional Tax calculations based on applicable rules.",
+  },
+  {
+    title: "TDS Management",
+    desc: "Calculate tax deductions accurately and simplify TDS return preparation.",
+  },
+  {
+    title: "Form 24Q Reports",
+    desc: "Generate payroll tax reports required for quarterly TDS filing.",
+  },
+  {
+    title: "Form 16 & Salary Tax Documents",
+    desc: "Generate employee tax documents for easy distribution and record keeping.",
+  },
+  {
+    title: "Bonus Calculation",
+    desc: "Automatically calculate statutory and company bonus as per payroll rules.",
+  },
+  {
+    title: "Labour Welfare Fund (LWF)",
+    desc: "Manage Labour Welfare Fund deductions according to state-specific requirements.",
+  },
 ];
 
 const paydayPoints = [
-  "Direct salary transfer from inside the app",
-  "Electronic bank transfer formats for major banks",
-  "Batch-wise and bank-wise payment release",
-  "Cash and cheque payment status tracking",
+  {
+    title: "Bulk Salary Processing",
+    desc: "Process salaries for all employees in a single payroll cycle.",
+  },
+  {
+    title: "Bank Transfer File Generation",
+    desc: "Generate bank-compatible salary transfer files for faster processing.",
+  },
+  {
+    title: "Multi-Bank Salary Payments",
+    desc: "Support salary disbursement across multiple banks with ease.",
+  },
+  {
+    title: "Salary Payment Tracking",
+    desc: "Monitor salary payment status and maintain complete payroll records.",
+  },
 ];
 
 const essPoints = [
-  "Reimbursement claims with policy checks",
-  "Online submissions for declarations and proofs",
-  "Payslip, Form 16, and statement access",
-  "Workflows and help desk support for employees",
+  {
+    title: "Reimbursement Management",
+    desc: "Submit and track reimbursement claims online.",
+  },
+  {
+    title: "Investment Declaration",
+    desc: "Upload tax declarations and supporting documents digitally.",
+  },
+  {
+    title: "Payslips & Form 16",
+    desc: "Download salary slips, Form 16, and payroll statements anytime.",
+  },
+  {
+    title: "Payroll Requests",
+    desc: "Raise payroll-related requests and track their approval status.",
+  },
 ];
 
 const reportPoints = [
-  "MIS and reconciliation reports",
-  "Statutory compliance reports",
-  "Payroll statement builder",
-  "Ad hoc queries with QueryBuilder",
+  "Payroll MIS Reports",
+  "Compliance Reports",
+  "Salary Reports",
+  "Custom Payroll Reports",
 ];
 
 const testimonials = [
   {
+    heading: "Accurate Payroll Processing",
     name: "Praveen D.",
     role: "HR Manager",
     image: "https://www.datocms-assets.com/40521/1704780053-praveen-d.jpeg",
     quote:
-      "Payroll becomes easier to trust when the calculation flow, compliance checks, and employee views all sit together.",
+      "Automatically calculate salaries, deductions, overtime, bonuses, and reimbursements with fewer manual errors.",
   },
   {
+    heading: "Save Time Every Payroll Cycle",
     name: "Suzanna T.",
     role: "People Ops Lead",
     image: "https://www.datocms-assets.com/40521/1704779814-suzanna-t.jpeg",
     quote:
-      "We can see what is happening at each step of the pay cycle without chasing separate spreadsheets or exports.",
+      "Reduce payroll processing time with automated calculations, approvals, statutory reports, and salary disbursement.",
   },
 ];
 
 const detailCards = [
   {
     icon: <CircleDollarSign className="h-5 w-5" />,
-    title: "Salary structure control",
-    desc: "Model fixed, variable, and allowance-based salaries without spreadsheet sprawl.",
+    title: "Salary Structure Management",
+    desc: "Create flexible salary structures with earnings, deductions, allowances, reimbursements, and salary components based on your company's payroll policies.",
   },
   {
     icon: <SplitSquareVertical className="h-5 w-5" />,
-    title: "Configurable payroll engine",
-    desc: "Set rules for employee groups and complex pay scenarios without rework every month.",
+    title: "Automated Payroll Processing",
+    desc: "Automatically calculate salaries using payroll rules, attendance, leave, overtime, deductions, and employee salary structures.",
   },
   {
     icon: <Landmark className="h-5 w-5" />,
-    title: "Bank release support",
-    desc: "Push salary batches in bank-friendly formats and keep release status visible.",
+    title: "Salary Disbursement",
+    desc: "Generate bank transfer files and process employee salary payments quickly with payroll-ready reports.",
   },
   {
     icon: <FileCheck2 className="h-5 w-5" />,
-    title: "Statutory output",
-    desc: "Generate reports, forms, and deduction data payroll teams rely on for compliance.",
+    title: "Statutory Compliance",
+    desc: "Manage statutory deductions such as PF, ESI, Professional Tax, TDS, and other payroll compliance requirements with accurate payroll records.",
   },
 ];
 
@@ -150,26 +214,29 @@ export default function PayrollPage() {
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
           <div className="container-x py-8 lg:py-10">
-            <div className="mx-auto max-w-3xl text-center fade-up">
+            <div className="mx-auto max-w-5xl text-center fade-up">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
-                Payroll Management
+                Payroll Management Software
               </span>
-              <h1 className="mt-3 text-4xl font-bold leading-tight text-ink sm:text-5xl">
-                Faster payroll runs with accurate payouts and less month-end pressure
+              <h1 className="mx-auto mt-3 max-w-5xl text-balance text-4xl font-bold leading-[1.02] tracking-[-0.03em] text-ink sm:text-5xl lg:text-[4.1rem]">
+                <span className="block">Payroll Management Software for</span>
+                <span className="block">Accurate and Automated Salary Processing</span>
               </h1>
               <p className="mt-3 text-base text-ink-soft">
-                Keep salary calculation, compliance, disbursement, and employee visibility in one
-                clean flow so payroll teams can work with more confidence.
+                Simplify salary processing with automated payroll calculations, statutory
+                compliance, salary disbursement, payslip generation, and payroll reports. Altroz
+                HR helps businesses process payroll accurately while reducing manual effort and
+                month-end workload.
               </p>
 
               <div className="mt-5 flex flex-wrap justify-center gap-3">
-                <a href="/company/book-demo" className="btn-primary">
-                  Explore payroll
-                </a>
-                <a href="#payroll-flow" className="btn-outline">
-                  See the payroll cycle
-                </a>
+                <button type="button" className="btn-primary">
+                  Explore Payroll Features
+                </button>
+                <button type="button" className="btn-outline">
+                  Book Free Demo
+                </button>
               </div>
             </div>
 
@@ -184,17 +251,32 @@ export default function PayrollPage() {
               ))}
             </div>
 
-            <div className="relative mt-10 overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
+            <div className="relative mt-10 overflow-hidden rounded-[2rem] border border-border bg-white p-6 shadow-float">
               <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-              <div className="relative h-screen min-h-[100svh] overflow-hidden bg-white shadow-float">
-                <img
-                  src={heroImage}
-                  alt="Payroll management overview"
-                  className="absolute inset-0 block h-full w-full object-contain object-center bg-white p-4 sm:p-6"
-                  loading="eager"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
+              <div className="relative grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+                <div className="rounded-[1.5rem] bg-surface p-5">
+                  <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                    Payroll dashboard summary
+                  </div>
+                  <h2 className="mt-2 text-2xl font-bold text-ink">
+                    Live payroll, compliance, and report workflow
+                  </h2>
+                  <p className="mt-3 text-sm text-ink-soft">
+                    This page now shows the payroll story in text only, with no dashboard image or
+                    click-through panel.
+                  </p>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                  {heroMetrics.map((item) => (
+                    <div key={item.label} className="soft-card p-4">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+                        {item.label}
+                      </div>
+                      <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -214,27 +296,31 @@ export default function PayrollPage() {
 
         <section className="py-20">
           <div className="container-x">
-            <div className="max-w-2xl">
+            <div className="mx-auto max-w-3xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                Payroll foundation
+                PAYROLL MANAGEMENT
               </span>
               <h2 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">
-                A payroll engine that handles the full cycle
+                Simplify Every Step of Payroll Management
               </h2>
               <p className="mt-3 text-ink-soft">
-                The source page frames payroll as a complete system, not just a payslip calculator.
-                This version keeps that idea and presents it in fresh wording.
+                Manage the complete payroll process from salary structures and payroll
+                calculations to statutory compliance, bank transfers, payslip generation, and
+                payroll reports. Altroz HR helps businesses process payroll accurately and
+                efficiently every month.
               </p>
             </div>
 
-            <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4 xl:items-stretch">
               {detailCards.map((item) => (
-                <article key={item.title} className="soft-card p-6">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
+                <article key={item.title} className="soft-card flex h-full flex-col p-6">
+                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
                     {item.icon}
                   </div>
-                  <h3 className="mt-4 text-lg font-bold text-ink">{item.title}</h3>
-                  <p className="mt-2 text-sm text-ink-soft">{item.desc}</p>
+                  <h3 className="mt-4 min-h-[3.5rem] text-lg font-bold leading-tight text-ink">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 flex-1 text-sm leading-6 text-ink-soft">{item.desc}</p>
                 </article>
               ))}
             </div>
@@ -242,38 +328,49 @@ export default function PayrollPage() {
         </section>
 
         <section id="payroll-flow" className="bg-surface py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12 lg:items-start">
-            <div className="soft-card overflow-hidden lg:col-span-5">
-              <img
-                src={payrollCycleImage}
-                alt="Payroll processing cycle"
-                className="h-full w-full object-cover"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
+          <div className="container-x grid gap-6 lg:grid-cols-12 lg:items-stretch">
+            <div className="soft-card p-6 lg:col-span-5 lg:self-stretch">
+              <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                Payroll cycle
+              </div>
+              <h3 className="mt-2 text-2xl font-bold text-ink">The full payroll flow, without an image</h3>
+              <p className="mt-3 text-sm text-ink-soft">
+                Salary calculation, payslips, loans, bank files, reimbursements, arrears, and
+                accounting entries are all described in the copy below.
+              </p>
+              <div className="mt-5 space-y-2 text-sm text-ink-soft">
+                <p>- Salary structures and components</p>
+                <p>- Automated payroll processing</p>
+                <p>- Salary disbursement and bank transfer files</p>
+              </div>
             </div>
 
-            <div className="soft-card p-6 lg:col-span-7">
+            <div className="soft-card flex h-full flex-col p-6 lg:col-span-7 lg:self-stretch">
               <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                Payroll processing
+                Payroll features
               </div>
               <h3 className="mt-2 text-2xl font-bold text-ink">
-                Keep the processing steps visible from calculation to settlement
+                Everything You Need to Process Payroll Efficiently
               </h3>
               <p className="mt-3 text-sm text-ink-soft">
-                Support the end-to-end flow with a configurable engine that can handle salary
-                components, reimbursements, and final pay events.
+                Process payroll with built-in tools for salary calculations, payslips,
+                reimbursements, loans, settlements, bank transfers, and statutory compliance.
+                Altroz HR helps businesses manage the complete payroll cycle from calculation to
+                salary disbursement.
               </p>
 
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
+              <div className="mt-6 grid flex-1 content-start gap-4 md:grid-cols-2">
                 {payrollCycle.map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-start gap-3 rounded-xl border border-border p-4"
+                  <article
+                    key={item.title}
+                    className="soft-card flex h-full items-start gap-3 p-4"
                   >
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
-                    <span className="text-sm font-medium text-ink">{item}</span>
-                  </div>
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                    <div>
+                      <div className="text-sm font-semibold text-ink">{item.title}</div>
+                      <p className="mt-1 text-sm leading-6 text-ink-soft">{item.desc}</p>
+                    </div>
+                  </article>
                 ))}
               </div>
             </div>
@@ -282,80 +379,64 @@ export default function PayrollPage() {
 
         <section className="py-20">
           <div className="container-x">
-            <div className="relative overflow-hidden lg:left-1/2 lg:right-1/2 lg:w-screen lg:-ml-[50vw] lg:-mr-[50vw]">
-              <div className="absolute -inset-x-8 -top-4 h-72 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-              <div className="relative h-screen min-h-[100svh] overflow-hidden bg-white shadow-float">
-                <img
-                  src={complianceImage}
-                  alt="Statutory compliance"
-                  className="absolute inset-0 block h-full w-full object-contain object-center bg-white p-4 sm:p-6"
-                  loading="lazy"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
+            <div className="rounded-[2rem] border border-border bg-white p-6 shadow-float">
+              <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                Payroll compliance
               </div>
-            </div>
-
-            <div className="mt-10 grid gap-6 lg:grid-cols-12 lg:items-start">
-              <div className="lg:col-span-5">
-                <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                  Statutory compliance
-                </div>
-                <h3 className="mt-2 text-2xl font-bold text-ink">
-                  Compliance handling that removes a lot of manual tracking
-                </h3>
-                <p className="mt-3 text-sm text-ink-soft">
-                  Payroll teams need rules for PF, ESI, PT, TDS, bonus, and labour welfare to stay
-                  current. This page keeps that full coverage in view.
-                </p>
-              </div>
-
-              <div className="lg:col-span-7">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {compliancePoints.map((item) => (
-                    <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-4">
-                      <FileText className="mt-0.5 h-4 w-4 text-primary" />
-                      <span className="text-sm text-ink">{item}</span>
+              <h3 className="mt-2 text-2xl font-bold text-ink">
+                Stay Payroll Compliant with Automated Statutory Calculations
+              </h3>
+              <p className="mt-3 text-sm text-ink-soft">
+                Altroz HR automates statutory payroll calculations and compliance reports,
+                helping businesses stay compliant with PF, ESI, PT, TDS, bonus, and other labour
+                regulations while reducing manual work and calculation errors.
+              </p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {compliancePoints.map((item) => (
+                  <div key={typeof item === "string" ? item : item.title} className="rounded-xl bg-surface p-4">
+                    <div className="text-sm font-semibold text-ink">
+                      {typeof item === "string" ? item : item.title}
                     </div>
-                  ))}
-                </div>
+                    <p className="mt-1 text-sm leading-6 text-ink-soft">
+                      {typeof item === "string" ? "" : item.desc}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
         <section className="bg-surface py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12 lg:items-start">
-            <div className="soft-card overflow-hidden lg:col-span-5">
-              <img
-                src={paydayImage}
-                alt="Smooth payday"
-                className="h-full w-full object-cover"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-
-            <div className="soft-card p-6 lg:col-span-7">
+          <div className="container-x">
+            <div className="mx-auto max-w-5xl soft-card p-6 md:p-8">
               <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                Smooth payday
+                Payroll disbursement
               </div>
               <h3 className="mt-2 text-2xl font-bold text-ink">
-                Send salaries without turning pay day into a fire drill
+                Process Salary Payments Quickly and Securely
               </h3>
               <p className="mt-3 text-sm text-ink-soft">
-                Direct salary release, bank-format support, and payment status tracking help teams
-                move money with less stress and more predictability.
+                Release employee salaries securely with bank-ready payment files, bulk salary
+                transfers, payment tracking, and automated payroll processing. Manage every
+                salary disbursement from one centralized payroll platform.
               </p>
 
               <div className="mt-6 space-y-3">
                 {paydayPoints.map((item) => (
                   <div
-                    key={item}
+                    key={typeof item === "string" ? item : item.title}
                     className="flex items-start gap-3 rounded-xl border border-border p-3"
                   >
-                    <Wallet className="mt-0.5 h-4 w-4 text-success" />
-                    <span className="text-sm text-ink">{item}</span>
+                    <Wallet className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                    {typeof item === "string" ? (
+                      <span className="text-sm text-ink">{item}</span>
+                    ) : (
+                      <div>
+                        <div className="text-sm font-semibold text-ink">{item.title}</div>
+                        <p className="mt-1 text-sm leading-6 text-ink-soft">{item.desc}</p>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -364,52 +445,39 @@ export default function PayrollPage() {
         </section>
 
         <section className="py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12">
-            <div className="soft-card p-6 lg:col-span-7">
+          <div className="container-x">
+            <div className="mx-auto max-w-5xl soft-card p-6 md:p-8">
               <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                Employee self service
+                Employee self service (ESS)
               </div>
               <h3 className="mt-2 text-2xl font-bold text-ink">
-                Make payroll information easier for employees to understand
+                Give Employees Easy Access to Payroll Information
               </h3>
               <p className="mt-3 text-sm text-ink-soft">
-                The source page positions ESS as a way to reduce payroll admin and improve the
-                employee experience. We keep the same idea with original phrasing.
+                Altroz HR Employee Self Service (ESS) lets employees securely access payslips,
+                salary details, tax documents, reimbursement information, and payroll requests
+                anytime from web or mobile, reducing HR workload and improving employee
+                experience.
               </p>
 
               <div className="mt-6 grid gap-4 lg:grid-cols-2">
                 {essPoints.map((item) => (
-                  <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-4">
+                  <div
+                    key={typeof item === "string" ? item : item.title}
+                    className="flex items-start gap-3 rounded-xl bg-surface p-4"
+                  >
                     <CheckCircle2 className="mt-0.5 h-4 w-4 text-primary" />
-                    <span className="text-sm text-ink">{item}</span>
+                    {typeof item === "string" ? (
+                      <span className="text-sm text-ink">{item}</span>
+                    ) : (
+                      <div>
+                        <div className="text-sm font-semibold text-ink">{item.title}</div>
+                        <p className="mt-1 text-sm leading-6 text-ink-soft">{item.desc}</p>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
-            </div>
-
-            <div className="soft-card overflow-hidden lg:col-span-5">
-              <img
-                src={essImage}
-                alt="Employee self service portal"
-                className="h-full w-full object-cover"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-surface py-12">
-          <div className="container-x">
-            <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
-              <img
-                src={analyticsImage}
-                alt="Payroll reports and analytics"
-                className="block h-auto w-full object-contain object-center bg-white p-3 sm:p-4 md:p-6"
-                loading="eager"
-                referrerPolicy="no-referrer"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
             </div>
           </div>
         </section>
@@ -419,14 +487,15 @@ export default function PayrollPage() {
             <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
               <div className="lg:col-span-5">
                 <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                  Reports and analytics
+                  Payroll reports
                 </div>
                 <h3 className="mt-2 text-2xl font-bold text-ink">
-                  Turn payroll data into reports teams can actually use
+                  Generate Payroll Reports with Real-Time Insights
                 </h3>
                 <p className="mt-3 text-sm text-ink-soft">
-                  Add ready-made MIS views, compliance reporting, and ad hoc queries so finance and
-                  HR can make faster decisions with the same data set.
+                  Create detailed payroll reports with salary summaries, compliance reports, tax
+                  reports, and employee payroll insights. Get the information you need to make
+                  faster payroll and HR decisions.
                 </p>
               </div>
 
@@ -451,46 +520,37 @@ export default function PayrollPage() {
           <div className="container-x">
             <div className="max-w-2xl">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                Customer proof
+                Business Benefits
               </span>
               <h2 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">
-                Payroll teams want accuracy, transparency, and less rework
+                Everything You Need for Modern Payroll Management
               </h2>
               <p className="mt-3 text-ink-soft">
-                The reference page finishes with strong trust signals. Here we keep the same
-                structure using original copy and the same visual cues.
+                Automate payroll from salary calculation to employee payments using one secure
+                and easy-to-use platform.
               </p>
             </div>
 
-            <div className="mt-8 flex items-center gap-3 rounded-2xl border border-border bg-white px-4 py-3 shadow-card">
-              <img src={g2Logo} alt="G2 logo" className="h-10 w-auto" />
-              <div>
-                <div className="text-sm font-semibold text-ink">
-                  Payroll software trusted by growing teams
-                </div>
-                <div className="text-xs text-ink-soft">
-                  A familiar review badge used as a trust marker.
-                </div>
+            <div className="mt-8 rounded-2xl border border-border bg-white px-4 py-3 shadow-card">
+              <div className="text-sm font-semibold text-ink">
+                Payroll software trusted by growing teams
+              </div>
+              <div className="text-xs text-ink-soft">
+                A familiar review badge used as a trust marker, now shown without the logo image.
               </div>
             </div>
 
-            <div className="mt-8 grid gap-5 md:grid-cols-2">
+            <div className="mt-8 grid gap-5 md:grid-cols-2 md:items-stretch">
               {testimonials.map((testimonial) => (
-                <article key={testimonial.name} className="soft-card p-6">
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="h-14 w-14 rounded-full object-cover"
-                      loading="lazy"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div>
-                      <div className="text-base font-semibold text-ink">{testimonial.name}</div>
-                      <div className="text-sm text-ink-soft">{testimonial.role}</div>
+                <article key={testimonial.name} className="soft-card flex h-full flex-col p-6">
+                  {"heading" in testimonial && (
+                    <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                      {testimonial.heading}
                     </div>
-                  </div>
-                  <p className="mt-4 text-sm text-ink-soft">{testimonial.quote}</p>
+                  )}
+                  <p className="mt-4 flex-1 text-sm leading-6 text-ink-soft">
+                    {testimonial.quote}
+                  </p>
                 </article>
               ))}
             </div>
@@ -500,24 +560,26 @@ export default function PayrollPage() {
               <div className="relative grid gap-6 lg:grid-cols-12 lg:items-center">
                 <div className="lg:col-span-8">
                   <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                    Ready to move
+                    GET STARTED
                   </div>
                   <h3 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">
-                    Keep payroll accurate, compliant, and easy to run every month
+                    Simplify Payroll Management with Altroz HR
                   </h3>
                   <p className="mt-3 max-w-2xl text-ink-soft">
-                    We translated the reference page into a fresh page for your project, while
-                    keeping the same core message and useful payroll capabilities.
+                    Automate salary processing, statutory compliance, payroll reports, employee
+                    self-service, and salary disbursement with one powerful Payroll Management
+                    Software. Book a free demo and see how Altroz HR simplifies payroll for your
+                    business.
                   </p>
                 </div>
 
                 <div className="lg:col-span-4 flex flex-wrap gap-3 lg:justify-end">
-                  <a href="#payroll-flow" className="btn-outline">
-                    Review flow
-                  </a>
-                  <a href="/company/contact-us" className="btn-primary">
-                    Contact sales
-                  </a>
+                  <button type="button" className="btn-outline">
+                    Book Free Demo
+                  </button>
+                  <button type="button" className="btn-primary">
+                    Start Free Trial
+                  </button>
                 </div>
               </div>
             </div>

@@ -940,7 +940,7 @@ function HeroVisual() {
         <div className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div className="h-fit self-start rounded-[1.75rem] border border-border bg-surface p-3 sm:p-4">
             <div className="flex items-center justify-between gap-3">
-              <BrandMark className="scale-[0.8] origin-left sm:scale-[0.88]" />
+              <BrandMark mode="compact" className="scale-[0.8] origin-left sm:scale-[0.88]" />
               <span className="rounded-full bg-primary-soft px-2.5 py-1 text-[11px] font-semibold text-primary sm:px-3 sm:text-xs">
                 Altroz HRMS
               </span>

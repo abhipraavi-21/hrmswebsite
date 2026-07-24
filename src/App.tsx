@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import ScrollRevealManager from "./components/site/ScrollRevealManager";
 import ScrollToTop from "./components/site/ScrollToTop";
 import WhatsAppFloatingButton from "./components/site/WhatsAppFloatingButton";
@@ -16,6 +16,7 @@ import { ROUTES } from "@/routes/routeConfig.js";
 import { logRouteValidation, validateRouteReferences } from "@/utils/routeValidator.js";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
+const HrmsHomePage = lazy(() => import("./pages/HrmsHomePage"));
 const CoreHrPage = lazy(() => import("./pages/CoreHrPage"));
 const WorkforceManagementPage = lazy(() => import("./pages/WorkforceManagementPage"));
 const AttendanceManagementPage = lazy(() => import("./pages/AttendanceManagementPage"));
@@ -102,6 +103,7 @@ const routeReferences = [
 
 function AppShell() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === ROUTES.home;
 
   useEffect(() => {
@@ -112,6 +114,18 @@ function AppShell() {
     const report = validateRouteReferences(routeReferences);
     logRouteValidation(report, "Altroz HRMS route audit");
   }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("altroz:last-path", location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const lastPath = sessionStorage.getItem("altroz:last-path");
+
+    if (isHomePage && lastPath && lastPath !== ROUTES.home) {
+      navigate(lastPath, { replace: true });
+    }
+  }, [isHomePage, navigate]);
 
   return (
     <>
@@ -127,6 +141,7 @@ function AppShell() {
       >
         <Routes>
           <Route path={ROUTES.home} element={<HomePage />} />
+          <Route path={ROUTES.hrmsHome} element={<HrmsHomePage />} />
           <Route path={ROUTES.coreHR} element={<CoreHrPage />} />
           <Route
             path={ROUTES.attendance}
@@ -172,6 +187,7 @@ function AppShell() {
           <Route path={ROUTES.bookDemo} element={<BookDemoPage />} />
 
           <Route path="/about-us" element={<Navigate to={ROUTES.about} replace />} />
+          <Route path="/hrms-home" element={<Navigate to={ROUTES.hrmsHome} replace />} />
           <Route
             path="/attendance-management"
             element={<Navigate to={ROUTES.attendanceManagement} replace />}

@@ -33,7 +33,7 @@ export default function MainNavbar() {
         )}
       >
         <Link to={ROUTES.home} className="flex items-center gap-2 shrink-0">
-          <BrandMark className="scale-90 origin-left" />
+          <BrandMark mode="compact" className="scale-90 origin-left" />
         </Link>
 
         <nav className="flex flex-wrap items-center gap-1 pl-3 sm:pl-4 lg:pl-0 lg:flex-nowrap lg:mx-auto">

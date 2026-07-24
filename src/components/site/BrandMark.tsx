@@ -1,25 +1,38 @@
+import { useLocation } from "react-router-dom";
+import { ROUTES } from "@/routes/routeConfig.js";
+
 type BrandMarkProps = {
-  variant?: "light" | "dark";
+  mode?: "auto" | "compact" | "wordmark";
   label?: string;
   className?: string;
 };
 
 export default function BrandMark({
-  variant = "light",
+  mode = "auto",
   label = "Altroz HR",
   className = "",
 }: BrandMarkProps) {
+  const location = useLocation();
+  const isAltrozHome = location.pathname === ROUTES.home;
+  const shouldUseWordmark =
+    mode === "wordmark" || (mode === "auto" && isAltrozHome);
+  const src = shouldUseWordmark
+    ? "/brand/altroz-logo-wordmark.png"
+    : "/brand/altroz-logo-small.png";
+  const sizeClass = shouldUseWordmark ? "h-10 sm:h-11" : "h-8 sm:h-9";
+  const altText = shouldUseWordmark ? "Altroz" : label;
+
   return (
     <span className={`inline-flex items-center ${className}`.trim()}>
       <img
-        src="/brand/altroz-logo-small.png"
-        alt={label}
+        src={src}
+        alt={altText}
         width={480}
         height={104}
         loading="eager"
         decoding="async"
         fetchPriority="high"
-        className="block h-8 w-auto max-w-none select-none sm:h-9"
+        className={`block ${sizeClass} w-auto max-w-none select-none`}
       />
     </span>
   );

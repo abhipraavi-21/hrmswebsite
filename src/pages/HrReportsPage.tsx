@@ -68,7 +68,7 @@ type SpotlightProps = {
   title: string;
   description: string;
   bullets: string[];
-  visual: ReactNode;
+  visual?: ReactNode;
   reverse?: boolean;
   sectionClassName?: string;
 };
@@ -810,136 +810,59 @@ function SectionHeading({
   );
 }
 
-function DataTable({ headers, rows }: { headers: string[]; rows: TableRow[] }) {
+function RecordCards({
+  rows,
+  title,
+  subtitle,
+}: {
+  rows: TableRow[];
+  title: string;
+  subtitle: string;
+}) {
   return (
     <div className="overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-card">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-surface/80 px-4 py-3">
         <div>
-          <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-            Digital data grid
-          </div>
-          <div className="mt-1 text-sm font-semibold text-ink">Live employee records</div>
+          <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{title}</div>
+          <div className="mt-1 text-sm font-semibold text-ink">{subtitle}</div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-full bg-[#ecfdf3] px-3 py-1.5 text-xs font-semibold text-success">
-            <span className="h-2 w-2 rounded-full bg-success" />
-            Live sync
-          </span>
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft shadow-sm transition-colors hover:bg-surface"
-          >
-            <Search className="h-3.5 w-3.5" />
-            Search
-          </button>
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft shadow-sm transition-colors hover:bg-surface"
-          >
-            <Filter className="h-3.5 w-3.5" />
-            Filter
-          </button>
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft shadow-sm transition-colors hover:bg-surface"
-          >
-            <Download className="h-3.5 w-3.5" />
-            Export
-          </button>
-        </div>
+        <span className="inline-flex items-center gap-2 rounded-full bg-[#ecfdf3] px-3 py-1.5 text-xs font-semibold text-success">
+          <span className="h-2 w-2 rounded-full bg-success" />
+          Live sync
+        </span>
       </div>
 
-      <div className="overflow-x-auto">
-        <div className="min-w-[680px]">
-          <div
-            className="grid border-b border-border bg-surface/70 text-[11px] font-bold uppercase tracking-[0.18em] text-primary"
-            style={{ gridTemplateColumns: `repeat(${headers.length}, minmax(0, 1fr))` }}
-          >
-            {headers.map((header) => (
-              <div key={header} className="px-4 py-3">
-                {header}
+      <div className="grid gap-3 p-4 sm:grid-cols-2 xl:grid-cols-3">
+        {rows.slice(0, 6).map((row) => (
+          <div key={row.join("-")} className="rounded-2xl border border-border bg-surface p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <div className="truncate text-sm font-semibold text-ink">{row[0]}</div>
+                <div className="mt-1 text-xs text-ink-soft">
+                  {row.slice(1, 3).filter(Boolean).join(" • ")}
+                </div>
               </div>
-            ))}
+              <span className="rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold text-primary shadow-sm">
+                {row[3] ?? "Updated"}
+              </span>
+            </div>
           </div>
-
-          <div>
-            {rows.map((row, rowIndex) => (
-              <div
-                key={row.join("-")}
-                className={`grid items-center transition-colors ${
-                  rowIndex % 2 === 0 ? "bg-white" : "bg-[#fbfdff]"
-                } hover:bg-primary-soft/40`}
-                style={{ gridTemplateColumns: `repeat(${headers.length}, minmax(0, 1fr))` }}
-              >
-                {row.map((cell, cellIndex) => (
-                  <div key={`${rowIndex}-${cellIndex}`} className="px-4 py-3 align-middle">
-                    {renderDigitalCell(cell, cellIndex)}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border bg-white px-4 py-3 text-xs text-ink-soft">
-        <span>
-          Showing {rows.length} records with {headers.length} columns
-        </span>
+        <span>Showing {Math.min(rows.length, 6)} record cards instead of a table grid</span>
         <div className="flex flex-wrap gap-2">
-          {headers.slice(0, 3).map((header) => (
-            <span key={header} className="rounded-full bg-surface px-3 py-1.5">
-              {header}
+          {rows.slice(0, 3).map((row) => (
+            <span key={row.join("|")} className="rounded-full bg-surface px-3 py-1.5">
+              {row[0]}
             </span>
           ))}
         </div>
       </div>
     </div>
   );
-}
-
-function renderDigitalCell(cell: string, columnIndex: number) {
-  const statusTone = getStatusTone(cell);
-
-  if (columnIndex === 0) {
-    return (
-      <div className="flex items-center gap-3">
-        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary-soft text-xs font-bold text-primary">
-          {cell.slice(0, 1).toUpperCase()}
-        </span>
-        <span className="min-w-0 truncate font-semibold text-ink">{cell}</span>
-      </div>
-    );
-  }
-
-  if (statusTone) {
-    return (
-      <span
-        className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
-          statusTone === "success"
-            ? "bg-[#ecfdf3] text-success"
-            : statusTone === "warning"
-              ? "bg-amber-100 text-amber-700"
-              : statusTone === "destructive"
-                ? "bg-rose-100 text-rose-700"
-                : "bg-primary-soft text-primary"
-        }`}
-      >
-        {cell}
-      </span>
-    );
-  }
-
-  if (isDateLike(cell)) {
-    return (
-      <span className="inline-flex rounded-full bg-surface px-3 py-1.5 text-xs font-medium text-ink-soft">
-        {cell}
-      </span>
-    );
-  }
-
-  return <span className="text-ink">{cell}</span>;
 }
 
 function getStatusTone(value: string) {
@@ -962,10 +885,6 @@ function getStatusTone(value: string) {
   }
 
   return null;
-}
-
-function isDateLike(value: string) {
-  return /\b\d{1,2}\s+[A-Za-z]{3}\s+\d{4}\b/.test(value) || /\b\d{4}-\d{2}-\d{2}\b/.test(value);
 }
 
 function MetricGrid({ metrics }: { metrics: Metric[] }) {
@@ -1006,33 +925,25 @@ function MiniBarChart({
   labels: string[];
   tone?: string;
 }) {
-  const [ref, inView] = useInView<HTMLDivElement>();
-  const max = Math.max(...values, 1);
-
   return (
-    <div ref={ref} className="rounded-[1.5rem] border border-border bg-white p-5 shadow-card">
+    <div className="rounded-[1.5rem] border border-border bg-white p-5 shadow-card">
       <div className="flex items-center justify-between gap-3">
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Trend</div>
-          <div className="mt-1 text-lg font-bold text-ink">Snapshot chart</div>
+          <div className="mt-1 text-lg font-bold text-ink">Text summary only</div>
         </div>
         <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary">
           <BarChart3 className="h-5 w-5" />
         </div>
       </div>
-      <div className="mt-5 flex h-32 items-end gap-3">
+      <div className="mt-4 grid gap-2">
         {values.map((value, index) => (
-          <div key={labels[index] ?? index} className="flex flex-1 flex-col items-center gap-2">
-            <div className="flex h-24 w-full items-end">
-              <div
-                className={`w-full rounded-t-2xl ${tone} transition-[height,opacity] duration-700 ease-out motion-reduce:transition-none`}
-                style={{
-                  height: inView ? `${Math.max(12, (value / max) * 100)}%` : "0%",
-                  opacity: inView ? 1 : 0.35,
-                }}
-              />
-            </div>
-            <div className="text-[11px] font-medium text-ink-soft">{labels[index]}</div>
+          <div
+            key={labels[index] ?? index}
+            className="flex items-center justify-between rounded-2xl bg-surface px-4 py-3"
+          >
+            <span className="text-sm font-medium text-ink">{labels[index]}</span>
+            <span className="text-sm font-semibold text-primary">{value}</span>
           </div>
         ))}
       </div>
@@ -1045,249 +956,51 @@ function StatusDot({ tone = "bg-success" }: { tone?: string }) {
 }
 
 function ReportPreviewPanel({ category }: { category: ReportCategory }) {
-  if (category.id === "employee") {
-    return <EmployeeDashboardPreview category={category} />;
-  }
-
   return (
-    <div key={category.id} className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
-      <div className="space-y-5">
-        <div className="rounded-[1.75rem] border border-border bg-surface p-5">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
-                {category.icon}
-                {category.label}
-              </div>
-              <h3 className="mt-4 text-2xl font-bold text-ink">{category.label}</h3>
-              <p className="mt-2 text-sm text-ink-soft">{category.summary}</p>
-            </div>
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary text-white">
-              <FileBarChart2 className="h-5 w-5" />
-            </div>
-          </div>
-
-          <div className="mt-5 flex flex-wrap gap-2">
-            {category.filters.map((filter) => (
-              <span
-                key={filter}
-                className="rounded-full border border-primary/15 bg-white px-3 py-1.5 text-xs font-semibold text-ink"
-              >
-                {filter}
-              </span>
-            ))}
-          </div>
-
-          <div className="mt-5 rounded-2xl border border-dashed border-primary/20 bg-white p-4 text-sm text-ink-soft">
-            {category.note}
-          </div>
+    <div key={category.id} className="space-y-5">
+      <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
+        <div className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary">
+          {category.icon}
+          {category.label}
         </div>
+        <h3 className="mt-4 text-2xl font-bold text-ink">{category.label}</h3>
+        <p className="mt-2 text-sm text-ink-soft">{category.summary}</p>
+        <p className="mt-4 text-sm text-ink-soft">{category.note}</p>
 
-        <div className="rounded-[1.75rem] border border-border bg-white p-5">
-          <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-            Available reports
-          </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {category.reports.map((report) => (
-              <span
-                key={report}
-                className="rounded-full bg-surface px-3 py-1.5 text-sm font-medium text-ink"
-              >
-                {report}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="space-y-5">
-        <MetricGrid metrics={category.metrics} />
-
-        <DataTable headers={category.tableHeaders} rows={category.tableRows} />
-
-        <div className="grid gap-3 sm:grid-cols-2">
-          {category.benefits.map((benefit) => (
-            <div
-              key={benefit}
-              className="flex items-start gap-3 rounded-2xl border border-border bg-white p-4 shadow-sm"
+        <div className="mt-5 flex flex-wrap gap-2">
+          {category.filters.map((filter) => (
+            <span
+              key={filter}
+              className="rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-semibold text-ink"
             >
-              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-              <span className="text-sm text-ink">{benefit}</span>
-            </div>
+              {filter}
+            </span>
           ))}
         </div>
       </div>
-    </div>
-  );
-}
 
-function EmployeeDashboardPreview({ category }: { category: ReportCategory }) {
-  const [records, active, joiners, exits] = category.metrics;
-  const activityRows = category.tableRows.slice(0, 4);
-  const trendBars = [36, 44, 41, 53, 48, 60, 56, 67, 62, 72, 68, 75];
-
-  return (
-    <div className="overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
-      <div className="flex items-center gap-2 border-b border-border bg-surface/80 px-4 py-3">
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-        <div className="ml-3 text-xs font-semibold text-ink-soft">employee.digital.dashboard</div>
-        <div className="ml-auto inline-flex items-center gap-2 rounded-full bg-[#ecfdf3] px-3 py-1.5 text-xs font-semibold text-success">
-          <span className="h-2 w-2 rounded-full bg-success" />
-          Live sync
+      <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
+        <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+          Available reports
         </div>
+        <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+          {category.reports.slice(0, 8).map((report) => (
+            <li key={report} className="rounded-2xl bg-surface px-4 py-3 text-sm text-ink">
+              {report}
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div className="grid gap-4 p-4 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <DashboardMetricCard
-              label={records.label}
-              value={records.value}
-              icon={<Users className="h-4 w-4" />}
-            />
-            <DashboardMetricCard
-              label={active.label}
-              value={active.value}
-              icon={<CheckCircle2 className="h-4 w-4" />}
-              tone="success"
-            />
-            <DashboardMetricCard
-              label={joiners.label}
-              value={joiners.value}
-              icon={<Sparkles className="h-4 w-4" />}
-            />
-            <DashboardMetricCard
-              label={exits.label}
-              value={exits.value}
-              icon={<DoorOpen className="h-4 w-4" />}
-              tone="success"
-            />
+      <div className="grid gap-3 sm:grid-cols-2">
+        {category.benefits.map((benefit) => (
+          <div
+            key={benefit}
+            className="rounded-2xl border border-border bg-white p-4 shadow-sm"
+          >
+            <span className="text-sm text-ink">{benefit}</span>
           </div>
-
-          <div className="rounded-[1.5rem] border border-border bg-surface/70 p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                  Workforce trend
-                </div>
-                <div className="mt-1 text-lg font-bold text-ink">Employee strength overview</div>
-              </div>
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#ecfdf3] px-3 py-1.5 text-xs font-semibold text-success">
-                <TrendingUp className="h-3.5 w-3.5" /> +4.2%
-              </span>
-            </div>
-
-            <div className="mt-4 flex h-32 items-end gap-1.5 sm:h-36 lg:h-40">
-              {trendBars.map((height, index) => (
-                <div key={index} className="flex-1">
-                  <div
-                    className="rounded-t-lg bg-gradient-to-t from-primary/60 to-primary transition-all duration-700"
-                    style={{ height: `${height}%` }}
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              {category.filters.map((filter) => (
-                <span
-                  key={filter}
-                  className="rounded-full border border-border bg-white px-3 py-1 text-xs font-semibold text-ink-soft"
-                >
-                  {filter}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <div className="rounded-[1.5rem] border border-border bg-white p-4 shadow-card">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                  Digital snapshot
-                </div>
-                <div className="mt-1 text-lg font-bold text-ink">Live employee records</div>
-              </div>
-              <div className="grid h-10 w-10 place-items-center rounded-2xl bg-primary-soft text-primary">
-                <LayoutDashboard className="h-4 w-4" />
-              </div>
-            </div>
-
-            <p className="mt-3 text-sm leading-6 text-ink-soft">{category.summary}</p>
-
-            <div className="mt-4 grid gap-2.5">
-              {category.reports.slice(0, 5).map((report) => (
-                <div
-                  key={report}
-                  className="flex items-center justify-between rounded-2xl bg-surface/80 px-3 py-2.5"
-                >
-                  <span className="text-sm font-medium text-ink">{report}</span>
-                  <CheckCircle2 className="h-4 w-4 text-success" />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-[1.5rem] border border-border bg-white p-4 shadow-card">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                  Recent activity
-                </div>
-                <div className="mt-1 text-lg font-bold text-ink">Employee pulse</div>
-              </div>
-              <span className="rounded-full bg-surface px-3 py-1 text-xs font-semibold text-ink-soft">
-                {activityRows.length} updates
-              </span>
-            </div>
-
-            <div className="mt-4 grid gap-2.5">
-              {activityRows.map((row) => (
-                <div
-                  key={row.join("-")}
-                  className="flex items-center justify-between rounded-2xl border border-border/80 bg-surface/60 px-3 py-2.5"
-                >
-                  <div className="min-w-0">
-                    <div className="truncate text-sm font-semibold text-ink">{row[0]}</div>
-                    <div className="text-xs text-ink-soft">{row[1]}</div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <StatusBadge value={row[2]} />
-                    <span className="text-xs text-ink-soft">{row[3]}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-[1.25rem] border border-border bg-white p-4 shadow-card">
-              <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                Note
-              </div>
-              <p className="mt-2 text-sm leading-6 text-ink-soft">{category.note}</p>
-            </div>
-            <div className="rounded-[1.25rem] border border-border bg-white p-4 shadow-card">
-              <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                Status
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {["Active", "Onboarding", "Inactive"].map((status) => (
-                  <span
-                    key={status}
-                    className="rounded-full bg-primary-soft px-3 py-1.5 text-xs font-semibold text-primary"
-                  >
-                    {status}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
@@ -1353,10 +1066,12 @@ function SpotlightSection({
   reverse = false,
   sectionClassName = "",
 }: SpotlightProps) {
+  const hasVisual = Boolean(visual);
+
   return (
     <section className={`py-20 ${sectionClassName}`.trim()}>
       <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-start">
-        <div className={`lg:col-span-5 ${reverse ? "lg:order-2" : ""}`}>
+        <div className={`${hasVisual ? "lg:col-span-5" : "lg:col-span-12"} ${reverse ? "lg:order-2" : ""}`}>
           <SectionHeading eyebrow={eyebrow} title={title} description={description} />
           <div className="mt-6 grid gap-3">
             {bullets.map((bullet) => (
@@ -1371,7 +1086,7 @@ function SpotlightSection({
           </div>
         </div>
 
-        <div className={`lg:col-span-7 ${reverse ? "lg:order-1" : ""}`}>{visual}</div>
+        {visual ? <div className={`lg:col-span-7 ${reverse ? "lg:order-1" : ""}`}>{visual}</div> : null}
       </div>
     </section>
   );
@@ -2175,9 +1890,10 @@ function FilterPanel() {
           organization.
         </div>
 
-        <div className="mt-5 rounded-[1.5rem] border border-border bg-white p-4">
-          <DataTable
-            headers={["Employee", "Department", "Status", "Updated"]}
+        <div className="mt-5">
+          <RecordCards
+            title="Filter preview"
+            subtitle="No table grid, just quick cards for the active filter"
             rows={[
               ["Aarav Shah", "Sales", "Active", "Today"],
               ["Riya Patel", "HR", "Active", "Today"],
@@ -2329,7 +2045,7 @@ export default function HrReportsPage() {
           <div className="pointer-events-none absolute right-1/3 top-1/4 h-28 w-28 rounded-full bg-primary/10 blur-2xl" />
 
           <div className="container-x grid gap-10 py-10 lg:grid-cols-12 lg:items-start lg:py-12">
-            <div className="lg:col-span-6 fade-up motion-reduce:animate-none">
+            <div className="lg:col-span-8 fade-up motion-reduce:animate-none">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Smart HR Reports and Analytics
@@ -2351,12 +2067,12 @@ export default function HrReportsPage() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <a href="/company/book-demo" className="btn-primary">
+                <button type="button" className="btn-primary">
                   Book Free Demo
-                </a>
-                <a href="/company/contact-us" className="btn-outline">
+                </button>
+                <button type="button" className="btn-outline">
                   Request a Live Demo
-                </a>
+                </button>
               </div>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
@@ -2373,10 +2089,6 @@ export default function HrReportsPage() {
                   </div>
                 ))}
               </div>
-            </div>
-
-            <div className="lg:col-span-4 lg:justify-self-end">
-              <HeroDashboard />
             </div>
           </div>
         </section>
@@ -2401,8 +2113,8 @@ export default function HrReportsPage() {
         </section>
 
         <section className="py-20">
-          <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-6">
+          <div className="container-x grid gap-8 lg:items-center">
+            <div>
               <SectionHeading
                 eyebrow="What Is HR Reporting?"
                 title="What is HR reporting and how does it help teams?"
@@ -2423,10 +2135,6 @@ export default function HrReportsPage() {
                 </p>
               </div>
             </div>
-
-            <div className="lg:col-span-6">
-              <ManualComparisonVisual />
-            </div>
           </div>
         </section>
 
@@ -2438,8 +2146,15 @@ export default function HrReportsPage() {
               description="Accurate HR reports help organizations understand their workforce, improve operational efficiency, maintain compliance, and make informed business decisions."
             />
 
-            <div className="mt-10">
-              <WhyImportantVisual />
+            <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {importanceBenefits.map((benefit) => (
+                <div key={benefit} className="rounded-[1.5rem] border border-border bg-white p-5 shadow-card">
+                  <div className="text-sm font-semibold text-ink">{benefit}</div>
+                  <p className="mt-2 text-sm text-ink-soft">
+                    This point is now shown as plain text instead of a visual panel.
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -2500,14 +2215,33 @@ export default function HrReportsPage() {
               </div>
 
               <div className="rounded-[1.75rem] border border-border bg-surface p-5 shadow-card">
-                <Tabs value={activeCategoryId} onValueChange={setActiveCategoryId}>
-                  <div className="hidden lg:block">
-                    {/* The trigger list above controls the active state. */}
+                <div className="rounded-[1.5rem] bg-white p-5 shadow-card">
+                  <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                    {currentCategory.label}
                   </div>
-                  <div className="rounded-[1.5rem] bg-white p-5 shadow-card">
-                    <ReportPreviewPanel category={currentCategory} />
+                  <h3 className="mt-2 text-2xl font-bold text-ink">{currentCategory.label}</h3>
+                  <p className="mt-2 text-sm text-ink-soft">{currentCategory.summary}</p>
+                  <p className="mt-4 text-sm text-ink-soft">{currentCategory.note}</p>
+
+                  <div className="mt-5 grid gap-2 sm:grid-cols-2">
+                    {currentCategory.reports.slice(0, 6).map((report) => (
+                      <div key={report} className="rounded-2xl bg-surface px-4 py-3 text-sm text-ink">
+                        {report}
+                      </div>
+                    ))}
                   </div>
-                </Tabs>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {currentCategory.filters.map((filter) => (
+                      <span
+                        key={filter}
+                        className="rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-semibold text-ink"
+                      >
+                        {filter}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -2523,12 +2257,11 @@ export default function HrReportsPage() {
             "Monitor employee strength",
             "Track new joiners and exits",
           ]}
-          visual={<ReportPreviewPanel category={reportCategories[0]} />}
         />
 
         <section className="bg-surface py-20">
-          <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-start">
-            <div className="lg:col-span-5 lg:order-2">
+          <div className="container-x grid gap-8 lg:items-start">
+            <div>
               <SectionHeading
                 eyebrow="Attendance Reports"
                 title="Monitor attendance, working hours, late arrivals, and absences"
@@ -2551,14 +2284,17 @@ export default function HrReportsPage() {
                 ))}
               </div>
             </div>
-            <div className="lg:col-span-7 lg:order-1">
-              <div className="grid gap-4">
-                <MiniBarChart
-                  values={[26, 32, 29, 37, 41, 44, 46, 51]}
-                  labels={["Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb"]}
-                />
-                <ReportPreviewPanel category={reportCategories[1]} />
+            <div className="rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
+              <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                Attendance summary
               </div>
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                {reportCategories[1].reports.slice(0, 6).map((item) => (
+                  <li key={item} className="rounded-2xl bg-surface px-4 py-3 text-sm text-ink">
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </section>
@@ -2573,7 +2309,6 @@ export default function HrReportsPage() {
             "Review earnings and deductions",
             "Simplify payroll verification",
           ]}
-          visual={<PayrollLeaveVisual />}
         />
 
         <SpotlightSection
@@ -2586,14 +2321,13 @@ export default function HrReportsPage() {
             "Analyze leave patterns",
             "Improve workforce planning",
           ]}
-          visual={<PayrollLeaveVisual />}
           reverse
           sectionClassName="bg-surface"
         />
 
         <section className="py-20">
-          <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-start">
-            <div className="lg:col-span-6">
+          <div className="container-x grid gap-8 lg:items-start">
+            <div>
               <SectionHeading
                 eyebrow="Recruitment and Performance Reports"
                 title="Bring hiring and performance visibility into one reporting story"
@@ -2629,9 +2363,6 @@ export default function HrReportsPage() {
                 </div>
               </div>
             </div>
-            <div className="lg:col-span-6">
-              <RecruitmentPerformanceVisual />
-            </div>
           </div>
         </section>
 
@@ -2645,7 +2376,6 @@ export default function HrReportsPage() {
             "Support audit preparation",
             "Track employee and employer contributions",
           ]}
-          visual={<ComplianceVisual />}
         />
 
         <section className="bg-surface py-20">
@@ -2687,10 +2417,6 @@ export default function HrReportsPage() {
                   </ul>
                 </div>
               </div>
-            </div>
-
-            <div className="mt-8">
-              <AssetExpenseVisual />
             </div>
           </div>
         </section>
@@ -2760,14 +2486,13 @@ export default function HrReportsPage() {
                 </AccordionItem>
               </Accordion>
 
-              <VisitorExitVisual />
             </div>
           </div>
         </section>
 
         <section className="bg-surface py-20">
-          <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-center">
-            <div className="lg:col-span-6">
+          <div className="container-x grid gap-8 lg:items-center">
+            <div>
               <SectionHeading
                 eyebrow="Branch-wise and Department-wise Reporting"
                 title="Compare workforce data across branches and departments"
@@ -2778,18 +2503,11 @@ export default function HrReportsPage() {
                   <Globe className="h-4 w-4 text-primary" />
                   Switch between branches and departments to see the comparison update.
                 </div>
-                <div className="mt-5">
-                  <BranchDepartmentVisual />
+                <div className="mt-4 text-sm text-ink-soft">
+                  Compare employee, attendance, payroll, leave, overtime, and exit data in text
+                  form without a chart block.
                 </div>
               </div>
-            </div>
-
-            <div className="lg:col-span-6">
-              <MiniBarChart
-                values={[64, 72, 58, 81, 69, 77]}
-                labels={["Emp", "Attend", "Payroll", "Leave", "Overtime", "Exits"]}
-                tone="bg-primary"
-              />
             </div>
           </div>
         </section>
@@ -2803,8 +2521,13 @@ export default function HrReportsPage() {
                 description="Filter availability depends on the selected report and enabled modules."
               />
             </div>
-            <div className="lg:col-span-7">
-              <FilterPanel />
+            <div className="lg:col-span-7 rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
+              <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                Filter panel
+              </div>
+              <p className="mt-2 text-sm text-ink-soft">
+                Available filters: {filterFields.slice(0, 8).join(", ")}.
+              </p>
             </div>
           </div>
         </section>
@@ -2816,8 +2539,14 @@ export default function HrReportsPage() {
               title="Monitor important HR metrics in real time"
               description="This section uses mock data only for visual presentation and keeps the demo separate from any real backend data."
             />
-            <div className="mt-10">
-              <RealtimeDashboard />
+            <div className="mt-10 rounded-[1.75rem] border border-border bg-white p-5 shadow-card">
+              <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                Real-time dashboard
+              </div>
+              <p className="mt-2 text-sm text-ink-soft">
+                Total employees, present employees, leave counts, late arrivals, joiners, exits,
+                recruitment activity, and compliance status are now described in text only.
+              </p>
             </div>
           </div>
         </section>
@@ -2879,12 +2608,12 @@ export default function HrReportsPage() {
                   export support.
                 </p>
                 <div className="mt-5 grid gap-3">
-                  <a href="/company/book-demo" className="btn-primary justify-center">
+                  <button type="button" className="btn-primary justify-center">
                     Discuss reporting exports
-                  </a>
-                  <a href="/company/contact-us" className="btn-outline justify-center">
+                  </button>
+                  <button type="button" className="btn-outline justify-center">
                     Request export guidance
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -2908,7 +2637,7 @@ export default function HrReportsPage() {
                 "Support compliance",
                 "Improve management visibility",
                 "Increase HR productivity",
-              ].map((benefit) => (
+              ].map((benefit, index) => (
                 <div
                   key={benefit}
                   className="rounded-[1.75rem] border border-border bg-white p-6 shadow-card"
@@ -2992,12 +2721,12 @@ export default function HrReportsPage() {
                 </div>
 
                 <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
-                  <a href="/company/book-demo" className="btn-primary">
+                  <button type="button" className="btn-primary">
                     Book Your Free Demo Today
-                  </a>
-                  <a href="/company/contact-us" className="btn-outline">
+                  </button>
+                  <button type="button" className="btn-outline">
                     Request a Live Demo
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

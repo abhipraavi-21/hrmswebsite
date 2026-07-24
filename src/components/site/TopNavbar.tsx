@@ -38,8 +38,10 @@ export default function TopNavbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const isHomePage = location.pathname === ROUTES.home;
+  const isHrmsHomePage = location.pathname.startsWith(ROUTES.hrmsHome);
   const isBulkEmailPage = location.pathname.startsWith(ROUTES.bulkEmail);
-  const currentTab = isBulkEmailPage ? "email" : activeTab;
+  const currentTab = isBulkEmailPage ? "email" : isHrmsHomePage ? "hrms" : isHomePage ? null : activeTab;
 
   const clearCloseTimer = () => {
     if (closeTimerRef.current !== null) {
@@ -77,7 +79,7 @@ export default function TopNavbar() {
     >
       <div className="site-container flex items-center justify-between gap-3 py-3 lg:hidden">
         <Link to={ROUTES.home} className="flex items-center gap-2 shrink-0">
-          <BrandMark />
+          <BrandMark mode="wordmark" />
         </Link>
 
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -106,7 +108,7 @@ export default function TopNavbar() {
 
               <div className="flex-1 overflow-y-auto px-5 py-6 pt-10">
                 <div className="flex items-center justify-between gap-3">
-                  <BrandMark />
+                  <BrandMark mode="wordmark" />
                   <SheetClose asChild>
                     <button
                       type="button"
@@ -122,7 +124,7 @@ export default function TopNavbar() {
                   <Accordion type="single" collapsible className="space-y-2">
                     <MobileTopLevelLink
                       label="HRMS"
-                      href={ROUTES.coreHR}
+                      href={ROUTES.hrmsHome}
                       onNavigate={() => setMobileOpen(false)}
                     />
                     <MobileTopLevelLink
@@ -191,7 +193,7 @@ export default function TopNavbar() {
         )}
       >
         <Link to={ROUTES.home} className="flex items-center gap-2 shrink-0">
-          <BrandMark />
+          <BrandMark mode="wordmark" />
         </Link>
 
         <nav className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-row lg:items-center lg:gap-1">
@@ -201,7 +203,7 @@ export default function TopNavbar() {
             active={currentTab === "hrms"}
             onClick={() => {
               setActiveTab("hrms");
-              navigate(ROUTES.coreHR);
+              navigate(ROUTES.hrmsHome);
             }}
             onHover={() => {
               setOpen(null);

@@ -560,6 +560,20 @@
     padding-block: 56px !important;
   }
 
+  main > section.home-hero {
+    min-height: auto;
+    padding: 0 0 28px !important;
+    display: block;
+    align-items: stretch;
+  }
+
+  main > section.attendance-hero {
+    min-height: auto;
+    padding: 0 0 28px !important;
+    display: block;
+    align-items: stretch;
+  }
+
   main > section.hero-section {
     min-height: 560px;
     padding: 92px 0 56px !important;
@@ -901,6 +915,20 @@
 
     main > section.cta-section {
       padding-block: 40px !important;
+    }
+
+    main > section.home-hero {
+      min-height: auto;
+      padding: 0 0 20px !important;
+      display: block;
+      align-items: stretch;
+    }
+
+    main > section.attendance-hero {
+      min-height: auto;
+      padding: 0 0 20px !important;
+      display: block;
+      align-items: stretch;
     }
 
     main > section:first-child:not(.hero-section) {

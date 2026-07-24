@@ -331,7 +331,7 @@ export default function CoreHrPage() {
 
         <section id="guiding-principles" className="bg-surface py-20">
           <div className={pageContainerClass}>
-            <div className="max-w-2xl">
+            <div className="mx-auto max-w-3xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
                 Built for real complexity
               </span>

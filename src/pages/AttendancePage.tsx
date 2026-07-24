@@ -629,29 +629,29 @@ export default function AttendancePage() {
       <MainNavbar />
 
       <main>
-        <section className="hero-gradient relative overflow-hidden">
+        <section className="attendance-hero hero-gradient relative overflow-hidden">
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/12 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/12 blur-3xl" />
 
-          <div className="container-x py-10 lg:py-14">
-            <div className="mx-auto max-w-4xl text-center">
+          <div className="container-x pt-0 pb-6 lg:pt-0 lg:pb-8">
+            <div className="mx-auto max-w-6xl text-center">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <BadgeCheck className="h-3.5 w-3.5" />
                 Attendance Management Software
               </span>
 
-              <h1 className="mt-4 text-balance text-4xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
+              <h1 className="mx-auto mt-2 max-w-6xl text-balance text-4xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
                 Attendance Management Software That Simplifies Workforce Tracking
               </h1>
 
-              <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-ink-soft sm:text-lg">
+              <p className="mx-auto mt-3 max-w-5xl text-base leading-7 text-ink-soft sm:text-lg">
                 Track employee attendance with biometric devices, web attendance, GPS,
                 geo-fencing, geo-location and selfie verification from one centralized platform.
                 Altroz HR helps businesses automate attendance, manage shifts, calculate working
                 hours, monitor overtime and generate accurate attendance reports with ease.
               </p>
 
-              <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <div className="mt-5 flex flex-wrap justify-center gap-3">
                 <Link to={ROUTES.bookDemo} className="btn-primary">
                   Book Free Demo
                 </Link>
@@ -660,7 +660,7 @@ export default function AttendancePage() {
                 </a>
               </div>
 
-              <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
                 {heroTags.map((tag) => (
                   <span
                     key={tag}
