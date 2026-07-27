@@ -39,6 +39,7 @@ export function buildWhatsAppHref(message: string) {
 }
 
 export const whatsappHref = buildWhatsAppHref(contactConfig.whatsappMessage);
+export const callHref = `tel:+${contactConfig.whatsappNumber}`;
 
 export const contactMethods = [
   {

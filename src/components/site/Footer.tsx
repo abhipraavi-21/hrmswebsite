@@ -38,7 +38,7 @@ const footerColumns = [
       { label: "Careers", href: ROUTES.careers },
       { label: "Partner With Us", href: ROUTES.partner },
       { label: "Contact Us", href: ROUTES.contact },
-      { label: "Support", href: ROUTES.support },
+      { label: "Help Center", href: ROUTES.support },
     ],
   },
   {

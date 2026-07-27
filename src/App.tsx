@@ -22,6 +22,7 @@ const WorkforceManagementPage = lazy(() => import("./pages/WorkforceManagementPa
 const AttendanceManagementPage = lazy(() => import("./pages/AttendanceManagementPage"));
 const PayrollPage = lazy(() => import("./pages/PayrollPage"));
 const LeaveManagementPage = lazy(() => import("./pages/LeaveManagementPage"));
+const MobileAppLandingPage = lazy(() => import("./pages/MobileAppLandingPage"));
 const PerformanceManagementPage = lazy(() => import("./pages/PerformanceManagementPage"));
 const IndustrySolutionsPage = lazy(() => import("./pages/IndustrySolutionsPage"));
 const HrAnalyticsPage = lazy(() => import("./pages/HrAnalyticsPage"));
@@ -46,6 +47,8 @@ const AccountingPage = lazy(() => import("./pages/integrations/AccountingPage"))
 const AssetManagementPage = lazy(() => import("./pages/integrations/AssetManagementPage"));
 const DevicesApiPage = lazy(() => import("./pages/integrations/DevicesApiPage"));
 const LearnPage = lazy(() => import("./pages/LearnPage"));
+const BlogPage = lazy(() => import("./pages/resources/BlogPage"));
+const FaqPage = lazy(() => import("./pages/resources/FaqPage"));
 const SupportPage = lazy(() => import("./pages/resources/SupportPage"));
 const ComplianceGuidesPage = lazy(() => import("./pages/resources/ComplianceGuidesPage"));
 const AboutUsPage = lazy(() => import("./pages/company/AboutUsPage"));
@@ -152,6 +155,7 @@ function AppShell() {
           <Route path={ROUTES.workforce} element={<WorkforceManagementPage />} />
           <Route path={ROUTES.payroll} element={<PayrollPage />} />
           <Route path={ROUTES.leaveManagement} element={<LeaveManagementPage />} />
+          <Route path={ROUTES.mobileAppLanding} element={<MobileAppLandingPage />} />
           <Route path={ROUTES.performance} element={<PerformanceManagementPage />} />
           <Route path={ROUTES.industrySolutions} element={<IndustrySolutionsPage />} />
           <Route path={ROUTES.analytics} element={<HrAnalyticsPage />} />
@@ -176,6 +180,8 @@ function AppShell() {
           <Route path={ROUTES.assetManagement} element={<AssetManagementPage />} />
           <Route path={ROUTES.devicesApi} element={<DevicesApiPage />} />
           <Route path={ROUTES.learn} element={<LearnPage />} />
+          <Route path={ROUTES.blog} element={<BlogPage />} />
+          <Route path={ROUTES.faq} element={<FaqPage />} />
           <Route path={ROUTES.complianceGuides} element={<ComplianceGuidesPage />} />
           <Route path={ROUTES.supportResources} element={<SupportPage />} />
           <Route path={ROUTES.about} element={<AboutUsPage />} />
@@ -202,11 +208,19 @@ function AppShell() {
             element={<Navigate to={ROUTES.assetManagement} replace />}
           />
           <Route path="/learn" element={<Navigate to={ROUTES.learn} replace />} />
+          <Route path="/blog" element={<Navigate to={ROUTES.blog} replace />} />
+          <Route path="/faq" element={<Navigate to={ROUTES.faq} replace />} />
           <Route path="/partner-with-us" element={<Navigate to={ROUTES.partner} replace />} />
           <Route
             path="/products/recruitment"
             element={<Navigate to={ROUTES.recruitment} replace />}
           />
+          <Route
+            path="/products/mobile-app-landing"
+            element={<Navigate to={ROUTES.mobileAppLanding} replace />}
+          />
+          <Route path="/mobile-app-landing" element={<Navigate to={ROUTES.mobileAppLanding} replace />} />
+          <Route path="/mobile-app" element={<Navigate to={ROUTES.mobileAppLanding} replace />} />
           <Route
             path="/products/visitor-management"
             element={<Navigate to={ROUTES.documentGeneration} replace />}

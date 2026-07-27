@@ -8,6 +8,7 @@ export const featureMenuColumns = [
       { label: "Attendance", href: ROUTES.attendanceManagement },
       { label: "Payroll", href: ROUTES.payroll },
       { label: "Leave Management", href: ROUTES.leaveManagement },
+      { label: "Mobile App Landing", href: ROUTES.mobileAppLanding },
     ],
   },
   {
@@ -43,29 +44,31 @@ export const solutionMenuItems = [
 export const resourcesMenuItems = [
   { label: "Learn", href: ROUTES.learn },
   { label: "Compliance Guides", href: ROUTES.complianceGuides },
+  { label: "Blog", href: ROUTES.blog },
+  { label: "FAQ", href: ROUTES.faq },
 ];
 
 export const companyMenuColumns = [
   {
-    title: "Company",
+    title: "About",
     links: [
       { label: "About Us", href: ROUTES.about },
       { label: "Why Altroz", href: ROUTES.whyAltroz },
-      { label: "Customers", href: ROUTES.customers },
-    ],
-  },
-  {
-    title: "Stories",
-    links: [
-      { label: "Testimonials", href: ROUTES.testimonials },
       { label: "Careers", href: ROUTES.careers },
     ],
   },
   {
-    title: "Connect",
+    title: "Customers",
+    links: [
+      { label: "Customer Stories", href: ROUTES.customers },
+      { label: "Testimonials", href: ROUTES.testimonials },
+    ],
+  },
+  {
+    title: "Support",
     links: [
       { label: "Contact Us", href: ROUTES.contact },
-      { label: "Support", href: ROUTES.support },
+      { label: "Help Center", href: ROUTES.support },
       { label: "Book Demo", href: ROUTES.bookDemo },
     ],
   },

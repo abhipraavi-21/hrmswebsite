@@ -330,13 +330,7 @@ export default function MainNavbar() {
           ))}
         </nav>
 
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 lg:flex lg:items-center lg:justify-end lg:gap-2">
-          <Link
-            to={ROUTES.bookDemo}
-            className="text-xs sm:text-sm font-medium text-primary hover:underline"
-          >
-            Request Demo
-          </Link>
+        <div className="flex items-center justify-end gap-2">
           <Link
             to={ROUTES.contact}
             className="btn-primary inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"

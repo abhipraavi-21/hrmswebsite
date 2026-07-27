@@ -242,7 +242,7 @@ export default function TopNavbar() {
             to={ROUTES.support}
             className="nav-link btn-ghost justify-center px-2.5 py-1.5 text-xs sm:px-3 sm:text-sm"
           >
-            Support
+            Help Center
           </Link>
           <Link
             to={ROUTES.bookDemo}

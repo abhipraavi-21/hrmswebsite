@@ -234,7 +234,7 @@ export default function PayrollPage() {
                 <button type="button" className="btn-primary">
                   Explore Payroll Features
                 </button>
-                <button type="button" className="btn-outline">
+                <button type="button" className="btn-success">
                   Book Free Demo
                 </button>
               </div>
@@ -574,7 +574,7 @@ export default function PayrollPage() {
                 </div>
 
                 <div className="lg:col-span-4 flex flex-wrap gap-3 lg:justify-end">
-                  <button type="button" className="btn-outline">
+                  <button type="button" className="btn-success">
                     Book Free Demo
                   </button>
                   <button type="button" className="btn-primary">
