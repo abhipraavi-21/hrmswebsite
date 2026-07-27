@@ -47,6 +47,7 @@ const AssetManagementPage = lazy(() => import("./pages/integrations/AssetManagem
 const DevicesApiPage = lazy(() => import("./pages/integrations/DevicesApiPage"));
 const LearnPage = lazy(() => import("./pages/LearnPage"));
 const SupportPage = lazy(() => import("./pages/resources/SupportPage"));
+const ComplianceGuidesPage = lazy(() => import("./pages/resources/ComplianceGuidesPage"));
 const AboutUsPage = lazy(() => import("./pages/company/AboutUsPage"));
 const WhyAltrozPage = lazy(() => import("./pages/company/WhyAltozPage"));
 const CustomersPage = lazy(() => import("./pages/company/CustomersPage"));
@@ -175,6 +176,7 @@ function AppShell() {
           <Route path={ROUTES.assetManagement} element={<AssetManagementPage />} />
           <Route path={ROUTES.devicesApi} element={<DevicesApiPage />} />
           <Route path={ROUTES.learn} element={<LearnPage />} />
+          <Route path={ROUTES.complianceGuides} element={<ComplianceGuidesPage />} />
           <Route path={ROUTES.supportResources} element={<SupportPage />} />
           <Route path={ROUTES.about} element={<AboutUsPage />} />
           <Route path={ROUTES.whyAltroz} element={<WhyAltrozPage />} />
@@ -210,6 +212,11 @@ function AppShell() {
             element={<Navigate to={ROUTES.documentGeneration} replace />}
           />
           <Route path="/resources/learning" element={<Navigate to={ROUTES.learn} replace />} />
+          <Route
+            path="/resources/compliance-guides"
+            element={<Navigate to={ROUTES.complianceGuides} replace />}
+          />
+          <Route path="/compliance-guides" element={<Navigate to={ROUTES.complianceGuides} replace />} />
           <Route
             path="/solutions/industry"
             element={<Navigate to={ROUTES.industrySolutions} replace />}

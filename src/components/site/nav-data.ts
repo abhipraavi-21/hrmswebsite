@@ -40,7 +40,10 @@ export const solutionMenuItems = [
   { label: "Employee Lifecycle", href: `${ROUTES.businessApps}#employee-lifecycle` },
 ];
 
-export const resourcesMenuItems = [{ label: "Learn", href: ROUTES.learn }];
+export const resourcesMenuItems = [
+  { label: "Learn", href: ROUTES.learn },
+  { label: "Compliance Guides", href: ROUTES.complianceGuides },
+];
 
 export const companyMenuColumns = [
   {
