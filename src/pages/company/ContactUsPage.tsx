@@ -275,7 +275,7 @@ export default function ContactUsPage() {
         <section className="page-banner contact-hero hero-gradient relative overflow-hidden">
           <div className="site-container grid gap-10 lg:grid-cols-12 lg:items-start">
             <ScrollReveal variant="fade-up" className="lg:col-span-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <MessageSquare className="h-4 w-4" />
                 Contact Us
               </div>
