@@ -158,7 +158,7 @@ export default function FaqPage() {
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="site-container">
             <ScrollReveal className="mx-auto max-w-5xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-primary shadow-sm">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <CircleHelp className="h-4 w-4" />
                 Knowledge Base
               </div>
