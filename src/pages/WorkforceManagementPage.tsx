@@ -532,12 +532,14 @@ function FieldCard({ item }: { item: FeatureCard }) {
   const Icon = item.icon;
 
   return (
-    <article className="soft-card flex h-full min-h-[260px] flex-col items-center p-5 text-center">
+    <article className="soft-card flex h-full min-h-[290px] flex-col items-center p-6 text-center">
       <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary">
         <Icon className="h-5 w-5" />
       </div>
-      <h3 className="mt-4 text-base font-bold leading-6 text-ink">{item.title}</h3>
-      <p className="mt-3 text-sm leading-6 text-ink-soft">{item.description}</p>
+      <h3 className="mt-4 min-h-[3.5rem] text-base font-bold leading-6 text-ink">
+        {item.title}
+      </h3>
+      <p className="mt-3 min-h-[7rem] text-sm leading-6 text-ink-soft">{item.description}</p>
     </article>
   );
 }
