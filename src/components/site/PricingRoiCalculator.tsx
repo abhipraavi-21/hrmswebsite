@@ -1,19 +1,6 @@
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
-import {
-  ArrowRight,
-  Banknote,
-  BriefcaseBusiness,
-  ChartColumn,
-  CheckCircle2,
-  Clock3,
-  Percent,
-  RefreshCcw,
-  Target,
-  TrendingUp,
-  Users,
-  Wallet,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -24,7 +11,6 @@ import { ROUTES } from "@/routes/routeConfig.js";
 import {
   calculateHrmsRoi,
   clampNumber,
-  formatCompactINR,
   formatINR,
   getDefaultAttendanceHours,
   getDefaultEmployeeQueryHours,
@@ -35,6 +21,7 @@ import {
   getDefaultRecruitmentHours,
   safeNumber,
   type RoiCalculatorInput,
+  type RoiModuleId,
 } from "@/utils/hrmsRoiCalculator";
 import { roiCalculatorConfig, type RoiPlanKey, type RoiSetupKey } from "@/config/roiCalculatorConfig";
 
@@ -78,29 +65,6 @@ function buildDefaults(employeeCount: number): RoiCalculatorInput {
     selectedPlan: roiCalculatorConfig.defaults.selectedPlan,
     enterpriseMonthlyEstimate: employeeCount * 45,
   };
-}
-
-function MetricCard({
-  label,
-  value,
-  icon,
-}: {
-  label: string;
-  value: string;
-  icon: ReactNode;
-}) {
-  return (
-    <div className="rounded-2xl border border-border bg-white p-4 shadow-sm">
-      <div className="flex items-start justify-between gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-primary-soft text-primary">
-          {icon}
-        </div>
-        <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Live</span>
-      </div>
-      <div className="mt-3 text-sm font-semibold text-ink-soft">{label}</div>
-      <div className="mt-1 text-xl font-black tracking-tight text-ink">{value}</div>
-    </div>
-  );
 }
 
 function PlanChoice({
@@ -168,8 +132,6 @@ export default function PricingRoiCalculator() {
     }));
   };
 
-  const selectedPlanConfig = roiCalculatorConfig.plans[result.selectedPlan];
-
   return (
     <section id="roi-calculator" className="bg-surface py-14 sm:py-16 lg:py-20">
       <div className="container-x">
@@ -183,172 +145,138 @@ export default function PricingRoiCalculator() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-8 xl:grid-cols-[1.08fr_0.92fr]">
-          <div className="space-y-6">
-            <div className="soft-card p-6">
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="pp-roi-employee-count">Number of employees</Label>
-                  <div className="flex items-center gap-3">
-                    <Slider
-                      value={[form.employeeCount]}
-                      min={roiCalculatorConfig.employeeCount.min}
-                      max={roiCalculatorConfig.employeeCount.max}
-                      step={1}
-                      onValueChange={([value]) => updateEmployees(value)}
-                    />
-                    <Input
-                      id="pp-roi-employee-count"
-                      type="number"
-                      className="w-28"
-                      min={roiCalculatorConfig.employeeCount.min}
-                      max={roiCalculatorConfig.employeeCount.max}
-                      value={form.employeeCount}
-                      onChange={(event) => updateEmployees(safeNumber(event.target.value, form.employeeCount))}
-                    />
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {roiCalculatorConfig.employeeCount.quickSelect.map((count) => (
-                      <button
-                        key={count}
-                        type="button"
-                        onClick={() => updateEmployees(count)}
-                        className={cn(
-                          "rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors",
-                          form.employeeCount === count
-                            ? "border-primary bg-primary text-white"
-                            : "border-border bg-white text-ink hover:bg-primary-soft hover:text-primary",
-                        )}
-                      >
-                        {count === 2500 ? "2500+" : count}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="md:col-span-2">
-                  <div className="text-sm font-semibold text-ink">Current HR setup</div>
-                  <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                    {setupOptions.map((option) => (
-                      <button
-                        key={option.key}
-                        type="button"
-                        onClick={() => {
-                          update("currentSetup", option.key);
-                          update("payrollErrorRate", roiCalculatorConfig.setups[option.key].payrollErrorRate);
-                        }}
-                        className={cn(
-                          "rounded-2xl border p-4 text-left transition-colors",
-                          form.currentSetup === option.key ? "border-primary bg-primary/5" : "border-border bg-white hover:bg-surface",
-                        )}
-                      >
-                        <div className="text-sm font-bold text-ink">{option.label}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <Label>Average HR cost per hour</Label>
+        <div className="mt-10 space-y-6">
+          <div className="soft-card p-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="pp-roi-employee-count">Number of employees</Label>
+                <div className="flex items-center gap-3">
+                  <Slider
+                    value={[form.employeeCount]}
+                    min={roiCalculatorConfig.employeeCount.min}
+                    max={roiCalculatorConfig.employeeCount.max}
+                    step={1}
+                    onValueChange={([value]) => updateEmployees(value)}
+                  />
                   <Input
+                    id="pp-roi-employee-count"
                     type="number"
-                    min={roiCalculatorConfig.hourlyHrCost.min}
-                    max={roiCalculatorConfig.hourlyHrCost.max}
-                    value={form.hourlyHrCost}
-                    onChange={(event) =>
-                      update(
-                        "hourlyHrCost",
-                        clampNumber(
-                          safeNumber(event.target.value, form.hourlyHrCost),
-                          roiCalculatorConfig.hourlyHrCost.min,
-                          roiCalculatorConfig.hourlyHrCost.max,
-                        ),
-                      )
-                    }
+                    className="w-28"
+                    min={roiCalculatorConfig.employeeCount.min}
+                    max={roiCalculatorConfig.employeeCount.max}
+                    value={form.employeeCount}
+                    onChange={(event) => updateEmployees(safeNumber(event.target.value, form.employeeCount))}
                   />
                 </div>
-
-                <div>
-                  <Label>Payroll days per month</Label>
-                  <Input
-                    type="number"
-                    step={0.5}
-                    min={roiCalculatorConfig.payrollDaysPerMonth.min}
-                    max={roiCalculatorConfig.payrollDaysPerMonth.max}
-                    value={form.payrollDaysPerMonth}
-                    onChange={(event) =>
-                      update(
-                        "payrollDaysPerMonth",
-                        clampNumber(
-                          safeNumber(event.target.value, form.payrollDaysPerMonth),
-                          roiCalculatorConfig.payrollDaysPerMonth.min,
-                          roiCalculatorConfig.payrollDaysPerMonth.max,
-                        ),
-                      )
-                    }
-                  />
-                </div>
-
-                <div className="md:col-span-2">
-                  <div className="text-sm font-semibold text-ink">Select a PeoplePulse plan</div>
-                  <div className="mt-3 grid gap-3 lg:grid-cols-4">
-                    {planOrder.map((plan) => (
-                      <PlanChoice
-                        key={plan}
-                        plan={plan}
-                        selected={form.selectedPlan === plan}
-                        recommended={result.recommendedPlan === plan}
-                        onSelect={(value) => update("selectedPlan", value)}
-                      />
-                    ))}
-                  </div>
+                <div className="flex flex-wrap gap-2">
+                  {roiCalculatorConfig.employeeCount.quickSelect.map((count) => (
+                    <button
+                      key={count}
+                      type="button"
+                      onClick={() => updateEmployees(count)}
+                      className={cn(
+                        "rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors",
+                        form.employeeCount === count
+                          ? "border-primary bg-primary text-white"
+                          : "border-border bg-white text-ink hover:bg-primary-soft hover:text-primary",
+                      )}
+                    >
+                      {count === 2500 ? "2500+" : count}
+                    </button>
+                  ))}
                 </div>
               </div>
-            </div>
 
-            <div className="soft-card p-6">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-[0.28em] text-primary">Need the full version?</div>
-                  <h3 className="mt-2 text-2xl font-black tracking-tight text-ink">Open the dedicated calculator page</h3>
+              <div className="md:col-span-2">
+                <div className="text-sm font-semibold text-ink">Current HR setup</div>
+                <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                  {setupOptions.map((option) => (
+                    <button
+                      key={option.key}
+                      type="button"
+                      onClick={() => {
+                        update("currentSetup", option.key);
+                        update("payrollErrorRate", roiCalculatorConfig.setups[option.key].payrollErrorRate);
+                      }}
+                      className={cn(
+                        "rounded-2xl border p-4 text-left transition-colors",
+                        form.currentSetup === option.key ? "border-primary bg-primary/5" : "border-border bg-white hover:bg-surface",
+                      )}
+                    >
+                      <div className="text-sm font-bold text-ink">{option.label}</div>
+                    </button>
+                  ))}
                 </div>
-                <Link to={ROUTES.roiCalculator} className="btn-outline">
-                  Full calculator
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+              </div>
+
+              <div>
+                <Label>Average HR cost per hour</Label>
+                <Input
+                  type="number"
+                  min={roiCalculatorConfig.hourlyHrCost.min}
+                  max={roiCalculatorConfig.hourlyHrCost.max}
+                  value={form.hourlyHrCost}
+                  onChange={(event) =>
+                    update(
+                      "hourlyHrCost",
+                      clampNumber(
+                        safeNumber(event.target.value, form.hourlyHrCost),
+                        roiCalculatorConfig.hourlyHrCost.min,
+                        roiCalculatorConfig.hourlyHrCost.max,
+                      ),
+                    )
+                  }
+                />
+              </div>
+
+              <div>
+                <Label>Payroll days per month</Label>
+                <Input
+                  type="number"
+                  step={0.5}
+                  min={roiCalculatorConfig.payrollDaysPerMonth.min}
+                  max={roiCalculatorConfig.payrollDaysPerMonth.max}
+                  value={form.payrollDaysPerMonth}
+                  onChange={(event) =>
+                    update(
+                      "payrollDaysPerMonth",
+                      clampNumber(
+                        safeNumber(event.target.value, form.payrollDaysPerMonth),
+                        roiCalculatorConfig.payrollDaysPerMonth.min,
+                        roiCalculatorConfig.payrollDaysPerMonth.max,
+                      ),
+                    )
+                  }
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <div className="text-sm font-semibold text-ink">Select a PeoplePulse plan</div>
+                <div className="mt-3 grid gap-3 lg:grid-cols-4">
+                  {planOrder.map((plan) => (
+                    <PlanChoice
+                      key={plan}
+                      plan={plan}
+                      selected={form.selectedPlan === plan}
+                      recommended={result.recommendedPlan === plan}
+                      onSelect={(value) => update("selectedPlan", value)}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="xl:sticky xl:top-24 xl:self-start">
-            <div className="soft-card p-6 shadow-float">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <MetricCard label="ROI" value={`${Math.round(result.roiPercentage)}%`} icon={<Percent className="h-5 w-5" />} />
-                <MetricCard label="Monthly hours saved" value={`${result.monthlyHoursSaved.toFixed(0)} hrs`} icon={<Clock3 className="h-5 w-5" />} />
-                <MetricCard label="Working days saved" value={`${result.monthlyWorkingDaysSaved.toFixed(1)} days`} icon={<TrendingUp className="h-5 w-5" />} />
-                <MetricCard label="FTE capacity recovered" value={`${result.fteCapacityRecovered.toFixed(2)} FTE`} icon={<Users className="h-5 w-5" />} />
-                <MetricCard label="Value multiple" value={`${result.valueMultiple.toFixed(2)}×`} icon={<Banknote className="h-5 w-5" />} />
-                <MetricCard
-                  label="Payback period"
-                  value={result.paybackMonths === null ? "Not recovered" : `${result.paybackMonths.toFixed(1)} months`}
-                  icon={<RefreshCcw className="h-5 w-5" />}
-                />
+          <div className="soft-card p-6">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <div className="text-xs font-bold uppercase tracking-[0.28em] text-primary">Need the full version?</div>
+                <h3 className="mt-2 text-2xl font-black tracking-tight text-ink">Open the dedicated calculator page</h3>
               </div>
-
-              <div className="mt-5 grid gap-3">
-                <div className="rounded-2xl bg-surface/50 p-4">
-                  <div className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Recommended plan</div>
-                  <div className="mt-1 text-lg font-black text-ink">{result.recommendedPlan}</div>
-                  <p className="mt-2 text-sm leading-6 text-ink-soft">{result.recommendedPlanReason}</p>
-                </div>
-                <div className="rounded-2xl bg-surface/50 p-4">
-                  <div className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Selected plan</div>
-                  <div className="mt-1 text-lg font-black text-ink">{result.selectedPlan}</div>
-                  <p className="mt-2 text-sm leading-6 text-ink-soft">
-                    {selectedPlanConfig.note}
-                  </p>
-                </div>
-              </div>
+              <Link to={ROUTES.roiCalculator} className="btn-outline">
+                Full calculator
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </div>
