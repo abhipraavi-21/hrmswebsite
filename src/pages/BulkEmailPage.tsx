@@ -1,7 +1,7 @@
 import { ArrowRight, BarChart3, FileText, Mail, Repeat2, Users } from "lucide-react";
 import { Link } from "react-router-dom";
+import BulkEmailNavbar from "@/components/site/BulkEmailNavbar";
 import PageSEO from "@/components/site/PageSEO";
-import TopNavbar from "@/components/site/TopNavbar";
 import { ROUTES } from "@/routes/routeConfig.js";
 
 const sections = [
@@ -45,7 +45,7 @@ export default function BulkEmailPage() {
         description="Bulk email workspace for campaigns, templates, contacts, analytics, and automation."
         canonicalPath={ROUTES.bulkEmail}
       />
-      <TopNavbar />
+      <BulkEmailNavbar />
 
       <main className="hero-gradient">
         <section className="section pt-10">

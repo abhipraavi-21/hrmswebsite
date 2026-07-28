@@ -1,14 +1,7 @@
-import { ArrowRight, type LucideIcon } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import type { LucideIcon } from "lucide-react";
 import PageSEO from "@/components/site/PageSEO";
-import TopNavbar from "@/components/site/TopNavbar";
-import { cn } from "@/lib/utils";
-import {
-  bulkEmailTabs,
-  type BulkEmailTabId,
-  type BulkEmailPageConfig,
-  type BulkEmailFeatureCard,
-} from "./bulkEmailData";
+import BulkEmailNavbar from "@/components/site/BulkEmailNavbar";
+import type { BulkEmailPageConfig, BulkEmailFeatureCard } from "./bulkEmailData";
 
 export function BulkEmailLayout({ page }: { page: BulkEmailPageConfig }) {
   return (
@@ -18,8 +11,7 @@ export function BulkEmailLayout({ page }: { page: BulkEmailPageConfig }) {
         description={page.description}
         canonicalPath={page.canonicalPath}
       />
-      <TopNavbar />
-      <BulkEmailNavbar activeId={page.id} />
+      <BulkEmailNavbar />
 
       <main className="hero-gradient">
         <section className="section pt-8 sm:pt-10">
@@ -93,34 +85,6 @@ function BulkEmailCardGrid({ cards }: { cards: BulkEmailFeatureCard[] }) {
           </div>
         </article>
       ))}
-    </div>
-  );
-}
-
-function BulkEmailNavbar({ activeId }: { activeId: BulkEmailTabId }) {
-  return (
-    <div className="sticky top-16 z-40 hidden border-b border-border bg-primary-soft/70 backdrop-blur-md transition-shadow duration-300 lg:block">
-      <div className="site-container grid grid-cols-1 gap-2 py-2 transition-[height,padding] duration-300 lg:h-12 lg:items-center lg:py-0">
-        <nav className="flex flex-wrap items-center gap-1 overflow-visible lg:mx-auto">
-          {bulkEmailTabs.map((item) => (
-            <NavLink
-              key={item.id}
-              to={item.href}
-              className={({ isActive }) =>
-                cn(
-                  "nav-link rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
-                  isActive || activeId === item.id
-                    ? "bg-white/70 text-primary"
-                    : "text-ink hover:bg-white/70 hover:text-primary",
-                )
-              }
-              aria-current={activeId === item.id ? "page" : undefined}
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-      </div>
     </div>
   );
 }
