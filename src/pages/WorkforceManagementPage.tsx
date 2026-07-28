@@ -22,6 +22,7 @@ import {
   Shield,
   Smartphone,
   Sparkles,
+  ShoppingBag,
   Truck,
   Users,
   Wallet,
