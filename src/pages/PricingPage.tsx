@@ -96,7 +96,7 @@ const statusMeta: Record<
   },
   addon: {
     label: "Add On",
-    className: "border-primary/20 bg-primary/10 text-primary",
+    className: "border-emerald-200 bg-emerald-50 text-emerald-700",
     icon: <Coins className="h-4 w-4" />,
   },
 };
