@@ -904,16 +904,15 @@ export default function WorkforceManagementPage() {
         </section>
 
         <section className="py-16 lg:py-20">
-          <div className="container-x grid gap-8 lg:grid-cols-12 lg:items-start">
-            <div className="lg:col-span-5">
-              <SectionHeading
-                eyebrow="Frequently asked questions"
-                title="Common questions about workforce management"
-                description="Quick answers to the most common questions about scheduling, tracking, approvals and field workforce management."
-              />
-            </div>
+          <div className="container-x">
+            <SectionHeading
+              eyebrow="Frequently asked questions"
+              title="Common questions about workforce management"
+              description="Quick answers to the most common questions about scheduling, tracking, approvals and field workforce management."
+              center
+            />
 
-            <div className="lg:col-span-7">
+            <div className="mx-auto mt-8 max-w-4xl">
               <div className="soft-card overflow-hidden rounded-[1.5rem] border border-border bg-white p-4 sm:p-5">
                 <Accordion type="single" collapsible className="space-y-3">
                   {faqItems.map((item) => (
