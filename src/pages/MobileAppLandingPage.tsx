@@ -319,7 +319,7 @@ export default function MobileAppLandingPage() {
           <div className="site-container">
             <div className="grid gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
               <ScrollReveal className="max-w-3xl">
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-primary shadow-sm">
+                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold uppercase tracking-normal text-primary shadow-sm">
                   <Sparkles className="h-4 w-4" />
                   HR THAT FITS IN YOUR POCKET
                 </div>
