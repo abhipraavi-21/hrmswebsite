@@ -783,16 +783,6 @@ export default function WorkforceManagementPage() {
                 </div>
               </div>
 
-              <div className="soft-card p-6">
-                <div className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                  Centralised workflow
-                </div>
-                <h3 className="mt-2 text-2xl font-bold text-ink">A single flow from hire to report</h3>
-                <p className="mt-3 text-sm leading-6 text-justify hyphens-auto text-ink-soft">
-                  The platform keeps attendance, leave and payroll connected so HR does less
-                  manual reconciliation and managers get more reliable workforce data.
-                </p>
-              </div>
             </div>
           </div>
         </section>
