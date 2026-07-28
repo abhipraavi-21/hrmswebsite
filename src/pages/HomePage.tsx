@@ -124,7 +124,7 @@ export default function HomePage() {
           <div className="container-x pt-0 pb-6 lg:pt-0 lg:pb-8">
             <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
               <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                   <Sparkles className="h-3.5 w-3.5" />
                   Altroz Technology Platform
                 </span>
