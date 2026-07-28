@@ -715,20 +715,7 @@ export default function PricingPage() {
 
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="container-x">
-            <div className="max-w-3xl">
-              <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
-                Add On
-              </div>
-              <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                Optional add-ons for every plan
-              </h2>
-              <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-                The table below keeps the add-on items aligned with the Basic, Professional and
-                Premium columns so you can compare optional capabilities at a glance.
-              </p>
-            </div>
-
-            <div className="mt-10">
+            <div>
               <FeatureGroupCard group={addOnGroup} />
             </div>
           </div>
