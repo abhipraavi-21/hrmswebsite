@@ -555,7 +555,7 @@ export default function PricingPage() {
 
           <div className="container-x grid gap-10 py-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:py-18">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-primary shadow-sm">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <Sparkles className="h-4 w-4" />
                 Pricing sheet
               </div>
