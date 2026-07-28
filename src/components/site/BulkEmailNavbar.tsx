@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import BrandMark from "./BrandMark";
@@ -73,40 +73,11 @@ const menuGroups: MenuGroup[] = [
   },
 ];
 
-const topLevelLinks = [
-  { label: "Pricing", href: ROUTES.pricing, className: "nav-link" },
-  {
-    label: "Book Demo",
-    href: ROUTES.bookDemo,
-    className: "btn-success",
-  },
-];
-
 export default function BulkEmailNavbar() {
-  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const closeTimerRef = useRef<number | null>(null);
   const scrolled = useScrolled(12);
   const location = useLocation();
-
   const currentPath = location.pathname;
-  const isGroupActive = (group: MenuGroup) => group.items.some((item) => currentPath === item.href);
-
-  const clearCloseTimer = () => {
-    if (closeTimerRef.current !== null) {
-      window.clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
-    }
-  };
-
-  const scheduleClose = () => {
-    clearCloseTimer();
-    closeTimerRef.current = window.setTimeout(() => {
-      setOpenGroup(null);
-    }, 150);
-  };
-
-  useEffect(() => () => clearCloseTimer(), []);
 
   useEffect(() => {
     const { overflow } = document.body.style;
@@ -203,124 +174,71 @@ export default function BulkEmailNavbar() {
         </Sheet>
       </div>
 
-      <div
-        className={cn(
-          "site-container hidden grid-cols-1 gap-2 py-2 transition-[height,padding] duration-300 lg:grid lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0",
-          scrolled ? "lg:h-14" : "lg:h-16",
-        )}
-      >
-        <Link to={ROUTES.bulkEmail} className="flex shrink-0 items-center gap-2 -ml-3">
-          <BrandMark mode="wordmark" />
-        </Link>
+      <div className="site-container hidden py-3 lg:block">
+        <div className="flex items-center justify-between gap-4">
+          <Link to={ROUTES.bulkEmail} className="flex shrink-0 items-center gap-2 -ml-3">
+            <BrandMark mode="wordmark" />
+          </Link>
 
-        <nav className="flex flex-wrap items-center gap-1 overflow-visible lg:mx-auto">
-          {menuGroups.map((group) => (
-            <DesktopMenuGroup
-              key={group.id}
-              group={group}
-              active={isGroupActive(group)}
-              open={openGroup === group.id}
-              onOpen={() => {
-                clearCloseTimer();
-                setOpenGroup(group.id);
-              }}
-              onClose={scheduleClose}
-            />
-          ))}
-        </nav>
-
-        <div className="flex items-center justify-end gap-2">
-          {topLevelLinks.map((item) => (
+          <div className="flex items-center gap-2">
             <NavLink
-              key={item.label}
-              to={item.href}
+              to={ROUTES.pricing}
               className={({ isActive }) =>
                 cn(
-                  item.className,
-                  item.className === "btn-success"
-                    ? "justify-center px-3 py-2 text-xs sm:px-5 sm:text-sm"
-                    : "nav-link rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
-                  isActive ? (item.className === "btn-success" ? "" : "bg-primary-soft text-primary") : "",
+                  "nav-link rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
+                  isActive || currentPath === ROUTES.pricing
+                    ? "bg-primary-soft text-primary"
+                    : "text-ink hover:bg-surface",
                 )
               }
             >
-              {item.label}
+              Pricing
             </NavLink>
-          ))}
+            <NavLink to={ROUTES.bookDemo} className="btn-success justify-center px-3 py-2 text-xs sm:px-5 sm:text-sm">
+              Book Demo
+            </NavLink>
+          </div>
         </div>
+
+        <nav className="mt-3 grid gap-4 rounded-[1.5rem] border border-border bg-white p-5 shadow-card xl:grid-cols-[1.25fr_1fr_1fr_1fr]">
+          {menuGroups.map((group) => (
+            <DesktopMenuColumn key={group.id} group={group} active={group.items.some((item) => currentPath === item.href)} />
+          ))}
+        </nav>
       </div>
     </header>
   );
 }
 
-function DesktopMenuGroup({
+function DesktopMenuColumn({
   group,
   active,
-  open,
-  onOpen,
-  onClose,
 }: {
   group: MenuGroup;
   active: boolean;
-  open: boolean;
-  onOpen: () => void;
-  onClose: () => void;
 }) {
   return (
-    <div className="relative" onMouseEnter={onOpen} onMouseLeave={onClose}>
-      <button
-        type="button"
-        className={cn(
-          "nav-link flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors sm:text-sm",
-          active || open ? "bg-primary-soft text-primary" : "text-ink hover:bg-surface",
-        )}
-      >
+    <div className={cn("min-w-0 rounded-2xl p-2", active && "bg-primary-soft/40")}>
+      <div className="flex items-center gap-1.5 text-sm font-black tracking-tight text-ink">
         {group.title}
-        <ChevronDown
-          className={cn("h-3.5 w-3.5 opacity-60 transition-transform duration-200", open && "rotate-180")}
-        />
-      </button>
-
-      <div
-        className={cn(
-          "absolute left-0 top-full z-50 w-72 origin-top transition-[opacity,transform] duration-[240ms] ease-out",
-          open
-            ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
-            : "pointer-events-none translate-y-3 scale-[0.975] opacity-0",
-        )}
-        aria-hidden={!open}
-      >
-        <div aria-hidden="true" className="h-2" />
-        <div className="popup-blue-surface relative overflow-hidden rounded-[1.35rem] border border-white/70 p-2 shadow-[0_18px_50px_rgba(11,92,255,0.14)] backdrop-blur-xl ring-1 ring-white/60">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] popup-blue-band" />
-          <div className="grid gap-1">
-            {group.items.map((item, index) => (
-              <NavLink
-                key={item.label}
-                to={item.href}
-                tabIndex={open ? 0 : -1}
-                style={{ transitionDelay: open ? `${index * 35}ms` : "0ms" }}
-                className={({ isActive }) =>
-                  cn(
-                    "group flex items-center justify-between gap-3 rounded-lg px-2 py-2.5 transition-all duration-300 hover:bg-white/70 hover:text-primary",
-                    open ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0",
-                    isActive && "bg-white/70 text-primary",
-                  )
-                }
-              >
-                <div className="flex items-center gap-2 transition-transform duration-300 ease-out group-hover:translate-x-0.5">
-                  <div className="text-sm font-semibold text-ink transition-colors group-hover:text-primary">
-                    {item.label}
-                  </div>
-                  <ArrowRight
-                    aria-hidden="true"
-                    className="h-4 w-4 -translate-x-0.5 opacity-0 transition-[transform,opacity] duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
-                  />
-                </div>
-              </NavLink>
-            ))}
-          </div>
-        </div>
+        <ChevronDown className="h-4 w-4 text-primary" />
+      </div>
+      <div className="mt-3 space-y-1.5">
+        {group.items.map((item) => (
+          <NavLink
+            key={item.label}
+            to={item.href}
+            className={({ isActive }) =>
+              cn(
+                "flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium transition-colors hover:bg-primary-soft/60 hover:text-primary",
+                isActive ? "bg-primary-soft/60 text-primary" : "text-ink-soft",
+              )
+            }
+          >
+            <span className="text-primary">•</span>
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
       </div>
     </div>
   );
@@ -342,16 +260,11 @@ function MobileMenuGroup({
         <div className="rounded-2xl border border-border/70 bg-muted/30 p-2">
           <div className="grid gap-0">
             {group.items.map((item) => (
-              <NavLink
+              <Link
                 key={item.label}
                 to={item.href}
                 onClick={onNavigate}
-                className={({ isActive }) =>
-                  cn(
-                    "group flex items-center justify-between gap-3 rounded-lg px-2 py-3 text-left transition-colors active:bg-white/60 active:text-primary sm:hover:bg-white/60 sm:hover:text-primary",
-                    isActive && "bg-white/60 text-primary",
-                  )
-                }
+                className="group flex items-center justify-between gap-3 rounded-lg px-2 py-3 text-left transition-colors active:bg-white/60 active:text-primary sm:hover:bg-white/60 sm:hover:text-primary"
               >
                 <div className="min-w-0">
                   <div className="text-sm font-semibold text-ink transition-colors group-active:text-primary sm:group-hover:text-primary">
@@ -362,7 +275,7 @@ function MobileMenuGroup({
                   aria-hidden="true"
                   className="h-4 w-4 shrink-0 text-primary opacity-80 transition-[transform,opacity] duration-200 ease-out group-active:translate-x-1 sm:opacity-0 sm:-translate-x-0.5 sm:group-hover:translate-x-0 sm:group-hover:opacity-100"
                 />
-              </NavLink>
+              </Link>
             ))}
           </div>
         </div>
