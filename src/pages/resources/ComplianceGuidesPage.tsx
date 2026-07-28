@@ -596,7 +596,8 @@ export default function ComplianceGuidesPage() {
             <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-6">
                 <div className="flex justify-center lg:justify-start">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-primary shadow-sm">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
+                    <Sparkles className="h-4 w-4" />
                     HR Compliance Made Simple
                   </span>
                 </div>
