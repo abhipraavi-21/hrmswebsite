@@ -425,7 +425,7 @@ function StatusChip({ state }: { state: FeatureState }) {
 
 function PlanCardView({ plan }: { plan: PlanCard }) {
   return (
-    <article className="soft-card relative flex h-full flex-col overflow-hidden p-6 shadow-sm">
+    <article className="soft-card relative flex h-full min-h-[420px] flex-col overflow-hidden p-6 shadow-sm">
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">{plan.name}</div>
@@ -451,9 +451,9 @@ function PlanCardView({ plan }: { plan: PlanCard }) {
         ))}
       </div>
 
-      <div className="mt-6 rounded-2xl border border-border bg-white p-4 text-sm leading-7 text-ink-soft">
-        Built from the sheet so the plan scope stays clear before the feature comparison begins.
-      </div>
+      <a href="#feature-comparison" className="btn-outline mt-auto w-full justify-center">
+        Know more
+      </a>
     </article>
   );
 }
@@ -658,7 +658,7 @@ export default function PricingPage() {
               </p>
             </div>
 
-            <div className="mt-10 grid gap-5 lg:grid-cols-3">
+            <div className="mt-10 grid items-stretch gap-5 lg:grid-cols-3">
               {planCards.map((plan) => (
                 <PlanCardView key={plan.name} plan={plan} />
               ))}
@@ -666,7 +666,7 @@ export default function PricingPage() {
           </div>
         </section>
 
-        <section className="bg-surface py-14 sm:py-16 lg:py-20">
+        <section id="feature-comparison" className="bg-surface py-14 sm:py-16 lg:py-20">
           <div className="container-x">
             <div className="max-w-3xl">
               <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
@@ -691,16 +691,16 @@ export default function PricingPage() {
 
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="container-x">
-            <div className="max-w-3xl">
+            <div className="mx-auto max-w-3xl text-center">
               <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
                 Optional add-ons
               </div>
               <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                Add-on cards for the extra items in the sheet
+                Extend your plan with the extras your team needs
               </h2>
               <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-                These cards capture the optional items mentioned in the source sheet, including the
-                geo tracking price point and the integration and development extras.
+                Choose optional capabilities for geofencing, app access, integrations, alerts and
+                custom development when you need to go beyond the core plans.
               </p>
             </div>
 
