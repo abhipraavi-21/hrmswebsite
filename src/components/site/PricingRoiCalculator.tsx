@@ -9,8 +9,6 @@ import {
   Clock3,
   Percent,
   RefreshCcw,
-  ShieldCheck,
-  Sparkles,
   Target,
   TrendingUp,
   Users,
@@ -21,7 +19,6 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/routes/routeConfig.js";
 import {
@@ -38,21 +35,8 @@ import {
   getDefaultRecruitmentHours,
   safeNumber,
   type RoiCalculatorInput,
-  type RoiModuleId,
 } from "@/utils/hrmsRoiCalculator";
-import { roiCalculatorConfig, type RoiAdoptionKey, type RoiPlanKey, type RoiSetupKey } from "@/config/roiCalculatorConfig";
-
-const moduleIconMap: Record<RoiModuleId, typeof Users> = {
-  coreHr: Users,
-  attendance: Target,
-  leave: CheckCircle2,
-  payroll: Banknote,
-  selfService: Users,
-  recruitment: BriefcaseBusiness,
-  performance: TrendingUp,
-  expense: Wallet,
-  reports: ChartColumn,
-};
+import { roiCalculatorConfig, type RoiPlanKey, type RoiSetupKey } from "@/config/roiCalculatorConfig";
 
 const setupOptions: Array<{ key: RoiSetupKey; label: string }> = [
   { key: "fullyManual", label: "Fully manual" },
@@ -60,12 +44,6 @@ const setupOptions: Array<{ key: RoiSetupKey; label: string }> = [
   { key: "basicSoftware", label: "Basic HR software" },
   { key: "disconnectedTools", label: "Disconnected tools" },
   { key: "integratedHRMS", label: "Integrated HRMS" },
-];
-
-const adoptionOptions: Array<{ key: RoiAdoptionKey; label: string }> = [
-  { key: "conservative", label: "Conservative" },
-  { key: "expected", label: "Expected" },
-  { key: "high", label: "High adoption" },
 ];
 
 const planOrder: RoiPlanKey[] = ["Starter", "Growth", "Professional", "Enterprise"];
@@ -122,44 +100,6 @@ function MetricCard({
       <div className="mt-3 text-sm font-semibold text-ink-soft">{label}</div>
       <div className="mt-1 text-xl font-black tracking-tight text-ink">{value}</div>
     </div>
-  );
-}
-
-function ModuleToggle({
-  moduleId,
-  selected,
-  onToggle,
-}: {
-  moduleId: RoiModuleId;
-  selected: boolean;
-  onToggle: (value: boolean) => void;
-}) {
-  const module = roiCalculatorConfig.modules.find((item) => item.id === moduleId);
-  if (!module) return null;
-  const Icon = moduleIconMap[module.id];
-
-  return (
-    <button
-      type="button"
-      onClick={() => onToggle(!selected)}
-      className={cn(
-        "flex items-center justify-between gap-3 rounded-2xl border p-4 text-left transition-colors",
-        selected ? "border-primary bg-primary/5" : "border-border bg-white hover:bg-surface",
-      )}
-    >
-      <div className="flex items-start gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-primary-soft text-primary">
-          <Icon className="h-5 w-5" />
-        </div>
-        <div>
-          <div className="text-sm font-bold text-ink">{module.label}</div>
-          <div className="mt-1 text-xs leading-5 text-ink-soft">
-            Up to {Math.round(module.efficiency * 100)}% less manual effort
-          </div>
-        </div>
-      </div>
-      <Switch checked={selected} onCheckedChange={onToggle} aria-label={module.label} />
-    </button>
   );
 }
 
@@ -225,13 +165,6 @@ export default function PricingRoiCalculator() {
       reportingHours: getDefaultReportingHours(employeeCount),
       recruitmentHours: getDefaultRecruitmentHours(employeeCount),
       enterpriseMonthlyEstimate: employeeCount * 45,
-    }));
-  };
-
-  const toggleModule = (moduleId: RoiModuleId, value: boolean) => {
-    setForm((current) => ({
-      ...current,
-      selectedModules: { ...current.selectedModules, [moduleId]: value },
     }));
   };
 
@@ -354,55 +287,6 @@ export default function PricingRoiCalculator() {
                       )
                     }
                   />
-                </div>
-
-                <div>
-                  <Label>Payroll error rate</Label>
-                  <div className="mt-3 flex items-center gap-3">
-                    <Slider
-                      value={[form.payrollErrorRate]}
-                      min={0}
-                      max={20}
-                      step={0.5}
-                      onValueChange={([value]) => update("payrollErrorRate", value)}
-                    />
-                    <span className="w-12 text-sm font-semibold text-ink">{form.payrollErrorRate.toFixed(1)}%</span>
-                  </div>
-                </div>
-
-                <div>
-                  <Label>Adoption level</Label>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {adoptionOptions.map((option) => (
-                      <button
-                        key={option.key}
-                        type="button"
-                        onClick={() => update("adoptionLevel", option.key)}
-                        className={cn(
-                          "rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors",
-                          form.adoptionLevel === option.key
-                            ? "border-primary bg-primary text-white"
-                            : "border-border bg-white text-ink hover:bg-primary-soft hover:text-primary",
-                        )}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="md:col-span-2">
-                  <div className="text-sm font-semibold text-ink">Modules required</div>
-                  <div className="mt-3 grid gap-3 md:grid-cols-2">
-                    {roiCalculatorConfig.modules.map((module) => (
-                      <ModuleToggle
-                        key={module.id}
-                        moduleId={module.id}
-                        selected={Boolean(form.selectedModules[module.id])}
-                        onToggle={(value) => toggleModule(module.id, value)}
-                      />
-                    ))}
-                  </div>
                 </div>
 
                 <div className="md:col-span-2">
