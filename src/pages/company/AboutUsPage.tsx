@@ -425,7 +425,7 @@ function AboutUsPage() {
 
           <div className="site-container grid gap-10 lg:grid-cols-12 lg:items-center">
             <ScrollReveal className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-primary shadow-sm">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <Sparkles className="h-4 w-4" />
                 About Altroz HR
               </div>
