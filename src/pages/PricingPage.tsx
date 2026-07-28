@@ -18,7 +18,7 @@ import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import { ROUTES } from "@/routes/routeConfig.js";
 
-type FeatureState = "included" | "notIncluded" | "limited" | "optional";
+type FeatureState = "included" | "notIncluded" | "limited" | "optional" | "addon";
 
 type FeatureRow = {
   label: string;
@@ -29,6 +29,7 @@ type FeatureRow = {
 };
 
 type FeatureGroup = {
+  eyebrow?: string;
   title: string;
   description: string;
   rows: FeatureRow[];
@@ -54,6 +55,7 @@ const included = "included" as const;
 const notIncluded = "notIncluded" as const;
 const limited = "limited" as const;
 const optional = "optional" as const;
+const addOn = "addon" as const;
 
 const row = (
   label: string,
@@ -91,6 +93,11 @@ const statusMeta: Record<
     label: "Optional",
     className: "border-violet-200 bg-violet-50 text-violet-700",
     icon: <Sparkles className="h-4 w-4" />,
+  },
+  addon: {
+    label: "Add On",
+    className: "border-primary/20 bg-primary/10 text-primary",
+    icon: <Coins className="h-4 w-4" />,
   },
 };
 
@@ -410,6 +417,21 @@ const addOnCards: AddOnCard[] = [
   },
 ];
 
+const addOnGroup: FeatureGroup = {
+  eyebrow: "Add On",
+  title: "Add On",
+  description:
+    "Optional capabilities that can be attached to any of the three plans when your team needs extra coverage.",
+  rows: [
+    row("Geo Tracking", addOn, addOn, addOn),
+    row("Mobile App", addOn, addOn, addOn),
+    row("API Integration", addOn, addOn, addOn),
+    row("WhatsApp Integration", addOn, addOn, addOn),
+    row("Biometric Device", addOn, addOn, addOn),
+    row("Custom Development", addOn, addOn, addOn),
+  ],
+};
+
 function StatusChip({ state }: { state: FeatureState }) {
   const meta = statusMeta[state];
 
@@ -463,7 +485,9 @@ function FeatureGroupCard({ group }: { group: FeatureGroup }) {
     <section className="soft-card overflow-hidden p-5 sm:p-6">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">Feature section</div>
+          <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+            {group.eyebrow ?? "Feature section"}
+          </div>
           <h3 className="mt-2 text-2xl font-black tracking-tight text-ink">{group.title}</h3>
           <p className="mt-2 max-w-3xl text-sm leading-7 text-ink-soft">{group.description}</p>
         </div>
@@ -691,23 +715,21 @@ export default function PricingPage() {
 
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="container-x">
-            <div className="mx-auto max-w-3xl text-center">
+            <div className="max-w-3xl">
               <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
-                Optional add-ons
+                Add On
               </div>
               <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                Extend your plan with the extras your team needs
+                Optional add-ons for every plan
               </h2>
               <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-                Choose optional capabilities for geofencing, app access, integrations, alerts and
-                custom development when you need to go beyond the core plans.
+                The table below keeps the add-on items aligned with the Basic, Professional and
+                Premium columns so you can compare optional capabilities at a glance.
               </p>
             </div>
 
-            <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-              {addOnCards.map((card) => (
-                <AddOnCardView key={card.title} card={card} />
-              ))}
+            <div className="mt-10">
+              <FeatureGroupCard group={addOnGroup} />
             </div>
           </div>
         </section>
