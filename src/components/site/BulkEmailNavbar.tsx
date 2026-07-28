@@ -174,7 +174,7 @@ export default function BulkEmailNavbar() {
         </Sheet>
       </div>
 
-      <div className="site-container hidden py-3 lg:block">
+      <div className="site-container py-3">
         <div className="flex items-center justify-between gap-4">
           <Link to={ROUTES.bulkEmail} className="flex shrink-0 items-center gap-2 -ml-3">
             <BrandMark mode="wordmark" />
@@ -200,7 +200,7 @@ export default function BulkEmailNavbar() {
           </div>
         </div>
 
-        <nav className="mt-3 grid gap-4 rounded-[1.5rem] border border-border bg-white p-5 shadow-card xl:grid-cols-[1.25fr_1fr_1fr_1fr]">
+        <nav className="mt-3 grid gap-4 rounded-[1.5rem] border border-border bg-white p-5 shadow-card sm:grid-cols-2 xl:grid-cols-4">
           {menuGroups.map((group) => (
             <DesktopMenuColumn key={group.id} group={group} active={group.items.some((item) => currentPath === item.href)} />
           ))}
@@ -235,7 +235,7 @@ function DesktopMenuColumn({
               )
             }
           >
-            <span className="text-primary">•</span>
+            <span className="text-primary">-</span>
             <span>{item.label}</span>
           </NavLink>
         ))}
