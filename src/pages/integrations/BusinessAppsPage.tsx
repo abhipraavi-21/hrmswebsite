@@ -23,6 +23,7 @@ import {
   Settings2,
   ShieldCheck,
   Smartphone,
+  Sparkles,
   Users,
   Workflow,
 } from "lucide-react";
@@ -569,7 +570,8 @@ export default function BusinessAppsPage() {
 
           <div className="site-container">
             <div className="mx-auto max-w-4xl text-center">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-primary shadow-sm">
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
+                <Sparkles className="h-4 w-4" />
                 Altroz HR
               </span>
               <h1 className="mt-4 text-4xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
