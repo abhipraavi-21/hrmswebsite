@@ -762,27 +762,31 @@ export default function WorkforceManagementPage() {
               center
             />
 
-            <div className="mt-8 grid gap-4 lg:grid-cols-3">
-              <div className="lg:col-span-2">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {workflowSteps.map((step, index) => (
-                    <div key={step} className="soft-card flex items-center gap-3 p-4">
-                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-sm font-bold text-primary">
-                        {index + 1}
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-ink">{step}</div>
-                        <div className="text-xs leading-5 text-ink-soft">
-                          {index < workflowSteps.length - 1
-                            ? "Keeps the workforce flow connected."
-                            : "Helps HR turn workforce data into decisions."}
-                        </div>
+            <div className="mx-auto mt-8 max-w-4xl">
+              <div className="grid gap-3 sm:grid-cols-2">
+                {workflowSteps.map((step, index) => (
+                  <div
+                    key={step}
+                    className={`soft-card flex items-center gap-3 p-4 ${
+                      index === workflowSteps.length - 1
+                        ? "sm:col-span-2 sm:mx-auto sm:w-full sm:max-w-md"
+                        : ""
+                    }`}
+                  >
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-sm font-bold text-primary">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-ink">{step}</div>
+                      <div className="text-xs leading-5 text-ink-soft">
+                        {index < workflowSteps.length - 1
+                          ? "Keeps the workforce flow connected."
+                          : "Helps HR turn workforce data into decisions."}
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-
             </div>
           </div>
         </section>
@@ -829,14 +833,14 @@ export default function WorkforceManagementPage() {
                     { label: "Leave", value: "Visible instantly" },
                     { label: "Reports", value: "Ready to review" },
                   ].map((item) => (
-                    <div key={item.label} className="soft-card p-4">
+                  <div key={item.label} className="soft-card p-4">
                       <div className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                         {item.label}
                       </div>
                       <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
-                    </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
+              </div>
               </div>
             </div>
           </div>
