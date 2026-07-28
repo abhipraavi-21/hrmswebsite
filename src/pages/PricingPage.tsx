@@ -14,7 +14,6 @@ import {
 import { Link } from "react-router-dom";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
-import PricingRoiCalculator from "@/components/site/PricingRoiCalculator";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import { ROUTES } from "@/routes/routeConfig.js";
@@ -722,8 +721,6 @@ export default function PricingPage() {
           </div>
         </section>
 
-        <PricingRoiCalculator />
-
         <section className="hero-gradient py-14 sm:py-16 lg:py-20">
           <div className="container-x">
             <div className="rounded-[2rem] border border-border bg-white p-8 shadow-float md:p-10">
@@ -736,9 +733,8 @@ export default function PricingPage() {
                     Want a tailored walkthrough of your pricing and ROI numbers?
                   </h2>
                   <p className="mt-4 max-w-3xl text-base leading-7 text-ink-soft">
-                    The page now includes the pricing table, add-ons and embedded ROI calculator.
-                    If you want, we can refine the assumptions, adjust the layout or shape the
-                    calculator around your sales process.
+                    The page now includes the pricing table and add-ons, giving a clear view of
+                    the plan structure before you request a tailored walkthrough.
                   </p>
                 </div>
 
