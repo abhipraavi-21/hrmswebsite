@@ -792,10 +792,6 @@ export default function WorkforceManagementPage() {
                   The platform keeps attendance, leave and payroll connected so HR does less
                   manual reconciliation and managers get more reliable workforce data.
                 </p>
-                <div className="mt-5 rounded-2xl border border-dashed border-primary/20 bg-primary/5 p-4 text-sm leading-6 text-ink-soft">
-                  No unnecessary handoffs. No duplicate entry. Just a structured flow that keeps
-                  workforce information aligned.
-                </div>
               </div>
             </div>
           </div>
