@@ -8,7 +8,7 @@ export const featureMenuColumns = [
       { label: "Attendance", href: ROUTES.attendanceManagement },
       { label: "Payroll", href: ROUTES.payroll },
       { label: "Leave Management", href: ROUTES.leaveManagement },
-      { label: "Mobile App Landing", href: ROUTES.mobileAppLanding },
+      { label: "Mobile App", href: ROUTES.mobileAppLanding },
     ],
   },
   {

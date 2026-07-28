@@ -1,391 +1,641 @@
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import {
   ArrowRight,
   BadgeCheck,
   CheckCircle2,
+  CircleX,
   Coins,
   Crown,
   Info,
+  ShieldCheck,
   Sparkles,
   Users,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
-import { Slider } from "@/components/ui/slider";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ROUTES } from "@/routes/routeConfig.js";
 
-type BillingTerm = {
-  value: "1" | "2" | "3";
+type FeatureState = "included" | "notIncluded" | "limited" | "optional";
+
+type FeatureRow = {
   label: string;
-  years: number;
-  savings: number;
-  badge?: string;
+  basic: FeatureState;
+  professional: FeatureState;
+  premium: FeatureState;
+  note?: string;
 };
 
-type PricingPlan = {
+type FeatureGroup = {
+  title: string;
+  description: string;
+  rows: FeatureRow[];
+};
+
+type PlanCard = {
   name: string;
-  pricePerEmployee: number;
-  blurb: string;
-  icon: ReactNode;
+  price: number;
   accent: string;
-  featured?: boolean;
-  usage: string[];
-  features: string[];
-  includedCount: number;
-  ctaLabel: string;
+  icon: ReactNode;
+  summary: string;
+  bullets: string[];
 };
 
-const billingTerms: BillingTerm[] = [
-  { value: "1", label: "1 Year", years: 1, savings: 0 },
-  { value: "2", label: "2 Years", years: 2, savings: 10 },
-  { value: "3", label: "3 Years", years: 3, savings: 15, badge: "Best" },
-];
+type AddOnCard = {
+  title: string;
+  description: string;
+  note: string;
+  accent: string;
+};
 
-const employeePresets = [5, 10, 25, 50, 100, 200];
+const included = "included" as const;
+const notIncluded = "notIncluded" as const;
+const limited = "limited" as const;
+const optional = "optional" as const;
 
-const pricingPlans: PricingPlan[] = [
-  {
-    name: "Starter",
-    pricePerEmployee: 50,
-    blurb: "A simple launch plan for smaller teams that need fast setup and essential HR coverage.",
-    icon: <BadgeCheck className="h-5 w-5" />,
-    accent: "bg-primary-soft text-primary",
-    featured: true,
-    usage: ["3 users", "5 employees", "10 GB storage"],
-    features: [
-      "Core HR and attendance",
-      "Employee self-service portal",
-      "Leave requests and approvals",
-      "Email support and onboarding guidance",
-    ],
-    includedCount: 48,
-    ctaLabel: "View all features",
+const row = (
+  label: string,
+  basic: FeatureState,
+  professional: FeatureState,
+  premium: FeatureState,
+  note?: string,
+): FeatureRow => ({ label, basic, professional, premium, note });
+
+const formatPrice = (value: number) =>
+  new Intl.NumberFormat("en-IN", {
+    maximumFractionDigits: 0,
+  }).format(value);
+
+const statusMeta: Record<
+  FeatureState,
+  { label: string; className: string; icon: ReactNode }
+> = {
+  included: {
+    label: "Included",
+    className: "border-emerald-200 bg-emerald-50 text-emerald-700",
+    icon: <CheckCircle2 className="h-4 w-4" />,
   },
+  notIncluded: {
+    label: "Not included",
+    className: "border-slate-200 bg-slate-100 text-slate-500",
+    icon: <CircleX className="h-4 w-4" />,
+  },
+  limited: {
+    label: "Limited",
+    className: "border-amber-200 bg-amber-50 text-amber-700",
+    icon: <Info className="h-4 w-4" />,
+  },
+  optional: {
+    label: "Optional",
+    className: "border-violet-200 bg-violet-50 text-violet-700",
+    icon: <Sparkles className="h-4 w-4" />,
+  },
+};
+
+const planCards: PlanCard[] = [
   {
-    name: "Attendance",
-    pricePerEmployee: 25,
-    blurb: "A practical plan for teams that want attendance-led visibility with room to grow.",
-    icon: <Users className="h-5 w-5" />,
-    accent: "bg-[#ecfdf3] text-success",
-    usage: ["10 users", "Unlimited employees", "50 GB storage"],
-    features: [
-      "Attendance tracking and shift visibility",
-      "Mobile access for employees",
-      "Basic reports and exports",
-      "Approvals for routine requests",
+    name: "Basic",
+    price: 21,
+    accent: "bg-primary-soft text-primary",
+    icon: <BadgeCheck className="h-5 w-5" />,
+    summary:
+      "Core employee records, attendance, leave, team actions, reporting and admin controls for teams that want a compact starting point.",
+    bullets: [
+      "Employee management and directory tools",
+      "Attendance, leave and reporting essentials",
+      "Administration and organization setup",
     ],
-    includedCount: 24,
-    ctaLabel: "View all features",
   },
   {
     name: "Professional",
-    pricePerEmployee: 142,
-    blurb:
-      "Built for larger teams that need deeper workflows, tighter control, and more reporting.",
-    icon: <Crown className="h-5 w-5" />,
-    accent: "bg-surface text-ink",
-    usage: ["15 users", "Unlimited employees", "100 GB storage"],
-    features: [
-      "Advanced approvals and policy controls",
-      "Payroll and workforce workflows",
-      "Analytics and management reporting",
-      "Priority implementation support",
+    price: 36,
+    accent: "bg-[#ecfdf3] text-success",
+    icon: <ShieldCheck className="h-5 w-5" />,
+    summary:
+      "A broader operational plan with recruitment, documents, payroll, compliance, assets and performance modules.",
+    bullets: [
+      "Everything in Basic plus deeper workflows",
+      "Recruitment, documents and payroll coverage",
+      "Compliance, assets and performance features",
     ],
-    includedCount: 63,
-    ctaLabel: "View all features",
+  },
+  {
+    name: "Premium",
+    price: 53,
+    accent: "bg-surface text-ink",
+    icon: <Crown className="h-5 w-5" />,
+    summary:
+      "The widest coverage in the sheet, including premium attendance, extra reporting depth and the fullest feature set.",
+    bullets: [
+      "Everything in Professional",
+      "Shift management and salary history",
+      "Broader reporting and advanced coverage",
+    ],
   },
 ];
 
 const pricingHighlights = [
   {
-    title: "No credit card",
-    desc: "Start your trial without upfront payment friction.",
-    icon: <BadgeCheck className="h-5 w-5" />,
+    title: "Basic",
+    value: "₹21 / employee / month",
+    desc: "Entry pricing for core HR, attendance and leave.",
+    icon: <BadgeCheck className="h-4 w-4" />,
   },
   {
-    title: "Per employee pricing",
-    desc: "Scale by workforce size instead of a one-size-fits-all package.",
-    icon: <Coins className="h-5 w-5" />,
+    title: "Professional",
+    value: "₹36 / employee / month",
+    desc: "Expanded coverage for recruiting, payroll and compliance.",
+    icon: <ShieldCheck className="h-4 w-4" />,
   },
   {
-    title: "7-day free trial",
-    desc: "Test the product before you commit to a plan.",
-    icon: <Crown className="h-5 w-5" />,
+    title: "Premium",
+    value: "₹53 / employee / month",
+    desc: "Full-suite coverage for the broadest rollout.",
+    icon: <Crown className="h-4 w-4" />,
   },
   {
-    title: "Free onboarding",
-    desc: "Get implementation help included with your rollout.",
-    icon: <Users className="h-5 w-5" />,
+    title: "Optional add-ons",
+    value: "Geo tracking, integrations and custom work",
+    desc: "Extra capabilities can be layered on as needed.",
+    icon: <Coins className="h-4 w-4" />,
   },
 ];
 
-const faqs = [
+const featureGroups: FeatureGroup[] = [
   {
-    q: "How does the calculator work?",
-    a: "Choose a billing term and employee count, then each plan updates its monthly and multi-year total based on the selected values.",
+    title: "Employee Management",
+    description: "Core employee records, profile tools and organization setup.",
+    rows: [
+      row("Employee Database", included, included, included),
+      row("Employee Profile Management", included, included, included),
+      row("Employee Master Records", included, included, included),
+      row("Employee Directory", included, included, included),
+      row("Department Management", included, included, included),
+      row("Designation Management", included, included, included),
+      row("Branch Management", included, included, included),
+      row("Employee Category Management", included, included, included),
+      row("Employee Lifecycle Tracking", notIncluded, included, included),
+      row("Employee History", included, included, included),
+      row("Employee Document Management", included, included, included),
+      row("Employee Search", included, included, included),
+      row("Employee Status Management", included, included, included),
+      row("Employee Information Dashboard", included, notIncluded, included),
+    ],
   },
   {
-    q: "Do multi-year terms include a discount?",
-    a: "Yes. The calculator shows a 10% discount for 2 years and a 15% discount for 3 years, similar to the pattern in the recording.",
+    title: "Attendance",
+    description: "Attendance capture, shift control and attendance reporting.",
+    rows: [
+      row("Biometric Attendance Integration", included, included, included),
+      row("GPS Based Attendance", notIncluded, included, included),
+      row("Geo Location Attendance", included, included, included),
+      row("Geo Fencing", optional, included, included, "Add-on on Basic"),
+      row("Shift Management", notIncluded, notIncluded, included),
+      row("Attendance Dashboard", included, included, included),
+      row("Attendance Regularization", notIncluded, included, included),
+      row("Missing Punch Management", notIncluded, included, included),
+      row("Late Mark Management", included, included, included),
+      row("Overtime Tracking", included, included, included),
+      row("Attendance Summary", included, included, included),
+      row("Daily Attendance Report", included, included, included),
+      row("Monthly Attendance Report", included, included, included),
+      row("Branch Wise Attendance", included, included, included),
+      row("Department Wise Attendance", included, included, included),
+    ],
   },
   {
-    q: "Can we start small and grow later?",
-    a: "Yes. The layout is built so smaller teams can begin with Starter and move to larger plans as their workforce grows.",
+    title: "Leave",
+    description: "Leave workflows, calendar visibility and leave analytics.",
+    rows: [
+      row("Leave Dashboard", included, included, included),
+      row("Leave Request", included, included, included),
+      row("Leave Approval Workflow", included, included, included),
+      row("Multi-Level Approval", notIncluded, included, included),
+      row("Leave Balance Tracking", included, included, included),
+      row("Leave Transaction History", included, included, included),
+      row("Leave Calendar", included, included, included),
+      row("Leave Types Configuration", included, included, included),
+      row("Holiday Management", included, included, included),
+      row("Pending Leave Tracking", included, included, included),
+      row("Leave Reports", included, included, included),
+      row("Department Wise Leave Reports", included, included, included),
+      row("Leave Analytics", included, included, included),
+    ],
+  },
+  {
+    title: "Recruitment",
+    description: "Applicant flow and recruiting coverage for the Premium plan.",
+    rows: [
+      row("Position Management", notIncluded, notIncluded, included),
+      row("Vacancy Management", notIncluded, notIncluded, included),
+      row("Job Requisition", notIncluded, notIncluded, included),
+      row("Applicant Management", notIncluded, notIncluded, included),
+      row("Applicant Applications", notIncluded, notIncluded, included),
+      row("Interview Scheduling", notIncluded, notIncluded, included),
+      row("Interview Tracking", notIncluded, notIncluded, included),
+      row("Offer Management", notIncluded, notIncluded, included),
+      row("Recruitment Dashboard", notIncluded, notIncluded, included),
+      row("Recruitment Reports", notIncluded, notIncluded, included),
+    ],
+  },
+  {
+    title: "Documents",
+    description: "Offer letters, templates, employee documents and document control.",
+    rows: [
+      row("Appointment Letter", notIncluded, included, included),
+      row("Offer Letter", notIncluded, included, included),
+      row("Joining Letter", notIncluded, included, included),
+      row("PDF Document Generation", notIncluded, included, included),
+      row("Document Templates", notIncluded, included, included),
+      row("Employee Document Storage", notIncluded, included, included),
+      row("Document Version Control", notIncluded, notIncluded, included),
+      row("Document Download", notIncluded, included, included),
+    ],
+  },
+  {
+    title: "Payroll",
+    description: "Payroll processing, salary rules, reports and payroll analytics.",
+    rows: [
+      row("Payroll Dashboard", notIncluded, included, included),
+      row("Payroll Processing", notIncluded, included, included),
+      row("Salary Computation", notIncluded, included, included),
+      row("Salary Processing", notIncluded, included, included),
+      row("Payroll Settings", notIncluded, included, included),
+      row("Compensation Templates", notIncluded, limited, included),
+      row("Advance Salary Management", notIncluded, included, included),
+      row("Salary Slip Generation", notIncluded, included, included),
+      row("Salary History", notIncluded, notIncluded, included),
+      row("Payroll Reports", notIncluded, included, included),
+      row("Salary Reports", notIncluded, included, included),
+      row("Payroll Summary", notIncluded, included, included),
+      row("Payroll Analytics", notIncluded, included, included),
+      row("Salary Advance Summary", notIncluded, included, included),
+    ],
+  },
+  {
+    title: "Compliance",
+    description: "Statutory settings and compliance reporting.",
+    rows: [
+      row("PF", notIncluded, included, included),
+      row("ESI", notIncluded, included, included),
+      row("PT", notIncluded, included, included),
+      row("LWF", notIncluded, included, included),
+      row("Tax Configuration", notIncluded, included, included),
+      row("UAN Management", notIncluded, included, included),
+      row("PF Reports", notIncluded, included, included),
+      row("ESI Reports", notIncluded, included, included),
+      row("PT Reports", notIncluded, included, included),
+      row("Compliance Reports", notIncluded, notIncluded, included),
+    ],
+  },
+  {
+    title: "Asset Management",
+    description: "Asset allocation, tracking, maintenance and reporting.",
+    rows: [
+      row("Asset Dashboard", notIncluded, included, included),
+      row("Asset Registration", notIncluded, included, included),
+      row("Asset Allocation", notIncluded, included, included),
+      row("Asset Hand Over", notIncluded, included, included),
+      row("Asset Status Management", notIncluded, included, included),
+      row("Asset Category Management", notIncluded, included, included),
+      row("Asset Type Management", notIncluded, included, included),
+      row("Asset Maintenance", notIncluded, included, included),
+      row("Warranty Tracking", notIncluded, included, included),
+      row("Asset Depreciation", notIncluded, included, included),
+      row("Asset Utilization Tracking", notIncluded, included, included),
+      row("Asset Reports", notIncluded, included, included),
+      row("Asset History", notIncluded, included, included),
+    ],
+  },
+  {
+    title: "Performance",
+    description: "Performance dashboards and employee performance tracking.",
+    rows: [
+      row("Performance Dashboard", notIncluded, included, included),
+      row("Employee Performance Tracking", notIncluded, included, included),
+      row("Performance Reports", notIncluded, included, included),
+    ],
+  },
+  {
+    title: "Team Actions",
+    description: "Operational employee actions and engagement-related workflows.",
+    rows: [
+      row("Company Announcements", included, included, included),
+      row("Employee Notifications", included, included, included),
+      row("Employee Transfer", included, included, included),
+      row("Employee Promotion", included, included, included),
+      row("Employee Resignation", included, included, included),
+      row("Employee Termination", included, included, included),
+      row("Employee Reimbursement", included, notIncluded, included),
+      row("Event Management", included, included, included),
+      row("Holiday Management", included, included, included),
+      row("Awards & Recognition", notIncluded, notIncluded, included),
+    ],
+  },
+  {
+    title: "Reports",
+    description: "Export-ready reports for people, payroll, attendance and assets.",
+    rows: [
+      row("Employee Reports", included, included, included),
+      row("Employee Salary Reports", notIncluded, included, included),
+      row("Attendance Reports", included, included, included),
+      row("Leave Reports", included, included, included),
+      row("Payroll Reports", notIncluded, included, included),
+      row("PF Reports", notIncluded, included, included),
+      row("ESI Reports", notIncluded, included, included),
+      row("Professional Tax Reports", notIncluded, included, included),
+      row("LWF Reports", notIncluded, included, included),
+      row("Asset Reports", notIncluded, notIncluded, included),
+      row("Excel Export", included, included, included),
+      row("PDF Export", included, included, included),
+    ],
+  },
+  {
+    title: "Administration",
+    description: "Organization setup, access control and system governance.",
+    rows: [
+      row("Role Management", included, included, included),
+      row("User Management", included, included, included),
+      row("User Employee Mapping", included, included, included),
+      row("Multi-Level Approval", included, included, included),
+      row("Organization Management", included, included, included),
+      row("Company Configuration", included, included, included),
+      row("Branch Configuration", included, included, included),
+      row("Department Configuration", included, included, included),
+      row("Notification Settings", included, included, included),
+      row("Leave Type Configuration", included, included, included),
+      row("Rule Engine", included, included, included),
+    ],
   },
 ];
 
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en-IN", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(value);
-}
+const addOnCards: AddOnCard[] = [
+  {
+    title: "Geo Tracking",
+    description: "Optional add-on from the sheet.",
+    note: "+ ₹70 / employee / month",
+    accent: "bg-primary-soft text-primary",
+  },
+  {
+    title: "Mobile App",
+    description: "Listed as an optional extra in the sheet.",
+    note: "Plan entitlement should be confirmed during quote finalization.",
+    accent: "bg-[#ecfdf3] text-success",
+  },
+  {
+    title: "API Integration",
+    description: "Optional integration item from the sheet.",
+    note: "Best suited for teams with custom workflows.",
+    accent: "bg-surface text-ink",
+  },
+  {
+    title: "WhatsApp Integration",
+    description: "Optional communication add-on.",
+    note: "Useful for alerts and operational messaging.",
+    accent: "bg-[#fff7ed] text-[#c2410c]",
+  },
+  {
+    title: "Biometric Device",
+    description: "Optional hardware integration.",
+    note: "Can support attendance workflows where needed.",
+    accent: "bg-[#eff6ff] text-[#2563eb]",
+  },
+  {
+    title: "Custom Development",
+    description: "Optional implementation work.",
+    note: "For org-specific enhancements or workflows.",
+    accent: "bg-[#f5f3ff] text-[#6d28d9]",
+  },
+];
 
-function getPlanTotals(plan: PricingPlan, employeeCount: number, term: BillingTerm) {
-  const monthlyTotal = plan.pricePerEmployee * employeeCount;
-  const preDiscountTotal = monthlyTotal * 12 * term.years;
-  const savings = (preDiscountTotal * term.savings) / 100;
-  const finalTotal = preDiscountTotal - savings;
-
-  return {
-    monthlyTotal,
-    preDiscountTotal,
-    savings,
-    finalTotal,
-  };
-}
-
-function PricingCard({
-  plan,
-  employeeCount,
-  term,
-}: {
-  plan: PricingPlan;
-  employeeCount: number;
-  term: BillingTerm;
-}) {
-  const totals = getPlanTotals(plan, employeeCount, term);
+function StatusChip({ state }: { state: FeatureState }) {
+  const meta = statusMeta[state];
 
   return (
-    <article
-      className={`soft-card relative flex h-full flex-col overflow-hidden p-6 ${
-        plan.featured ? "border-primary/35 shadow-pop" : ""
-      }`}
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${meta.className}`}
     >
-      {plan.featured ? (
-        <div className="-mt-1 mb-4 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white shadow-sm">
-          Recommended
-        </div>
-      ) : null}
+      {meta.icon}
+      {meta.label}
+    </span>
+  );
+}
 
-      <div className="flex items-start justify-between gap-3">
+function PlanCardView({ plan }: { plan: PlanCard }) {
+  return (
+    <article className="soft-card relative flex h-full flex-col overflow-hidden p-6 shadow-sm">
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="text-xs font-bold uppercase tracking-wider text-primary">{plan.name}</div>
-          <h3 className="mt-2 text-2xl font-bold text-ink">
-            ₹{formatCurrency(plan.pricePerEmployee)}
+          <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">{plan.name}</div>
+          <h3 className="mt-2 text-4xl font-black tracking-tight text-ink">
+            ₹{formatPrice(plan.price)}
           </h3>
           <p className="mt-1 text-sm text-ink-soft">/ employee / month</p>
         </div>
-        <div className={`grid h-10 w-10 place-items-center rounded-xl ${plan.accent}`}>
+
+        <div className={`grid h-11 w-11 place-items-center rounded-2xl ${plan.accent}`}>
           {plan.icon}
         </div>
       </div>
 
-      <p className="mt-3 text-sm text-ink-soft">{plan.blurb}</p>
+      <p className="mt-4 text-sm leading-7 text-ink-soft">{plan.summary}</p>
 
-      <div className="mt-4 rounded-2xl bg-surface p-4">
-        <div className="flex items-baseline justify-between gap-3">
-          <div className="text-sm font-medium text-ink-soft">Selected term total</div>
-          <div className="text-sm font-semibold text-ink">
-            {employeeCount} {employeeCount === 1 ? "employee" : "employees"}
-          </div>
-        </div>
-        <div className="mt-2 text-3xl font-bold text-ink">₹{formatCurrency(totals.finalTotal)}</div>
-        <p className="mt-1 text-sm text-ink-soft">
-          ₹{formatCurrency(totals.preDiscountTotal)} before savings for {term.label.toLowerCase()}
-        </p>
-      </div>
-
-      <div className="mt-4 rounded-2xl bg-[#ecfdf3] p-4">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-success">
-              You Save
-            </div>
-            <div className="mt-1 text-2xl font-bold text-success">{term.savings}%</div>
-          </div>
-          <div className="text-right">
-            <div className="text-xs font-medium text-ink-soft line-through">
-              ₹{formatCurrency(totals.preDiscountTotal)}
-            </div>
-            <div className="text-lg font-bold text-success">₹{formatCurrency(totals.savings)}</div>
-          </div>
-        </div>
-      </div>
-
-      <details className="group mt-4 rounded-2xl border border-border bg-white p-4">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-ink">
-          <span className="inline-flex items-center gap-2">
-            <Info className="h-4 w-4 text-primary" />
-            How is this calculated?
-          </span>
-          <span className="text-ink-soft transition-transform duration-200 group-open:rotate-180">
-            ▾
-          </span>
-        </summary>
-        <div className="mt-3 space-y-2 text-sm text-ink-soft">
-          <div>
-            Monthly base = ₹{plan.pricePerEmployee} x {employeeCount} employees
-          </div>
-          <div>Term base = monthly base x 12 months x {term.years} years</div>
-          <div>
-            Discount = {term.savings}% for {term.label.toLowerCase()}
-          </div>
-          <div>Final estimate = ₹{formatCurrency(totals.finalTotal)}</div>
-        </div>
-      </details>
-
-      <div className="mt-4 space-y-3">
-        <div className="text-xs font-bold uppercase tracking-wider text-primary">Usage limits</div>
-        <div className="flex flex-wrap gap-2">
-          {plan.usage.map((item) => (
-            <span
-              key={item}
-              className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-ink"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-5 space-y-3">
-        <div className="flex items-baseline justify-between gap-3">
-          <div className="text-xs font-bold uppercase tracking-wider text-primary">Features</div>
-          <div className="text-sm font-semibold text-primary">{plan.includedCount} included</div>
-        </div>
-        {plan.features.map((feature) => (
-          <div key={feature} className="flex items-start gap-3 rounded-xl bg-surface p-3">
-            <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
-            <span className="text-sm text-ink">{feature}</span>
+      <div className="mt-5 space-y-2">
+        {plan.bullets.map((bullet) => (
+          <div key={bullet} className="flex items-start gap-3 rounded-2xl bg-surface/45 p-3">
+            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <span className="text-sm leading-6 text-ink">{bullet}</span>
           </div>
         ))}
       </div>
 
-      <a href="/company/book-demo" className="btn-outline mt-6 w-full">
-        {plan.ctaLabel} <ArrowRight className="h-4 w-4" />
-      </a>
+      <div className="mt-6 rounded-2xl border border-border bg-white p-4 text-sm leading-7 text-ink-soft">
+        Built from the sheet so the plan scope stays clear before the feature comparison begins.
+      </div>
+    </article>
+  );
+}
+
+function FeatureGroupCard({ group }: { group: FeatureGroup }) {
+  return (
+    <section className="soft-card overflow-hidden p-5 sm:p-6">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">Feature section</div>
+          <h3 className="mt-2 text-2xl font-black tracking-tight text-ink">{group.title}</h3>
+          <p className="mt-2 max-w-3xl text-sm leading-7 text-ink-soft">{group.description}</p>
+        </div>
+
+        <div className="flex items-center gap-2 text-sm text-ink-soft">
+          <Info className="h-4 w-4 text-primary" />
+          {group.rows.length} features
+        </div>
+      </div>
+
+      <div className="mt-5 overflow-x-auto">
+        <div className="min-w-[820px] overflow-hidden rounded-[1.35rem] border border-border bg-white">
+          <div className="grid grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,1fr))] bg-surface/70">
+            <div className="px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-ink-soft">
+              Feature
+            </div>
+            <div className="px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-ink-soft">
+              Basic
+            </div>
+            <div className="px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-ink-soft">
+              Professional
+            </div>
+            <div className="px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-ink-soft">
+              Premium
+            </div>
+          </div>
+
+          <div className="divide-y divide-border">
+            {group.rows.map((feature) => (
+              <div
+                key={feature.label}
+                className="grid grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,1fr))] items-center"
+              >
+                <div className="px-4 py-4">
+                  <div className="text-sm font-semibold text-ink">{feature.label}</div>
+                  {feature.note ? (
+                    <div className="mt-1 text-xs leading-6 text-ink-soft">{feature.note}</div>
+                  ) : null}
+                </div>
+                <div className="px-4 py-4">
+                  <StatusChip state={feature.basic} />
+                </div>
+                <div className="px-4 py-4">
+                  <StatusChip state={feature.professional} />
+                </div>
+                <div className="px-4 py-4">
+                  <StatusChip state={feature.premium} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AddOnCardView({ card }: { card: AddOnCard }) {
+  return (
+    <article className="soft-card flex h-full flex-col p-5 sm:p-6">
+      <div className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${card.accent}`}>
+        <Coins className="h-5 w-5" />
+      </div>
+      <h3 className="mt-4 text-xl font-bold text-ink">{card.title}</h3>
+      <p className="mt-2 text-sm leading-7 text-ink-soft">{card.description}</p>
+      <div className="mt-4 rounded-2xl border border-border bg-white p-4">
+        <div className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Note</div>
+        <p className="mt-2 text-sm leading-7 text-ink">{card.note}</p>
+      </div>
     </article>
   );
 }
 
 export default function PricingPage() {
-  const [billingTermValue, setBillingTermValue] = useState<BillingTerm["value"]>("2");
-  const [employeeCount, setEmployeeCount] = useState(25);
-
-  const selectedTerm =
-    billingTerms.find((term) => term.value === billingTermValue) ?? billingTerms[1];
-
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Pricing | Altroz HRMS"
-        description="View flexible pricing for Altroz HRMS, compare plan totals by team size, and explore the right fit for HR, attendance, payroll, and workforce operations."
-        canonicalPath="/pricing"
+        title="Pricing Plans | Altroz HRMS"
+        description="Compare the Altroz HRMS pricing plans in detail. See Basic, Professional and Premium pricing, feature coverage, and optional add-ons."
+        canonicalPath={ROUTES.pricing}
       />
       <TopNavbar />
       <MainNavbar />
 
-      <main>
+      <main className="overflow-x-hidden">
         <section className="hero-gradient relative overflow-hidden">
-          <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
+          <div className="pointer-events-none absolute -left-20 top-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-16 top-12 h-72 w-72 rounded-full bg-success/10 blur-3xl" />
 
-          <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-center lg:py-16">
-            <div className="lg:col-span-6 fade-up">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
-                <Sparkles className="h-3.5 w-3.5" />
-                Pricing
-              </span>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
-                Transparent pricing for teams that want the calculator to do the heavy lifting
-              </h1>
-              <p className="mt-4 max-w-xl text-base text-ink-soft">
-                Pick a subscription term, choose your team size, and see live per-employee pricing
-                for every plan. The layout follows the calculator flow shown in the recording.
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a href="/company/book-demo" className="btn-primary">
-                  Request pricing
-                </a>
-                <a href="/company/contact-us" className="btn-outline">
-                  Talk to sales
-                </a>
+          <div className="container-x grid gap-10 py-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:py-18">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-primary shadow-sm">
+                <Sparkles className="h-4 w-4" />
+                Pricing sheet
               </div>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {[
-                  { label: "Setup", value: "guided rollout" },
-                  { label: "Billing", value: "per employee" },
-                  { label: "Support", value: "implementation help" },
-                ].map((item) => (
-                  <div key={item.label} className="soft-card p-4">
-                    <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-                      {item.label}
+              <h1 className="mt-5 max-w-3xl text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">
+                Altroz HRMS Pricing Plans
+              </h1>
+              <p className="mt-5 max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
+                Feature comparison for Basic (₹21), Professional (₹36), Premium (₹53) and add-ons,
+                rebuilt as a clear pricing page with plan cards and sectioned feature comparisons.
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link to={ROUTES.bookDemo} className="btn-primary">
+                  Request a demo
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link to={ROUTES.contact} className="btn-outline">
+                  Talk to sales
+                </Link>
+              </div>
+
+              <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                {pricingHighlights.map((item) => (
+                  <div key={item.title} className="soft-card p-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                      {item.icon}
+                      {item.title}
                     </div>
-                    <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
+                    <div className="mt-2 text-base font-bold text-ink">{item.value}</div>
+                    <p className="mt-1 text-sm leading-6 text-ink-soft">{item.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="relative mx-auto max-w-2xl">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/15 via-transparent to-success/15 blur-2xl" />
-                <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                  <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                    {pricingHighlights.map((item) => (
-                      <div key={item.title} className="h-full rounded-2xl bg-surface p-4">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                          {item.icon}
-                          {item.title}
-                        </div>
-                        <p className="mt-2 text-sm text-ink-soft">{item.desc}</p>
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/10 via-transparent to-success/10 blur-2xl" />
+              <div className="relative rounded-[2rem] border border-border bg-white p-5 shadow-float">
+                <div className="grid gap-4 md:grid-cols-3">
+                  {planCards.map((plan) => (
+                    <div key={plan.name} className="soft-card p-4">
+                      <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+                        {plan.name}
                       </div>
-                    ))}
+                      <div className="mt-2 text-2xl font-black text-ink">₹{formatPrice(plan.price)}</div>
+                      <div className="mt-1 text-sm text-ink-soft">per employee / month</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 rounded-[1.5rem] border border-border bg-surface/40 p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+                        Comparison focus
+                      </div>
+                      <h2 className="mt-2 text-2xl font-black tracking-tight text-ink">
+                        Section cards for each pricing feature group
+                      </h2>
+                    </div>
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-white">
+                      <Users className="h-6 w-6" />
+                    </div>
                   </div>
 
-                  <div className="mt-4 rounded-[1.5rem] border border-border bg-primary-soft/40 p-5">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                          Commercial model
-                        </div>
-                        <div className="mt-2 text-2xl font-bold text-ink">
-                          Built around the workforce size you actually need
-                        </div>
+                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                    {[
+                      "Employee management",
+                      "Attendance and leave",
+                      "Recruitment and documents",
+                      "Payroll, compliance and reports",
+                      "Assets, performance and administration",
+                      "Optional add-ons and integrations",
+                    ].map((item) => (
+                      <div key={item} className="flex items-start gap-3 rounded-2xl bg-white p-3">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 text-primary" />
+                        <span className="text-sm leading-6 text-ink">{item}</span>
                       </div>
-                      <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-white">
-                        <Crown className="h-6 w-6" />
-                      </div>
-                    </div>
-
-                    <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                      {[
-                        "Core HR starter bundle",
-                        "Attendance and payroll add-ons",
-                        "Integration support on request",
-                        "Scalable enterprise rollout",
-                      ].map((item) => (
-                        <div key={item} className="flex items-start gap-3 rounded-xl bg-white p-3">
-                          <CheckCircle2 className="mt-0.5 h-4 w-4 text-success" />
-                          <span className="text-sm text-ink">{item}</span>
-                        </div>
-                      ))}
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -393,236 +643,103 @@ export default function PricingPage() {
           </div>
         </section>
 
-        <section className="py-20">
+        <section className="py-14 sm:py-16 lg:py-20">
           <div className="container-x">
             <div className="max-w-3xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                Calculator
-              </span>
-              <h2 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">
-                Choose your billing term and team size
+              <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
+                Plan cards
+              </div>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
+                Three pricing plans, presented clearly
               </h2>
-              <p className="mt-3 text-ink-soft">
-                This calculator mirrors the reference flow: term selector, employee slider, quick
-                size chips, and then live pricing cards below.
+              <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
+                The plans below summarize the pricing sheet before the feature sections break the
+                coverage down module by module.
               </p>
             </div>
 
-            <div className="mt-10 grid gap-6 lg:grid-cols-12 lg:items-start">
-              <div className="soft-card flex flex-col p-6 lg:col-span-5">
-                <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                  <Users className="h-4 w-4" />
-                  Subscription duration
-                </div>
-
-                <div className="mt-4 flex justify-center">
-                  <Tabs
-                    value={billingTermValue}
-                    onValueChange={(value) => setBillingTermValue(value as BillingTerm["value"])}
-                  >
-                    <TabsList className="relative grid h-auto w-full max-w-md grid-cols-3 gap-1.5 rounded-2xl bg-surface p-1.5">
-                      {billingTerms.map((term) => (
-                        <div key={term.value} className="relative">
-                          <TabsTrigger
-                            value={term.value}
-                            className="relative w-full rounded-xl px-4 py-2.5 text-sm font-semibold data-[state=active]:bg-white data-[state=active]:text-ink data-[state=active]:shadow-sm"
-                          >
-                            {term.label}
-                          </TabsTrigger>
-                          {term.badge ? (
-                            <span className="absolute -right-2 -top-2 rounded-full bg-[#8b5cf6] px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
-                              {term.badge}
-                            </span>
-                          ) : null}
-                        </div>
-                      ))}
-                    </TabsList>
-                  </Tabs>
-                </div>
-
-                <p className="mt-3 text-center text-sm text-ink-soft">
-                  Choose your subscription duration
-                </p>
-
-                <div className="mt-6 rounded-[1.5rem] border border-border bg-white p-5 shadow-card">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-2 text-sm font-semibold text-ink">
-                      <Users className="h-4 w-4 text-primary" />
-                      How many employees do you have?
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="min-w-20 rounded-xl border-2 border-primary px-4 py-2 text-center text-lg font-bold text-primary">
-                        {employeeCount}
-                      </div>
-                      <span className="text-sm text-ink-soft">employees</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-6">
-                    <Slider
-                      value={[employeeCount]}
-                      min={1}
-                      max={500}
-                      step={1}
-                      onValueChange={(value) => {
-                        const nextValue = value[0];
-                        if (typeof nextValue === "number") {
-                          setEmployeeCount(nextValue);
-                        }
-                      }}
-                    />
-                    <div className="mt-2 flex justify-between px-1 text-[11px] font-medium text-ink-soft">
-                      <span>1</span>
-                      <span>50</span>
-                      <span>100</span>
-                      <span>250</span>
-                      <span>500+</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 grid grid-cols-2 gap-2 md:grid-cols-3">
-                    {employeePresets.map((preset) => (
-                      <button
-                        key={preset}
-                        type="button"
-                        onClick={() => setEmployeeCount(preset)}
-                        className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-                          employeeCount === preset
-                            ? "border-primary bg-primary text-white shadow-sm"
-                            : "border-border bg-white text-ink hover:border-primary/35 hover:bg-primary-soft"
-                        }`}
-                      >
-                        {preset} employees
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="mt-5 rounded-2xl border border-primary/15 bg-primary-soft/70 p-4 text-center text-sm text-primary">
-                    Prices update live based on your team size. Larger teams can qualify for volume
-                    discounts.
-                  </div>
-                </div>
-
-                <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                  {[
-                    { label: "Selected term", value: selectedTerm.label },
-                    {
-                      label: "Estimated discount",
-                      value: selectedTerm.savings ? `${selectedTerm.savings}%` : "No discount",
-                    },
-                  ].map((item) => (
-                    <div key={item.label} className="soft-card p-4">
-                      <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-                        {item.label}
-                      </div>
-                      <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="lg:col-span-7">
-                <div className="grid items-stretch gap-5 md:grid-cols-2 xl:grid-cols-3">
-                  {pricingPlans.map((plan) => (
-                    <PricingCard
-                      key={plan.name}
-                      plan={plan}
-                      employeeCount={employeeCount}
-                      term={selectedTerm}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-surface py-20">
-          <div className="container-x">
-            <div className="grid gap-6 lg:grid-cols-4">
-              {[
-                {
-                  title: "No Credit Card",
-                  desc: "Start your trial without payment details.",
-                },
-                {
-                  title: "Cancel Anytime",
-                  desc: "Keep the commitment flexible while you evaluate.",
-                },
-                {
-                  title: "7-Day Free Trial",
-                  desc: "Let your team test the features before purchase.",
-                },
-                {
-                  title: "Free Onboarding",
-                  desc: "Reduce rollout effort with guided setup support.",
-                },
-              ].map((item) => (
-                <div key={item.title} className="soft-card p-6 text-center">
-                  <div className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary">
-                    <BadgeCheck className="h-6 w-6" />
-                  </div>
-                  <h3 className="mt-4 text-xl font-bold text-ink">{item.title}</h3>
-                  <p className="mt-2 text-sm text-ink-soft">{item.desc}</p>
-                </div>
+            <div className="mt-10 grid gap-5 lg:grid-cols-3">
+              {planCards.map((plan) => (
+                <PlanCardView key={plan.name} plan={plan} />
               ))}
             </div>
           </div>
         </section>
 
-        <section className="py-20">
-          <div className="container-x grid gap-6 lg:grid-cols-12">
-            <div className="soft-card p-6 lg:col-span-5">
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                Pricing notes
+        <section className="bg-surface py-14 sm:py-16 lg:py-20">
+          <div className="container-x">
+            <div className="max-w-3xl">
+              <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
+                Feature comparison
               </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">What shapes the final quote</h3>
-              <div className="mt-6 space-y-3">
-                {[
-                  "Number of active employees",
-                  "Modules you want to enable",
-                  "Implementation and migration support",
-                  "Integration and custom workflow needs",
-                ].map((item) => (
-                  <div key={item} className="flex items-start gap-3 rounded-xl bg-surface p-3">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 text-primary" />
-                    <span className="text-sm text-ink">{item}</span>
-                  </div>
-                ))}
-              </div>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
+                Section cards for the pricing features
+              </h2>
+              <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
+                Every major module from the sheet is grouped into a dedicated card so the plan
+                differences are easy to scan, compare and present on desktop or mobile.
+              </p>
             </div>
 
-            <div className="soft-card p-6 lg:col-span-7">
-              <div className="text-xs font-bold uppercase tracking-wider text-primary">FAQ</div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">Common questions about pricing</h3>
-              <div className="mt-6 space-y-4">
-                {faqs.map((faq) => (
-                  <div key={faq.q} className="rounded-2xl border border-border p-4">
-                    <div className="text-base font-bold text-ink">{faq.q}</div>
-                    <p className="mt-2 text-sm text-ink-soft">{faq.a}</p>
-                  </div>
-                ))}
-              </div>
+            <div className="mt-10 space-y-5">
+              {featureGroups.map((group) => (
+                <FeatureGroupCard key={group.title} group={group} />
+              ))}
             </div>
           </div>
         </section>
 
-        <section className="hero-gradient py-20">
-          <div className="container-x text-center">
-            <h2 className="text-3xl font-bold text-ink sm:text-4xl">
-              Start free today, then upgrade only when you are ready
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-ink-soft">
-              Try the features for 7 days, compare the calculator results across terms, and move
-              into a plan once the numbers make sense for your team.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a href="/company/book-demo" className="btn-primary">
-                Start Free Trial <ArrowRight className="h-4 w-4" />
-              </a>
-              <a href="/company/contact-us" className="btn-outline">
-                Talk to Sales
-              </a>
+        <section className="py-14 sm:py-16 lg:py-20">
+          <div className="container-x">
+            <div className="max-w-3xl">
+              <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
+                Optional add-ons
+              </div>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
+                Add-on cards for the extra items in the sheet
+              </h2>
+              <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
+                These cards capture the optional items mentioned in the source sheet, including the
+                geo tracking price point and the integration and development extras.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {addOnCards.map((card) => (
+                <AddOnCardView key={card.title} card={card} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="hero-gradient py-14 sm:py-16 lg:py-20">
+          <div className="container-x">
+            <div className="rounded-[2rem] border border-border bg-white p-8 shadow-float md:p-10">
+              <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
+                    Next step
+                  </div>
+                  <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
+                    Want this turned into a live pricing section or page block?
+                  </h2>
+                  <p className="mt-4 max-w-3xl text-base leading-7 text-ink-soft">
+                    The page now reflects the pricing sheet with clean cards and sectioned feature
+                    groups. If you want, I can also turn the add-ons into a separate comparison
+                    table or adjust the layout to match a specific visual reference.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-3 lg:justify-end">
+                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                    Request a demo
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link to={ROUTES.contact} className="btn-outline">
+                    Contact us
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </section>

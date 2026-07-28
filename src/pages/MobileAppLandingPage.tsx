@@ -277,7 +277,7 @@ export default function MobileAppLandingPage() {
         {
           "@type": "ListItem",
           position: 2,
-          name: "Mobile App Landing",
+          name: "Mobile App",
           item: appUrl || new URL(ROUTES.mobileAppLanding, "https://www.altrozhr.com").href,
         },
       ],
