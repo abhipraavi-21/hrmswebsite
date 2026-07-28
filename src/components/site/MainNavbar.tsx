@@ -165,7 +165,9 @@ export default function MainNavbar() {
                               } hover:-translate-y-0.5 hover:bg-white/70 hover:text-primary`}
                             >
                               <span className="inline-flex items-center gap-1.5 transition-transform duration-300 ease-out group-hover:translate-x-0.5">
-                                <span>{link.label}</span>
+                                <span className="text-sm font-semibold tracking-tight text-ink">
+                                  {link.label}
+                                </span>
                                 <ArrowRight
                                   aria-hidden="true"
                                   className="h-4 w-4 -translate-x-0.5 opacity-0 transition-[transform,opacity] duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"
