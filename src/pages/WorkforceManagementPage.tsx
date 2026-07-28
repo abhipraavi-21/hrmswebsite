@@ -557,8 +557,8 @@ export default function WorkforceManagementPage() {
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-          <div className="container-x grid gap-10 py-12 lg:grid-cols-12 lg:items-start lg:py-16">
-            <div className="lg:col-span-6">
+          <div className="container-x py-12 lg:py-16">
+            <div className="max-w-4xl">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <Sparkles className="h-4 w-4" />
                 Complete Workforce Management Platform
@@ -575,45 +575,48 @@ export default function WorkforceManagementPage() {
                 Altroz HR gives you complete visibility and control over your workforce, without
                 the manual paperwork.
               </p>
-
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a href="/company/book-demo" className="btn-primary">
-                  Book Free Demo
-                </a>
-                <a href="/company/contact-us" className="btn-outline">
-                  Request Demo
-                </a>
-              </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {heroHighlights.map((item) => (
-                  <div key={item.title} className="soft-card p-4">
-                    <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-                      {item.title}
-                    </div>
-                    <div className="mt-1 text-sm leading-6 text-ink-soft">{item.description}</div>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="soft-card overflow-hidden p-4 sm:p-5">
-                <div className="overflow-hidden rounded-[1.5rem] border border-border bg-white">
-                  <img
-                    src={modelScreenshots.workforceDashboard}
-                    alt="Workforce management dashboard preview"
+            <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-start">
+              <div className="lg:col-span-6">
+                <div className="flex flex-wrap gap-3">
+                  <a href="/company/book-demo" className="btn-primary">
+                    Book Free Demo
+                  </a>
+                  <a href="/company/contact-us" className="btn-outline">
+                    Request Demo
+                  </a>
+                </div>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                  {heroHighlights.map((item) => (
+                    <div key={item.title} className="soft-card p-4">
+                      <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
+                        {item.title}
+                      </div>
+                      <div className="mt-1 text-sm leading-6 text-ink-soft">{item.description}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="lg:col-span-6">
+                <div className="soft-card overflow-hidden p-4 sm:p-5">
+                  <div className="overflow-hidden rounded-[1.5rem] border border-border bg-white">
+                    <img
+                      src={modelScreenshots.workforceDashboard}
+                      alt="Workforce management dashboard preview"
                     className="block h-auto w-full bg-white object-contain"
                     loading="eager"
                     referrerPolicy="no-referrer"
                   />
                 </div>
 
-                <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                  {[
-                    { label: "Plan", value: "smarter shifts" },
-                    { label: "Track", value: "real-time attendance" },
-                    { label: "Approve", value: "with less manual work" },
+              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                {[
+                  { label: "Plan", value: "smarter shifts" },
+                  { label: "Track", value: "real-time attendance" },
+                  { label: "Approve", value: "with less manual work" },
                   ].map((item) => (
                     <div key={item.label} className="soft-card p-4 text-center">
                       <div className="text-xs font-semibold uppercase tracking-wider text-primary">
@@ -625,6 +628,7 @@ export default function WorkforceManagementPage() {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </section>
 
