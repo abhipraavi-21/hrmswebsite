@@ -1,6 +1,7 @@
 export const ROUTES = {
   home: "/",
   hrmsHome: "/hrms",
+  roiCalculator: "/hrms/roi-calculator",
   coreHR: "/products/core-hr",
   attendance: "/products/attendance",
   attendanceManagement: "/products/attendance-management",
@@ -55,6 +56,7 @@ export const ROUTES = {
 export const ROUTE_ALIASES = {
   "/about-us": ROUTES.about,
   "/hrms-home": ROUTES.hrmsHome,
+  "/roi-calculator": ROUTES.roiCalculator,
   "/products/attendance": ROUTES.attendanceManagement,
   "/attendance-management": ROUTES.attendanceManagement,
   "/attendance": ROUTES.attendanceManagement,

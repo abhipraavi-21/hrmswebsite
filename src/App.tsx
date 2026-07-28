@@ -34,6 +34,7 @@ const RecruitmentPage = lazy(() => import("./pages/RecruitmentPage"));
 const DocumentGenerationPage = lazy(() => import("./pages/DocumentGenerationPage"));
 const ExitManagementPage = lazy(() => import("./pages/ExitManagementPage"));
 const EmployeeSelfServicePage = lazy(() => import("./pages/EmployeeSelfServicePage"));
+const RoiCalculatorPage = lazy(() => import("./pages/RoiCalculatorPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
 const BulkEmailPage = lazy(() => import("./pages/BulkEmailPage"));
 const BulkEmailCampaignsPage = lazy(() => import("./pages/bulk-email/BulkEmailCampaignsPage"));
@@ -167,6 +168,7 @@ function AppShell() {
           <Route path={ROUTES.documentGeneration} element={<DocumentGenerationPage />} />
           <Route path={ROUTES.exitManagement} element={<ExitManagementPage />} />
           <Route path={ROUTES.employeeSelfService} element={<EmployeeSelfServicePage />} />
+          <Route path={ROUTES.roiCalculator} element={<RoiCalculatorPage />} />
           <Route path={ROUTES.pricing} element={<PricingPage />} />
           <Route path={ROUTES.bulkEmail} element={<BulkEmailPage />} />
           <Route path={ROUTES.bulkEmailCampaigns} element={<BulkEmailCampaignsPage />} />

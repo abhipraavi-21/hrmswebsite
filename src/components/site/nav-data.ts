@@ -90,6 +90,7 @@ export const hrmsLinks = [
   { label: "Employee Management", desc: "Profiles & documents", href: ROUTES.coreHR },
   { label: "Reports", desc: "Insights & exports", href: ROUTES.reports },
   { label: "Security", desc: "Roles & access controls", href: ROUTES.security },
+  { label: "ROI Calculator", desc: "Estimate HR savings", href: ROUTES.roiCalculator },
 ];
 
 export const emailLinks = [
