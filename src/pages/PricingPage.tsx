@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
+import PricingRoiCalculator from "@/components/site/PricingRoiCalculator";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import { ROUTES } from "@/routes/routeConfig.js";
@@ -721,6 +722,8 @@ export default function PricingPage() {
           </div>
         </section>
 
+        <PricingRoiCalculator />
+
         <section className="hero-gradient py-14 sm:py-16 lg:py-20">
           <div className="container-x">
             <div className="rounded-[2rem] border border-border bg-white p-8 shadow-float md:p-10">
@@ -730,12 +733,12 @@ export default function PricingPage() {
                     Next step
                   </div>
                   <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                    Want this turned into a live pricing section or page block?
+                    Want a tailored walkthrough of your pricing and ROI numbers?
                   </h2>
                   <p className="mt-4 max-w-3xl text-base leading-7 text-ink-soft">
-                    The page now reflects the pricing sheet with clean cards and sectioned feature
-                    groups. If you want, I can also turn the add-ons into a separate comparison
-                    table or adjust the layout to match a specific visual reference.
+                    The page now includes the pricing table, add-ons and embedded ROI calculator.
+                    If you want, we can refine the assumptions, adjust the layout or shape the
+                    calculator around your sales process.
                   </p>
                 </div>
 
