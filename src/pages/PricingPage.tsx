@@ -669,7 +669,7 @@ export default function PricingPage() {
 
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="container-x">
-            <div className="max-w-3xl">
+            <div className="mx-auto max-w-3xl text-center">
               <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
                 Plan cards
               </div>
