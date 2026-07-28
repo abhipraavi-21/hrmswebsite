@@ -488,7 +488,7 @@ function SectionHeading({
       variant="fade-up"
       className={`max-w-4xl ${center ? "mx-auto text-center" : ""}`.trim()}
     >
-      <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-primary shadow-sm">
+      <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold uppercase tracking-normal text-primary shadow-sm">
         {eyebrow}
       </span>
       <h2 className="mt-3 text-3xl font-bold leading-tight text-ink sm:text-4xl">{title}</h2>
