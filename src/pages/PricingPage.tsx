@@ -97,7 +97,7 @@ const statusMeta: Record<
   addon: {
     label: "Add On",
     className: "border-emerald-200 bg-emerald-50 text-emerald-700",
-    icon: <Coins className="h-4 w-4" />,
+    icon: <CheckCircle2 className="h-4 w-4" />,
   },
 };
 
