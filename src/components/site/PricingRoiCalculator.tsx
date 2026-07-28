@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Banknote,
   BriefcaseBusiness,
-  Calculator,
   ChartColumn,
   CheckCircle2,
   Clock3,
@@ -439,27 +438,7 @@ export default function PricingRoiCalculator() {
 
           <div className="xl:sticky xl:top-24 xl:self-start">
             <div className="soft-card p-6 shadow-float">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-[0.28em] text-primary">Live results</div>
-                  <h3 className="mt-2 text-2xl font-black tracking-tight text-ink">Estimated savings summary</h3>
-                </div>
-                <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-white">
-                  <Calculator className="h-6 w-6" />
-                </div>
-              </div>
-
-              <div className="mt-5 rounded-[1.5rem] bg-gradient-to-br from-primary to-[#2d5bff] p-6 text-white">
-                <div className="text-xs font-bold uppercase tracking-[0.28em] text-white/80">
-                  Estimated net Year 1 savings
-                </div>
-                <div className="mt-3 text-4xl font-black tracking-tight">{formatCompactINR(result.netYearOneSavings)}</div>
-                <div className="mt-2 text-sm leading-6 text-white/85">
-                  {formatCompactINR(result.yearOneBenefit)} benefit - {formatCompactINR(result.totalYearOneCost)} Year 1 cost
-                </div>
-              </div>
-
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <MetricCard label="ROI" value={`${Math.round(result.roiPercentage)}%`} icon={<Percent className="h-5 w-5" />} />
                 <MetricCard label="Monthly hours saved" value={`${result.monthlyHoursSaved.toFixed(0)} hrs`} icon={<Clock3 className="h-5 w-5" />} />
                 <MetricCard label="Working days saved" value={`${result.monthlyWorkingDaysSaved.toFixed(1)} days`} icon={<TrendingUp className="h-5 w-5" />} />
