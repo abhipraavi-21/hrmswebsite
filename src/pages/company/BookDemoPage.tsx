@@ -569,7 +569,7 @@ export default function BookDemoPage() {
           <div className="site-container">
             <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-6">
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-primary shadow-sm">
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                   Trusted Cloud HR Platform
                 </span>
                 <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
