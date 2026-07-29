@@ -135,7 +135,7 @@ export default function BulkEmailSolutionPage({
   queueItems,
 }: SolutionPageData) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title={pageTitle}
         description={lead}

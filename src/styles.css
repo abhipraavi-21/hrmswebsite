@@ -494,6 +494,14 @@
 }
 
 @layer components {
+  .bulk-email-theme [class*="text-[#b45309]"] {
+    color: #ea580c !important;
+  }
+
+  .bulk-email-theme [class*="border-[#b45309]"] {
+    border-color: #ea580c !important;
+  }
+
   @media (max-width: 576px) {
     .site-container,
     .container-x {

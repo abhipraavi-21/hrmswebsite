@@ -79,10 +79,7 @@ function AnimatedTitle({ as = "h2", className, children }: AnimatedTitleProps) {
       {words.map((word, index) => (
         <span
           key={`${word}-${index}`}
-          className={cn(
-            "inline-block",
-            index % 2 === 0 ? "text-[#1d4ed8]" : "text-[#b45309]",
-          )}
+          className="inline-block text-[#1d4ed8]"
           style={{
             animation: "bulkEmailWordRise 0.55s ease-out both",
             animationDelay: `${index * 70}ms`,
@@ -518,7 +515,7 @@ const faqs: FaqItem[] = [
 
 export default function BulkEmailPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="Bulk Email Software for Business Campaigns | Altroz"
         description="Altroz Bulk Email helps businesses send, schedule and track email campaigns from one dashboard. Book a free demo to see it in action."
@@ -545,6 +542,33 @@ export default function BulkEmailPage() {
             opacity: 1 !important;
           }
         }
+
+        .bulk-email-orange-btn {
+          background: #ea580c;
+          color: #ffffff;
+          box-shadow: 0 8px 18px rgba(234, 88, 12, 0.22);
+          transition:
+            transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+            background-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .bulk-email-orange-btn:hover {
+          background: #c2410c;
+          transform: translateY(-2px);
+          box-shadow: 0 12px 26px rgba(234, 88, 12, 0.3);
+        }
+
+        .bulk-email-orange-btn:focus-visible {
+          outline: none;
+          box-shadow:
+            0 12px 26px rgba(234, 88, 12, 0.3),
+            0 0 0 3px rgba(234, 88, 12, 0.18);
+        }
+
+        .bulk-email-campaign-title {
+          color: #ea580c !important;
+        }
       `}</style>
       <BulkEmailNavbar />
 
@@ -555,7 +579,7 @@ export default function BulkEmailPage() {
 
           <div className="site-container">
             <ScrollReveal variant="fade-up" className="mx-auto max-w-4xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#1d4ed8]/20 bg-gradient-to-r from-white via-[#eff6ff] to-[#fffbf4] px-4 py-2 text-xs font-extrabold tracking-normal text-[#1d4ed8] shadow-sm">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#d97706]/20 bg-gradient-to-r from-white via-[#fff7ed] to-[#eff6ff] px-4 py-2 text-xs font-extrabold tracking-normal text-[#b45309] shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Trusted Business Email Broadcasting Platform
               </div>
@@ -578,7 +602,7 @@ export default function BulkEmailPage() {
                 </p>
 
               <div className="button-group mt-6 justify-center lg:justify-start">
-                <Link to={ROUTES.bookDemo} className="btn-primary">
+                <Link to={ROUTES.bookDemo} className="bulk-email-orange-btn inline-flex items-center gap-2 rounded-lg px-5 py-3 font-semibold">
                   Book Free Demo
                 </Link>
                 <a href="#features" className="btn-outline">
@@ -967,7 +991,7 @@ export default function BulkEmailPage() {
                 </div>
 
                 <div className="button-group mt-6">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.bookDemo} className="bulk-email-orange-btn inline-flex items-center gap-2 rounded-lg px-5 py-3 font-semibold">
                     Book Free Demo
                   </Link>
                   <Link to={ROUTES.contact} className="btn-ghost">
@@ -1061,7 +1085,7 @@ function BulkEmailHeroMock() {
 
         <div className="grid gap-4 p-5">
           <div className="rounded-[1.5rem] bg-gradient-to-br from-primary/5 via-white to-[#d97706]/5 p-5">
-            <div className="text-xs font-bold uppercase tracking-[0.22em] text-[#b45309]">
+            <div className="bulk-email-campaign-title text-xs font-bold uppercase tracking-[0.22em]">
               Campaign Summary
             </div>
             <div className="mt-2 text-2xl font-bold tracking-tight text-ink">

@@ -1,4 +1,5 @@
 import {
+  ArrowRight,
   BadgeCheck,
   BarChart3,
   CheckCircle2,
@@ -12,9 +13,11 @@ import {
   UserRound,
   Wallet,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import Footer from "@/components/site/Footer";
 import TopNavbar from "@/components/site/TopNavbar";
 import MainNavbar from "@/components/site/MainNavbar";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 const heroMetrics = [
   { label: "Salary Processing", value: "Accurate payroll every month" },
@@ -208,7 +211,7 @@ export default function PayrollPage() {
       <TopNavbar />
       <MainNavbar />
 
-      <main>
+      <main className="pb-28 md:pb-32">
         <section className="hero-gradient relative overflow-hidden">
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
@@ -555,31 +558,21 @@ export default function PayrollPage() {
               ))}
             </div>
 
-            <div className="mt-8 soft-card relative overflow-hidden p-8 md:p-10">
-              <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/10 blur-3xl" />
-              <div className="relative grid gap-6 lg:grid-cols-12 lg:items-center">
-                <div className="lg:col-span-8">
-                  <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                    GET STARTED
-                  </div>
-                  <h3 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">
-                    Simplify Payroll Management with Altroz HR
+            <div className="fixed bottom-6 left-1/2 z-50 w-fit max-w-[calc(100%-12px)] -translate-x-1/2 md:bottom-8">
+              <div className="relative overflow-hidden rounded-[1.25rem] border border-border bg-gradient-to-r from-[#eff6ff] via-white to-[#eefdf3] px-2.5 py-2 shadow-float backdrop-blur-md md:px-3 md:py-2.5">
+                <div className="pointer-events-none absolute -left-6 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl" />
+                <div className="pointer-events-none absolute -right-6 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-success/15 blur-3xl" />
+                <div className="relative flex flex-wrap items-center gap-x-1.5 gap-y-1 md:gap-x-2">
+                  <h3 className="text-base font-bold tracking-tight text-ink sm:text-lg">
+                    Process Payroll with Confidence.
                   </h3>
-                  <p className="mt-3 max-w-2xl text-ink-soft">
-                    Automate salary processing, statutory compliance, payroll reports, employee
-                    self-service, and salary disbursement with one powerful Payroll Management
-                    Software. Book a free demo and see how Altroz HR simplifies payroll for your
-                    business.
-                  </p>
-                </div>
-
-                <div className="lg:col-span-4 flex flex-wrap gap-3 lg:justify-end">
-                  <button type="button" className="btn-success">
+                  <ArrowRight className="h-3.5 w-3.5 shrink-0 text-primary md:h-4 md:w-4" />
+                  <Link
+                    to={ROUTES.bookDemo}
+                    className="btn-primary whitespace-nowrap px-3 py-1 text-xs md:px-3.5 md:py-1.5"
+                  >
                     Book Free Demo
-                  </button>
-                  <button type="button" className="btn-primary">
-                    Start Free Trial
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -413,7 +413,7 @@ export default function LeaveManagementPage() {
       <TopNavbar />
       <MainNavbar />
 
-      <main>
+      <main className="pb-28 md:pb-32">
         <section className="hero-gradient relative overflow-hidden !pt-0 !pb-10">
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
@@ -728,28 +728,20 @@ export default function LeaveManagementPage() {
               </Accordion>
             </div>
 
-            <div className="mt-10 soft-card relative overflow-hidden p-8 md:p-10">
-              <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/10 blur-3xl" />
-              <div className="relative grid gap-6 lg:grid-cols-12 lg:items-center">
-                <div className="lg:col-span-8">
-                  <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                    Ready to explore
-                  </div>
-                  <h2 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">
-                    Put a cleaner leave process under your HR operations
+            <div className="fixed bottom-6 left-1/2 z-50 w-fit max-w-[calc(100%-12px)] -translate-x-1/2 md:bottom-8">
+              <div className="relative overflow-hidden rounded-[1.25rem] border border-border bg-gradient-to-r from-[#eff6ff] via-white to-[#eefdf3] px-2.5 py-2 shadow-float backdrop-blur-md md:px-3 md:py-2.5">
+                <div className="pointer-events-none absolute -left-6 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl" />
+                <div className="pointer-events-none absolute -right-6 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-success/15 blur-3xl" />
+                <div className="relative flex flex-wrap items-center gap-x-1.5 gap-y-1 md:gap-x-2">
+                  <h2 className="text-base font-bold tracking-tight text-ink sm:text-lg">
+                    Simplify Every Leave Request.
                   </h2>
-                  <p className="mt-3 max-w-2xl text-ink-soft">
-                    This page keeps the reference page's product story and turns it into a clear,
-                    structured implementation for your app.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
-                  <a href="#workflow" className="btn-outline">
-                    Review workflow
-                  </a>
-                  <Link to={ROUTES.contact} className="btn-primary">
-                    Contact sales
+                  <ArrowRight className="h-3.5 w-3.5 shrink-0 text-primary md:h-4 md:w-4" />
+                  <Link
+                    to={ROUTES.bookDemo}
+                    className="btn-primary whitespace-nowrap px-3 py-1 text-xs md:px-3.5 md:py-1.5"
+                  >
+                    Book Free Demo
                   </Link>
                 </div>
               </div>

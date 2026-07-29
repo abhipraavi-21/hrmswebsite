@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+﻿import { useMemo, useState, type ReactNode } from "react";
 import {
   ArrowRight,
   BadgeCheck,
@@ -12,10 +12,14 @@ import {
   Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
+import { cn } from "@/lib/utils";
 import { ROUTES } from "@/routes/routeConfig.js";
 
 type FeatureState = "included" | "notIncluded" | "limited" | "optional" | "addon";
@@ -69,6 +73,18 @@ const formatPrice = (value: number) =>
   new Intl.NumberFormat("en-IN", {
     maximumFractionDigits: 0,
   }).format(value);
+
+const calculatorTicks = [0, 500, 1000, 2000, 3000];
+const calculatorMin = 0;
+const calculatorMax = 3000;
+
+const clampValue = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+
+const normalizeEmployeeCount = (value: number) =>
+  clampValue(Number.isFinite(value) ? Math.round(value) : calculatorMin, calculatorMin, calculatorMax);
+
+const getRecommendedPlan = (employeeCount: number) =>
+  employeeCount < 75 ? "Basic" : employeeCount < 250 ? "Professional" : "Premium";
 
 const statusMeta: Record<
   FeatureState,
@@ -445,16 +461,24 @@ function StatusChip({ state }: { state: FeatureState }) {
   );
 }
 
-function PlanCardView({ plan }: { plan: PlanCard }) {
+function PlanCardView({
+  plan,
+  employeeCount,
+}: {
+  plan: PlanCard;
+  employeeCount: number;
+}) {
+  const monthlyTotal = plan.price * employeeCount;
+
   return (
     <article className="soft-card relative flex h-full min-h-[420px] flex-col overflow-hidden p-6 shadow-sm">
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">{plan.name}</div>
           <h3 className="mt-2 text-4xl font-black tracking-tight text-ink">
-            ₹{formatPrice(plan.price)}
+            ₹{formatPrice(monthlyTotal)}
           </h3>
-          <p className="mt-1 text-sm text-ink-soft">/ employee / month</p>
+          <p className="mt-1 text-sm text-ink-soft">for {employeeCount} employees / month</p>
         </div>
 
         <div className={`grid h-11 w-11 place-items-center rounded-2xl ${plan.accent}`}>
@@ -561,7 +585,175 @@ function AddOnCardView({ card }: { card: AddOnCard }) {
   );
 }
 
+function PricingCalculatorSection({
+  employeeCount,
+  onEmployeeCountChange,
+}: {
+  employeeCount: number;
+  onEmployeeCountChange: (nextValue: number) => void;
+}) {
+  const recommendedPlan = getRecommendedPlan(employeeCount);
+  const planTotals = useMemo(
+    () =>
+      planCards.map((plan) => ({
+        ...plan,
+        total: plan.price * employeeCount,
+      })),
+    [employeeCount],
+  );
+
+  const handleEmployeeChange = (nextValue: number) => {
+    onEmployeeCountChange(normalizeEmployeeCount(nextValue));
+  };
+
+  return (
+    <section className="py-14 sm:py-16 lg:py-20">
+      <div className="container-x">
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-primary shadow-sm">
+            <Sparkles className="h-3.5 w-3.5" />
+            Instant estimate
+          </div>
+          <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-4xl">
+            Estimate pricing by team size
+          </h2>
+          <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
+            Slide the employee count to see how Basic, Professional and Premium scale on your
+            pricing page using the same plan prices from Altroz HRMS.
+          </p>
+        </div>
+
+        <div className="mt-10 rounded-[2rem] border border-primary/15 bg-white p-4 shadow-float sm:p-6">
+          <div className="rounded-[1.65rem] border border-primary/15 bg-gradient-to-br from-[#eff6ff] via-white to-[#f8fbff] p-5 sm:p-6">
+            <div className="grid gap-5 lg:grid-cols-[auto_1fr_auto] lg:items-center">
+              <div className="hidden rounded-2xl border border-primary/20 bg-white px-4 py-3 text-sm font-semibold text-ink-soft shadow-sm lg:inline-flex lg:items-center lg:gap-2">
+                Slide
+                <ArrowRight className="h-4 w-4 text-primary" />
+              </div>
+
+              <div className="space-y-5">
+                <div className="flex flex-col items-center justify-center gap-3 text-center sm:flex-row sm:flex-wrap">
+                  <span className="text-lg font-medium text-ink-soft sm:text-2xl">
+                    Get instant estimate for
+                  </span>
+                  <Input
+                    type="number"
+                    min={calculatorMin}
+                    max={calculatorMax}
+                    inputMode="numeric"
+                    value={Number.isFinite(employeeCount) ? employeeCount : calculatorMin}
+                    onChange={(event) =>
+                      handleEmployeeChange(Number.parseInt(event.currentTarget.value || "0", 10))
+                    }
+                    className="h-12 w-28 border-primary/20 bg-white text-center text-2xl font-black text-ink shadow-sm focus-visible:ring-primary"
+                  />
+                  <span className="text-lg font-medium text-ink-soft sm:text-2xl">employees</span>
+                </div>
+
+                <div className="mx-auto w-full max-w-5xl">
+                  <Slider
+                    value={[employeeCount]}
+                    min={calculatorMin}
+                    max={calculatorMax}
+                    step={1}
+                    onValueChange={([value]) => handleEmployeeChange(value)}
+                    className="[&_[role=slider]]:border-primary [&_[role=slider]]:bg-white [&_[role=slider]]:shadow-sm"
+                  />
+                  <div className="mt-3 grid grid-cols-5 text-xs font-semibold text-primary/80">
+                    {calculatorTicks.map((tick) => (
+                      <span
+                        key={tick}
+                        className={cn(
+                          "text-left",
+                          tick === 3000 ? "text-right" : tick === 1000 || tick === 2000 ? "text-center" : "",
+                        )}
+                      >
+                        {tick === 3000 ? "3000+" : tick}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <Badge className="justify-self-center border-primary/20 bg-primary text-white shadow-sm lg:justify-self-end">
+                Recommended: {recommendedPlan}
+              </Badge>
+            </div>
+          </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-3 lg:gap-5">
+          {planTotals.map((plan) => {
+            const isRecommended = plan.name === recommendedPlan;
+
+              return (
+                <article
+                  key={plan.name}
+                  className={cn(
+                    "relative flex h-full min-h-[270px] flex-col rounded-[1.5rem] border p-5 shadow-sm transition-all lg:p-6",
+                    isRecommended
+                      ? "border-primary bg-primary-soft/40 ring-1 ring-primary/10"
+                      : "border-border bg-white",
+                  )}
+                >
+                  {isRecommended ? (
+                    <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 border-primary/20 bg-primary text-white shadow-sm">
+                      Recommended
+                    </Badge>
+                  ) : null}
+
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+                        {plan.name}
+                      </div>
+                      <div className="mt-2 text-4xl font-black tracking-tight text-ink">
+                        ₹{formatPrice(plan.price)}
+                      </div>
+                      <div className="mt-1 text-sm text-ink-soft">per employee / month</div>
+                    </div>
+
+                    <div className={`grid h-11 w-11 place-items-center rounded-2xl ${plan.accent}`}>
+                      {plan.icon}
+                    </div>
+                  </div>
+
+                  <div className="mt-5 border-t border-border pt-4 text-sm leading-6 text-ink-soft">
+                    <div className="flex items-center justify-between gap-3 py-1">
+                      <span>Rate / employee</span>
+                      <span className="font-semibold text-ink">₹{formatPrice(plan.price)}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-3 py-1">
+                      <span>Employees</span>
+                      <span className="font-semibold text-ink">{employeeCount}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-3 py-1">
+                      <span>Estimated total</span>
+                      <span className="font-semibold text-ink">₹{formatPrice(plan.total)}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-3 py-1">
+                      <span>Best for</span>
+                      <span className="font-semibold text-ink">
+                        {plan.name === "Basic"
+                          ? "Smaller teams"
+                          : plan.name === "Professional"
+                            ? "Growing teams"
+                            : "Larger rollouts"}
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function PricingPage() {
+  const [employeeCount, setEmployeeCount] = useState(100);
+
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
@@ -577,22 +769,22 @@ export default function PricingPage() {
           <div className="pointer-events-none absolute -left-20 top-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
           <div className="pointer-events-none absolute -right-16 top-12 h-72 w-72 rounded-full bg-success/10 blur-3xl" />
 
-          <div className="container-x grid gap-10 py-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:py-18">
+          <div className="container-x grid gap-10 py-5 sm:py-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:py-8">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <Sparkles className="h-4 w-4" />
                 Pricing sheet
               </div>
 
-              <h1 className="mt-5 max-w-3xl text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">
+              <h1 className="mt-3 max-w-3xl text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">
                 Altroz HRMS Pricing Plans
               </h1>
-              <p className="mt-5 max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
+              <p className="mt-4 max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
                 Feature comparison for Basic (₹21), Professional (₹36), Premium (₹53) and add-ons,
                 rebuilt as a clear pricing page with plan cards and sectioned feature comparisons.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap gap-3">
                 <Link to={ROUTES.bookDemo} className="btn-primary">
                   Request a demo
                   <ArrowRight className="h-4 w-4" />
@@ -602,15 +794,18 @@ export default function PricingPage() {
                 </Link>
               </div>
 
-              <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 {pricingHighlights.map((item) => (
-                  <div key={item.title} className="soft-card p-4">
+                  <div
+                    key={item.title}
+                    className="soft-card flex h-full flex-col gap-2 p-3.5 sm:p-4"
+                  >
                     <div className="flex items-center gap-2 text-sm font-semibold text-primary">
                       {item.icon}
                       {item.title}
                     </div>
-                    <div className="mt-2 text-base font-bold text-ink">{item.value}</div>
-                    <p className="mt-1 text-sm leading-6 text-ink-soft">{item.desc}</p>
+                    <div className="text-base font-bold text-ink">{item.value}</div>
+                    <p className="text-sm leading-5 text-ink-soft">{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -618,10 +813,10 @@ export default function PricingPage() {
 
             <div className="relative">
               <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/10 via-transparent to-success/10 blur-2xl" />
-              <div className="relative rounded-[2rem] border border-border bg-white p-5 shadow-float">
+              <div className="relative rounded-xl border border-border bg-white p-5 shadow-float">
                 <div className="grid gap-4 md:grid-cols-3">
                   {planCards.map((plan) => (
-                    <div key={plan.name} className="soft-card p-4">
+                    <div key={plan.name} className="rounded-xl border border-border bg-white p-4 shadow-sm">
                       <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                         {plan.name}
                       </div>
@@ -631,7 +826,7 @@ export default function PricingPage() {
                   ))}
                 </div>
 
-                <div className="mt-4 rounded-[1.5rem] border border-border bg-surface/40 p-5">
+                <div className="mt-4 rounded-xl border border-border bg-surface/40 p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
@@ -667,6 +862,11 @@ export default function PricingPage() {
           </div>
         </section>
 
+        <PricingCalculatorSection
+          employeeCount={employeeCount}
+          onEmployeeCountChange={setEmployeeCount}
+        />
+
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="container-x">
             <div className="mx-auto max-w-3xl text-center">
@@ -684,7 +884,7 @@ export default function PricingPage() {
 
             <div className="mt-10 grid items-stretch gap-5 lg:grid-cols-3">
               {planCards.map((plan) => (
-                <PlanCardView key={plan.name} plan={plan} />
+                <PlanCardView key={plan.name} plan={plan} employeeCount={employeeCount} />
               ))}
             </div>
           </div>
@@ -757,3 +957,4 @@ export default function PricingPage() {
     </div>
   );
 }
+

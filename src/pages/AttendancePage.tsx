@@ -628,7 +628,7 @@ export default function AttendancePage() {
       <TopNavbar />
       <MainNavbar />
 
-      <main>
+      <main className="pb-28 md:pb-32">
         <section className="attendance-hero hero-gradient relative overflow-hidden">
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/12 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/12 blur-3xl" />
@@ -1043,31 +1043,22 @@ export default function AttendancePage() {
           </div>
         </section>
 
-        <section className="py-20">
-          <div className="container-x">
-            <div className="soft-card flex flex-col gap-6 p-8 md:flex-row md:items-center md:justify-between">
-              <div className="max-w-2xl">
-                <div className="text-xs font-bold uppercase tracking-wider text-primary">
-                  Ready to switch to digital attendance?
-                </div>
-                <h2 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">
-                  Make attendance clean, clear and easy for every team
+        <section className="py-20 scroll-mt-24">
+          <div className="fixed bottom-6 left-1/2 z-50 w-fit max-w-[calc(100%-12px)] -translate-x-1/2 md:bottom-8">
+            <div className="relative overflow-hidden rounded-[1.25rem] border border-border bg-gradient-to-r from-[#eff6ff] via-white to-[#eefdf3] px-2.5 py-2 shadow-float backdrop-blur-md md:px-3 md:py-2.5">
+              <div className="pointer-events-none absolute -left-6 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl" />
+              <div className="pointer-events-none absolute -right-6 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-success/15 blur-3xl" />
+              <div className="relative flex flex-wrap items-center gap-x-1.5 gap-y-1 md:gap-x-2">
+                <h2 className="text-base font-bold tracking-tight text-ink sm:text-lg">
+                  Track Every Punch with Precision.
                 </h2>
-                <p className="mt-3 text-ink-soft">
-                  Use a single attendance system for biometric devices, mobile teams, branches and payroll-ready reporting.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                <Link to={ROUTES.bookDemo} className="btn-primary">
+                <ArrowRight className="h-3.5 w-3.5 shrink-0 text-primary md:h-4 md:w-4" />
+                <Link
+                  to={ROUTES.bookDemo}
+                  className="btn-primary whitespace-nowrap px-3 py-1 text-xs md:px-3.5 md:py-1.5"
+                >
                   Book Free Demo
                 </Link>
-                <Link to={ROUTES.contact} className="btn-outline">
-                  Contact Sales
-                </Link>
-                <a href="#methods" className="btn-outline">
-                  Review Methods
-                </a>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { ArrowRight, ChevronDown, Mail, Menu, Users, X } from "lucide-react";
 import BrandMark from "./BrandMark";
 import {
@@ -140,20 +140,6 @@ export default function BulkEmailNavbar() {
                 </div>
 
                 <div className="mt-8 grid gap-3">
-                  <Link
-                    to={ROUTES.pricing}
-                    onClick={() => setMobileOpen(false)}
-                    className="btn-ghost justify-center text-sm"
-                  >
-                    Pricing
-                  </Link>
-                  <Link
-                    to={ROUTES.bookDemo}
-                    onClick={() => setMobileOpen(false)}
-                    className="btn-primary justify-center text-sm"
-                  >
-                    Book Free Demo
-                  </Link>
                 </div>
               </div>
             </div>
@@ -161,86 +147,105 @@ export default function BulkEmailNavbar() {
         </Sheet>
       </div>
 
-      <div
-        className={cn(
-          "site-container hidden grid-cols-1 gap-2 py-2 transition-[height,padding] duration-300 lg:grid lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0",
-          scrolled ? "lg:h-14" : "lg:h-16",
-        )}
-      >
-        <div className="flex items-center gap-3">
-          <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
-            <BrandMark mode="wordmark" />
-          </Link>
-          <div className="flex items-center gap-2">
-            <Link
-              to={ROUTES.hrmsHome}
-              className={switcherButtonClass}
-            >
-              <Users className="h-4 w-4 text-ink" />
-              HRMS
-            </Link>
-            <Link
-              to={ROUTES.bulkEmail}
-              className={switcherButtonClass}
-            >
-              <Mail className="h-4 w-4 text-ink" />
-              Bulk Email
-            </Link>
+      <div className="hidden lg:block">
+        <div
+          className={cn(
+            "border-b border-border/70 bg-white/95 transition-[height,padding] duration-300",
+            scrolled ? "lg:h-14" : "lg:h-16",
+          )}
+        >
+          <div className="site-container flex h-full items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
+                <BrandMark mode="wordmark" />
+              </Link>
+              <div className="flex items-center gap-2">
+                <Link to={ROUTES.hrmsHome} className={switcherButtonClass}>
+                  <Users className="h-4 w-4 text-ink" />
+                  HRMS
+                </Link>
+                <Link to={ROUTES.bulkEmail} className={switcherButtonClass}>
+                  <Mail className="h-4 w-4 text-ink" />
+                  Bulk Email
+                </Link>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <nav className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-row lg:items-center lg:gap-1">
-          <DesktopMenu
-            label="Products"
-            active={activeMenu === "products"}
-            onOpen={() => setActiveMenu("products")}
-            onClose={() => setActiveMenu(null)}
-          >
-            <MenuList items={productItems} active={activeMenu === "products"} />
-          </DesktopMenu>
+        <div className="border-b border-border/60 bg-primary-soft/60">
+          <div className="site-container flex min-h-16 items-center gap-4 py-2">
+            <nav className="ml-auto flex flex-wrap items-center gap-1 lg:gap-2">
+              <DesktopMenu
+                label="Products"
+                active={activeMenu === "products"}
+                onOpen={() => setActiveMenu("products")}
+                onClose={() => setActiveMenu(null)}
+              >
+                <MenuList items={productItems} active={activeMenu === "products"} />
+              </DesktopMenu>
 
-          <DesktopMenu
-            label="Solutions"
-            active={activeMenu === "solutions"}
-            onOpen={() => setActiveMenu("solutions")}
-            onClose={() => setActiveMenu(null)}
-          >
-            <MenuList items={solutionItems} active={activeMenu === "solutions"} />
-          </DesktopMenu>
+              <DesktopMenu
+                label="Solutions"
+                active={activeMenu === "solutions"}
+                onOpen={() => setActiveMenu("solutions")}
+                onClose={() => setActiveMenu(null)}
+              >
+                <MenuList items={solutionItems} active={activeMenu === "solutions"} />
+              </DesktopMenu>
 
-          <DesktopMenu
-            label="Resources"
-            active={activeMenu === "resources"}
-            onOpen={() => setActiveMenu("resources")}
-            onClose={() => setActiveMenu(null)}
-          >
-            <MenuList items={resourceItems} active={activeMenu === "resources"} />
-          </DesktopMenu>
+              <DesktopMenu
+                label="Resources"
+                active={activeMenu === "resources"}
+                onOpen={() => setActiveMenu("resources")}
+                onClose={() => setActiveMenu(null)}
+              >
+                <MenuList items={resourceItems} active={activeMenu === "resources"} />
+              </DesktopMenu>
 
-          <DesktopMenu
-            label="Company"
-            active={activeMenu === "company"}
-            onOpen={() => setActiveMenu("company")}
-            onClose={() => setActiveMenu(null)}
-            alignRight
-          >
-            <MenuList items={companyItems} active={activeMenu === "company"} />
-          </DesktopMenu>
-        </nav>
+              <DesktopMenu
+                label="Company"
+                active={activeMenu === "company"}
+                onOpen={() => setActiveMenu("company")}
+                onClose={() => setActiveMenu(null)}
+                alignRight
+              >
+                <MenuList items={companyItems} active={activeMenu === "company"} />
+              </DesktopMenu>
 
-        <div className="flex items-center justify-end gap-2">
-          <Link
-            to={ROUTES.pricing}
-            className="btn-ghost inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"
-          >
-            Pricing
-          </Link>
-          <Link
-            to={ROUTES.bookDemo}
-            className="btn-primary inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"
-          >
-            Book Free Demo
-          </Link>
+              <NavLink
+                to={ROUTES.pricing}
+                className={({ isActive }) =>
+                  cn(
+                    "nav-link rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
+                    isActive ? "bg-white/70 text-primary" : "text-ink hover:bg-white/70 hover:text-primary",
+                  )
+                }
+              >
+                Pricing
+              </NavLink>
+
+              <NavLink
+                to={ROUTES.partner}
+                className={({ isActive }) =>
+                  cn(
+                    "nav-link rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
+                    isActive ? "bg-white/70 text-primary" : "text-ink hover:bg-white/70 hover:text-primary",
+                  )
+                }
+              >
+                Partner With Us
+              </NavLink>
+            </nav>
+
+            <Link
+              to={ROUTES.bookDemo}
+              className="btn-primary inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"
+            >
+              Book Free Demo
+            </Link>
+          </div>
         </div>
       </div>
     </header>
