@@ -38,6 +38,7 @@ const RoiCalculatorPage = lazy(() => import("./pages/RoiCalculatorPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
 const BulkEmailPage = lazy(() => import("./pages/BulkEmailPage"));
 const BulkEmailBroadcastPage = lazy(() => import("./pages/bulk-email/BulkEmailBroadcastPage"));
+const BulkEmailAssetManagementPage = lazy(() => import("./pages/bulk-email/BulkEmailAssetManagementPage"));
 const BulkEmailTemplatesPage = lazy(() => import("./pages/bulk-email/BulkEmailTemplatesPage"));
 const BulkEmailContactsPage = lazy(() => import("./pages/bulk-email/BulkEmailContactsPage"));
 const BulkEmailAnalyticsPage = lazy(() => import("./pages/bulk-email/BulkEmailAnalyticsPage"));
@@ -178,6 +179,7 @@ function AppShell() {
           <Route path={ROUTES.bulkEmailBroadcast} element={<BulkEmailBroadcastPage />} />
           <Route path={ROUTES.bulkEmail} element={<BulkEmailPage />} />
           <Route path={ROUTES.bulkEmailCampaigns} element={<Navigate to={ROUTES.bulkEmail} replace />} />
+          <Route path={ROUTES.bulkEmailAssetManagement} element={<BulkEmailAssetManagementPage />} />
           <Route path={ROUTES.bulkEmailTemplates} element={<BulkEmailTemplatesPage />} />
           <Route path={ROUTES.bulkEmailContacts} element={<BulkEmailContactsPage />} />
           <Route path={ROUTES.bulkEmailAnalytics} element={<BulkEmailAnalyticsPage />} />

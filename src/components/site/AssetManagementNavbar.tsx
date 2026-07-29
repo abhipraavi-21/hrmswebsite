@@ -3,6 +3,9 @@ import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ArrowRight, ChevronDown, Mail, Menu, Package, Users, X } from "lucide-react";
 import BrandMark from "./BrandMark";
+import { cn } from "@/lib/utils";
+import { useScrolled } from "@/hooks/useScrolled";
+import { ROUTES } from "@/routes/routeConfig.js";
 import {
   Accordion,
   AccordionContent,
@@ -18,44 +21,45 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-import { useScrolled } from "@/hooks/useScrolled";
-import { ROUTES } from "@/routes/routeConfig.js";
 
-type MenuKey = "products" | "solutions" | "resources" | "company";
+type MenuKey = "features" | "solutions" | "resources" | "company";
 
 type MenuItem = {
   label: string;
   href: string;
 };
 
-const productItems: MenuItem[] = [
-  { label: "Email Broadcast", href: ROUTES.bulkEmailBroadcast },
-  { label: "Templates", href: ROUTES.bulkEmailTemplates },
-  { label: "Analytics", href: ROUTES.bulkEmailAnalytics },
-  { label: "Scheduling", href: ROUTES.bulkEmailScheduling },
-  { label: "SMTP", href: ROUTES.bulkEmailSmtp },
+const featureItems: MenuItem[] = [
+  { label: "Asset Dashboard", href: `${ROUTES.bulkEmailAssetManagement}#overview` },
+  { label: "Asset Management", href: `${ROUTES.bulkEmailAssetManagement}#features` },
+  { label: "Asset Tracking", href: `${ROUTES.bulkEmailAssetManagement}#lifecycle` },
+  { label: "QR Code Asset Management", href: `${ROUTES.bulkEmailAssetManagement}#features` },
+  { label: "Asset Maintenance", href: `${ROUTES.bulkEmailAssetManagement}#reports` },
+  { label: "Asset Reports", href: `${ROUTES.bulkEmailAssetManagement}#reports` },
 ];
 
 const solutionItems: MenuItem[] = [
-  { label: "HR Communication", href: ROUTES.bulkEmailHrCommunication },
-  { label: "Marketing", href: ROUTES.bulkEmailMarketing },
-  { label: "Education", href: ROUTES.bulkEmailEducation },
+  { label: "IT Asset Management", href: `${ROUTES.bulkEmailAssetManagement}#features` },
+  { label: "Manufacturing Assets", href: `${ROUTES.bulkEmailAssetManagement}#lifecycle` },
+  { label: "Healthcare Assets", href: `${ROUTES.bulkEmailAssetManagement}#reports` },
+  { label: "Educational Institutions", href: `${ROUTES.bulkEmailAssetManagement}#cta` },
+  { label: "Corporate Offices", href: `${ROUTES.bulkEmailAssetManagement}#overview` },
 ];
 
 const resourceItems: MenuItem[] = [
   { label: "Learn", href: ROUTES.learn },
+  { label: "Asset Management Guide", href: ROUTES.complianceGuides },
   { label: "Blog", href: ROUTES.blog },
   { label: "FAQs", href: ROUTES.faq },
 ];
 
 const companyItems: MenuItem[] = [
-  { label: "About", href: ROUTES.about },
-  { label: "Contact", href: ROUTES.contact },
+  { label: "About Us", href: ROUTES.about },
+  { label: "Contact Us", href: ROUTES.contact },
   { label: "Help Center", href: ROUTES.support },
 ];
 
-export default function BulkEmailNavbar() {
+export default function AssetManagementNavbar() {
   const [activeMenu, setActiveMenu] = useState<MenuKey | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const scrolled = useScrolled(12);
@@ -75,24 +79,15 @@ export default function BulkEmailNavbar() {
             <BrandMark mode="wordmark" />
           </Link>
           <div className="flex min-w-0 items-center gap-2">
-            <Link
-              to={ROUTES.hrmsHome}
-              className={switcherButtonClass}
-            >
+            <Link to={ROUTES.hrmsHome} className={switcherButtonClass}>
               <Users className="h-4 w-4 text-ink" />
               HRMS
             </Link>
-            <Link
-              to={ROUTES.bulkEmail}
-              className={switcherButtonClass}
-            >
+            <Link to={ROUTES.bulkEmail} className={switcherButtonClass}>
               <Mail className="h-4 w-4 text-ink" />
               Bulk Email
             </Link>
-            <Link
-              to={ROUTES.bulkEmailAssetManagement}
-              className={switcherButtonClass}
-            >
+            <Link to={ROUTES.bulkEmailAssetManagement} className={switcherButtonClass}>
               <Package className="h-4 w-4 text-ink" />
               Asset Management
             </Link>
@@ -116,7 +111,7 @@ export default function BulkEmailNavbar() {
             className="w-[min(100vw,26rem)] max-w-none border-l border-border/70 bg-background p-0 text-ink shadow-[0_24px_80px_rgba(15,23,42,0.22)]"
           >
             <SheetHeader className="sr-only">
-              <SheetTitle>Main navigation</SheetTitle>
+              <SheetTitle>Asset management navigation</SheetTitle>
               <SheetDescription>Mobile navigation menu.</SheetDescription>
             </SheetHeader>
 
@@ -139,14 +134,42 @@ export default function BulkEmailNavbar() {
 
                 <div className="mt-6">
                   <Accordion type="single" collapsible className="space-y-2">
-                    <MobileGroup title="Products" items={productItems} onNavigate={() => setMobileOpen(false)} />
-                    <MobileGroup title="Solutions" items={solutionItems} onNavigate={() => setMobileOpen(false)} />
-                    <MobileGroup title="Resources" items={resourceItems} onNavigate={() => setMobileOpen(false)} />
-                    <MobileGroup title="Company" items={companyItems} onNavigate={() => setMobileOpen(false)} />
+                    <MobileGroup
+                      title="Features"
+                      items={featureItems}
+                      onNavigate={() => setMobileOpen(false)}
+                    />
+                    <MobileGroup
+                      title="Solutions"
+                      items={solutionItems}
+                      onNavigate={() => setMobileOpen(false)}
+                    />
+                    <MobileGroup
+                      title="Resources"
+                      items={resourceItems}
+                      onNavigate={() => setMobileOpen(false)}
+                    />
+                    <MobileGroup
+                      title="Company"
+                      items={companyItems}
+                      onNavigate={() => setMobileOpen(false)}
+                    />
+                    <MobileTopLevelLink
+                      label="Pricing"
+                      href={ROUTES.pricing}
+                      onNavigate={() => setMobileOpen(false)}
+                    />
                   </Accordion>
                 </div>
 
                 <div className="mt-8 grid gap-3">
+                  <Link
+                    to={ROUTES.bookDemo}
+                    onClick={() => setMobileOpen(false)}
+                    className="btn-primary justify-center text-sm"
+                  >
+                    Book Demo
+                  </Link>
                 </div>
               </div>
             </div>
@@ -161,7 +184,7 @@ export default function BulkEmailNavbar() {
             scrolled ? "lg:h-14" : "lg:h-16",
           )}
         >
-          <div className="site-container flex h-full items-center justify-between gap-4">
+          <div className="site-container relative flex h-full items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
                 <BrandMark mode="wordmark" />
@@ -181,20 +204,21 @@ export default function BulkEmailNavbar() {
                 </Link>
               </div>
             </div>
-
           </div>
         </div>
 
         <div className="border-b border-border/60 bg-primary-soft/60">
-          <div className="site-container flex min-h-16 items-center gap-4 py-2">
-            <nav className="ml-auto flex flex-wrap items-center gap-1 lg:gap-2">
+          <div className="site-container grid min-h-16 grid-cols-[1fr_auto_1fr] items-center gap-4 py-2">
+            <div aria-hidden="true" />
+
+            <nav className="flex w-fit flex-wrap items-center justify-center gap-1 justify-self-center lg:gap-2">
               <DesktopMenu
-                label="Products"
-                active={activeMenu === "products"}
-                onOpen={() => setActiveMenu("products")}
+                label="Features"
+                active={activeMenu === "features"}
+                onOpen={() => setActiveMenu("features")}
                 onClose={() => setActiveMenu(null)}
               >
-                <MenuList items={productItems} active={activeMenu === "products"} />
+                <MenuList items={featureItems} active={activeMenu === "features"} />
               </DesktopMenu>
 
               <DesktopMenu
@@ -236,25 +260,13 @@ export default function BulkEmailNavbar() {
               >
                 Pricing
               </NavLink>
-
-              <NavLink
-                to={ROUTES.partner}
-                className={({ isActive }) =>
-                  cn(
-                    "nav-link rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
-                    isActive ? "bg-white/70 text-primary" : "text-ink hover:bg-white/70 hover:text-primary",
-                  )
-                }
-              >
-                Partner With Us
-              </NavLink>
             </nav>
 
             <Link
               to={ROUTES.bookDemo}
-              className="btn-primary inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"
+              className="btn-primary justify-self-end inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"
             >
-              Book Free Demo
+              Book Demo
             </Link>
           </div>
         </div>
@@ -353,7 +365,10 @@ function MobileGroup({
   onNavigate: () => void;
 }) {
   return (
-    <AccordionItem value={title.toLowerCase()} className="overflow-hidden rounded-2xl border border-border bg-white px-4">
+    <AccordionItem
+      value={title.toLowerCase()}
+      className="overflow-hidden rounded-2xl border border-border bg-white px-4"
+    >
       <AccordionTrigger className="py-4 text-left text-sm font-semibold text-ink hover:no-underline">
         {title}
       </AccordionTrigger>
@@ -376,5 +391,28 @@ function MobileGroup({
         </ul>
       </AccordionContent>
     </AccordionItem>
+  );
+}
+
+function MobileTopLevelLink({
+  label,
+  href,
+  onNavigate,
+}: {
+  label: string;
+  href: string;
+  onNavigate: () => void;
+}) {
+  return (
+    <SheetClose asChild>
+      <Link
+        to={href}
+        onClick={onNavigate}
+        className="flex items-center justify-between rounded-2xl border border-border/70 px-4 py-3 text-left text-sm font-semibold text-ink transition-colors hover:bg-surface hover:text-primary"
+      >
+        <span>{label}</span>
+        <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0 text-primary" />
+      </Link>
+    </SheetClose>
   );
 }

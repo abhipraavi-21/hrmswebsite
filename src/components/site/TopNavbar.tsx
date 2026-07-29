@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ChevronDown, Mail, Menu, Users, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Mail, Menu, Package, Users, X } from "lucide-react";
 import BrandMark from "./BrandMark";
 import {
   featureMenuColumns,
@@ -36,10 +36,10 @@ export default function TopNavbar() {
 export function TopNavbarShell({
   forceActiveTab = null,
 }: {
-  forceActiveTab?: "hrms" | "email" | null;
+  forceActiveTab?: "hrms" | "email" | "asset" | null;
 }) {
-  const [activeTab, setActiveTab] = useState<"hrms" | "email">("hrms");
-  const [open, setOpen] = useState<null | "hrms" | "email">(null);
+  const [activeTab, setActiveTab] = useState<"hrms" | "email" | "asset">("hrms");
+  const [open, setOpen] = useState<null | "hrms" | "email" | "asset">(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const scrolled = useScrolled(12);
   const closeTimerRef = useRef<number | null>(null);
@@ -49,8 +49,10 @@ export function TopNavbarShell({
   const isHomePage = location.pathname === ROUTES.home;
   const isHrmsHomePage = location.pathname.startsWith(ROUTES.hrmsHome);
   const isBulkEmailPage = location.pathname.startsWith(ROUTES.bulkEmail);
+  const isAssetManagementPage = location.pathname.startsWith(ROUTES.bulkEmailAssetManagement);
   const currentTab =
-    forceActiveTab ?? (isBulkEmailPage ? "email" : isHrmsHomePage ? "hrms" : isHomePage ? null : activeTab);
+    forceActiveTab ??
+    (isAssetManagementPage ? "asset" : isBulkEmailPage ? "email" : isHrmsHomePage ? "hrms" : isHomePage ? null : activeTab);
 
   const clearCloseTimer = () => {
     if (closeTimerRef.current !== null) {
@@ -141,6 +143,11 @@ export function TopNavbarShell({
                       href={ROUTES.bulkEmail}
                       onNavigate={() => setMobileOpen(false)}
                     />
+                    <MobileTopLevelLink
+                      label="Asset Management"
+                      href={ROUTES.bulkEmailAssetManagement}
+                      onNavigate={() => setMobileOpen(false)}
+                    />
                     <MobileFeaturesGroup onNavigate={() => setMobileOpen(false)} />
                     <MobileAccordionGroup
                       value="solutions"
@@ -229,6 +236,22 @@ export function TopNavbarShell({
             onClick={() => {
               setActiveTab("email");
               navigate(ROUTES.bulkEmail);
+            }}
+            onHover={() => {
+              setOpen(null);
+            }}
+            onLeave={() => {
+              setOpen(null);
+            }}
+            isOpen={false}
+          />
+          <ProductTab
+            label="Asset Management"
+            icon={<Package className="h-4 w-4" />}
+            active={currentTab === "asset"}
+            onClick={() => {
+              setActiveTab("asset");
+              navigate(ROUTES.bulkEmailAssetManagement);
             }}
             onHover={() => {
               setOpen(null);

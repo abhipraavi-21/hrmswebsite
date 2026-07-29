@@ -28,7 +28,7 @@ export default function MainNavbar() {
     >
       <div
         className={cn(
-          "site-container grid grid-cols-1 gap-2 overflow-visible py-2 transition-[height,padding] duration-300 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0",
+          "site-container relative grid grid-cols-1 gap-2 overflow-visible py-2 transition-[height,padding] duration-300 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0",
           scrolled ? "lg:h-10" : "lg:h-12",
         )}
       >
@@ -36,7 +36,7 @@ export default function MainNavbar() {
           <BrandMark mode="compact" className="scale-90 origin-left" />
         </Link>
 
-        <nav className="flex flex-wrap items-center gap-1 pl-3 sm:pl-4 lg:pl-0 lg:flex-nowrap lg:mx-auto">
+        <nav className="flex w-fit flex-wrap items-center justify-center gap-1 pl-3 sm:pl-4 lg:absolute lg:left-1/2 lg:top-1/2 lg:z-10 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:pl-0 lg:flex-nowrap">
           <div
             className="relative order-2 shrink-0"
             onMouseEnter={() => setOpenMenu("solutions")}

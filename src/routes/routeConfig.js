@@ -37,6 +37,7 @@ export const ROUTES = {
   bulkEmailHrCommunication: "/bulk-email/hr-communication",
   bulkEmailMarketing: "/bulk-email/marketing",
   bulkEmailEducation: "/bulk-email/education",
+  bulkEmailAssetManagement: "/bulk-email/asset-management",
   learn: "/resources/learn",
   complianceGuides: "/resources/compliance-guides",
   blog: "/resources/blog",
@@ -61,6 +62,7 @@ export const ROUTES = {
 
 export const ROUTE_ALIASES = {
   "/about-us": ROUTES.about,
+  "/altroz-hr": ROUTES.hrmsHome,
   "/hrms-home": ROUTES.hrmsHome,
   "/roi-calculator": ROUTES.roiCalculator,
   "/products/attendance": ROUTES.attendanceManagement,
@@ -70,6 +72,7 @@ export const ROUTE_ALIASES = {
   "/company/why-altoz": ROUTES.whyAltroz,
   "/careers": ROUTES.careers,
   "/integrations/asset-management": ROUTES.assetManagement,
+  "/asset-management": ROUTES.assetManagement,
   "/integrations/business-apps": ROUTES.businessApps,
   "/integrations/hr-business-applications": ROUTES.businessApps,
   "/learn": ROUTES.learn,
@@ -77,6 +80,7 @@ export const ROUTE_ALIASES = {
   "/email-broadcast": ROUTES.bulkEmailBroadcast,
   "/bulk-email/email-broadcast": ROUTES.bulkEmailBroadcast,
   "/bulk-email/campaigns": ROUTES.bulkEmail,
+  "/bulk-email/asset-management": ROUTES.bulkEmailAssetManagement,
   "/products/recruitment": ROUTES.recruitment,
   "/products/mobile-app-landing": ROUTES.mobileAppLanding,
   "/mobile-app-landing": ROUTES.mobileAppLanding,
