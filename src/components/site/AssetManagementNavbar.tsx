@@ -207,9 +207,18 @@ export default function AssetManagementNavbar() {
           </div>
         </div>
 
-        <div className="border-b border-border/60 bg-primary-soft/60">
-          <div className="site-container grid min-h-16 grid-cols-[1fr_auto_1fr] items-center gap-4 py-2">
-            <div aria-hidden="true" />
+      <div className="border-b border-border/60 bg-primary-soft/60">
+          <div className="site-container grid min-h-16 grid-cols-[auto_1fr_auto] items-center gap-4 py-2">
+            <Link
+              to={ROUTES.home}
+              aria-label="Altroz home"
+              className="inline-flex shrink-0 items-center gap-2.5 leading-none -ml-3 justify-self-start"
+            >
+              <BrandMark mode="wordmark" className="scale-[0.95] origin-left" />
+              <span className="inline-flex items-center rounded-[0.6rem] bg-[#0b5cff] px-2.5 py-1 text-[0.72rem] font-extrabold uppercase leading-none tracking-[0.12em] text-white sm:text-[0.76rem]">
+                Asset Management
+              </span>
+            </Link>
 
             <nav className="flex w-fit flex-wrap items-center justify-center gap-1 justify-self-center lg:gap-2">
               <DesktopMenu

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ArrowRight, ChevronDown, Mail, Menu, Package, Users, X } from "lucide-react";
 import BrandMark from "./BrandMark";
+import ProductBrandLine from "./ProductBrandLine";
 import {
   Accordion,
   AccordionContent,
@@ -186,8 +187,15 @@ export default function BulkEmailNavbar() {
         </div>
 
         <div className="border-b border-border/60 bg-primary-soft/60">
-          <div className="site-container flex min-h-16 items-center gap-4 py-2">
-            <nav className="ml-auto flex flex-wrap items-center gap-1 lg:gap-2">
+          <div className="site-container grid min-h-16 grid-cols-[auto_1fr_auto] items-center gap-4 py-2">
+            <ProductBrandLine
+              compact
+              brandSrc="/brand/bulk-email-logo-transparent.png"
+              brandAlt="Altroz Bulk Email"
+              className="justify-self-start"
+            />
+
+            <nav className="flex w-fit flex-wrap items-center justify-center gap-1 justify-self-center lg:gap-2">
               <DesktopMenu
                 label="Products"
                 active={activeMenu === "products"}
@@ -241,7 +249,7 @@ export default function BulkEmailNavbar() {
                 to={ROUTES.partner}
                 className={({ isActive }) =>
                   cn(
-                    "nav-link rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
+                    "nav-link whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
                     isActive ? "bg-white/70 text-primary" : "text-ink hover:bg-white/70 hover:text-primary",
                   )
                 }
