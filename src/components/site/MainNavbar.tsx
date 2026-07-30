@@ -320,7 +320,7 @@ export default function MainNavbar() {
               end
               className={({ isActive }) =>
                 cn(
-                  "nav-link order-6 rounded-lg px-2.5 py-1.5 text-center text-xs font-medium transition-colors lg:text-left sm:text-sm",
+                  "nav-link order-6 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-center text-xs font-medium transition-colors lg:text-left sm:text-sm",
                   isActive
                     ? "bg-white/70 text-primary"
                     : "text-ink hover:bg-white/70 hover:text-primary lg:hover:bg-transparent",
