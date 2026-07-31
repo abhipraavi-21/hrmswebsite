@@ -19,7 +19,6 @@ import {
   Sparkles,
   Target,
   TrendingUp,
-  Users,
   Wallet,
   Workflow,
 } from "lucide-react";
@@ -83,12 +82,14 @@ const highlightCards: HighlightCard[] = [
   },
 ];
 
+
 const categoryCards: CategoryCard[] = [
   {
-    title: "Employee Management",
-    description: "Articles on organising employee records, profiles and workflows in one place.",
-    icon: <Users className="h-5 w-5" />,
-    href: ROUTES.coreHR,
+    title: "What is HRMS?",
+    description:
+      "A complete guide to HRMS for Indian businesses, with clear explanations of the core modules, benefits, implementation steps, and the difference between manual HR and software-driven HR.",
+    icon: <BookOpen className="h-5 w-5" />,
+    href: `${ROUTES.blog}/what-is-hrms`,
   },
   {
     title: "Attendance Management",
@@ -382,33 +383,50 @@ export default function BlogPage() {
         <section id="categories" className="py-14 sm:py-16 lg:py-20">
           <div className="site-container">
             <SectionHeading
-              eyebrow="Browse by Categories"
-              title="Sixteen category cards built for easy blog navigation"
-              description="Each card includes an icon, short description, article-count placeholder and a clear View Articles link for quick browsing."
+              eyebrow="Browse by Topics"
+              title="Featured article and category cards built for easy blog navigation"
+              description="The first card spotlights the new HRMS guide, and the remaining cards help readers jump into related HR topics quickly."
             />
 
             <StaggerReveal className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4" step={55}>
               {categoryCards.map((card) => (
-                <Link
-                  key={card.title}
-                  to={card.href}
-                  className="group soft-card flex h-full min-h-[15.25rem] flex-col p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-float"
-                >
-                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-soft text-primary transition-transform duration-200 group-hover:scale-105">
-                    {card.icon}
-                  </div>
-                  <h3 className="mt-4 text-lg font-bold text-ink">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-ink-soft">{card.description}</p>
-                  <div className="mt-auto pt-5">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-primary/10 bg-primary/5 px-3 py-1 text-xs font-bold uppercase tracking-[0.22em] text-primary">
-                      XX Articles
+                card.href.startsWith("#") ? (
+                  <a
+                    key={card.title}
+                    href={card.href}
+                    className="group soft-card flex h-full min-h-[15.25rem] flex-col p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-float"
+                  >
+                    <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-soft text-primary transition-transform duration-200 group-hover:scale-105">
+                      {card.icon}
                     </div>
-                    <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-transform duration-200 group-hover:translate-x-0.5">
-                      View Articles
-                      <ArrowRight className="h-4 w-4" />
+                    <h3 className="mt-4 text-lg font-bold text-ink">{card.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-ink-soft">{card.description}</p>
+                    <div className="mt-auto pt-5">
+                      <div className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-transform duration-200 group-hover:translate-x-0.5">
+                        View Article
+                        <ArrowRight className="h-4 w-4" />
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                  </a>
+                ) : (
+                  <Link
+                    key={card.title}
+                    to={card.href}
+                    className="group soft-card flex h-full min-h-[15.25rem] flex-col p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-float"
+                  >
+                    <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-soft text-primary transition-transform duration-200 group-hover:scale-105">
+                      {card.icon}
+                    </div>
+                    <h3 className="mt-4 text-lg font-bold text-ink">{card.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-ink-soft">{card.description}</p>
+                    <div className="mt-auto pt-5">
+                      <div className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-transform duration-200 group-hover:translate-x-0.5">
+                        {card.title === "What is HRMS?" ? "Read Full Article" : "View Articles"}
+                        <ArrowRight className="h-4 w-4" />
+                      </div>
+                    </div>
+                  </Link>
+                )
               ))}
             </StaggerReveal>
           </div>
