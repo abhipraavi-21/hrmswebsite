@@ -39,6 +39,11 @@ const PricingPage = lazy(() => import("./pages/PricingPage"));
 const BulkEmailPage = lazy(() => import("./pages/BulkEmailPage"));
 const BulkEmailBroadcastPage = lazy(() => import("./pages/bulk-email/BulkEmailBroadcastPage"));
 const BulkEmailAssetManagementPage = lazy(() => import("./pages/bulk-email/BulkEmailAssetManagementPage"));
+const BulkEmailAssetDashboardPage = lazy(() => import("./pages/bulk-email/asset-management/BulkEmailAssetDashboardPage"));
+const BulkEmailAssetTrackingPage = lazy(() => import("./pages/bulk-email/asset-management/BulkEmailAssetTrackingPage"));
+const BulkEmailAssetQrCodePage = lazy(() => import("./pages/bulk-email/asset-management/BulkEmailAssetQrCodePage"));
+const BulkEmailAssetMaintenancePage = lazy(() => import("./pages/bulk-email/asset-management/BulkEmailAssetMaintenancePage"));
+const BulkEmailAssetReportsPage = lazy(() => import("./pages/bulk-email/asset-management/BulkEmailAssetReportsPage"));
 const BulkEmailTemplatesPage = lazy(() => import("./pages/bulk-email/BulkEmailTemplatesPage"));
 const BulkEmailContactsPage = lazy(() => import("./pages/bulk-email/BulkEmailContactsPage"));
 const BulkEmailAnalyticsPage = lazy(() => import("./pages/bulk-email/BulkEmailAnalyticsPage"));
@@ -181,6 +186,14 @@ function AppShell() {
           <Route path={ROUTES.bulkEmail} element={<BulkEmailPage />} />
           <Route path={ROUTES.bulkEmailCampaigns} element={<Navigate to={ROUTES.bulkEmail} replace />} />
           <Route path={ROUTES.bulkEmailAssetManagement} element={<BulkEmailAssetManagementPage />} />
+          <Route path={ROUTES.bulkEmailAssetDashboard} element={<BulkEmailAssetDashboardPage />} />
+          <Route path={ROUTES.bulkEmailAssetTracking} element={<BulkEmailAssetTrackingPage />} />
+          <Route path={ROUTES.bulkEmailAssetQrCode} element={<BulkEmailAssetQrCodePage />} />
+          <Route
+            path={ROUTES.bulkEmailAssetMaintenance}
+            element={<BulkEmailAssetMaintenancePage />}
+          />
+          <Route path={ROUTES.bulkEmailAssetReports} element={<BulkEmailAssetReportsPage />} />
           <Route path={ROUTES.bulkEmailTemplates} element={<BulkEmailTemplatesPage />} />
           <Route path={ROUTES.bulkEmailContacts} element={<BulkEmailContactsPage />} />
           <Route path={ROUTES.bulkEmailAnalytics} element={<BulkEmailAnalyticsPage />} />

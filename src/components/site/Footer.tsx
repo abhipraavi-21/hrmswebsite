@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Facebook, Instagram, Linkedin, Mail, Youtube } from "lucide-react";
 import BrandMark from "./BrandMark";
+import ProductBrandLine from "./ProductBrandLine";
 import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { socialLinks } from "../../data/socialLinks.js";
 
-const footerColumns = [
+const hrFooterColumns = [
   {
     title: "Products",
     links: [
@@ -56,6 +57,85 @@ const footerColumns = [
   },
 ];
 
+const bulkEmailFooterColumns = [
+  {
+    title: "Bulk Email",
+    links: [
+      { label: "Bulk Email Home", href: ROUTES.bulkEmail },
+      { label: "Broadcast", href: ROUTES.bulkEmailBroadcast },
+      { label: "Templates", href: ROUTES.bulkEmailTemplates },
+      { label: "Analytics", href: ROUTES.bulkEmailAnalytics },
+      { label: "Scheduling", href: ROUTES.bulkEmailScheduling },
+      { label: "SMTP", href: ROUTES.bulkEmailSmtp },
+    ],
+  },
+  {
+    title: "Solutions",
+    links: [
+      { label: "HR Communication", href: ROUTES.bulkEmailHrCommunication },
+      { label: "Marketing", href: ROUTES.bulkEmailMarketing },
+      { label: "Education", href: ROUTES.bulkEmailEducation },
+      { label: "Asset Management", href: ROUTES.bulkEmailAssetManagement },
+    ],
+  },
+  {
+    title: "Asset Tools",
+    links: [
+      { label: "Asset Dashboard", href: ROUTES.bulkEmailAssetDashboard },
+      { label: "Asset Tracking", href: ROUTES.bulkEmailAssetTracking },
+      { label: "QR Code Asset Management", href: ROUTES.bulkEmailAssetQrCode },
+      { label: "Asset Maintenance", href: ROUTES.bulkEmailAssetMaintenance },
+      { label: "Asset Reports", href: ROUTES.bulkEmailAssetReports },
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      { label: "Contact Us", href: ROUTES.bulkEmailContacts },
+      { label: "Book Demo", href: ROUTES.bookDemo },
+    ],
+  },
+];
+
+const assetManagementFooterColumns = [
+  {
+    title: "Asset Management",
+    links: [
+      { label: "Overview", href: ROUTES.bulkEmailAssetManagement },
+      { label: "Asset Dashboard", href: ROUTES.bulkEmailAssetDashboard },
+      { label: "Asset Tracking", href: ROUTES.bulkEmailAssetTracking },
+      { label: "QR Code Asset Management", href: ROUTES.bulkEmailAssetQrCode },
+      { label: "Asset Maintenance", href: ROUTES.bulkEmailAssetMaintenance },
+      { label: "Asset Reports", href: ROUTES.bulkEmailAssetReports },
+    ],
+  },
+  {
+    title: "Use Cases",
+    links: [
+      { label: "Employee Asset Allocation", href: `${ROUTES.bulkEmailAssetManagement}#use-cases` },
+      { label: "Branch Visibility", href: `${ROUTES.bulkEmailAssetManagement}#benefits` },
+      { label: "Audit Readiness", href: `${ROUTES.bulkEmailAssetManagement}#faq` },
+      { label: "Lifecycle Tracking", href: `${ROUTES.bulkEmailAssetManagement}#lifecycle` },
+    ],
+  },
+  {
+    title: "Related Pages",
+    links: [
+      { label: "Bulk Email Home", href: ROUTES.bulkEmail },
+      { label: "HR Communication", href: ROUTES.bulkEmailHrCommunication },
+      { label: "Education", href: ROUTES.bulkEmailEducation },
+      { label: "Marketing", href: ROUTES.bulkEmailMarketing },
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      { label: "Contact Us", href: ROUTES.bulkEmailContacts },
+      { label: "Book Demo", href: ROUTES.bookDemo },
+    ],
+  },
+];
+
 const socialIcons = {
   Facebook,
   Instagram,
@@ -64,14 +144,43 @@ const socialIcons = {
 } as const;
 
 export default function Footer() {
+  const { pathname } = useLocation();
+  const isAssetManagementPage = pathname.startsWith("/bulk-email/asset-management");
+  const isBulkEmailPage = pathname.startsWith("/bulk-email");
+  const footerColumns = isAssetManagementPage
+    ? assetManagementFooterColumns
+    : isBulkEmailPage
+      ? bulkEmailFooterColumns
+      : hrFooterColumns;
+
   return (
     <footer id="company" className="site-footer bg-ink text-white scroll-mt-24">
       <div className="site-container">
         <div className="footer-grid grid lg:grid-cols-12">
           <ScrollReveal variant="fade-up" className="lg:col-span-4">
-            <BrandMark mode="compact" className="scale-[0.8] origin-left" />
+            {isAssetManagementPage ? (
+              <ProductBrandLine
+                compact
+                badgeLabel="Asset Management"
+                badgeClassName="bg-[#0b5cff] text-white"
+                className="scale-[0.88] origin-left"
+              />
+            ) : isBulkEmailPage ? (
+              <ProductBrandLine
+                compact
+                badgeLabel="Bulk Email"
+                badgeClassName="bg-[#0b5cff] text-white"
+                className="scale-[0.88] origin-left"
+              />
+            ) : (
+              <BrandMark mode="compact" className="scale-[0.8] origin-left" />
+            )}
             <p className="mt-2 max-w-xs text-xs leading-5 text-white/70">
-              The all-in-one HRMS platform for modern Indian businesses.
+              {isAssetManagementPage
+                ? "The asset management suite for tracking, assignment, maintenance, reporting and QR-based visibility."
+                : isBulkEmailPage
+                ? "The enterprise bulk email platform for campaigns, scheduling, analytics and reliable delivery."
+                : "The all-in-one HRMS platform for modern Indian businesses."}
             </p>
 
             <form className="mt-4" onSubmit={(e) => e.preventDefault()}>

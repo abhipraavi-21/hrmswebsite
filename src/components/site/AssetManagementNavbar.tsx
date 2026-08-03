@@ -30,20 +30,20 @@ type MenuItem = {
 };
 
 const featureItems: MenuItem[] = [
-  { label: "Asset Dashboard", href: `${ROUTES.bulkEmailAssetManagement}#overview` },
-  { label: "Asset Management", href: `${ROUTES.bulkEmailAssetManagement}#features` },
-  { label: "Asset Tracking", href: `${ROUTES.bulkEmailAssetManagement}#lifecycle` },
-  { label: "QR Code Asset Management", href: `${ROUTES.bulkEmailAssetManagement}#features` },
-  { label: "Asset Maintenance", href: `${ROUTES.bulkEmailAssetManagement}#reports` },
-  { label: "Asset Reports", href: `${ROUTES.bulkEmailAssetManagement}#reports` },
+  { label: "Asset Dashboard", href: ROUTES.bulkEmailAssetDashboard },
+  { label: "Asset Management", href: ROUTES.bulkEmailAssetManagement },
+  { label: "Asset Tracking", href: ROUTES.bulkEmailAssetTracking },
+  { label: "QR Code Asset Management", href: ROUTES.bulkEmailAssetQrCode },
+  { label: "Asset Maintenance", href: ROUTES.bulkEmailAssetMaintenance },
+  { label: "Asset Reports", href: ROUTES.bulkEmailAssetReports },
 ];
 
 const solutionItems: MenuItem[] = [
-  { label: "IT Asset Management", href: `${ROUTES.bulkEmailAssetManagement}#features` },
-  { label: "Manufacturing Assets", href: `${ROUTES.bulkEmailAssetManagement}#lifecycle` },
-  { label: "Healthcare Assets", href: `${ROUTES.bulkEmailAssetManagement}#reports` },
-  { label: "Educational Institutions", href: `${ROUTES.bulkEmailAssetManagement}#cta` },
-  { label: "Corporate Offices", href: `${ROUTES.bulkEmailAssetManagement}#overview` },
+  { label: "IT Asset Management", href: ROUTES.bulkEmailAssetDashboard },
+  { label: "Manufacturing Assets", href: ROUTES.bulkEmailAssetTracking },
+  { label: "Healthcare Assets", href: ROUTES.bulkEmailAssetMaintenance },
+  { label: "Educational Institutions", href: ROUTES.bulkEmailAssetReports },
+  { label: "Corporate Offices", href: ROUTES.bulkEmailAssetManagement },
 ];
 
 const resourceItems: MenuItem[] = [
