@@ -37,6 +37,10 @@ const STORE_KEY = "altroz-admin-store";
 const THEME_KEY = "altroz-admin-theme";
 const LOCAL_SESSION_KEY = "altroz-admin-session";
 const SESSION_SESSION_KEY = "altroz-admin-session-temporary";
+const ALT_TEXT_COVERAGE_WARNING = "One image block still needs alt text coverage.";
+const HOME_PAGE_FEATURED_IMAGE = "/hrms-models/workforce-dashboard.png";
+const HOME_PAGE_FEATURED_IMAGE_ALT =
+  "Altroz HRMS dashboard preview showing workforce, attendance, and employee operations";
 
 const initialStore: AdminStore = {
   content: [
@@ -56,6 +60,8 @@ const initialStore: AdminStore = {
       readingTime: "5 min",
       sections: 8,
       tags: ["Hero", "CTA", "Pricing teaser"],
+      featuredImage: HOME_PAGE_FEATURED_IMAGE,
+      featuredImageAlt: HOME_PAGE_FEATURED_IMAGE_ALT,
     },
     {
       id: "page-pricing",
@@ -275,7 +281,7 @@ const initialStore: AdminStore = {
       technicalScore: 90,
       contentScore: 84,
       aiScore: 86,
-      warnings: ["One image block still needs alt text coverage."],
+      warnings: [],
       lastUpdated: "2026-08-03 18:20",
     },
     {
@@ -1066,6 +1072,51 @@ function getDefaultSchemaTypes(type: ContentType, slug: string) {
   }
 }
 
+function normalizeAdminStore(store: AdminStore): AdminStore {
+  const normalizedContent = store.content.map((item) => {
+    if (item.id !== "page-home") {
+      return item;
+    }
+
+    return {
+      ...item,
+      featuredImage: item.featuredImage || HOME_PAGE_FEATURED_IMAGE,
+      featuredImageAlt: item.featuredImageAlt?.trim() || HOME_PAGE_FEATURED_IMAGE_ALT,
+    };
+  });
+
+  const contentById = new Map(normalizedContent.map((item) => [item.id, item]));
+  const normalizedSeo = store.seo.map((item) => {
+    const linkedContent = contentById.get(item.entityId);
+    const nextWarnings = item.warnings.filter(
+      (warning) =>
+        warning !== ALT_TEXT_COVERAGE_WARNING ||
+        !(linkedContent?.featuredImage && linkedContent.featuredImageAlt?.trim()),
+    );
+
+    if (item.id !== "seo-home") {
+      return nextWarnings === item.warnings ? item : { ...item, warnings: nextWarnings };
+    }
+
+    return {
+      ...item,
+      ogImage: item.ogImage || linkedContent?.featuredImage,
+      twitterImage: item.twitterImage || linkedContent?.featuredImage,
+      linkedInImage: item.linkedInImage || linkedContent?.featuredImage,
+      whatsAppImage: item.whatsAppImage || linkedContent?.featuredImage,
+      warnings: nextWarnings,
+    };
+  });
+
+  return {
+    ...store,
+    content: normalizedContent,
+    seo: normalizedSeo,
+  };
+}
+
+const normalizedInitialStore = normalizeAdminStore(initialStore);
+
 function syncSitemapCounts(store: AdminStore): AdminStore {
   return {
     ...store,
@@ -1156,11 +1207,11 @@ function buildCounts(store: AdminStore) {
 export function AdminProvider({ children }: PropsWithChildren) {
   const [store, setStore] = useState<AdminStore>(() => {
     if (typeof window === "undefined") {
-      return initialStore;
+      return normalizedInitialStore;
     }
 
     const raw = localStorage.getItem(STORE_KEY);
-    return raw ? (JSON.parse(raw) as AdminStore) : initialStore;
+    return raw ? normalizeAdminStore(JSON.parse(raw) as AdminStore) : normalizedInitialStore;
   });
   const [sessionUser, setSessionUser] = useState<AdminSessionUser | null>(() => readSession());
   const [theme, setTheme] = useState<"light" | "dark">(() => {
@@ -1169,7 +1220,7 @@ export function AdminProvider({ children }: PropsWithChildren) {
     }
 
     const saved = localStorage.getItem(THEME_KEY) as "light" | "dark" | null;
-    return saved ?? (initialStore.siteSettings.darkModeDefault ? "dark" : "light");
+    return saved ?? (normalizedInitialStore.siteSettings.darkModeDefault ? "dark" : "light");
   });
   const [hasLoadedRemoteWorkspace, setHasLoadedRemoteWorkspace] = useState(false);
 
@@ -1206,7 +1257,7 @@ export function AdminProvider({ children }: PropsWithChildren) {
         }
 
         if (remoteWorkspace) {
-          setStore(remoteWorkspace);
+          setStore(normalizeAdminStore(remoteWorkspace));
         }
 
         setHasLoadedRemoteWorkspace(true);
