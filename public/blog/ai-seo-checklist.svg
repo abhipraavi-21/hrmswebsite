@@ -1,0 +1,25 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#F6FBFF"/>
+  <rect x="98" y="90" width="1404" height="820" rx="42" fill="url(#paint0_linear)"/>
+  <rect x="180" y="190" width="500" height="600" rx="32" fill="#0F172A" fill-opacity="0.08"/>
+  <rect x="260" y="286" width="340" height="36" rx="18" fill="#D1FAE5"/>
+  <rect x="260" y="364" width="290" height="36" rx="18" fill="#D1FAE5"/>
+  <rect x="260" y="442" width="320" height="36" rx="18" fill="#D1FAE5"/>
+  <rect x="260" y="520" width="268" height="36" rx="18" fill="#D1FAE5"/>
+  <rect x="780" y="220" width="560" height="116" rx="26" fill="#FFFFFF" fill-opacity="0.88"/>
+  <rect x="780" y="392" width="520" height="36" rx="18" fill="#DBEAFE"/>
+  <rect x="780" y="454" width="462" height="36" rx="18" fill="#DBEAFE"/>
+  <rect x="780" y="516" width="428" height="36" rx="18" fill="#DBEAFE"/>
+  <rect x="780" y="614" width="280" height="72" rx="22" fill="#0B5CFF"/>
+  <circle cx="1220" cy="700" r="120" fill="#0B5CFF" fill-opacity="0.16"/>
+  <circle cx="1300" cy="632" r="44" fill="#22C55E"/>
+  <circle cx="1120" cy="768" r="34" fill="#F59E0B"/>
+  <text x="780" y="290" fill="#0F172A" font-family="Arial, sans-serif" font-size="52" font-weight="700">AI SEO Checklist</text>
+  <text x="780" y="748" fill="#0F172A" font-family="Arial, sans-serif" font-size="28" font-weight="600">Metadata, schema, and answer-ready structure</text>
+  <defs>
+    <linearGradient id="paint0_linear" x1="98" y1="90" x2="1502" y2="910" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E6FFF6"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+  </defs>
+</svg>
