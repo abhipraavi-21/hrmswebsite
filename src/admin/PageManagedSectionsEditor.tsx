@@ -30,6 +30,9 @@ type PageManagedSectionsEditorProps = {
 type CardListEditorOptions = {
   title: string;
   description: string;
+  itemName?: string;
+  titleLabel?: string;
+  descriptionLabel?: string;
   noteLabel?: string;
   bulletsLabel?: string;
   showHref?: boolean;
@@ -161,24 +164,30 @@ function TextareaField({
 function SectionCopyEditor({
   value,
   onChange,
+  eyebrowLabel = "Section eyebrow",
+  titleLabel = "Section title",
+  descriptionLabel = "Section description",
 }: {
   value: ManagedSectionCopy;
   onChange: (nextValue: ManagedSectionCopy) => void;
+  eyebrowLabel?: string;
+  titleLabel?: string;
+  descriptionLabel?: string;
 }) {
   return (
     <div className="grid gap-4">
       <InputField
-        label="Eyebrow"
+        label={eyebrowLabel}
         value={value.eyebrow}
         onChange={(eyebrow) => onChange({ ...value, eyebrow })}
       />
       <InputField
-        label="Section title"
+        label={titleLabel}
         value={value.title}
         onChange={(title) => onChange({ ...value, title })}
       />
       <TextareaField
-        label="Section description"
+        label={descriptionLabel}
         value={value.description}
         onChange={(description) => onChange({ ...value, description })}
       />
@@ -248,6 +257,9 @@ function CardListEditor({
   options: CardListEditorOptions;
 }) {
   const noteLabel = options.noteLabel ?? "Short label";
+  const titleLabel = options.titleLabel ?? "Title";
+  const descriptionLabel = options.descriptionLabel ?? "Description";
+  const itemName = options.itemName ?? "Item";
 
   return (
     <Panel title={options.title} description={options.description}>
@@ -255,7 +267,7 @@ function CardListEditor({
         {items.map((item, index) => (
           <div key={item.id} className="rounded-2xl border border-border bg-white p-4">
             <div className="flex items-start justify-between gap-3">
-              <div className="text-sm font-semibold text-foreground">Item {index + 1}</div>
+              <div className="text-sm font-semibold text-foreground">{itemName} {index + 1}</div>
               <Button
                 type="button"
                 variant="outline"
@@ -269,14 +281,14 @@ function CardListEditor({
 
             <div className="mt-4 grid gap-4">
               <InputField
-                label="Title"
+                label={titleLabel}
                 value={item.title}
                 onChange={(title) =>
                   onChange(items.map((entry) => (entry.id === item.id ? { ...entry, title } : entry)))
                 }
               />
               <TextareaField
-                label="Description"
+                label={descriptionLabel}
                 value={item.description}
                 onChange={(description) =>
                   onChange(items.map((entry) => (entry.id === item.id ? { ...entry, description } : entry)))
@@ -346,6 +358,30 @@ function CardListEditor({
         <Plus className="h-4 w-4" />
         Add item
       </Button>
+    </Panel>
+  );
+}
+
+function SectionCopyPanel({
+  title,
+  description,
+  value,
+  onChange,
+}: {
+  title: string;
+  description: string;
+  value: ManagedSectionCopy;
+  onChange: (nextValue: ManagedSectionCopy) => void;
+}) {
+  return (
+    <Panel title={title} description={description}>
+      <SectionCopyEditor
+        value={value}
+        onChange={onChange}
+        eyebrowLabel="Eyebrow text"
+        titleLabel="Frontend heading"
+        descriptionLabel="Frontend description"
+      />
     </Panel>
   );
 }
@@ -778,7 +814,10 @@ function HomePageEditor({
 }) {
   return (
     <div className="space-y-4">
-      <Panel title="Hero support content" description="Control the badge, subtitle, and overview block for the home hero.">
+      <Panel
+        title="1. Hero top area"
+        description="These fields match the top home banner before the product sections start."
+      >
         <div className="grid gap-4">
           <InputField
             label="Hero badge"
@@ -790,6 +829,14 @@ function HomePageEditor({
             value={value.heroSubtitle}
             onChange={(heroSubtitle) => onChange({ ...value, heroSubtitle })}
           />
+        </div>
+      </Panel>
+
+      <Panel
+        title="2. Business at a glance card"
+        description="This controls the overview card shown beside the hero illustration."
+      >
+        <div className="grid gap-4">
           <InputField
             label="Overview title"
             value={value.overviewTitle}
@@ -803,50 +850,23 @@ function HomePageEditor({
         </div>
       </Panel>
 
-      <Panel title="Section copy" description="Edit headings and descriptions for the home page sections.">
-        <div className="space-y-4">
-          <SectionCopyEditor
-            value={value.productsSection}
-            onChange={(productsSection) => onChange({ ...value, productsSection })}
-          />
-          <SectionCopyEditor
-            value={value.strengthsSection}
-            onChange={(strengthsSection) => onChange({ ...value, strengthsSection })}
-          />
-          <SectionCopyEditor
-            value={value.ecosystemSection}
-            onChange={(ecosystemSection) => onChange({ ...value, ecosystemSection })}
-          />
-          <SectionCopyEditor
-            value={value.industriesSection}
-            onChange={(industriesSection) => onChange({ ...value, industriesSection })}
-          />
-          <SectionCopyEditor
-            value={value.workflowsSection}
-            onChange={(workflowsSection) => onChange({ ...value, workflowsSection })}
-          />
-          <SectionCopyEditor
-            value={value.benefitsSection}
-            onChange={(benefitsSection) => onChange({ ...value, benefitsSection })}
-          />
-          <SectionCopyEditor
-            value={value.faqSection}
-            onChange={(faqSection) => onChange({ ...value, faqSection })}
-          />
-          <InputField
-            label="CTA eyebrow"
-            value={value.ctaEyebrow}
-            onChange={(ctaEyebrow) => onChange({ ...value, ctaEyebrow })}
-          />
-        </div>
-      </Panel>
+      <SectionCopyPanel
+        title="3. Products section heading"
+        description="This is the heading block above the three product cards."
+        value={value.productsSection}
+        onChange={(productsSection) => onChange({ ...value, productsSection })}
+      />
 
       <CardListEditor
         items={value.productCards}
         onChange={(productCards) => onChange({ ...value, productCards })}
         options={{
-          title: "Product cards",
-          description: "Update the product card content shown in the home page products grid.",
+          title: "4. Product cards"
+          ,
+          description: "Edit the three frontend product cards exactly as they appear in the products grid.",
+          itemName: "Product card",
+          titleLabel: "Card title",
+          descriptionLabel: "Card description",
           noteLabel: "Eyebrow",
           bulletsLabel: "Feature chips",
           showHref: true,
@@ -861,12 +881,22 @@ function HomePageEditor({
         }}
       />
 
+      <SectionCopyPanel
+        title="5. Why businesses choose Altroz"
+        description="Heading block for the business strengths section."
+        value={value.strengthsSection}
+        onChange={(strengthsSection) => onChange({ ...value, strengthsSection })}
+      />
+
       <CardListEditor
         items={value.strengths}
         onChange={(strengths) => onChange({ ...value, strengths })}
         options={{
-          title: "Strength cards",
-          description: "Manage the business strength cards shown below the products section.",
+          title: "6. Strength cards",
+          description: "These cards match the strength items shown under the heading above.",
+          itemName: "Strength card",
+          titleLabel: "Card title",
+          descriptionLabel: "Card description",
           createItem: () => ({
             id: createId("home-strength"),
             title: "New strength",
@@ -875,12 +905,22 @@ function HomePageEditor({
         }}
       />
 
+      <SectionCopyPanel
+        title="7. Altroz ecosystem section"
+        description="Heading block above the connected ecosystem cards."
+        value={value.ecosystemSection}
+        onChange={(ecosystemSection) => onChange({ ...value, ecosystemSection })}
+      />
+
       <CardListEditor
         items={value.ecosystemCards}
         onChange={(ecosystemCards) => onChange({ ...value, ecosystemCards })}
         options={{
-          title: "Ecosystem cards",
-          description: "Edit the connected ecosystem labels and descriptions.",
+          title: "8. Ecosystem cards",
+          description: "Edit the connected brand and product cards in the ecosystem section.",
+          itemName: "Ecosystem card",
+          titleLabel: "Card title",
+          descriptionLabel: "Card description",
           createItem: () => ({
             id: createId("home-ecosystem"),
             title: "New ecosystem item",
@@ -889,12 +929,22 @@ function HomePageEditor({
         }}
       />
 
+      <SectionCopyPanel
+        title="9. Industries section"
+        description="Heading block above the industries grid."
+        value={value.industriesSection}
+        onChange={(industriesSection) => onChange({ ...value, industriesSection })}
+      />
+
       <CardListEditor
         items={value.industries}
         onChange={(industries) => onChange({ ...value, industries })}
         options={{
-          title: "Industry cards",
-          description: "Add, edit, or remove industry cards on the home page.",
+          title: "10. Industry cards",
+          description: "These cards match the industries shown on the homepage.",
+          itemName: "Industry card",
+          titleLabel: "Card title",
+          descriptionLabel: "Card description",
           createItem: () => ({
             id: createId("home-industry"),
             title: "New industry",
@@ -903,17 +953,34 @@ function HomePageEditor({
         }}
       />
 
+      <SectionCopyPanel
+        title="11. Connected workflows section"
+        description="Heading block above the workflow examples."
+        value={value.workflowsSection}
+        onChange={(workflowsSection) => onChange({ ...value, workflowsSection })}
+      />
+
       <WorkflowListEditor
         items={value.workflows}
         onChange={(workflows) => onChange({ ...value, workflows })}
+      />
+
+      <SectionCopyPanel
+        title="12. Business benefits section"
+        description="Heading block above the business benefits cards."
+        value={value.benefitsSection}
+        onChange={(benefitsSection) => onChange({ ...value, benefitsSection })}
       />
 
       <CardListEditor
         items={value.benefits}
         onChange={(benefits) => onChange({ ...value, benefits })}
         options={{
-          title: "Benefit cards",
-          description: "Edit the benefit cards shown above the FAQ section.",
+          title: "13. Benefit cards",
+          description: "Edit the benefit cards shown just before the FAQ section.",
+          itemName: "Benefit card",
+          titleLabel: "Card title",
+          descriptionLabel: "Card description",
           createItem: () => ({
             id: createId("home-benefit"),
             title: "New benefit",
@@ -922,7 +989,25 @@ function HomePageEditor({
         }}
       />
 
+      <SectionCopyPanel
+        title="14. FAQ section heading"
+        description="Heading block above the homepage FAQs."
+        value={value.faqSection}
+        onChange={(faqSection) => onChange({ ...value, faqSection })}
+      />
+
       <FaqListEditor items={value.faqs} onChange={(faqs) => onChange({ ...value, faqs })} />
+
+      <Panel
+        title="15. Final CTA eyebrow"
+        description="Small label shown above the final call-to-action block near the bottom of the page."
+      >
+        <InputField
+          label="CTA eyebrow"
+          value={value.ctaEyebrow}
+          onChange={(ctaEyebrow) => onChange({ ...value, ctaEyebrow })}
+        />
+      </Panel>
     </div>
   );
 }
@@ -936,13 +1021,24 @@ function PricingPageEditor({
 }) {
   return (
     <div className="space-y-4">
-      <Panel title="Hero support content" description="Control the pricing badge and the comparison-focus panel in the hero area.">
+      <Panel
+        title="1. Hero top area"
+        description="These fields match the first pricing hero block on the frontend."
+      >
         <div className="grid gap-4">
           <InputField
             label="Hero badge"
             value={value.heroBadge}
             onChange={(heroBadge) => onChange({ ...value, heroBadge })}
           />
+        </div>
+      </Panel>
+
+      <Panel
+        title="2. Comparison focus card"
+        description="This card appears inside the hero area beside the plan price boxes."
+      >
+        <div className="grid gap-4">
           <InputField
             label="Comparison focus title"
             value={value.comparisonFocusTitle}
@@ -967,38 +1063,15 @@ function PricingPageEditor({
         placeholder="Employee management"
       />
 
-      <Panel title="Section copy" description="Manage the headings and descriptions for each pricing section.">
-        <div className="space-y-4">
-          <SectionCopyEditor
-            value={value.calculatorSection}
-            onChange={(calculatorSection) => onChange({ ...value, calculatorSection })}
-          />
-          <SectionCopyEditor
-            value={value.planCardsSection}
-            onChange={(planCardsSection) => onChange({ ...value, planCardsSection })}
-          />
-          <SectionCopyEditor
-            value={value.featureComparisonSection}
-            onChange={(featureComparisonSection) => onChange({ ...value, featureComparisonSection })}
-          />
-          <SectionCopyEditor
-            value={value.addOnsSection}
-            onChange={(addOnsSection) => onChange({ ...value, addOnsSection })}
-          />
-          <InputField
-            label="CTA eyebrow"
-            value={value.ctaEyebrow}
-            onChange={(ctaEyebrow) => onChange({ ...value, ctaEyebrow })}
-          />
-        </div>
-      </Panel>
-
       <CardListEditor
         items={value.highlights}
         onChange={(highlights) => onChange({ ...value, highlights })}
         options={{
-          title: "Pricing highlights",
-          description: "Edit the small pricing summary cards shown in the hero area.",
+          title: "4. Hero pricing highlights",
+          description: "These are the small highlight cards shown below the hero buttons.",
+          itemName: "Highlight card",
+          titleLabel: "Highlight title",
+          descriptionLabel: "Highlight description",
           showValue: true,
           createItem: () => ({
             id: createId("pricing-highlight"),
@@ -1009,19 +1082,53 @@ function PricingPageEditor({
         }}
       />
 
-      <PlanCardListEditor items={value.planCards} onChange={(planCards) => onChange({ ...value, planCards })} />
+      <SectionCopyPanel
+        title="5. Pricing calculator section"
+        description="Heading block above the employee count pricing calculator."
+        value={value.calculatorSection}
+        onChange={(calculatorSection) => onChange({ ...value, calculatorSection })}
+      />
+
+      <SectionCopyPanel
+        title="6. Plan cards section heading"
+        description="Heading block above the three plan cards."
+        value={value.planCardsSection}
+        onChange={(planCardsSection) => onChange({ ...value, planCardsSection })}
+      />
+
+      <PlanCardListEditor
+        items={value.planCards}
+        onChange={(planCards) => onChange({ ...value, planCards })}
+      />
+
+      <SectionCopyPanel
+        title="7. Feature comparison section heading"
+        description="Heading block above the plan comparison table cards."
+        value={value.featureComparisonSection}
+        onChange={(featureComparisonSection) => onChange({ ...value, featureComparisonSection })}
+      />
 
       <FeatureGroupListEditor
         items={value.featureGroups}
         onChange={(featureGroups) => onChange({ ...value, featureGroups })}
       />
 
+      <SectionCopyPanel
+        title="8. Add-ons section heading"
+        description="Heading block above the add-on cards."
+        value={value.addOnsSection}
+        onChange={(addOnsSection) => onChange({ ...value, addOnsSection })}
+      />
+
       <CardListEditor
         items={value.addOns}
         onChange={(addOns) => onChange({ ...value, addOns })}
         options={{
-          title: "Add-on cards",
-          description: "Manage add-on titles, descriptions, notes, and optional links.",
+          title: "9. Add-on cards",
+          description: "These cards match the optional add-on cards shown near the bottom of the pricing page.",
+          itemName: "Add-on card",
+          titleLabel: "Add-on title",
+          descriptionLabel: "Add-on description",
           noteLabel: "Pricing note",
           showHref: true,
           showCtaLabel: true,
@@ -1035,6 +1142,17 @@ function PricingPageEditor({
           }),
         }}
       />
+
+      <Panel
+        title="10. Final CTA eyebrow"
+        description="Small label shown above the final pricing call-to-action block."
+      >
+        <InputField
+          label="CTA eyebrow"
+          value={value.ctaEyebrow}
+          onChange={(ctaEyebrow) => onChange({ ...value, ctaEyebrow })}
+        />
+      </Panel>
     </div>
   );
 }
@@ -1048,30 +1166,15 @@ function ContactPageEditor({
 }) {
   return (
     <div className="space-y-4">
-      <Panel title="Hero support content" description="Manage the contact hero badge, quick links, and CTA eyebrow.">
+      <Panel
+        title="1. Hero top area"
+        description="These fields match the top contact hero area on the frontend."
+      >
         <div className="grid gap-4">
           <InputField
             label="Hero badge"
             value={value.heroBadge}
             onChange={(heroBadge) => onChange({ ...value, heroBadge })}
-          />
-          <InputField
-            label="CTA eyebrow"
-            value={value.ctaEyebrow}
-            onChange={(ctaEyebrow) => onChange({ ...value, ctaEyebrow })}
-          />
-        </div>
-      </Panel>
-
-      <Panel title="Section copy" description="Control the quick-contact and form section headings and descriptions.">
-        <div className="space-y-4">
-          <SectionCopyEditor
-            value={value.quickContactSection}
-            onChange={(quickContactSection) => onChange({ ...value, quickContactSection })}
-          />
-          <SectionCopyEditor
-            value={value.formSection}
-            onChange={(formSection) => onChange({ ...value, formSection })}
           />
         </div>
       </Panel>
@@ -1080,8 +1183,11 @@ function ContactPageEditor({
         items={value.heroPaths}
         onChange={(heroPaths) => onChange({ ...value, heroPaths })}
         options={{
-          title: "Hero path cards",
-          description: "Edit the three quick action cards shown in the hero section.",
+          title: "2. Hero quick action cards",
+          description: "These are the cards shown on the right side of the contact hero section.",
+          itemName: "Quick action card",
+          titleLabel: "Card title",
+          descriptionLabel: "Card description",
           showHref: true,
           createItem: () => ({
             id: createId("contact-path"),
@@ -1092,12 +1198,22 @@ function ContactPageEditor({
         }}
       />
 
+      <SectionCopyPanel
+        title="3. Quick contact section heading"
+        description="Heading block above the quick contact method cards."
+        value={value.quickContactSection}
+        onChange={(quickContactSection) => onChange({ ...value, quickContactSection })}
+      />
+
       <CardListEditor
         items={value.quickContactMethods}
         onChange={(quickContactMethods) => onChange({ ...value, quickContactMethods })}
         options={{
-          title: "Quick contact cards",
-          description: "Add, edit, or remove verified quick-contact cards.",
+          title: "4. Quick contact cards",
+          description: "These cards match the quick-contact cards shown below the hero section.",
+          itemName: "Contact card",
+          titleLabel: "Card title",
+          descriptionLabel: "Card description",
           showHref: true,
           createItem: () => ({
             id: createId("contact-method"),
@@ -1107,6 +1223,24 @@ function ContactPageEditor({
           }),
         }}
       />
+
+      <SectionCopyPanel
+        title="5. Contact form section heading"
+        description="Heading block above the enquiry form."
+        value={value.formSection}
+        onChange={(formSection) => onChange({ ...value, formSection })}
+      />
+
+      <Panel
+        title="6. Final CTA eyebrow"
+        description="Small label shown above the final CTA area on the contact page."
+      >
+        <InputField
+          label="CTA eyebrow"
+          value={value.ctaEyebrow}
+          onChange={(ctaEyebrow) => onChange({ ...value, ctaEyebrow })}
+        />
+      </Panel>
     </div>
   );
 }
