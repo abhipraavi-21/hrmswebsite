@@ -226,6 +226,81 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 
+app.get("/", (_req, res) => {
+  res.type("html").send(`
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>HRMS API</title>
+        <style>
+          body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #14213d;
+          }
+          main {
+            max-width: 720px;
+            margin: 64px auto;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(20, 33, 61, 0.12);
+          }
+          h1 {
+            margin-top: 0;
+            font-size: 2rem;
+          }
+          p {
+            line-height: 1.6;
+          }
+          ul {
+            padding-left: 20px;
+          }
+          li {
+            margin-bottom: 12px;
+          }
+          a {
+            color: #1d4ed8;
+            text-decoration: none;
+          }
+          a:hover {
+            text-decoration: underline;
+          }
+          .tag {
+            display: inline-block;
+            margin-bottom: 16px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+          }
+        </style>
+      </head>
+      <body>
+        <main>
+          <span class="tag">Service Active</span>
+          <h1>HRMS backend is running.</h1>
+          <p>
+            This Render service powers the admin panel, SEO panel, blogs, and public site state.
+            The frontend should be opened from your Vercel website, while this URL is used for API access.
+          </p>
+          <ul>
+            <li><a href="/api/health">/api/health</a> for health check</li>
+            <li><a href="/api/site/state">/api/site/state</a> for public site data</li>
+            <li><a href="/api/blogs">/api/blogs</a> for published blog data</li>
+          </ul>
+        </main>
+      </body>
+    </html>
+  `);
+});
+
 app.get("/api/health", async (_req, res) => {
   res.json({
     success: true,
