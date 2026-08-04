@@ -257,6 +257,10 @@ function useUnsavedChangesWarning(enabled: boolean) {
   }, [enabled]);
 }
 
+function getPageVisibilityValue(status: WorkflowStatus) {
+  return status === "Published" || status === "Approved" ? "Published" : "Draft";
+}
+
 function getStatusTone(status: string) {
   if (status === "Published" || status === "Connected" || status === "Qualified" || status === "Converted" || status === "Active") {
     return "bg-emerald-500/12 text-emerald-700 dark:text-emerald-300";
@@ -807,10 +811,12 @@ export function AdminContentWorkspacePage({ type }: { type: ContentType }) {
       filtered[0] ??
       records[0];
   const isBlog = type === "Blog";
+  const isPageWorkspace = type === "Page";
   const form = useForm<z.infer<typeof contentFormSchema>>({
     resolver: zodResolver(contentFormSchema),
     defaultValues: contentRecordToForm(selected),
   });
+  const pageVisibilityValue = getPageVisibilityValue(form.watch("status"));
 
   useEffect(() => {
     form.reset(contentRecordToForm(selected));
@@ -842,97 +848,180 @@ export function AdminContentWorkspacePage({ type }: { type: ContentType }) {
 
       <div className="grid gap-6 xl:grid-cols-[1.35fr_0.95fr]">
         <AdminSection
-          title={`${type} workspace`}
-          description={getContentWorkspaceDescription(type)}
+          title={isPageWorkspace ? "Frontend pages" : `${type} workspace`}
+          description={
+            isPageWorkspace
+              ? "Choose a page and edit the same content blocks your client sees on the website."
+              : getContentWorkspaceDescription(type)
+          }
           actions={
             <div className="flex flex-wrap gap-2">
               <div className="relative min-w-[200px]">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input value={query} onChange={(event) => setQuery(event.target.value)} className="h-10 rounded-xl pl-9" placeholder={`Search ${type.toLowerCase()}s`} />
+                <Input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  className="h-10 rounded-xl pl-9"
+                  placeholder={isPageWorkspace ? "Search pages" : `Search ${type.toLowerCase()}s`}
+                />
               </div>
-              <div className="relative">
-                <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <select
-                  value={statusFilter}
-                  onChange={(event) => setStatusFilter(event.target.value)}
-                  className="h-10 rounded-xl border border-border bg-background pl-9 pr-10 text-sm"
-                >
-                  <option>All</option>
-                  {workflowStatuses.map((status) => (
-                    <option key={status}>{status}</option>
-                  ))}
-                </select>
-              </div>
-              <Button
-                type="button"
-                variant="outline"
-                className="rounded-xl"
-                onClick={() => {
-                  setIsCreatingNew(true);
-                  setQuery("");
-                  setStatusFilter("All");
-                  form.reset(contentRecordToForm(draftRecord));
-                }}
-              >
-                <Plus className="h-4 w-4" />
-                New {getContentActionLabel(type)}
-              </Button>
+              {isPageWorkspace ? (
+                <div className="rounded-full bg-muted px-3 py-2 text-xs font-medium text-muted-foreground">
+                  Edit once here and the frontend page updates after save.
+                </div>
+              ) : (
+                <>
+                  <div className="relative">
+                    <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <select
+                      value={statusFilter}
+                      onChange={(event) => setStatusFilter(event.target.value)}
+                      className="h-10 rounded-xl border border-border bg-background pl-9 pr-10 text-sm"
+                    >
+                      <option>All</option>
+                      {workflowStatuses.map((status) => (
+                        <option key={status}>{status}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-xl"
+                    onClick={() => {
+                      setIsCreatingNew(true);
+                      setQuery("");
+                      setStatusFilter("All");
+                      form.reset(contentRecordToForm(draftRecord));
+                    }}
+                  >
+                    <Plus className="h-4 w-4" />
+                    New {getContentActionLabel(type)}
+                  </Button>
+                </>
+              )}
             </div>
           }
         >
           {filtered.length ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>SEO</TableHead>
-                  <TableHead>Owner</TableHead>
-                  <TableHead>Updated</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filtered.map((item) => (
-                  <TableRow
-                    key={item.id}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      setIsCreatingNew(false);
-                      setSelectedId(item.id);
-                    }}
-                  >
-                    <TableCell>
-                      <div>
-                        <p className="font-medium text-foreground">{item.title}</p>
-                        <p className="text-xs text-muted-foreground">{item.slug}</p>
+            isPageWorkspace ? (
+              <div className="space-y-3">
+                {filtered.map((item) => {
+                  const liveStatus = getPageVisibilityValue(item.status) === "Published";
+
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => {
+                        setIsCreatingNew(false);
+                        setSelectedId(item.id);
+                      }}
+                      className={cn(
+                        "w-full rounded-[24px] border px-4 py-4 text-left transition",
+                        selected?.id === item.id
+                          ? "border-primary bg-primary/5 shadow-sm"
+                          : "border-border/70 hover:bg-muted/40",
+                      )}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="font-medium text-foreground">{item.title}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">{item.slug}</p>
+                        </div>
+                        <StatusBadge value={liveStatus ? "Live" : "Hidden"} />
                       </div>
-                    </TableCell>
-                    <TableCell><StatusBadge value={item.status} /></TableCell>
-                    <TableCell>{item.seoScore}/100</TableCell>
-                    <TableCell>{item.owner}</TableCell>
-                    <TableCell>{item.updatedAt}</TableCell>
+                      <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                        {item.heroTitle || item.summary}
+                      </p>
+                      <p className="mt-3 text-xs font-medium text-primary">
+                        {supportsManagedPageEditor(item.slug)
+                          ? "Direct section editor available"
+                          : "Simple hero and CTA editor"}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Title</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>SEO</TableHead>
+                    <TableHead>Owner</TableHead>
+                    <TableHead>Updated</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filtered.map((item) => (
+                    <TableRow
+                      key={item.id}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setIsCreatingNew(false);
+                        setSelectedId(item.id);
+                      }}
+                    >
+                      <TableCell>
+                        <div>
+                          <p className="font-medium text-foreground">{item.title}</p>
+                          <p className="text-xs text-muted-foreground">{item.slug}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell><StatusBadge value={item.status} /></TableCell>
+                      <TableCell>{item.seoScore}/100</TableCell>
+                      <TableCell>{item.owner}</TableCell>
+                      <TableCell>{item.updatedAt}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )
           ) : (
-            <EmptyState title={`No ${type.toLowerCase()}s match this filter`} description="Try clearing the search term or switching to another publishing status." />
+            <EmptyState
+              title={`No ${type.toLowerCase()}s match this filter`}
+              description="Try clearing the search term or switching to another publishing status."
+            />
           )}
         </AdminSection>
 
         <AdminSection
-          title={isCreatingNew ? `Create ${type}` : selected ? `Edit ${selected.title}` : `${type} details`}
+          title={
+            isPageWorkspace
+              ? selected
+                ? `${selected.title} page editor`
+                : "Page editor"
+              : isCreatingNew
+                ? `Create ${type}`
+                : selected
+                  ? `Edit ${selected.title}`
+                  : `${type} details`
+          }
           description={
-            isCreatingNew
-              ? `Add a new ${type.toLowerCase()} with publish-ready content and linked SEO defaults.`
-              : selected
-                ? "Update content, publishing, and frontend CTA fields."
-                : selected?.summary
+            isPageWorkspace
+              ? selected
+                ? "Edit the visible page content here. SEO metadata can stay in SEO Management."
+                : "Select a page to edit the live frontend content."
+              : isCreatingNew
+                ? `Add a new ${type.toLowerCase()} with publish-ready content and linked SEO defaults.`
+                : selected
+                  ? "Update content, publishing, and frontend CTA fields."
+                  : selected?.summary
           }
           actions={
             selected ? (
               <div className="flex flex-wrap items-center gap-2">
-                {!isCreatingNew ? (
+                {isPageWorkspace ? (
+                  <Button type="button" variant="outline" className="rounded-xl" asChild>
+                    <a href={selected.slug} target="_blank" rel="noreferrer">
+                      <ExternalLink className="h-4 w-4" />
+                      Open live page
+                    </a>
+                  </Button>
+                ) : null}
+                {!isCreatingNew && !isPageWorkspace ? (
                   <Button
                     type="button"
                     variant="destructive"
@@ -951,7 +1040,15 @@ export function AdminContentWorkspacePage({ type }: { type: ContentType }) {
                   </Button>
                 ) : null}
                 <div className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-                  {isCreatingNew ? "New draft" : hasUnsavedChanges ? "Unsaved changes" : "All changes saved"}
+                  {isPageWorkspace
+                    ? hasUnsavedChanges
+                      ? "Unsaved page changes"
+                      : "Frontend synced"
+                    : isCreatingNew
+                      ? "New draft"
+                      : hasUnsavedChanges
+                        ? "Unsaved changes"
+                        : "All changes saved"}
                 </div>
               </div>
             ) : null
@@ -1001,150 +1098,372 @@ export function AdminContentWorkspacePage({ type }: { type: ContentType }) {
                 updateContentRecord(selected.id, payload);
               })}
             >
-              <div className="flex flex-wrap items-center gap-2">
-                <StatusBadge value={selected.status} />
-                <StatusBadge value={`${selected.seoScore}/100 SEO`} />
-                <StatusBadge value={`${selected.trafficShare}% traffic share`} />
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <Field label="Title" error={form.formState.errors.title?.message}>
-                  <Input {...form.register("title")} className="rounded-xl" />
-                </Field>
-                <Field label="Slug" error={form.formState.errors.slug?.message}>
-                  <Input {...form.register("slug")} className="rounded-xl" />
-                </Field>
-              </div>
-
-              {isBlog ? (
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Field label="Category" error={form.formState.errors.category?.message}>
-                    <Input {...form.register("category")} className="rounded-xl" placeholder="SEO, Payroll, HR Software" />
-                  </Field>
-                  <Field label="Author" error={form.formState.errors.author?.message}>
-                    <Input {...form.register("author")} className="rounded-xl" placeholder="Editorial author name" />
-                  </Field>
-                </div>
-              ) : null}
-
-              <Field label="Summary" error={form.formState.errors.summary?.message}>
-                <Textarea {...form.register("summary")} rows={4} className="rounded-2xl" />
-              </Field>
-
-              {isBlog ? (
-                <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
-                  <p className="text-sm font-semibold text-foreground">Blog card fields</p>
-                  <div className="mt-4 grid gap-4">
-                    <Field label="Featured image URL" error={form.formState.errors.featuredImage?.message}>
-                      <Input
-                        {...form.register("featuredImage")}
-                        className="rounded-xl"
-                        placeholder="https://... or /blog/cover.svg"
-                      />
-                    </Field>
-                    <Field label="Featured image alt text" error={form.formState.errors.featuredImageAlt?.message}>
-                      <Input
-                        {...form.register("featuredImageAlt")}
-                        className="rounded-xl"
-                        placeholder="Describe the cover image"
-                      />
-                    </Field>
-                  </div>
-                </div>
-              ) : null}
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <Field label="Focus keyword" error={form.formState.errors.focusKeyword?.message}>
-                  <Input {...form.register("focusKeyword")} className="rounded-xl" />
-                </Field>
-                <Field label="Owner" error={form.formState.errors.owner?.message}>
-                  <Input {...form.register("owner")} className="rounded-xl" />
-                </Field>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                <Field label="Reading time" error={form.formState.errors.readingTime?.message}>
-                  <Input {...form.register("readingTime")} className="rounded-xl" />
-                </Field>
-                <Field label="Sections" error={form.formState.errors.sections?.message}>
-                  <Input type="number" {...form.register("sections")} className="rounded-xl" />
-                </Field>
-                <Field label="SEO score" error={form.formState.errors.seoScore?.message}>
-                  <Input type="number" {...form.register("seoScore")} className="rounded-xl" />
-                </Field>
-                <Field label="Traffic share %" error={form.formState.errors.trafficShare?.message}>
-                  <Input type="number" {...form.register("trafficShare")} className="rounded-xl" />
-                </Field>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <Field label="Publish date" error={form.formState.errors.publishedAt?.message}>
-                  <Input {...form.register("publishedAt")} className="rounded-xl" placeholder="2026-08-04" />
-                </Field>
-                <Field label="Workflow status" error={form.formState.errors.status?.message}>
-                  <select {...form.register("status")} className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm">
-                    {workflowStatuses.map((status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    ))}
-                  </select>
-                </Field>
-              </div>
-
-              <Field label="Tags" error={form.formState.errors.tags?.message}>
-                <Input {...form.register("tags")} className="rounded-xl" placeholder="Hero, CTA, Pricing teaser" />
-              </Field>
-
-              <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
-                <p className="text-sm font-semibold text-foreground">Hero section</p>
-                <div className="mt-4 grid gap-4">
-                  <Field label="Hero title" error={form.formState.errors.heroTitle?.message}>
-                    <Input {...form.register("heroTitle")} className="rounded-xl" />
-                  </Field>
-                  <Field label="Hero description" error={form.formState.errors.heroDescription?.message}>
-                    <Textarea {...form.register("heroDescription")} rows={3} className="rounded-2xl" />
-                  </Field>
-                </div>
-              </div>
-
-              <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
-                <p className="text-sm font-semibold text-foreground">CTA block</p>
-                <div className="mt-4 grid gap-4">
-                  <Field label="CTA title" error={form.formState.errors.ctaTitle?.message}>
-                    <Input {...form.register("ctaTitle")} className="rounded-xl" />
-                  </Field>
-                  <Field label="CTA description" error={form.formState.errors.ctaDescription?.message}>
-                    <Textarea {...form.register("ctaDescription")} rows={3} className="rounded-2xl" />
-                  </Field>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <Field label="CTA button text" error={form.formState.errors.ctaButtonText?.message}>
-                      <Input {...form.register("ctaButtonText")} className="rounded-xl" />
-                    </Field>
-                    <Field label="CTA button URL" error={form.formState.errors.ctaButtonUrl?.message}>
-                      <Input {...form.register("ctaButtonUrl")} className="rounded-xl" placeholder="https://..." />
-                    </Field>
-                  </div>
-                </div>
-              </div>
-
-              {hasManagedPageEditor ? (
-                <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
-                  <p className="text-sm font-semibold text-foreground">Structured page sections</p>
-                  <p className="mt-1 text-xs leading-6 text-muted-foreground">
-                    Edit the direct frontend content blocks for this page without JSON.
-                  </p>
-                  <div className="mt-4">
-                    <PageManagedSectionsEditor
-                      slug={selected.slug}
-                      value={managedPageData}
-                      onChange={setManagedPageData}
+              {isPageWorkspace ? (
+                <>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <StatusBadge
+                      value={
+                        pageVisibilityValue === "Published"
+                          ? "Live on website"
+                          : "Hidden from website"
+                      }
                     />
+                    <StatusBadge value={selected.slug} />
                   </div>
-                </div>
-              ) : null}
 
-              <Button type="submit" className="rounded-xl">Save content fields</Button>
+                  <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
+                    <p className="text-sm font-semibold text-foreground">Page basics</p>
+                    <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                      Keep this simple: edit the live page title, visibility, and top content here.
+                    </p>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      <Field label="Page name" error={form.formState.errors.title?.message}>
+                        <Input {...form.register("title")} className="rounded-xl" />
+                      </Field>
+                      <Field label="Page URL">
+                        <Input
+                          value={selected.slug}
+                          readOnly
+                          className="rounded-xl bg-muted/40 text-muted-foreground"
+                        />
+                      </Field>
+                    </div>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      <Field label="Website visibility">
+                        <select
+                          value={pageVisibilityValue}
+                          onChange={(event) => {
+                            const nextStatus =
+                              event.target.value === "Published" ? "Published" : "Draft";
+                            form.setValue("status", nextStatus, {
+                              shouldDirty: true,
+                              shouldValidate: true,
+                            });
+
+                            if (nextStatus === "Published" && !form.getValues("publishedAt")) {
+                              form.setValue(
+                                "publishedAt",
+                                new Date().toISOString().slice(0, 10),
+                                { shouldDirty: true },
+                              );
+                            }
+                          }}
+                          className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm"
+                        >
+                          <option value="Published">Live on website</option>
+                          <option value="Draft">Hidden from website</option>
+                        </select>
+                      </Field>
+                      <Field label="Publish date" error={form.formState.errors.publishedAt?.message}>
+                        <Input
+                          {...form.register("publishedAt")}
+                          className="rounded-xl"
+                          placeholder="2026-08-04"
+                        />
+                      </Field>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
+                    <p className="text-sm font-semibold text-foreground">Hero section</p>
+                    <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                      This is the first content block users see on the page.
+                    </p>
+                    <div className="mt-4 grid gap-4">
+                      <Field label="Hero title" error={form.formState.errors.heroTitle?.message}>
+                        <Input {...form.register("heroTitle")} className="rounded-xl" />
+                      </Field>
+                      <Field
+                        label="Hero description"
+                        error={form.formState.errors.heroDescription?.message}
+                      >
+                        <Textarea
+                          {...form.register("heroDescription")}
+                          rows={3}
+                          className="rounded-2xl"
+                        />
+                      </Field>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
+                    <p className="text-sm font-semibold text-foreground">Page introduction</p>
+                    <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                      Use this short paragraph for the supporting intro text shown on the frontend.
+                    </p>
+                    <div className="mt-4">
+                      <Field label="Intro text" error={form.formState.errors.summary?.message}>
+                        <Textarea {...form.register("summary")} rows={4} className="rounded-2xl" />
+                      </Field>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
+                    <p className="text-sm font-semibold text-foreground">Call to action</p>
+                    <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                      These details control the final action section on the page.
+                    </p>
+                    <div className="mt-4 grid gap-4">
+                      <Field label="CTA title" error={form.formState.errors.ctaTitle?.message}>
+                        <Input {...form.register("ctaTitle")} className="rounded-xl" />
+                      </Field>
+                      <Field
+                        label="CTA description"
+                        error={form.formState.errors.ctaDescription?.message}
+                      >
+                        <Textarea
+                          {...form.register("ctaDescription")}
+                          rows={3}
+                          className="rounded-2xl"
+                        />
+                      </Field>
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <Field
+                          label="CTA button text"
+                          error={form.formState.errors.ctaButtonText?.message}
+                        >
+                          <Input {...form.register("ctaButtonText")} className="rounded-xl" />
+                        </Field>
+                        <Field
+                          label="CTA button URL"
+                          error={form.formState.errors.ctaButtonUrl?.message}
+                        >
+                          <Input
+                            {...form.register("ctaButtonUrl")}
+                            className="rounded-xl"
+                            placeholder="https://... or /contact-us"
+                          />
+                        </Field>
+                      </div>
+                    </div>
+                  </div>
+
+                  {hasManagedPageEditor ? (
+                    <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
+                      <p className="text-sm font-semibold text-foreground">
+                        Frontend content blocks
+                      </p>
+                      <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                        These fields are connected directly to the visible sections on this page.
+                      </p>
+                      <div className="mt-4">
+                        <PageManagedSectionsEditor
+                          slug={selected.slug}
+                          value={managedPageData}
+                          onChange={setManagedPageData}
+                        />
+                      </div>
+                    </div>
+                  ) : null}
+                </>
+              ) : (
+                <>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <StatusBadge value={selected.status} />
+                    <StatusBadge value={`${selected.seoScore}/100 SEO`} />
+                    <StatusBadge value={`${selected.trafficShare}% traffic share`} />
+                  </div>
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Field label="Title" error={form.formState.errors.title?.message}>
+                      <Input {...form.register("title")} className="rounded-xl" />
+                    </Field>
+                    <Field label="Slug" error={form.formState.errors.slug?.message}>
+                      <Input {...form.register("slug")} className="rounded-xl" />
+                    </Field>
+                  </div>
+
+                  {isBlog ? (
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <Field label="Category" error={form.formState.errors.category?.message}>
+                        <Input
+                          {...form.register("category")}
+                          className="rounded-xl"
+                          placeholder="SEO, Payroll, HR Software"
+                        />
+                      </Field>
+                      <Field label="Author" error={form.formState.errors.author?.message}>
+                        <Input
+                          {...form.register("author")}
+                          className="rounded-xl"
+                          placeholder="Editorial author name"
+                        />
+                      </Field>
+                    </div>
+                  ) : null}
+
+                  <Field label="Summary" error={form.formState.errors.summary?.message}>
+                    <Textarea {...form.register("summary")} rows={4} className="rounded-2xl" />
+                  </Field>
+
+                  {isBlog ? (
+                    <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
+                      <p className="text-sm font-semibold text-foreground">Blog card fields</p>
+                      <div className="mt-4 grid gap-4">
+                        <Field
+                          label="Featured image URL"
+                          error={form.formState.errors.featuredImage?.message}
+                        >
+                          <Input
+                            {...form.register("featuredImage")}
+                            className="rounded-xl"
+                            placeholder="https://... or /blog/cover.svg"
+                          />
+                        </Field>
+                        <Field
+                          label="Featured image alt text"
+                          error={form.formState.errors.featuredImageAlt?.message}
+                        >
+                          <Input
+                            {...form.register("featuredImageAlt")}
+                            className="rounded-xl"
+                            placeholder="Describe the cover image"
+                          />
+                        </Field>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Field label="Focus keyword" error={form.formState.errors.focusKeyword?.message}>
+                      <Input {...form.register("focusKeyword")} className="rounded-xl" />
+                    </Field>
+                    <Field label="Owner" error={form.formState.errors.owner?.message}>
+                      <Input {...form.register("owner")} className="rounded-xl" />
+                    </Field>
+                  </div>
+
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <Field label="Reading time" error={form.formState.errors.readingTime?.message}>
+                      <Input {...form.register("readingTime")} className="rounded-xl" />
+                    </Field>
+                    <Field label="Sections" error={form.formState.errors.sections?.message}>
+                      <Input type="number" {...form.register("sections")} className="rounded-xl" />
+                    </Field>
+                    <Field label="SEO score" error={form.formState.errors.seoScore?.message}>
+                      <Input type="number" {...form.register("seoScore")} className="rounded-xl" />
+                    </Field>
+                    <Field
+                      label="Traffic share %"
+                      error={form.formState.errors.trafficShare?.message}
+                    >
+                      <Input
+                        type="number"
+                        {...form.register("trafficShare")}
+                        className="rounded-xl"
+                      />
+                    </Field>
+                  </div>
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Field label="Publish date" error={form.formState.errors.publishedAt?.message}>
+                      <Input
+                        {...form.register("publishedAt")}
+                        className="rounded-xl"
+                        placeholder="2026-08-04"
+                      />
+                    </Field>
+                    <Field label="Workflow status" error={form.formState.errors.status?.message}>
+                      <select
+                        {...form.register("status")}
+                        className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm"
+                      >
+                        {workflowStatuses.map((status) => (
+                          <option key={status} value={status}>
+                            {status}
+                          </option>
+                        ))}
+                      </select>
+                    </Field>
+                  </div>
+
+                  <Field label="Tags" error={form.formState.errors.tags?.message}>
+                    <Input
+                      {...form.register("tags")}
+                      className="rounded-xl"
+                      placeholder="Hero, CTA, Pricing teaser"
+                    />
+                  </Field>
+
+                  <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
+                    <p className="text-sm font-semibold text-foreground">Hero section</p>
+                    <div className="mt-4 grid gap-4">
+                      <Field label="Hero title" error={form.formState.errors.heroTitle?.message}>
+                        <Input {...form.register("heroTitle")} className="rounded-xl" />
+                      </Field>
+                      <Field
+                        label="Hero description"
+                        error={form.formState.errors.heroDescription?.message}
+                      >
+                        <Textarea
+                          {...form.register("heroDescription")}
+                          rows={3}
+                          className="rounded-2xl"
+                        />
+                      </Field>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
+                    <p className="text-sm font-semibold text-foreground">CTA block</p>
+                    <div className="mt-4 grid gap-4">
+                      <Field label="CTA title" error={form.formState.errors.ctaTitle?.message}>
+                        <Input {...form.register("ctaTitle")} className="rounded-xl" />
+                      </Field>
+                      <Field
+                        label="CTA description"
+                        error={form.formState.errors.ctaDescription?.message}
+                      >
+                        <Textarea
+                          {...form.register("ctaDescription")}
+                          rows={3}
+                          className="rounded-2xl"
+                        />
+                      </Field>
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <Field
+                          label="CTA button text"
+                          error={form.formState.errors.ctaButtonText?.message}
+                        >
+                          <Input {...form.register("ctaButtonText")} className="rounded-xl" />
+                        </Field>
+                        <Field
+                          label="CTA button URL"
+                          error={form.formState.errors.ctaButtonUrl?.message}
+                        >
+                          <Input
+                            {...form.register("ctaButtonUrl")}
+                            className="rounded-xl"
+                            placeholder="https://..."
+                          />
+                        </Field>
+                      </div>
+                    </div>
+                  </div>
+
+                  {hasManagedPageEditor ? (
+                    <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
+                      <p className="text-sm font-semibold text-foreground">
+                        Structured page sections
+                      </p>
+                      <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                        Edit the direct frontend content blocks for this page without JSON.
+                      </p>
+                      <div className="mt-4">
+                        <PageManagedSectionsEditor
+                          slug={selected.slug}
+                          value={managedPageData}
+                          onChange={setManagedPageData}
+                        />
+                      </div>
+                    </div>
+                  ) : null}
+                </>
+              )}
+
+              <Button type="submit" className="rounded-xl">
+                {isPageWorkspace ? "Save page content" : "Save content fields"}
+              </Button>
             </form>
           ) : (
             <EmptyState title="Select a record" description="Choose a row from the table to review publishing and SEO details." />
