@@ -6,6 +6,7 @@ import { ArrowRight, CalendarDays, Headphones, Loader2, MessageSquare } from "lu
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
+import { getDefaultManagedPageData } from "@/admin/pageData";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
@@ -229,6 +230,8 @@ function HeroPathCard({
 export default function ContactUsPage() {
   const [status, setStatus] = useState<StatusState>({ type: "idle", message: "" });
   const contactContent = usePublicContentRecord(ROUTES.contact, "Page");
+  const defaultContactPageData = getDefaultManagedPageData(ROUTES.contact)?.contact;
+  const contactPageData = contactContent?.pageData?.contact ?? defaultContactPageData;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -240,7 +243,31 @@ export default function ContactUsPage() {
   const activeService =
     serviceOptions.find((item) => item.enquiryType === enquiryType) ?? serviceOptions[0];
 
-  const quickContactMethods = contactMethods.slice(0, 3);
+  const contactHeroBadge = contactPageData?.heroBadge ?? "Contact Us";
+  const heroPathSource = contactPageData?.heroPaths?.length ? contactPageData.heroPaths : defaultContactPageData?.heroPaths ?? [];
+  const quickContactSource =
+    contactPageData?.quickContactMethods?.length
+      ? contactPageData.quickContactMethods
+      : defaultContactPageData?.quickContactMethods ?? [];
+  const quickContactSection =
+    contactPageData?.quickContactSection ?? defaultContactPageData?.quickContactSection;
+  const formSection = contactPageData?.formSection ?? defaultContactPageData?.formSection;
+  const ctaEyebrow = contactPageData?.ctaEyebrow ?? "Ready to Start";
+  const heroPathIconKeys = ["messageSquare", "calendarDays", "headphones"] as const;
+  const quickContactIconKeys = ["messageSquare", "calendarDays", "headphones"] as const;
+  const heroPaths = heroPathSource.map((item, index) => ({
+    label: item.title,
+    description: item.description,
+    href: item.href ?? "#contact-form",
+    iconKey: heroPathIconKeys[index % heroPathIconKeys.length],
+  }));
+  const quickContactMethods = quickContactSource.map((item, index) => ({
+    id: item.id,
+    label: item.title,
+    description: item.description,
+    href: item.href ?? contactMethods[index % contactMethods.length]?.href ?? ROUTES.contact,
+    iconKey: quickContactIconKeys[index % quickContactIconKeys.length],
+  }));
   const contactHeroTitle = contactContent?.heroTitle ?? "Get in Touch with Altroz HRMS";
   const contactHeroDescription =
     contactContent?.heroDescription ??
@@ -292,7 +319,7 @@ export default function ContactUsPage() {
             <ScrollReveal variant="fade-up" className="lg:col-span-6">
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <MessageSquare className="h-4 w-4" />
-                Contact Us
+                {contactHeroBadge}
               </div>
               <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
                 {contactHeroTitle}
@@ -316,30 +343,11 @@ export default function ContactUsPage() {
 
             <ScrollReveal variant="fade-left" delay={80} className="lg:col-span-6">
               <div className="grid gap-4 sm:grid-cols-2">
-                {[
-                  {
-                    iconKey: "messageSquare" as const,
-                    title: "Product Enquiry",
-                    text: "Ask about product fit, pricing, or the right starting point.",
-                    href: "#contact-form",
-                  },
-                  {
-                    iconKey: "calendarDays" as const,
-                    title: "Book a Demo",
-                    text: "Open the demo workflow for a guided product walkthrough.",
-                    href: ROUTES.bookDemo,
-                  },
-                  {
-                    iconKey: "headphones" as const,
-                    title: "Support",
-                    text: "Use the support route for customer help and product questions.",
-                    href: ROUTES.support,
-                  },
-                ].map((item) => (
+                {heroPaths.map((item) => (
                   <HeroPathCard
-                    key={item.title}
-                    label={item.title}
-                    description={item.text}
+                    key={item.label}
+                    label={item.label}
+                    description={item.description}
                     href={item.href}
                     iconKey={item.iconKey}
                   />
@@ -353,9 +361,12 @@ export default function ContactUsPage() {
           <div className="site-container">
             <SectionHeading
               align="center"
-              eyebrow="Quick Contact"
-              title="Choose the Best Way to Reach Us"
-              description="Use one of the verified paths below to reach the Altroz HRMS team."
+              eyebrow={quickContactSection?.eyebrow ?? "Quick Contact"}
+              title={quickContactSection?.title ?? "Choose the Best Way to Reach Us"}
+              description={
+                quickContactSection?.description ??
+                "Use one of the verified paths below to reach the Altroz HRMS team."
+              }
             />
 
             <StaggerReveal
@@ -368,7 +379,7 @@ export default function ContactUsPage() {
                   label={item.label}
                   description={item.description}
                   href={item.href}
-                  iconKey={item.icon as keyof typeof iconMap}
+                  iconKey={item.iconKey}
                 />
               ))}
             </StaggerReveal>
@@ -379,9 +390,12 @@ export default function ContactUsPage() {
           <div className="site-container">
             <div className="mx-auto w-full max-w-4xl rounded-[2rem] border border-border bg-white p-5 shadow-float md:p-6">
               <SectionHeading
-                eyebrow="Send a Message"
-                title="Share your enquiry with the Altroz HRMS team"
-                description="Fill in the details below and the form will prepare a WhatsApp enquiry draft using the verified channel."
+                eyebrow={formSection?.eyebrow ?? "Send a Message"}
+                title={formSection?.title ?? "Share your enquiry with the Altroz HRMS team"}
+                description={
+                  formSection?.description ??
+                  "Fill in the details below and the form will prepare a WhatsApp enquiry draft using the verified channel."
+                }
               />
 
               <Form {...form}>
@@ -702,7 +716,7 @@ export default function ContactUsPage() {
               <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
                 <div className="lg:col-span-7">
                   <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
-                    Ready to Start
+                    {ctaEyebrow}
                   </div>
                   <h2 className="mt-2 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
                     {contactCtaTitle}

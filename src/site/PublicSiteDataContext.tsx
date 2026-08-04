@@ -1,13 +1,19 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type PropsWithChildren,
 } from "react";
 
 import type { ContentRecord, ContentType, SeoRecord } from "@/admin/types";
+import {
+  PUBLIC_SITE_STATE_UPDATED_EVENT,
+  PUBLIC_SITE_STATE_VERSION_KEY,
+} from "@/lib/siteStateEvents";
 import { fetchPublicSiteState, type PublicSiteState } from "@/lib/siteStateApi";
 import { normalizePath } from "@/routes/routeConfig.js";
 
@@ -39,42 +45,76 @@ export function PublicSiteDataProvider({ children }: PropsWithChildren) {
   const [data, setData] = useState<PublicSiteState | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const isMountedRef = useRef(true);
 
-  useEffect(() => {
-    let active = true;
-
-    async function loadSiteState() {
-      try {
-        const nextState = await fetchPublicSiteState();
-        if (!active) {
-          return;
-        }
-
-        setData(nextState);
-        setError("");
-      } catch (requestError) {
-        if (!active) {
-          return;
-        }
-
-        setError(
-          requestError instanceof Error
-            ? requestError.message
-            : "Unable to load published site data.",
-        );
-      } finally {
-        if (active) {
-          setIsLoading(false);
-        }
-      }
+  const loadSiteState = useCallback(async (showLoading = false) => {
+    if (showLoading) {
+      setIsLoading(true);
     }
 
-    void loadSiteState();
+    try {
+      const nextState = await fetchPublicSiteState();
+      if (!isMountedRef.current) {
+        return;
+      }
+
+      setData(nextState);
+      setError("");
+    } catch (requestError) {
+      if (!isMountedRef.current) {
+        return;
+      }
+
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : "Unable to load published site data.",
+      );
+    } finally {
+      if (showLoading && isMountedRef.current) {
+        setIsLoading(false);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    void loadSiteState(true);
 
     return () => {
-      active = false;
+      isMountedRef.current = false;
     };
-  }, []);
+  }, [loadSiteState]);
+
+  useEffect(() => {
+    const handleSiteStateUpdated = () => {
+      void loadSiteState();
+    };
+
+    const handleStorage = (event: StorageEvent) => {
+      if (
+        event.key === PUBLIC_SITE_STATE_VERSION_KEY &&
+        event.newValue &&
+        event.newValue !== event.oldValue
+      ) {
+        void loadSiteState();
+      }
+    };
+
+    window.addEventListener(
+      PUBLIC_SITE_STATE_UPDATED_EVENT,
+      handleSiteStateUpdated as EventListener,
+    );
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      window.removeEventListener(
+        PUBLIC_SITE_STATE_UPDATED_EVENT,
+        handleSiteStateUpdated as EventListener,
+      );
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [loadSiteState]);
 
   const value = useMemo(
     () => ({

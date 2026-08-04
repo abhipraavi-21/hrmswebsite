@@ -36,7 +36,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
-import { usePublishedContent } from "@/site/PublicSiteDataContext";
+import { usePublicContentRecord, usePublishedContent } from "@/site/PublicSiteDataContext";
 
 const pageTitle = "HR Compliance Guide India | PF, ESIC, Payroll & Labour Law | Altroz HR";
 const pageDescription =
@@ -577,6 +577,22 @@ export default function ComplianceGuidesPage() {
   const canonicalPath =
     typeof window !== "undefined" ? window.location.pathname : ROUTES.complianceGuides;
   const managedComplianceGuides = usePublishedContent("Compliance Guide");
+  const compliancePageContent = usePublicContentRecord(ROUTES.complianceGuides, "Page");
+  const complianceHeroTitle =
+    compliancePageContent?.heroTitle ?? "HR Compliance Guide for Indian Businesses";
+  const complianceHeroDescription =
+    compliancePageContent?.heroDescription ??
+    "Understanding HR compliance in India does not have to be complicated. From Provident Fund and ESIC to payroll compliance and employee documentation, Altroz HR brings together simple, practical guides that help HR teams, payroll executives and business owners manage everyday HR work with more confidence.";
+  const complianceHeroSummary =
+    compliancePageContent?.summary ??
+    "Explore the guide library to build stronger processes, clearer records and a more organized compliance workflow.";
+  const complianceCtaTitle =
+    compliancePageContent?.ctaTitle ?? "Simplify HR compliance with Altroz HR";
+  const complianceCtaDescription =
+    compliancePageContent?.ctaDescription ??
+    "Explore the growing library of HR compliance guides, or see how Altroz HR helps teams stay organized across attendance, leave, payroll and documentation.";
+  const complianceCtaButtonText =
+    compliancePageContent?.ctaButtonText ?? "Explore HR Guides";
 
   return (
     <div className="min-h-screen bg-background">
@@ -601,26 +617,22 @@ export default function ComplianceGuidesPage() {
                 <div className="flex justify-center lg:justify-start">
                   <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                     <Sparkles className="h-4 w-4" />
-                    HR Compliance Made Simple
+                    {compliancePageContent?.title ?? "HR Compliance Made Simple"}
                   </span>
                 </div>
                 <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
-                  HR Compliance Guide for Indian Businesses
+                  {complianceHeroTitle}
                 </h1>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-ink-soft sm:text-lg">
-                  Understanding HR compliance in India does not have to be complicated. From
-                  Provident Fund and ESIC to payroll compliance and employee documentation,
-                  Altroz HR brings together simple, practical guides that help HR teams, payroll
-                  executives and business owners manage everyday HR work with more confidence.
+                  {complianceHeroDescription}
                 </p>
                 <p className="mt-4 max-w-xl text-sm leading-6 text-ink-soft">
-                  Explore the guide library to build stronger processes, clearer records and a more
-                  organized compliance workflow.
+                  {complianceHeroSummary}
                 </p>
 
                 <div className="button-group mt-6">
                   <Button asChild className="h-11 rounded-full bg-primary px-6 font-semibold text-white">
-                    <a href="#compliance-categories">Explore Compliance Guides</a>
+                    <a href="#compliance-categories">{compliancePageContent?.ctaButtonText ?? "Explore Compliance Guides"}</a>
                   </Button>
                   <Button asChild variant="outline" className="h-11 rounded-full px-6 font-semibold">
                     <Link to={ROUTES.bookDemo}>Book a Free Demo</Link>
@@ -898,14 +910,13 @@ export default function ComplianceGuidesPage() {
               <div className="relative grid gap-6 lg:grid-cols-12 lg:items-center">
                 <div className="lg:col-span-7">
                   <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
-                    Final CTA
+                    {compliancePageContent?.focusKeyword ?? "Final CTA"}
                   </div>
                   <h2 className="mt-3 text-3xl font-bold leading-tight text-ink sm:text-4xl">
-                    Simplify HR compliance with Altroz HR
+                    {complianceCtaTitle}
                   </h2>
                   <p className="mt-3 max-w-3xl text-base leading-7 text-ink-soft">
-                    Explore the growing library of HR compliance guides, or see how Altroz HR helps
-                    teams stay organized across attendance, leave, payroll and documentation.
+                    {complianceCtaDescription}
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-2">
@@ -924,7 +935,7 @@ export default function ComplianceGuidesPage() {
                 <div className="lg:col-span-5">
                   <div className="button-group lg:justify-end">
                     <Button asChild className="h-11 rounded-full bg-primary px-6 font-semibold text-white">
-                      <Link to={ROUTES.learn}>Explore HR Guides</Link>
+                      <Link to={ROUTES.learn}>{complianceCtaButtonText}</Link>
                     </Button>
                     <Button asChild variant="outline" className="h-11 rounded-full px-6 font-semibold">
                       <Link to={ROUTES.bookDemo}>Book Free Demo</Link>

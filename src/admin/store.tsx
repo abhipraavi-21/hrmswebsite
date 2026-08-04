@@ -4,15 +4,23 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type PropsWithChildren,
 } from "react";
 
 import { toast } from "sonner";
 
+import { announcePublicSiteStateUpdated } from "@/lib/siteStateEvents";
 import { fetchAdminWorkspace, saveAdminWorkspace } from "@/lib/siteStateApi";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 import { adminDemoPassword } from "./config";
+import {
+  cloneManagedPageData,
+  getDefaultManagedPageData,
+  managedResourcePageSeeds,
+} from "./pageData";
 import type {
   ActivityLog,
   AdminRole,
@@ -41,6 +49,35 @@ const ALT_TEXT_COVERAGE_WARNING = "One image block still needs alt text coverage
 const HOME_PAGE_FEATURED_IMAGE = "/hrms-models/workforce-dashboard.png";
 const HOME_PAGE_FEATURED_IMAGE_ALT =
   "Altroz HRMS dashboard preview showing workforce, attendance, and employee operations";
+const SINGLE_ADMIN_NAME = "Altroz Admin";
+const SINGLE_ADMIN_EMAIL = "admin@altrozhr.com";
+const SINGLE_ADMIN_AVATAR = "AA";
+const SINGLE_ADMIN_ROLE: AdminRole = "Admin";
+
+function buildSingleAdminUser(lastLogin = "2026-08-04 09:18"): UserRecord {
+  return {
+    id: "user-admin",
+    name: SINGLE_ADMIN_NAME,
+    email: SINGLE_ADMIN_EMAIL,
+    role: SINGLE_ADMIN_ROLE,
+    status: "Active",
+    lastLogin,
+    avatar: SINGLE_ADMIN_AVATAR,
+  };
+}
+
+function normalizeSessionUser(sessionUser: AdminSessionUser | null): AdminSessionUser | null {
+  if (!sessionUser) {
+    return null;
+  }
+
+  return {
+    name: SINGLE_ADMIN_NAME,
+    email: SINGLE_ADMIN_EMAIL,
+    role: SINGLE_ADMIN_ROLE,
+    avatar: SINGLE_ADMIN_AVATAR,
+  };
+}
 
 const initialStore: AdminStore = {
   content: [
@@ -764,51 +801,7 @@ const initialStore: AdminStore = {
     { title: "Provident Fund Guide", visits: 3450, conversions: 56 },
   ],
   users: [
-    {
-      id: "user-1",
-      name: "Sara Khan",
-      email: "sara@altrozhr.com",
-      role: "Super Admin",
-      status: "Active",
-      lastLogin: "2026-08-04 09:18",
-      avatar: "SK",
-    },
-    {
-      id: "user-2",
-      name: "Avni Mehra",
-      email: "avni@altrozhr.com",
-      role: "SEO Manager",
-      status: "Active",
-      lastLogin: "2026-08-04 08:32",
-      avatar: "AM",
-    },
-    {
-      id: "user-3",
-      name: "Karan Bedi",
-      email: "karan@altrozhr.com",
-      role: "Content Writer",
-      status: "Active",
-      lastLogin: "2026-08-03 18:05",
-      avatar: "KB",
-    },
-    {
-      id: "user-4",
-      name: "Ria Das",
-      email: "ria@altrozhr.com",
-      role: "Editor",
-      status: "Active",
-      lastLogin: "2026-08-04 07:40",
-      avatar: "RD",
-    },
-    {
-      id: "user-5",
-      name: "Nisha Verma",
-      email: "nisha@altrozhr.com",
-      role: "Client Admin",
-      status: "Pending",
-      lastLogin: "2026-08-02 16:11",
-      avatar: "NV",
-    },
+    buildSingleAdminUser(),
   ],
   activities: [
     {
@@ -1001,7 +994,7 @@ function readSession(): AdminSessionUser | null {
   }
 
   const raw = localStorage.getItem(LOCAL_SESSION_KEY) ?? sessionStorage.getItem(SESSION_SESSION_KEY);
-  return raw ? (JSON.parse(raw) as AdminSessionUser) : null;
+  return raw ? normalizeSessionUser(JSON.parse(raw) as AdminSessionUser) : null;
 }
 
 function appendActivity(
@@ -1074,15 +1067,39 @@ function getDefaultSchemaTypes(type: ContentType, slug: string) {
 
 function normalizeAdminStore(store: AdminStore): AdminStore {
   const normalizedContent = store.content.map((item) => {
+    const defaultPageData = getDefaultManagedPageData(item.slug);
+    const nextItem: ContentRecord = {
+      ...item,
+      owner: SINGLE_ADMIN_NAME,
+      ...(defaultPageData && !item.pageData
+        ? { pageData: cloneManagedPageData(defaultPageData) }
+        : {}),
+    };
+
     if (item.id !== "page-home") {
-      return item;
+      return nextItem;
     }
 
     return {
-      ...item,
+      ...nextItem,
       featuredImage: item.featuredImage || HOME_PAGE_FEATURED_IMAGE,
       featuredImageAlt: item.featuredImageAlt?.trim() || HOME_PAGE_FEATURED_IMAGE_ALT,
     };
+  });
+
+  const existingPageIds = new Set(normalizedContent.map((item) => item.id));
+  const existingPageSlugs = new Set(normalizedContent.map((item) => normalizeSlug(item.slug)));
+
+  managedResourcePageSeeds.forEach((seed) => {
+    if (existingPageIds.has(seed.id) || existingPageSlugs.has(normalizeSlug(seed.slug))) {
+      return;
+    }
+
+    normalizedContent.push({
+      ...seed,
+      type: "Page",
+      updatedAt: "2026-08-04 12:30",
+    });
   });
 
   const contentById = new Map(normalizedContent.map((item) => [item.id, item]));
@@ -1104,14 +1121,30 @@ function normalizeAdminStore(store: AdminStore): AdminStore {
       twitterImage: item.twitterImage || linkedContent?.featuredImage,
       linkedInImage: item.linkedInImage || linkedContent?.featuredImage,
       whatsAppImage: item.whatsAppImage || linkedContent?.featuredImage,
-      warnings: nextWarnings,
-    };
+        warnings: nextWarnings,
+      };
   });
+
+  const seoEntityIds = new Set(normalizedSeo.map((item) => item.entityId));
+  const generatedSeo = normalizedContent
+    .filter((item) => !seoEntityIds.has(item.id))
+    .map((item) =>
+      createSeoRecordFromContent(item, store.siteSettings.canonicalBaseUrl, item.updatedAt),
+    );
+  const latestAdminLogin =
+    store.users.find((item) => item.status === "Active")?.lastLogin ?? "2026-08-04 09:18";
 
   return {
     ...store,
     content: normalizedContent,
-    seo: normalizedSeo,
+    seo: [...normalizedSeo, ...generatedSeo],
+    media: store.media.map((item) => ({ ...item, uploadedBy: SINGLE_ADMIN_NAME })),
+    leads: store.leads.map((item) => ({
+      ...item,
+      assignedTo: item.assignedTo === "Unassigned" ? item.assignedTo : SINGLE_ADMIN_NAME,
+    })),
+    users: [buildSingleAdminUser(latestAdminLogin)],
+    activities: store.activities.map((item) => ({ ...item, user: SINGLE_ADMIN_NAME })),
   };
 }
 
@@ -1223,6 +1256,12 @@ export function AdminProvider({ children }: PropsWithChildren) {
     return saved ?? (normalizedInitialStore.siteSettings.darkModeDefault ? "dark" : "light");
   });
   const [hasLoadedRemoteWorkspace, setHasLoadedRemoteWorkspace] = useState(false);
+  const latestStoreRef = useRef(store);
+  const latestSessionUserRef = useRef(sessionUser);
+  const hasLoadedRemoteWorkspaceRef = useRef(hasLoadedRemoteWorkspace);
+  const lastSavedSignatureRef = useRef("");
+  const saveTimeoutRef = useRef<number | null>(null);
+  const saveQueueRef = useRef(Promise.resolve());
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -1242,6 +1281,52 @@ export function AdminProvider({ children }: PropsWithChildren) {
   }, [theme]);
 
   useEffect(() => {
+    latestStoreRef.current = store;
+  }, [store]);
+
+  useEffect(() => {
+    latestSessionUserRef.current = sessionUser;
+  }, [sessionUser]);
+
+  useEffect(() => {
+    hasLoadedRemoteWorkspaceRef.current = hasLoadedRemoteWorkspace;
+  }, [hasLoadedRemoteWorkspace]);
+
+  const persistWorkspace = useCallback((storeSnapshot: AdminStore) => {
+    const activeSession = latestSessionUserRef.current;
+    if (!activeSession || !hasLoadedRemoteWorkspaceRef.current) {
+      return Promise.resolve();
+    }
+
+    const signature = JSON.stringify(storeSnapshot);
+    if (signature === lastSavedSignatureRef.current) {
+      return Promise.resolve();
+    }
+
+    const queuedSave = saveQueueRef.current
+      .catch(() => undefined)
+      .then(async () => {
+        await saveAdminWorkspace(activeSession.role, storeSnapshot);
+        lastSavedSignatureRef.current = signature;
+        announcePublicSiteStateUpdated();
+      });
+
+    saveQueueRef.current = queuedSave;
+    return queuedSave;
+  }, []);
+
+  const flushPendingWorkspaceSave = useCallback(() => {
+    if (saveTimeoutRef.current !== null) {
+      window.clearTimeout(saveTimeoutRef.current);
+      saveTimeoutRef.current = null;
+    }
+
+    return persistWorkspace(latestStoreRef.current).catch(() => {
+      // Keep local persistence as the fallback even if the API is unavailable.
+    });
+  }, [persistWorkspace]);
+
+  useEffect(() => {
     if (!sessionUser) {
       setHasLoadedRemoteWorkspace(false);
       return;
@@ -1257,7 +1342,9 @@ export function AdminProvider({ children }: PropsWithChildren) {
         }
 
         if (remoteWorkspace) {
-          setStore(normalizeAdminStore(remoteWorkspace));
+          const normalizedWorkspace = normalizeAdminStore(remoteWorkspace);
+          setStore(normalizedWorkspace);
+          lastSavedSignatureRef.current = JSON.stringify(normalizedWorkspace);
         }
 
         setHasLoadedRemoteWorkspace(true);
@@ -1278,14 +1365,46 @@ export function AdminProvider({ children }: PropsWithChildren) {
       return;
     }
 
-    const timeoutId = window.setTimeout(() => {
-      void saveAdminWorkspace(sessionUser.role, store).catch(() => {
+    if (saveTimeoutRef.current !== null) {
+      window.clearTimeout(saveTimeoutRef.current);
+    }
+
+    const nextSnapshot = store;
+    saveTimeoutRef.current = window.setTimeout(() => {
+      saveTimeoutRef.current = null;
+      void persistWorkspace(nextSnapshot).catch(() => {
         // Keep local persistence as the fallback even if the API is unavailable.
       });
     }, 700);
 
-    return () => window.clearTimeout(timeoutId);
-  }, [hasLoadedRemoteWorkspace, sessionUser, store]);
+    return () => {
+      if (saveTimeoutRef.current !== null) {
+        window.clearTimeout(saveTimeoutRef.current);
+        saveTimeoutRef.current = null;
+      }
+    };
+  }, [hasLoadedRemoteWorkspace, persistWorkspace, sessionUser, store]);
+
+  useEffect(() => {
+    const handlePageHide = () => {
+      void flushPendingWorkspaceSave();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        void flushPendingWorkspaceSave();
+      }
+    };
+
+    window.addEventListener("pagehide", handlePageHide);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("pagehide", handlePageHide);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      void flushPendingWorkspaceSave();
+    };
+  }, [flushPendingWorkspaceSave]);
 
   const counts = useMemo(() => buildCounts(store), [store]);
 
@@ -1294,7 +1413,7 @@ export function AdminProvider({ children }: PropsWithChildren) {
       const user = store.users.find((item) => item.email.toLowerCase() === email.toLowerCase());
 
       if (!user || password !== adminDemoPassword) {
-        toast.error("Invalid credentials. Use one of the seeded admin emails and the demo password.");
+        toast.error("Invalid credentials. Use the admin email and demo password.");
         return false;
       }
 
@@ -1303,12 +1422,12 @@ export function AdminProvider({ children }: PropsWithChildren) {
         return false;
       }
 
-      const nextSession: AdminSessionUser = {
+      const nextSession = normalizeSessionUser({
         name: user.name,
         email: user.email,
         role: user.role,
         avatar: user.avatar,
-      };
+      }) as AdminSessionUser;
 
       if (remember) {
         localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(nextSession));
@@ -1340,11 +1459,7 @@ export function AdminProvider({ children }: PropsWithChildren) {
           },
         ),
       );
-      if (user.status === "Pending") {
-        toast.success(`Welcome, ${user.name}. This invited account is now active in demo mode.`);
-        return true;
-      }
-      toast.success(`Welcome back, ${user.name}.`);
+      toast.success(`Welcome back, ${nextSession.name}.`);
       return true;
     },
     [store.users],

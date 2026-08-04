@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { getDefaultManagedPageData } from "@/admin/pageData";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
@@ -84,8 +85,10 @@ const clampValue = (value: number, min: number, max: number) => Math.min(max, Ma
 const normalizeEmployeeCount = (value: number) =>
   clampValue(Number.isFinite(value) ? Math.round(value) : calculatorMin, calculatorMin, calculatorMax);
 
-const getRecommendedPlan = (employeeCount: number) =>
-  employeeCount < 75 ? "Basic" : employeeCount < 250 ? "Professional" : "Premium";
+const getRecommendedPlan = (employeeCount: number, plans: PlanCard[]) => {
+  const recommendedIndex = employeeCount < 75 ? 0 : employeeCount < 250 ? 1 : 2;
+  return plans[recommendedIndex]?.name ?? plans[0]?.name ?? "Recommended";
+};
 
 const statusMeta: Record<
   FeatureState,
@@ -589,18 +592,27 @@ function AddOnCardView({ card }: { card: AddOnCard }) {
 function PricingCalculatorSection({
   employeeCount,
   onEmployeeCountChange,
+  plans,
+  sectionCopy,
 }: {
   employeeCount: number;
   onEmployeeCountChange: (nextValue: number) => void;
+  plans: PlanCard[];
+  sectionCopy: {
+    eyebrow: string;
+    title: string;
+    description: string;
+  };
 }) {
-  const recommendedPlan = getRecommendedPlan(employeeCount);
+  const recommendedPlan = getRecommendedPlan(employeeCount, plans);
   const planTotals = useMemo(
     () =>
-      planCards.map((plan) => ({
+      plans.map((plan, index) => ({
         ...plan,
+        index,
         total: plan.price * employeeCount,
       })),
-    [employeeCount],
+    [employeeCount, plans],
   );
 
   const handleEmployeeChange = (nextValue: number) => {
@@ -613,14 +625,13 @@ function PricingCalculatorSection({
         <div className="mx-auto max-w-3xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-primary shadow-sm">
             <Sparkles className="h-3.5 w-3.5" />
-            Instant estimate
+            {sectionCopy.eyebrow}
           </div>
           <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-            Estimate pricing by team size
+            {sectionCopy.title}
           </h2>
           <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-            Slide the employee count to see how Basic, Professional and Premium scale on your
-            pricing page using the same plan prices from Altroz HRMS.
+            {sectionCopy.description}
           </p>
         </div>
 
@@ -734,9 +745,9 @@ function PricingCalculatorSection({
                     <div className="flex items-center justify-between gap-3 py-1">
                       <span>Best for</span>
                       <span className="font-semibold text-ink">
-                        {plan.name === "Basic"
+                        {plan.index === 0
                           ? "Smaller teams"
-                          : plan.name === "Professional"
+                          : plan.index === 1
                             ? "Growing teams"
                             : "Larger rollouts"}
                       </span>
@@ -755,6 +766,22 @@ function PricingCalculatorSection({
 export default function PricingPage() {
   const [employeeCount, setEmployeeCount] = useState(100);
   const pricingContent = usePublicContentRecord(ROUTES.pricing, "Page");
+  const defaultPricingPageData = getDefaultManagedPageData(ROUTES.pricing)?.pricing;
+  const pricingPageData = pricingContent?.pageData?.pricing ?? defaultPricingPageData;
+  const highlightItems = pricingPageData?.highlights?.length ? pricingPageData.highlights : defaultPricingPageData?.highlights ?? [];
+  const planItems = pricingPageData?.planCards?.length ? pricingPageData.planCards : defaultPricingPageData?.planCards ?? [];
+  const featureGroupItems =
+    pricingPageData?.featureGroups?.length ? pricingPageData.featureGroups : defaultPricingPageData?.featureGroups ?? [];
+  const addOnItems = pricingPageData?.addOns?.length ? pricingPageData.addOns : defaultPricingPageData?.addOns ?? [];
+  const heroBadge = pricingPageData?.heroBadge ?? "Pricing sheet";
+  const comparisonFocusTitle =
+    pricingPageData?.comparisonFocusTitle ?? "Section cards for each pricing feature group";
+  const comparisonFocusDescription =
+    pricingPageData?.comparisonFocusDescription ?? "Compare the feature groups across each plan.";
+  const comparisonFocusItems =
+    pricingPageData?.comparisonFocusItems?.length
+      ? pricingPageData.comparisonFocusItems
+      : defaultPricingPageData?.comparisonFocusItems ?? [];
   const pricingHeroTitle = pricingContent?.heroTitle ?? "Altroz HRMS Pricing Plans";
   const pricingHeroDescription =
     pricingContent?.heroDescription ??
@@ -765,6 +792,43 @@ export default function PricingPage() {
     pricingContent?.ctaDescription ??
     "The page now includes the pricing table and add-ons, giving a clear view of the plan structure before you request a tailored walkthrough.";
   const pricingCtaButtonText = pricingContent?.ctaButtonText ?? "Request a demo";
+  const calculatorSection = pricingPageData?.calculatorSection ?? defaultPricingPageData?.calculatorSection;
+  const planCardsSection = pricingPageData?.planCardsSection ?? defaultPricingPageData?.planCardsSection;
+  const featureComparisonSection =
+    pricingPageData?.featureComparisonSection ?? defaultPricingPageData?.featureComparisonSection;
+  const addOnsSection = pricingPageData?.addOnsSection ?? defaultPricingPageData?.addOnsSection;
+  const ctaEyebrow = pricingPageData?.ctaEyebrow ?? "Next step";
+  const pricingHighlightsData = highlightItems.map((item, index) => ({
+    title: item.title,
+    value: item.value ?? pricingHighlights[index % pricingHighlights.length]?.value ?? "",
+    desc: item.description,
+    icon: pricingHighlights[index % pricingHighlights.length]?.icon ?? <Sparkles className="h-4 w-4" />,
+  }));
+  const pricingPlanCards = planItems.map((item, index) => ({
+    name: item.name,
+    price: item.price,
+    accent: planCards[index % planCards.length]?.accent ?? "bg-primary-soft text-primary",
+    icon: planCards[index % planCards.length]?.icon ?? <BadgeCheck className="h-5 w-5" />,
+    summary: item.summary,
+    bullets: item.bullets,
+  }));
+  const pricingFeatureGroups = featureGroupItems.map((group) => ({
+    title: group.title,
+    description: group.description,
+    rows: group.rows.map((rowItem) => ({
+      label: rowItem.label,
+      basic: rowItem.basic,
+      professional: rowItem.professional,
+      premium: rowItem.premium,
+      note: rowItem.note,
+    })),
+  }));
+  const pricingAddOnCards = addOnItems.map((item, index) => ({
+    title: item.title,
+    description: item.description,
+    note: item.note ?? item.ctaLabel ?? "Optional add-on",
+    accent: addOnCards[index % addOnCards.length]?.accent ?? "bg-primary-soft text-primary",
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -785,7 +849,7 @@ export default function PricingPage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <Sparkles className="h-4 w-4" />
-                Pricing sheet
+                {heroBadge}
               </div>
 
               <h1 className="mt-3 max-w-3xl text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">
@@ -806,7 +870,7 @@ export default function PricingPage() {
               </div>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                {pricingHighlights.map((item) => (
+                {pricingHighlightsData.map((item) => (
                   <div
                     key={item.title}
                     className="soft-card flex h-full flex-col gap-2 p-3.5 sm:p-4"
@@ -826,7 +890,7 @@ export default function PricingPage() {
               <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/10 via-transparent to-success/10 blur-2xl" />
               <div className="relative rounded-xl border border-border bg-white p-5 shadow-float">
                 <div className="grid gap-4 md:grid-cols-3">
-                  {planCards.map((plan) => (
+                  {pricingPlanCards.map((plan) => (
                     <div key={plan.name} className="rounded-xl border border-border bg-white p-4 shadow-sm">
                       <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                         {plan.name}
@@ -844,8 +908,11 @@ export default function PricingPage() {
                         Comparison focus
                       </div>
                       <h2 className="mt-2 text-2xl font-black tracking-tight text-ink">
-                        Section cards for each pricing feature group
+                        {comparisonFocusTitle}
                       </h2>
+                      <p className="mt-2 text-sm leading-6 text-ink-soft">
+                        {comparisonFocusDescription}
+                      </p>
                     </div>
                     <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-white">
                       <Users className="h-6 w-6" />
@@ -853,14 +920,7 @@ export default function PricingPage() {
                   </div>
 
                   <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                    {[
-                      "Employee management",
-                      "Attendance and leave",
-                      "Recruitment and documents",
-                      "Payroll, compliance and reports",
-                      "Assets, performance and administration",
-                      "Optional add-ons and integrations",
-                    ].map((item) => (
+                    {comparisonFocusItems.map((item) => (
                       <div key={item} className="flex items-start gap-3 rounded-2xl bg-white p-3">
                         <CheckCircle2 className="mt-0.5 h-4 w-4 text-primary" />
                         <span className="text-sm leading-6 text-ink">{item}</span>
@@ -876,25 +936,32 @@ export default function PricingPage() {
         <PricingCalculatorSection
           employeeCount={employeeCount}
           onEmployeeCountChange={setEmployeeCount}
+          plans={pricingPlanCards}
+          sectionCopy={{
+            eyebrow: calculatorSection?.eyebrow ?? "Instant estimate",
+            title: calculatorSection?.title ?? "Estimate pricing by team size",
+            description:
+              calculatorSection?.description ??
+              "Slide the employee count to see how the plan pricing scales for your team.",
+          }}
         />
 
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="container-x">
             <div className="mx-auto max-w-3xl text-center">
               <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
-                Plan cards
+                {planCardsSection?.eyebrow ?? "Plan cards"}
               </div>
               <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                Three pricing plans, presented clearly
+                {planCardsSection?.title ?? "Three pricing plans, presented clearly"}
               </h2>
               <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-                The plans below summarize the pricing sheet before the feature sections break the
-                coverage down module by module.
+                {planCardsSection?.description}
               </p>
             </div>
 
             <div className="mt-10 grid items-stretch gap-5 lg:grid-cols-3">
-              {planCards.map((plan) => (
+              {pricingPlanCards.map((plan) => (
                 <PlanCardView key={plan.name} plan={plan} employeeCount={employeeCount} />
               ))}
             </div>
@@ -905,19 +972,18 @@ export default function PricingPage() {
           <div className="container-x">
             <div className="max-w-3xl">
               <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
-                Feature comparison
+                {featureComparisonSection?.eyebrow ?? "Feature comparison"}
               </div>
               <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                Section cards for the pricing features
+                {featureComparisonSection?.title ?? "Section cards for the pricing features"}
               </h2>
               <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-                Every major module from the sheet is grouped into a dedicated card so the plan
-                differences are easy to scan, compare and present on desktop or mobile.
+                {featureComparisonSection?.description}
               </p>
             </div>
 
             <div className="mt-10 space-y-5">
-              {featureGroups.map((group) => (
+              {pricingFeatureGroups.map((group) => (
                 <FeatureGroupCard key={group.title} group={group} />
               ))}
             </div>
@@ -926,8 +992,21 @@ export default function PricingPage() {
 
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="container-x">
-            <div>
-              <FeatureGroupCard group={addOnGroup} />
+            <div className="mx-auto max-w-3xl text-center">
+              <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
+                {addOnsSection?.eyebrow ?? "Add-ons"}
+              </div>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
+                {addOnsSection?.title ?? "Optional add-ons for deeper rollout needs"}
+              </h2>
+              <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
+                {addOnsSection?.description}
+              </p>
+            </div>
+            <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {pricingAddOnCards.map((card) => (
+                <AddOnCardView key={card.title} card={card} />
+              ))}
             </div>
           </div>
         </section>
@@ -938,7 +1017,7 @@ export default function PricingPage() {
               <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
-                    Next step
+                    {ctaEyebrow}
                   </div>
                   <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
                     {pricingCtaTitle}

@@ -30,7 +30,7 @@ import ManagedContentShowcase from "@/components/site/ManagedContentShowcase";
 import PageSEO from "@/components/site/PageSEO";
 import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
 import { ROUTES } from "@/routes/routeConfig.js";
-import { usePublishedContent } from "@/site/PublicSiteDataContext";
+import { usePublicContentRecord, usePublishedContent } from "@/site/PublicSiteDataContext";
 import { cn } from "@/lib/utils";
 
 type FeatureCard = {
@@ -703,6 +703,22 @@ const heroBullets = [
 
 export default function LearnPage() {
   const managedLearnResources = usePublishedContent("Learn Resource");
+  const learnPageContent = usePublicContentRecord(ROUTES.learn, "Page");
+  const learnHeroTitle =
+    learnPageContent?.heroTitle ??
+    "Learn Business Email Communication, Bulk Email & Campaign Management";
+  const learnHeroDescription =
+    learnPageContent?.heroDescription ??
+    "Whether you are sending your first email campaign or managing communication for an entire organisation, this learning hub helps you understand business email the simple way. Explore practical guides on email broadcasting, campaign planning, SMTP, templates, scheduling and analytics.";
+  const learnHeroSummary =
+    learnPageContent?.summary ??
+    "The content is written in plain language and grounded in real business examples so you can communicate better before you even open a piece of software.";
+  const learnCtaTitle =
+    learnPageContent?.ctaTitle ?? "Start Learning Business Email Communication Today";
+  const learnCtaDescription =
+    learnPageContent?.ctaDescription ??
+    "Explore expert guides, practical tutorials and best practices to improve business communication with Altroz Bulk Email.";
+  const learnCtaButtonText = learnPageContent?.ctaButtonText ?? "Start Learning";
 
   return (
     <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
@@ -752,7 +768,7 @@ export default function LearnPage() {
                     as="h1"
                     className="mx-auto mt-4 max-w-6xl text-4xl sm:text-5xl lg:mx-0 lg:text-[4.15rem]"
                   >
-                    Learn Business Email Communication, Bulk Email & Campaign Management
+                    {learnHeroTitle}
                   </AnimatedTitle>
 
                   <h2 className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-[#1d4ed8] sm:text-3xl lg:mx-0">
@@ -760,20 +776,16 @@ export default function LearnPage() {
                   </h2>
 
                   <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-ink-soft sm:text-lg lg:mx-0">
-                    Whether you are sending your first email campaign or managing communication for an
-                    entire organisation, this learning hub helps you understand business email the simple
-                    way. Explore practical guides on email broadcasting, campaign planning, SMTP,
-                    templates, scheduling and analytics.
+                    {learnHeroDescription}
                   </p>
 
                   <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-ink-soft sm:text-lg lg:mx-0">
-                    The content is written in plain language and grounded in real business examples so you
-                    can communicate better before you even open a piece of software.
+                    {learnHeroSummary}
                   </p>
 
                   <div className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                     <Link to={ROUTES.bulkEmailBroadcast} className="btn-primary">
-                      Start Learning
+                      {learnCtaButtonText}
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <a href="#featured-guides" className="btn-outline">
@@ -1092,18 +1104,17 @@ export default function LearnPage() {
               <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-[#d97706]/18 blur-3xl" />
               <div className="relative">
                 <h2 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-white md:text-5xl">
-                  Start Learning Business Email Communication Today
+                  {learnCtaTitle}
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-white/80">
-                  Explore expert guides, practical tutorials and best practices to improve business
-                  communication with Altroz Bulk Email.
+                  {learnCtaDescription}
                 </p>
                 <div className="button-group mt-7 justify-center">
                   <Link
                     to={ROUTES.bulkEmailBroadcast}
                     className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-semibold text-[#1d4ed8] transition-colors hover:bg-[#fffbf4]"
                   >
-                    Explore Articles
+                    {learnCtaButtonText}
                   </Link>
                   <Link
                     to={ROUTES.bookDemo}

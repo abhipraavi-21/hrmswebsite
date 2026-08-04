@@ -43,6 +43,11 @@ import { useNavigate } from "react-router-dom";
 import { adminDemoPassword, adminHeroChecklist } from "@/admin/config";
 import { AdminMetricCard, AdminSection } from "@/admin/components/AdminShell";
 import { useAdminStore, useAverageSeoScore, useContentByType } from "@/admin/store";
+import {
+  PageManagedSectionsEditor,
+  resolveManagedPageData,
+  supportsManagedPageEditor,
+} from "@/admin/PageManagedSectionsEditor";
 import type {
   AdminStore,
   ContentRecord,
@@ -293,7 +298,7 @@ export function AdminLoginPage() {
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "sara@altrozhr.com",
+      email: "admin@altrozhr.com",
       password: adminDemoPassword,
       remember: true,
     },
@@ -330,7 +335,7 @@ export function AdminLoginPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-semibold text-foreground">Sign in</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Use a seeded account to explore the admin frontend.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Use the single admin account to manage the full frontend and SEO workspace.</p>
             </div>
             <div className="rounded-2xl bg-emerald-500/10 px-3 py-2 text-right text-xs font-medium text-emerald-700 dark:text-emerald-300">
               Demo password
@@ -369,9 +374,9 @@ export function AdminLoginPage() {
           </form>
 
           <div className="mt-8 rounded-[24px] border border-border/70 bg-muted/40 p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Seeded accounts</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Admin account</p>
             <div className="mt-3 space-y-2">
-              {store.users.map((user) => (
+              {store.users.slice(0, 1).map((user) => (
                 <div key={user.id} className="flex items-center justify-between rounded-2xl bg-background/80 px-3 py-2 text-sm">
                   <span>
                     <span className="font-medium text-foreground">{user.name}</span>
@@ -381,6 +386,9 @@ export function AdminLoginPage() {
                 </div>
               ))}
             </div>
+            <p className="mt-3 text-xs leading-6 text-muted-foreground">
+              This single login has full access to pages, SEO, blogs, learn resources, compliance guides, FAQs, media, leads, technical SEO, integrations, and settings.
+            </p>
           </div>
         </div>
       </div>
@@ -762,6 +770,10 @@ export function AdminContentWorkspacePage({ type }: { type: ContentType }) {
   const [statusFilter, setStatusFilter] = useState<string>("All");
   const [selectedId, setSelectedId] = useState(records[0]?.id ?? "");
   const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [managedPageData, setManagedPageData] = useState(() =>
+    resolveManagedPageData(records[0]?.slug ?? "", records[0]?.pageData),
+  );
+  const [managedPageSnapshot, setManagedPageSnapshot] = useState("null");
   const draftRecord = useMemo(
     () => buildEmptyContentRecord(type, sessionUser?.name ?? "Admin"),
     [sessionUser?.name, type],
@@ -804,7 +816,20 @@ export function AdminContentWorkspacePage({ type }: { type: ContentType }) {
     form.reset(contentRecordToForm(selected));
   }, [form, selected]);
 
-  useUnsavedChangesWarning(form.formState.isDirty);
+  useEffect(() => {
+    const nextManagedPageData =
+      type === "Page" && selected ? resolveManagedPageData(selected.slug, selected.pageData) : undefined;
+
+    setManagedPageData(nextManagedPageData);
+    setManagedPageSnapshot(JSON.stringify(nextManagedPageData ?? null));
+  }, [selected?.id, selected?.pageData, selected?.slug, type]);
+
+  const hasManagedPageEditor = Boolean(selected && type === "Page" && supportsManagedPageEditor(selected.slug));
+  const hasManagedPageChanges =
+    hasManagedPageEditor && JSON.stringify(managedPageData ?? null) !== managedPageSnapshot;
+  const hasUnsavedChanges = form.formState.isDirty || hasManagedPageChanges;
+
+  useUnsavedChangesWarning(hasUnsavedChanges);
 
   return (
     <div className="space-y-6">
@@ -926,7 +951,7 @@ export function AdminContentWorkspacePage({ type }: { type: ContentType }) {
                   </Button>
                 ) : null}
                 <div className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-                  {isCreatingNew ? "New draft" : form.formState.isDirty ? "Unsaved changes" : "All changes saved"}
+                  {isCreatingNew ? "New draft" : hasUnsavedChanges ? "Unsaved changes" : "All changes saved"}
                 </div>
               </div>
             ) : null
@@ -963,6 +988,7 @@ export function AdminContentWorkspacePage({ type }: { type: ContentType }) {
                   ctaDescription: values.ctaDescription,
                   ctaButtonText: values.ctaButtonText,
                   ctaButtonUrl: values.ctaButtonUrl || undefined,
+                  pageData: hasManagedPageEditor ? managedPageData : undefined,
                 };
 
                 if (isCreatingNew) {
@@ -1101,6 +1127,22 @@ export function AdminContentWorkspacePage({ type }: { type: ContentType }) {
                   </div>
                 </div>
               </div>
+
+              {hasManagedPageEditor ? (
+                <div className="rounded-[24px] border border-border/70 bg-muted/20 p-4">
+                  <p className="text-sm font-semibold text-foreground">Structured page sections</p>
+                  <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                    Edit the direct frontend content blocks for this page without JSON.
+                  </p>
+                  <div className="mt-4">
+                    <PageManagedSectionsEditor
+                      slug={selected.slug}
+                      value={managedPageData}
+                      onChange={setManagedPageData}
+                    />
+                  </div>
+                </div>
+              ) : null}
 
               <Button type="submit" className="rounded-xl">Save content fields</Button>
             </form>

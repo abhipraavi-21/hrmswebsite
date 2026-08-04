@@ -30,7 +30,7 @@ import TopNavbar from "@/components/site/TopNavbar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
-import { usePublishedContent } from "@/site/PublicSiteDataContext";
+import { usePublicContentRecord, usePublishedContent } from "@/site/PublicSiteDataContext";
 import { faqPopularSearches, faqQuickLinks, faqSections } from "./faqData";
 
 const pageTitle = "Altroz HR FAQs | Knowledge Base and Frequently Asked Questions";
@@ -89,6 +89,7 @@ export default function FaqPage() {
   const [query, setQuery] = useState("");
   const [activeSection, setActiveSection] = useState(faqSections[0]?.title ?? "");
   const managedFaqCollections = usePublishedContent("FAQ");
+  const faqPageContent = usePublicContentRecord(ROUTES.faq, "Page");
   const normalizedQuery = query.trim().toLowerCase();
   const activeSectionData =
     faqSections.find((section) => section.title === activeSection) ?? faqSections[0] ?? null;
@@ -145,6 +146,20 @@ export default function FaqPage() {
     ),
   };
 
+  const faqHeroTitle = faqPageContent?.heroTitle ?? "How can we help you today?";
+  const faqHeroDescription =
+    faqPageContent?.heroDescription ??
+    "Search our knowledge base or browse FAQs by category to get quick, clear answers about Altroz HR.";
+  const faqHeroSummary =
+    faqPageContent?.summary ??
+    "Use the FAQ hub and the published admin-managed FAQ collections together to keep support information current.";
+  const faqCtaTitle =
+    faqPageContent?.ctaTitle ?? "Our HR experts are here to help you choose the right modules for your business.";
+  const faqCtaDescription =
+    faqPageContent?.ctaDescription ??
+    "Explore the right resources, compare topics, and jump into the pages that fit your next step best.";
+  const faqCtaButtonText = faqPageContent?.ctaButtonText ?? "Browse Categories";
+
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_36%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]">
       <PageSEO
@@ -163,15 +178,17 @@ export default function FaqPage() {
             <ScrollReveal className="mx-auto max-w-5xl text-center">
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <CircleHelp className="h-4 w-4" />
-                Knowledge Base
+                {faqPageContent?.title ?? "Knowledge Base"}
               </div>
 
               <h1 className="mt-5 text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">
-                How can we help you today?
+                {faqHeroTitle}
               </h1>
               <p className="mx-auto mt-5 max-w-4xl text-lg leading-8 text-ink-soft sm:text-xl">
-                Search our knowledge base or browse FAQs by category to get quick, clear answers
-                about Altroz HR.
+                {faqHeroDescription}
+              </p>
+              <p className="mx-auto mt-3 max-w-4xl text-sm leading-7 text-ink-soft">
+                {faqHeroSummary}
               </p>
 
               <div className="mx-auto mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row">
@@ -187,7 +204,7 @@ export default function FaqPage() {
                   />
                 </label>
                 <a href="#faq-sections" className="btn-primary justify-center sm:w-auto">
-                  Browse Categories
+                  {faqCtaButtonText}
                 </a>
               </div>
 
@@ -351,11 +368,10 @@ export default function FaqPage() {
                       Still have questions?
                     </div>
                     <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                      Our HR experts are here to help you choose the right modules for your business.
+                      {faqCtaTitle}
                     </h2>
                     <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-ink-soft">
-                      Explore the right resources, compare topics, and jump into the pages that fit
-                      your next step best.
+                      {faqCtaDescription}
                     </p>
 
                     <div className="mx-auto mt-8 grid w-full max-w-4xl gap-3 sm:grid-cols-2 xl:grid-cols-4">

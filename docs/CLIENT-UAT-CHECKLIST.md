@@ -1,259 +1,207 @@
-# Altroz HR Admin and SEO Panel UAT Checklist
+# Altroz HRMS Admin Panel Client UAT Checklist
 
 Date: August 4, 2026
 
-## 0. API Sync Preparation
+## Access Details
 
-- Run the frontend: `npm run dev`
-- Run the API server: `npm run server`
-- Confirm the health check opens: `http://127.0.0.1:3001/api/health`
-- Important:
-  The MySQL-backed admin workspace snapshot is created or refreshed from the admin panel after login.
-  For a fresh database, log in to `/admin/login` once before validating public-site updates.
+- Public website: `https://hrmswebsite-gamma.vercel.app`
+- Admin login: `https://hrmswebsite-gamma.vercel.app/admin/login`
+- Recommended demo accounts:
+  - `sara@altrozhr.com` for Super Admin
+  - `avni@altrozhr.com` for SEO Manager
+  - `nisha@altrozhr.com` for Client Admin
+- Demo password: `Altroz@123`
 
-## Access
+## Important Testing Note
 
-- Open `http://localhost:8080/admin/login`
-- Login with any seeded admin email and password `Altroz@123`
-- Recommended accounts:
-  - `sara@altrozhr.com` for super admin
-  - `avni@altrozhr.com` for SEO manager
-  - `nisha@altrozhr.com` for client admin
+- The frontend is hosted on Vercel and the backend is hosted on Render.
+- If the backend has been idle, the first save or load can take up to 30 to 60 seconds.
+- This delay is expected on the free testing environment.
 
-## 1. Global SEO Panel
+## Test Result Format
 
-- Open `/admin/seo`
-- Select any record
+- Mark each item as `Pass`, `Fail`, or `Needs review`.
+- Add notes and screenshots for any failed item.
+
+## 1. Login and Access
+
+- Open the admin login page.
+- Sign in with the provided test account.
+- Confirm the dashboard opens successfully.
+- Confirm the visible modules match the logged-in user role.
+- Log out and sign in again.
+- Expected result:
+  The client can sign in successfully and the correct admin modules are visible.
+
+## 2. Dashboard and Navigation
+
+- Open Dashboard.
+- Confirm navigation links open the correct admin sections.
+- Confirm counts, cards, and summary blocks load without blank states or broken UI.
+- Expected result:
+  The dashboard loads correctly and navigation works across modules.
+
+## 3. Pages Management
+
+- Open `Pages`.
+- Edit any existing page title, summary, CTA label, or content field.
+- Save the change.
+- Refresh the browser.
+- Confirm the edited value still appears.
+- Expected result:
+  Page content edits save successfully and persist after refresh.
+
+## 4. SEO Management
+
+- Open `SEO Management`.
+- Select the Home page or Pricing page SEO record.
 - Edit and save:
   - SEO title
   - Meta title
   - Meta description
-  - Slug
   - Canonical URL
   - Focus keyword
-  - Secondary keywords
-  - Semantic keywords
-  - Long-tail keywords
-  - LSI keywords
-  - NLP keywords
-  - Related entities
-  - Publish date
-  - Reading time
-  - Author
   - Robots
-- Refresh the page and confirm values persist
+  - Open Graph title and description
+- Refresh the page.
+- Confirm the saved values remain.
+- Expected result:
+  SEO changes save and persist correctly.
 
-## 2. Social SEO
+## 5. Bulk SEO Tools
 
-- In `/admin/seo`, edit:
-  - Open Graph title, description, image
-  - Twitter title, description, image
-  - LinkedIn title, description, image
-  - WhatsApp title, description, image
-- Confirm the preview cards update visually
+- In `SEO Management`, test:
+  - Meta prefix
+  - Meta suffix
+  - Bulk schema type
+  - Bulk robots
+  - Bulk alt text
+  - CSV export
+- Expected result:
+  Bulk actions apply correctly to the selected records and export works.
 
-## 3. Schema and AI SEO
+## 6. Blog Management
 
-- Edit and save:
-  - Schema types
-  - Schema JSON-LD
-  - Search intent
-  - Content intent
-  - Primary entity
-  - AI summary
-  - AI overview
-  - ChatGPT summary
-  - Gemini summary
-  - People Also Ask
-  - Related searches
-- Confirm AI SEO Suggestions section updates meaningfully
-
-## 4. Home Page SEO
-
-- Select the Home page record in `/admin/seo`
-- Edit and save:
-  - Hero SEO
-  - Feature section SEO
-  - Book Demo CTA label
-  - Internal links
-  - Performance optimization notes
-
-## 5. Pricing Page SEO
-
-- Open `/admin/pages`
-- Select `Pricing`
-- Edit content and save
-- Open `/admin/seo`
-- Select the `/pricing` SEO record
-- Edit and save:
-  - Pricing keywords
-  - Comparison table highlights
-  - Conversion tracking notes
-
-## 6. Learn Resources
-
-- Open `/admin/learn`
-- Create a new resource
-- Edit and save resource fields
-- Delete a resource
-- In `/admin/seo`, select a Learn record and test:
-  - Topic clusters
-  - Difficulty level
-  - Download PDF URL
-  - Video support URL
-  - Related learn links
-  - Related blog links
-  - Related FAQ links
-
-## 7. Compliance Guides
-
-- Open `/admin/compliance-guides`
-- Create a new guide
-- Edit and save guide fields
-- Delete a guide
-- In `/admin/seo`, select a Compliance record and test:
-  - Applicable state or country
-  - Law type
-  - Version label
-  - Download PDF URL
-  - Related blog links
-  - Related learn links
-  - Related FAQ links
-
-## 8. Blog Management
-
-- Open `/admin/blogs`
-- Create a new blog
-- Edit and save:
-  - Blog title
+- Open `Blog Management`.
+- Create a new blog.
+- Fill in:
+  - Title
   - Slug
   - Category
   - Author
+  - Short description
   - Featured image
-  - Featured image alt
-  - Sections
-  - FAQs
-  - Related links
-  - CTA fields
-- Delete a blog
+  - Featured image alt text
+- Save the blog.
+- Edit the same blog and save again.
+- Delete the blog if deletion is part of the test.
+- Expected result:
+  Blogs can be created, edited, and deleted successfully.
 
-## 9. Detailed Blog SEO
+## 7. Learn Resources
 
-- In `/admin/seo`, select a blog record
-- Edit and save:
-  - Readability score
-  - Keyword density
-  - H1-H4 outline
-  - Word count
-  - Image count
-  - Video count
-  - Table count
-  - FAQ count
-  - Internal links count
-  - External links count
-  - Broken links count
-  - TOC enabled
-  - WebP ready
-  - CTA modes
-  - Views
-  - CTR
-  - Avg time on page
-  - Scroll depth
-  - Demo conversions
-- Confirm preview cards still render
+- Open `Learn Resources`.
+- Create a new record.
+- Edit and save the resource fields.
+- Refresh the page.
+- Confirm the record remains visible with the saved values.
+- Expected result:
+  Learn resources support add, edit, and persistence correctly.
 
-## 10. FAQ Management
+## 8. Compliance Guides
 
-- Open `/admin/faqs`
-- Create a new FAQ item
-- Edit and save
-- Delete a FAQ item
-- In `/admin/seo`, select a FAQ record and test:
-  - FAQ category
-  - FAQ tags
-  - Search option enabled
-  - Accordion enabled
-  - Related FAQ links
-  - Related blog links
-  - Related product links
+- Open `Compliance Guides`.
+- Create a new guide.
+- Edit and save the guide.
+- Delete the guide if deletion is part of the test.
+- Expected result:
+  Compliance guides support add, edit, and delete operations correctly.
 
-## 11. SEO Dashboard Signals
+## 9. FAQ Management
 
-- In `/admin/seo`, confirm the dashboard cards show:
-  - Overall SEO score
-  - Technical SEO score
-  - Missing meta
-  - Schema coverage
-  - Missing alt text
-  - Noindex pages
-  - Page speed
-  - Core Web Vitals
+- Open `FAQ Management`.
+- Add a new FAQ item.
+- Edit the FAQ and save.
+- Delete the FAQ if deletion is part of the test.
+- Expected result:
+  FAQ items can be created, updated, and removed correctly.
 
-## 12. Technical SEO
+## 10. Media Library
 
-- Open `/admin/redirect-manager`
-- Add a single redirect
-- Import redirects in bulk using multiline input
-- Toggle redirect status
-- Open `/admin/sitemap-manager`
-- Regenerate sitemap
-- Confirm HTML sitemap button is visible
-- Confirm canonical management panel is visible
-- Confirm integrations panel is visible
-- Edit and save `robots.txt`
-
-## 13. Bulk SEO Tools
-
-- Open `/admin/seo`
-- Test:
-  - Bulk meta update
-  - Bulk schema update
-  - Bulk robots update
-  - Bulk alt text
-  - CSV export
-  - CSV import
-- Sample CSV:
-
-```csv
-slug,metaTitle,metaDescription,focusKeyword,schemaTypes,robots,canonicalUrl
-/pricing,HRMS Pricing Plans,Compare plans and ROI,HRMS pricing,Product|Offer|FAQPage,index|follow,https://hrmswebsite-gamma.vercel.app/pricing
-```
-
-## 14. Media SEO
-
-- Open `/admin/media-library`
-- Upload at least one file
-- Select an asset
-- Edit and save:
+- Open `Media Library`.
+- Upload at least one file.
+- Edit:
   - Alt text
   - Title
   - Caption
   - Description
-  - Usage
-- Copy the asset URL
+- Save changes.
+- Expected result:
+  Media uploads and metadata editing work correctly.
 
-## 15. Version History
+## 11. Redirect Manager
 
-- Make a few SEO edits
-- Return to `/admin/seo`
-- Confirm Version History shows recent save or import actions
+- Open `Redirect Manager`.
+- Add a redirect rule.
+- Save it.
+- Disable or enable the rule.
+- Expected result:
+  Redirect rules can be created and status can be changed successfully.
 
-## 16. Data Persistence
+## 12. Sitemap and Robots
 
-- After any edit, refresh the browser
-- Confirm the admin data still persists
-- If needed, clear browser local storage keys to reset:
-  - `altroz-admin-store`
-  - `altroz-admin-session`
-  - `altroz-admin-session-temporary`
-  - `altroz-admin-theme`
+- Open `Sitemap Manager`.
+- Regenerate sitemap if visible.
+- Open `robots.txt` settings and save an update.
+- Expected result:
+  Technical SEO controls are accessible and save correctly.
 
-## 17. Build Verification
+## 13. Public Website Reflection
 
-- Run:
+- Make one visible change in admin, for example:
+  - Home page content
+  - Blog content
+  - SEO title
+  - Meta description
+- Save the change in admin.
+- Refresh the related public page on `https://hrmswebsite-gamma.vercel.app`.
+- Expected result:
+  The public site reflects the saved admin updates.
 
-```powershell
-npm run build
-```
+## 14. Data Persistence
 
-- Confirm the production build passes
+- Save changes in any module.
+- Refresh the browser.
+- Log out.
+- Log in again.
+- Confirm the previously saved values are still present.
+- Expected result:
+  Saved changes persist across refresh and login sessions.
+
+## 15. Role-Based Access Check
+
+- Log in as different roles if required:
+  - Super Admin
+  - SEO Manager
+  - Client Admin
+- Confirm that restricted modules are hidden for lower-permission roles.
+- Expected result:
+  Role-based access is working correctly.
+
+## 16. Final Client Sign-Off
+
+- Overall admin usability: `Pass / Fail`
+- SEO management usability: `Pass / Fail`
+- Content editing usability: `Pass / Fail`
+- Public site update flow: `Pass / Fail`
+- Save and persistence behavior: `Pass / Fail`
+- Ready for next phase approval: `Yes / No`
+
+## Issue Log Template
+
+- Module:
+- Action performed:
+- Expected result:
+- Actual result:
+- Screenshot or recording:
+- Priority: `High / Medium / Low`

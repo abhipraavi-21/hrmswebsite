@@ -30,13 +30,13 @@ import type { AdminModuleId, AdminNavGroup, AdminRole } from "./types";
 export const adminDemoPassword = "Altroz@123";
 
 export const adminRoleDescriptions: Record<AdminRole, string> = {
-  "Super Admin": "Owns platform configuration, user access, and technical SEO controls.",
-  Admin: "Runs day-to-day content, lead management, and publishing operations.",
+  "Super Admin": "Legacy full-access role retained for backward compatibility.",
+  Admin: "Single full-access workspace for pages, SEO, resources, leads, settings, and technical controls.",
   "Client Admin":
-    "Manages the approved client-side content modules: blogs, FAQs, learn resources, compliance guides, media, and SEO fields.",
-  "SEO Manager": "Owns metadata, schema, redirects, sitemap, and reporting quality.",
-  "Content Writer": "Creates draft content for blogs, guides, and learn resources.",
-  Editor: "Reviews, approves, and publishes content revisions.",
+    "Legacy content-management role retained for backward compatibility.",
+  "SEO Manager": "Legacy SEO role retained for backward compatibility.",
+  "Content Writer": "Legacy editorial role retained for backward compatibility.",
+  Editor: "Legacy publishing role retained for backward compatibility.",
 };
 
 export const adminNavGroups: AdminNavGroup[] = [
@@ -168,6 +168,10 @@ export function findModuleIdByPath(pathname: string): AdminModuleId | null {
 }
 
 export function canAccessModule(role: AdminRole, moduleId: AdminModuleId) {
+  if (role === "Admin") {
+    return true;
+  }
+
   return adminModulePermissions[moduleId].includes(role);
 }
 
@@ -196,10 +200,10 @@ export function getQuickStatsBadge(moduleId: AdminModuleId, counts: Record<strin
 }
 
 export const adminHeroChecklist = [
-  "Role-aware navigation and access-aware route surfaces",
+  "One admin login with one workspace for every editable website and SEO area",
   "Dashboard metrics, publishing workflow, and SEO health views",
-  "Content operations for pages, blogs, learn resources, guides, and FAQs",
-  "Lead inbox, media library, email campaigns, redirects, sitemap, and settings",
+  "Content operations for pages, blogs, learn resources, guides, pricing, and FAQs",
+  "Lead inbox, media library, email campaigns, redirects, sitemap, integrations, and settings",
 ];
 
 export const adminAccessDeniedIcon = ShieldCheck;

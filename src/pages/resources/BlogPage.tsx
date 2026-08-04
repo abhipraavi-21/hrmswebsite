@@ -11,6 +11,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
 import { fetchPublicBlogs, type BlogRecord } from "@/lib/blogApi";
 import { ROUTES } from "@/routes/routeConfig.js";
+import { usePublicContentRecord } from "@/site/PublicSiteDataContext";
 
 const pageTitle = "HR Blog | Practical HR Articles & Software Insights - Altroz HR";
 const pageDescription =
@@ -103,6 +104,20 @@ export default function BlogPage() {
   const [posts, setPosts] = useState<BlogRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const blogPageContent = usePublicContentRecord(ROUTES.blog, "Page");
+  const blogHeroTitle =
+    blogPageContent?.heroTitle ?? "Practical HR, payroll, SEO, and compliance articles for growing teams";
+  const blogHeroDescription =
+    blogPageContent?.heroDescription ??
+    "This blog feed now loads from the MySQL-backed blog API, with featured images, publish dates, author names, read-time metadata, and editable SEO fields.";
+  const blogSummary =
+    blogPageContent?.summary ??
+    "Review admin-managed blog articles and keep the public content feed current without manual code edits.";
+  const blogCtaTitle = blogPageContent?.ctaTitle ?? "Stay close to practical HR ideas";
+  const blogCtaDescription =
+    blogPageContent?.ctaDescription ??
+    "Get new blog posts, resource updates, and practical workflow ideas without digging through a long content archive.";
+  const blogCtaButtonText = blogPageContent?.ctaButtonText ?? "Book Free Demo";
 
   useEffect(() => {
     let mounted = true;
@@ -170,15 +185,17 @@ export default function BlogPage() {
             <ScrollReveal className="mx-auto max-w-5xl text-center">
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold text-primary shadow-sm">
                 <BookOpen className="h-4 w-4" />
-                Altroz HR Blog
+                {blogPageContent?.title ?? "Altroz HR Blog"}
               </div>
 
               <h1 className="mt-5 text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">
-                Practical HR, payroll, SEO, and compliance articles for growing teams
+                {blogHeroTitle}
               </h1>
               <p className="mx-auto mt-5 max-w-4xl text-lg leading-8 text-ink-soft sm:text-xl">
-                This blog feed now loads from the MySQL-backed blog API, with featured images,
-                publish dates, author names, read-time metadata, and editable SEO fields.
+                {blogHeroDescription}
+              </p>
+              <p className="mx-auto mt-3 max-w-4xl text-sm leading-7 text-ink-soft">
+                {blogSummary}
               </p>
 
               <div className="mx-auto mt-8 grid max-w-3xl gap-3 sm:grid-cols-[1fr_auto]">
@@ -194,7 +211,7 @@ export default function BlogPage() {
                   />
                 </label>
                 <Link to={ROUTES.bookDemo} className="btn-primary justify-center">
-                  Book Free Demo
+                  {blogCtaButtonText}
                 </Link>
               </div>
 
@@ -334,11 +351,10 @@ export default function BlogPage() {
                     Subscribe to updates
                   </div>
                   <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                    Stay close to practical HR ideas
+                    {blogCtaTitle}
                   </h2>
                   <p className="mt-4 max-w-2xl text-base leading-7 text-ink-soft">
-                    Get new blog posts, resource updates, and practical workflow ideas without
-                    digging through a long content archive.
+                    {blogCtaDescription}
                   </p>
                 </div>
 

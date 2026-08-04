@@ -1,5 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 
+import type { ManagedPageData } from "./pageData";
+
 export type AdminRole =
   | "Super Admin"
   | "Admin"
@@ -79,6 +81,7 @@ export type ContentRecord = {
   ctaDescription?: string;
   ctaButtonText?: string;
   ctaButtonUrl?: string;
+  pageData?: ManagedPageData;
 };
 
 export type SeoRecord = {
