@@ -42,7 +42,7 @@ const blogFeedItems: BlogFeedItem[] = [
     label: "Featured guide",
     title: featuredPost.title,
     description: featuredPost.description,
-    meta: featuredPost.meta,
+    meta: "4 min read",
     href: featuredPost.href,
     image: modelScreenshots.workforceDashboard,
     tags: ["HRMS overview", "Employee data", "One source of truth"],
@@ -53,7 +53,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "Attendance data that stays payroll ready",
     description:
       "See how attendance, shifts, and approvals connect back to salary processing without re-entry or spreadsheet cleanup.",
-    meta: "Attendance management • Payroll inputs",
+    meta: "3 min read",
     href: ROUTES.attendanceManagement,
     image: modelScreenshots.attendanceDashboard,
     tags: ["Attendance", "Shifts", "Approvals"],
@@ -65,7 +65,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "Payroll runs backed by clean workforce data",
     description:
       "Explore how linked salary, deductions, and statutory details reduce manual correction work for HR teams.",
-    meta: "Payroll processing • Salary workflows",
+    meta: "3 min read",
     href: ROUTES.payroll,
     image: modelScreenshots.payrollDashboard,
     tags: ["Payroll", "Deductions", "Compliance"],
@@ -76,7 +76,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "Leave approvals that flow straight into records",
     description:
       "Keep leave requests, balances, and approvals aligned so managers and employees always see the same numbers.",
-    meta: "Leave management • Employee self-service",
+    meta: "2 min read",
     href: ROUTES.leaveManagement,
     image: modelScreenshots.leaveDashboard,
     tags: ["Leave", "Approvals", "Balance tracking"],
@@ -88,7 +88,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "Employee records arranged in one central profile",
     description:
       "Understand how core HR data, documents, and organization details work together as the base of the HR system.",
-    meta: "Core HR • Employee master data",
+    meta: "2 min read",
     href: ROUTES.coreHR,
     image: modelScreenshots.coreHrTable,
     tags: ["Employee records", "Profiles", "Documents"],
@@ -99,7 +99,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "Hiring workflows that move candidates faster",
     description:
       "Follow the recruitment journey from open role to shortlist, interviews, and onboarding without scattered follow-up.",
-    meta: "Recruitment ATS • Hiring workflow",
+    meta: "3 min read",
     href: ROUTES.recruitment,
     image: modelScreenshots.positions,
     tags: ["Hiring", "Candidates", "Onboarding"],
@@ -111,7 +111,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "Performance cycles that stay visible to everyone",
     description:
       "Review how goals, evaluations, and manager feedback fit into a simple digital review rhythm.",
-    meta: "Performance management • Reviews",
+    meta: "2 min read",
     href: ROUTES.performance,
     image: modelScreenshots.performanceEvaluations,
     tags: ["Goals", "Reviews", "Feedback"],
@@ -122,7 +122,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "Employee self-service that reduces routine HR questions",
     description:
       "Give employees direct access to key information so HR spends less time re-sharing the same records.",
-    meta: "Employee self-service • Access anytime",
+    meta: "2 min read",
     href: ROUTES.employeeSelfService,
     image: modelScreenshots.employeeReport,
     tags: ["ESS", "Payslips", "Downloads"],
@@ -134,7 +134,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "HR automation that keeps routine tasks moving",
     description:
       "Automated workflows help approvals, reminders, and document generation stay consistent as the team grows.",
-    meta: "HR automation • Workflow engine",
+    meta: "3 min read",
     href: ROUTES.automation,
     image: modelScreenshots.generatedDocuments,
     tags: ["Automation", "Approvals", "Documents"],
@@ -145,7 +145,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "Reports and insights for faster HR decisions",
     description:
       "Turn attendance, payroll, and workforce activity into clear reports that help leaders act sooner.",
-    meta: "HR analytics • Reporting",
+    meta: "3 min read",
     href: ROUTES.analytics,
     image: modelScreenshots.salaryReport,
     tags: ["Reports", "Insights", "Trends"],
@@ -157,7 +157,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "Offboarding that keeps final records in order",
     description:
       "Keep the end of the employee lifecycle tidy with structured final steps, handovers, and exit records.",
-    meta: "Exit management • Final processes",
+    meta: "2 min read",
     href: ROUTES.exitManagement,
     image: modelScreenshots.employeeReport,
     tags: ["Exit", "Handovers", "Records"],
@@ -168,7 +168,7 @@ const blogFeedItems: BlogFeedItem[] = [
     title: "Documentation and compliance made easier to track",
     description:
       "Use connected HR records to keep documents organised and ready whenever they are needed for review.",
-    meta: "Compliance guides • Document readiness",
+    meta: "2 min read",
     href: ROUTES.complianceGuides,
     image: modelScreenshots.generatedDocuments,
     tags: ["Compliance", "Documents", "Audit readiness"],
@@ -200,73 +200,40 @@ function StatCard({
 }
 
 function FeedCard({ item }: { item: BlogFeedItem }) {
-  const cardImage = (
-    <div className="relative overflow-hidden bg-[linear-gradient(180deg,_rgba(11,92,255,0.08),_rgba(18,185,122,0.08))] p-4 sm:p-5">
-      <div className="relative overflow-hidden rounded-[1.35rem] border border-border bg-white shadow-sm">
+  return (
+    <Link
+      to={item.href}
+      className="group block h-full overflow-hidden rounded-[1.4rem] border border-border bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-float"
+    >
+      <div className="relative aspect-[16/9] overflow-hidden bg-[linear-gradient(180deg,_rgba(11,92,255,0.08),_rgba(18,185,122,0.08))]">
         <img
           src={item.image}
           alt={item.title}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           loading="lazy"
         />
-      </div>
-      <div className="pointer-events-none absolute right-4 top-4 rounded-full border border-primary/15 bg-white/90 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.24em] text-primary shadow-sm">
-        Altroz HR
-      </div>
-    </div>
-  );
-
-  const cardCopy = (
-    <div className="flex h-full flex-col p-5 sm:p-6 lg:p-7">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-[0.72rem] font-bold uppercase tracking-[0.22em] text-primary">
-          {item.label}
-        </span>
-        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/50 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-ink-soft">
-          <CalendarDays className="h-3.5 w-3.5" />
-          Guide
-        </span>
-      </div>
-
-      <h3 className="mt-4 text-2xl font-black tracking-tight text-ink sm:text-[2rem]">{item.title}</h3>
-      <p className="mt-4 max-w-2xl text-base leading-7 text-ink-soft">{item.description}</p>
-
-      <div className="mt-5 flex flex-wrap gap-2">
-        {item.tags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full border border-border bg-white px-3 py-1 text-xs font-semibold text-ink-soft"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-ink-soft">
-        <span className="inline-flex items-center gap-2">
-          <Clock3 className="h-4 w-4 text-primary" />
-          {item.meta}
-        </span>
-      </div>
-
-      <div className="mt-auto pt-6">
-        <Link to={item.href} className="btn-outline inline-flex items-center gap-2">
-          {item.ctaLabel}
-          <ArrowUpRight className="h-4 w-4" />
-        </Link>
-      </div>
-    </div>
-  );
-
-  return (
-    <article className="soft-card overflow-hidden border border-border bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-float">
-      <div className="grid overflow-hidden lg:grid-cols-2">
-        <div className={`order-1 ${item.reverse ? "lg:order-2" : ""}`}>{cardImage}</div>
-        <div className={`order-2 border-t border-border lg:border-t-0 lg:border-l ${item.reverse ? "lg:order-1 lg:border-l-0 lg:border-r" : ""}`}>
-          {cardCopy}
+        <div className="pointer-events-none absolute left-4 top-4 rounded-full border border-primary/15 bg-white/90 px-3 py-1 text-[0.62rem] font-bold uppercase tracking-[0.24em] text-primary shadow-sm">
+          Altroz HR
         </div>
       </div>
-    </article>
+
+      <div className="flex h-full flex-col px-6 py-6 sm:px-7 sm:py-7">
+        <div className="text-[0.68rem] font-bold uppercase tracking-[0.26em] text-primary">{item.label}</div>
+        <h3 className="mt-4 text-[1.15rem] font-medium leading-[1.5] tracking-tight text-ink sm:text-[1.35rem]">
+          {item.title}
+        </h3>
+
+        <div className="mt-6 flex items-center justify-between gap-3">
+          <span className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-ink-soft">
+            <Clock3 className="h-4 w-4 text-primary" />
+            {item.meta}
+          </span>
+          <span className="inline-flex items-center gap-1 text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-primary">
+            Read <ArrowRight className="h-4 w-4" />
+          </span>
+        </div>
+      </div>
+    </Link>
   );
 }
 
@@ -458,9 +425,13 @@ export default function BlogPage() {
               </p>
             </ScrollReveal>
 
-            <div className="mt-10 space-y-5">
+            <div className="mt-10">
               {filteredItems.length > 0 ? (
-                filteredItems.map((item) => <FeedCard key={item.title} item={item} />)
+                <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                  {filteredItems.map((item) => (
+                    <FeedCard key={item.title} item={item} />
+                  ))}
+                </div>
               ) : (
                 <div className="soft-card p-8 text-center">
                   <div className="text-lg font-bold text-ink">No matching stories found</div>
