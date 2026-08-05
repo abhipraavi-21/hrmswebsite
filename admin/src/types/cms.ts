@@ -129,9 +129,6 @@ export type DashboardSummary = {
   totalManagedPages: number;
   totalResourcePages: number;
   totalPricingPlans: number;
-  totalContactEnquiries: number;
-  newEnquiries: number;
-  readEnquiries: number;
   publishedSections: number;
   draftSections: number;
   recentlyUpdatedContent: Array<{
@@ -140,57 +137,6 @@ export type DashboardSummary = {
     page_key: string;
     updatedAt: string;
   }>;
-  recentEnquiries: Array<{
-    id: number;
-    full_name: string;
-    status: string;
-    submitted_at: string;
-  }>;
-};
-
-export type ContactSettings = {
-  page_title?: string | null;
-  page_subtitle?: string | null;
-  description?: string | null;
-  address?: string | null;
-  phone_primary?: string | null;
-  phone_secondary?: string | null;
-  email_primary?: string | null;
-  email_secondary?: string | null;
-  business_hours?: string | null;
-  map_embed_url?: string | null;
-  form_heading?: string | null;
-  form_description?: string | null;
-  submit_button_text?: string | null;
-  success_message?: string | null;
-  error_message?: string | null;
-  social_links_json?: unknown;
-  settings_json?: unknown;
-};
-
-export type ContactEnquiry = {
-  id: number;
-  fullName: string;
-  email: string;
-  phone?: string | null;
-  companyName?: string | null;
-  subject?: string | null;
-  message: string;
-  sourcePage?: string | null;
-  ipAddress?: string | null;
-  status: "new" | "read" | "in_progress" | "replied" | "closed" | "spam";
-  adminNotes?: string | null;
-  submittedAt: string;
-};
-
-export type PaginatedEnquiries = {
-  items: ContactEnquiry[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
 };
 
 export type MediaItem = {

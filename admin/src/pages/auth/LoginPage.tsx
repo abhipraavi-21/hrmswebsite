@@ -53,7 +53,7 @@ export function LoginPage() {
           <LockKeyhole className="h-6 w-6" />
         </div>
         <h1 className="mt-5 text-3xl font-semibold text-slate-950">Admin login</h1>
-        <p className="mt-2 text-sm text-slate-500">Secure access for content, media, pricing and enquiries.</p>
+        <p className="mt-2 text-sm text-slate-500">Secure access for content, media and pricing.</p>
 
         <form className="mt-6 space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           <label className="field">

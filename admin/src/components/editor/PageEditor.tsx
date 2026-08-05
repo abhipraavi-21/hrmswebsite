@@ -1,7 +1,7 @@
-import { Plus, RotateCcw, Save, Trash2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Plus, RotateCcw, Save, Trash2, Upload, X } from "lucide-react";
+import { type ChangeEvent, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { pageService } from "../../services/cmsService";
+import { mediaService, pageService } from "../../services/cmsService";
 import type { CmsItem, CmsPage, CmsSection } from "../../types/cms";
 
 type Props = {
@@ -171,10 +171,11 @@ export function PageEditor({ page, onReload }: Props) {
             <span>OG title</span>
             <input value={metaState.ogTitle ?? ""} onChange={(event) => setMetaState((current) => ({ ...current, ogTitle: event.target.value }))} />
           </label>
-          <label className="field">
-            <span>OG image</span>
-            <input value={metaState.ogImage ?? ""} onChange={(event) => setMetaState((current) => ({ ...current, ogImage: event.target.value }))} />
-          </label>
+          <ImageUploadField
+            label="OG image"
+            value={metaState.ogImage ?? ""}
+            onChange={(value) => setMetaState((current) => ({ ...current, ogImage: value }))}
+          />
           <label className="field md:col-span-2">
             <span>OG description</span>
             <textarea rows={3} value={metaState.ogDescription ?? ""} onChange={(event) => setMetaState((current) => ({ ...current, ogDescription: event.target.value }))} />
@@ -283,6 +284,16 @@ function SectionCard({
           <span>Description</span>
           <textarea rows={4} value={draft.description ?? ""} onChange={(event) => setDraft((current) => ({ ...current, description: event.target.value }))} />
         </label>
+        <ImageUploadField
+          label="Section image"
+          value={draft.imageUrl ?? ""}
+          onChange={(value) => setDraft((current) => ({ ...current, imageUrl: value }))}
+        />
+        <ImageUploadField
+          label="Background image"
+          value={draft.backgroundImageUrl ?? ""}
+          onChange={(value) => setDraft((current) => ({ ...current, backgroundImageUrl: value }))}
+        />
         <label className="field">
           <span>Button text</span>
           <input value={draft.buttonText ?? ""} onChange={(event) => setDraft((current) => ({ ...current, buttonText: event.target.value }))} />
@@ -357,10 +368,11 @@ function ItemCard({
           <span>Icon</span>
           <input value={draft.icon ?? ""} onChange={(event) => setDraft((current) => ({ ...current, icon: event.target.value }))} />
         </label>
-        <label className="field">
-          <span>Image URL</span>
-          <input value={draft.imageUrl ?? ""} onChange={(event) => setDraft((current) => ({ ...current, imageUrl: event.target.value }))} />
-        </label>
+        <ImageUploadField
+          label="Item image"
+          value={draft.imageUrl ?? ""}
+          onChange={(value) => setDraft((current) => ({ ...current, imageUrl: value }))}
+        />
         <label className="field">
           <span>Button text</span>
           <input value={draft.buttonText ?? ""} onChange={(event) => setDraft((current) => ({ ...current, buttonText: event.target.value }))} />
@@ -370,6 +382,73 @@ function ItemCard({
           <input value={draft.buttonLink ?? ""} onChange={(event) => setDraft((current) => ({ ...current, buttonLink: event.target.value }))} />
         </label>
       </div>
+    </div>
+  );
+}
+
+function ImageUploadField({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value?: string | null;
+  onChange: (value: string) => void;
+}) {
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+
+    if (!file) {
+      return;
+    }
+
+    setIsUploading(true);
+
+    try {
+      const uploaded = await mediaService.upload(file);
+      onChange(uploaded.fileUrl);
+      toast.success(`${label} uploaded. Save the form to keep this change.`);
+    } catch {
+      toast.error(`Unable to upload ${label.toLowerCase()}`);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  return (
+    <div className="field">
+      <div className="flex items-center justify-between gap-3">
+        <span>{label}</span>
+        {value ? (
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="inline-flex items-center gap-1 text-xs font-semibold text-rose-600 transition hover:text-rose-700"
+          >
+            <X className="h-3.5 w-3.5" />
+            Clear
+          </button>
+        ) : null}
+      </div>
+
+      {value ? (
+        <img src={value} alt={label} className="h-32 w-full rounded-2xl border border-slate-200 object-cover" />
+      ) : (
+        <div className="flex h-32 items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 text-sm text-slate-400">
+          No image selected
+        </div>
+      )}
+
+      <label className="btn-secondary mt-3 cursor-pointer justify-center">
+        <Upload className="h-4 w-4" />
+        {isUploading ? "Uploading..." : value ? "Replace Image" : "Upload Image"}
+        <input type="file" accept="image/*" className="hidden" onChange={(event) => void handleUpload(event)} disabled={isUploading} />
+      </label>
+
+      {value ? <div className="mt-3 break-all rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-500">{value}</div> : null}
     </div>
   );
 }

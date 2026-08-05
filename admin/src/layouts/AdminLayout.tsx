@@ -14,7 +14,7 @@ export function AdminLayout() {
             <div className="flex items-center justify-between gap-4">
               <div>
                 <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Secure CMS</div>
-                <div className="mt-1 text-xl font-semibold">Manage content and enquiries</div>
+                <div className="mt-1 text-xl font-semibold">Manage content and media</div>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm">
                 {admin?.name}

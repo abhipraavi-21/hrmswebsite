@@ -5,11 +5,8 @@ import type {
   CmsPage,
   CmsPageSummary,
   CmsSection,
-  ContactEnquiry,
-  ContactSettings,
   DashboardSummary,
   MediaItem,
-  PaginatedEnquiries,
   PricingFeature,
   PricingPlan,
   ResourceSummary,
@@ -77,21 +74,6 @@ export const pricingService = {
   updateFeature: (id: number | string, payload: Partial<PricingFeature>) =>
     unwrap<PricingFeature>(api.put(`/admin/pricing-plans/features/${id}`, payload)),
   removeFeature: (id: number | string) => unwrap(api.delete(`/admin/pricing-plans/features/${id}`)),
-};
-
-export const contactService = {
-  getSettings: () => unwrap<ContactSettings>(api.get("/admin/contact/settings")),
-  updateSettings: (payload: Partial<ContactSettings>) =>
-    unwrap<ContactSettings>(api.put("/admin/contact/settings", payload)),
-  listEnquiries: (params: Record<string, string | number | undefined>) =>
-    unwrap<PaginatedEnquiries>(api.get("/admin/contact/enquiries", { params })),
-  getEnquiry: (id: number | string) => unwrap<ContactEnquiry>(api.get(`/admin/contact/enquiries/${id}`)),
-  updateStatus: (id: number | string, status: ContactEnquiry["status"]) =>
-    unwrap<ContactEnquiry>(api.patch(`/admin/contact/enquiries/${id}/status`, { status })),
-  updateNotes: (id: number | string, adminNotes: string) =>
-    unwrap<ContactEnquiry>(api.patch(`/admin/contact/enquiries/${id}/notes`, { adminNotes })),
-  remove: (id: number | string) => unwrap(api.delete(`/admin/contact/enquiries/${id}`)),
-  exportCsvUrl: () => `${api.defaults.baseURL}/admin/contact/enquiries/export`,
 };
 
 export const mediaService = {

@@ -14,9 +14,6 @@ export function DashboardPage() {
         ["Managed Pages", summary.totalManagedPages],
         ["Resource Pages", summary.totalResourcePages],
         ["Pricing Plans", summary.totalPricingPlans],
-        ["Contact Enquiries", summary.totalContactEnquiries],
-        ["New Enquiries", summary.newEnquiries],
-        ["Read Enquiries", summary.readEnquiries],
         ["Published Sections", summary.publishedSections],
         ["Draft Sections", summary.draftSections],
       ]
