@@ -28,15 +28,16 @@ import {
   Presentation,
 } from "lucide-react";
 import Footer from "@/components/site/Footer";
-import ManagedContentShowcase from "@/components/site/ManagedContentShowcase";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
+import { usePublicContent } from "@/hooks/usePublicContent";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
-import { usePublicContentRecord, usePublishedContent } from "@/site/PublicSiteDataContext";
+import { getSection } from "@/services/cmsHelpers";
+import { fetchResourcePage } from "@/services/resourceService";
 
 const pageTitle = "HR Compliance Guide India | PF, ESIC, Payroll & Labour Law | Altroz HR";
 const pageDescription =
@@ -574,31 +575,16 @@ function SmartLink({
 }
 
 export default function ComplianceGuidesPage() {
+  const { data: remoteContent } = usePublicContent(() => fetchResourcePage("compliance-guides"));
+  const heroSection = getSection(remoteContent, "compliance-hero");
   const canonicalPath =
     typeof window !== "undefined" ? window.location.pathname : ROUTES.complianceGuides;
-  const managedComplianceGuides = usePublishedContent("Compliance Guide");
-  const compliancePageContent = usePublicContentRecord(ROUTES.complianceGuides, "Page");
-  const complianceHeroTitle =
-    compliancePageContent?.heroTitle ?? "HR Compliance Guide for Indian Businesses";
-  const complianceHeroDescription =
-    compliancePageContent?.heroDescription ??
-    "Understanding HR compliance in India does not have to be complicated. From Provident Fund and ESIC to payroll compliance and employee documentation, Altroz HR brings together simple, practical guides that help HR teams, payroll executives and business owners manage everyday HR work with more confidence.";
-  const complianceHeroSummary =
-    compliancePageContent?.summary ??
-    "Explore the guide library to build stronger processes, clearer records and a more organized compliance workflow.";
-  const complianceCtaTitle =
-    compliancePageContent?.ctaTitle ?? "Simplify HR compliance with Altroz HR";
-  const complianceCtaDescription =
-    compliancePageContent?.ctaDescription ??
-    "Explore the growing library of HR compliance guides, or see how Altroz HR helps teams stay organized across attendance, leave, payroll and documentation.";
-  const complianceCtaButtonText =
-    compliancePageContent?.ctaButtonText ?? "Explore HR Guides";
 
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title={pageTitle}
-        description={pageDescription}
+        title={remoteContent?.metaTitle ?? pageTitle}
+        description={remoteContent?.metaDescription ?? pageDescription}
         canonicalPath={canonicalPath}
         ogTitle="HR Compliance Guide for Indian Businesses | Altroz HR"
         ogDescription="A simple, practical HR compliance knowledge hub covering PF, ESIC, payroll, gratuity, bonus and labour law basics by Altroz HR."
@@ -617,22 +603,24 @@ export default function ComplianceGuidesPage() {
                 <div className="flex justify-center lg:justify-start">
                   <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                     <Sparkles className="h-4 w-4" />
-                    {compliancePageContent?.title ?? "HR Compliance Made Simple"}
+                    {heroSection?.subheading ?? "HR Compliance Made Simple"}
                   </span>
                 </div>
                 <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl lg:text-6xl">
-                  {complianceHeroTitle}
+                  {heroSection?.heading ?? "HR Compliance Guide for Indian Businesses"}
                 </h1>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-ink-soft sm:text-lg">
-                  {complianceHeroDescription}
+                  {heroSection?.description ??
+                    "Understanding HR compliance in India does not have to be complicated. From Provident Fund and ESIC to payroll compliance and employee documentation, Altroz HR brings together simple, practical guides that help HR teams, payroll executives and business owners manage everyday HR work with more confidence."}
                 </p>
                 <p className="mt-4 max-w-xl text-sm leading-6 text-ink-soft">
-                  {complianceHeroSummary}
+                  Explore the guide library to build stronger processes, clearer records and a more
+                  organized compliance workflow.
                 </p>
 
                 <div className="button-group mt-6">
                   <Button asChild className="h-11 rounded-full bg-primary px-6 font-semibold text-white">
-                    <a href="#compliance-categories">{compliancePageContent?.ctaButtonText ?? "Explore Compliance Guides"}</a>
+                    <a href="#compliance-categories">Explore Compliance Guides</a>
                   </Button>
                   <Button asChild variant="outline" className="h-11 rounded-full px-6 font-semibold">
                     <Link to={ROUTES.bookDemo}>Book a Free Demo</Link>
@@ -716,13 +704,6 @@ export default function ComplianceGuidesPage() {
             </StaggerReveal>
           </div>
         </section>
-
-        <ManagedContentShowcase
-          eyebrow="Admin Managed Compliance Guides"
-          title="Published compliance records from the admin panel"
-          description="The compliance team can manage these entries in the admin workspace, and the public frontend will surface the latest approved or published guide summaries here."
-          records={managedComplianceGuides}
-        />
 
         <section className="section">
           <div className="site-container">
@@ -910,13 +891,14 @@ export default function ComplianceGuidesPage() {
               <div className="relative grid gap-6 lg:grid-cols-12 lg:items-center">
                 <div className="lg:col-span-7">
                   <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
-                    {compliancePageContent?.focusKeyword ?? "Final CTA"}
+                    Final CTA
                   </div>
                   <h2 className="mt-3 text-3xl font-bold leading-tight text-ink sm:text-4xl">
-                    {complianceCtaTitle}
+                    Simplify HR compliance with Altroz HR
                   </h2>
                   <p className="mt-3 max-w-3xl text-base leading-7 text-ink-soft">
-                    {complianceCtaDescription}
+                    Explore the growing library of HR compliance guides, or see how Altroz HR helps
+                    teams stay organized across attendance, leave, payroll and documentation.
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-2">
@@ -935,7 +917,7 @@ export default function ComplianceGuidesPage() {
                 <div className="lg:col-span-5">
                   <div className="button-group lg:justify-end">
                     <Button asChild className="h-11 rounded-full bg-primary px-6 font-semibold text-white">
-                      <Link to={ROUTES.learn}>{complianceCtaButtonText}</Link>
+                      <Link to={ROUTES.learn}>Explore HR Guides</Link>
                     </Button>
                     <Button asChild variant="outline" className="h-11 rounded-full px-6 font-semibold">
                       <Link to={ROUTES.bookDemo}>Book Free Demo</Link>

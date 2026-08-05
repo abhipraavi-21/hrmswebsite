@@ -1,5 +1,7 @@
+import { createElement } from "react";
 import { Timer, ShieldCheck, Eye, MapPin } from "lucide-react";
 import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
+import type { PublicCmsSection } from "@/services/cmsTypes";
 
 const reasons = [
   {
@@ -28,16 +30,27 @@ const reasons = [
   },
 ];
 
-export default function WhyChooseUs() {
+const iconMap = { Timer, ShieldCheck, Eye, MapPin };
+
+export default function WhyChooseUs({ section }: { section?: PublicCmsSection | null }) {
+  const cards =
+    section?.items?.length
+      ? section.items.map((item) => ({
+          icon: createElement(iconMap[(item.icon as keyof typeof iconMap) ?? "Timer"] ?? Timer),
+          title: item.title ?? "",
+          desc: item.description ?? "",
+          tone: item.displayOrder % 2 === 0 ? "primary" : "success",
+        }))
+      : reasons;
   return (
     <section id="resources" className="section bg-surface scroll-mt-24">
       <div className="site-container">
         <ScrollReveal variant="fade-up" className="section-heading">
           <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
-            Why teams switch to us
+            {section?.subheading ?? "Why teams switch to us"}
           </span>
           <h2 className="text-3xl font-bold text-ink md:text-4xl">
-            Designed for outcomes, not just features
+            {section?.heading ?? "Designed for outcomes, not just features"}
           </h2>
         </ScrollReveal>
 
@@ -46,7 +59,7 @@ export default function WhyChooseUs() {
           step={80}
           className="mx-auto grid max-w-5xl gap-3 md:grid-cols-2 md:gap-4 md:auto-rows-fr"
         >
-          {reasons.map((r) => {
+          {cards.map((r) => {
             const isPrimary = r.tone === "primary";
             const accentClass = isPrimary
               ? "bg-primary-soft text-primary"

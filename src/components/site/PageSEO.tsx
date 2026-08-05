@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 
-import { usePublicSeoRecord } from "@/site/PublicSiteDataContext";
-
 type PageSEOProps = {
   title: string;
   description: string;
@@ -29,30 +27,6 @@ function getOrCreateTag<K extends keyof HTMLElementTagNameMap>(
   return { element, created: true as const };
 }
 
-function normalizeCanonicalValue(value?: string) {
-  if (!value) {
-    return undefined;
-  }
-
-  try {
-    return new URL(value, window.location.origin).href;
-  } catch {
-    return undefined;
-  }
-}
-
-function parseSchemaJson(schemaJson?: string) {
-  if (!schemaJson?.trim()) {
-    return null;
-  }
-
-  try {
-    return JSON.stringify(JSON.parse(schemaJson), null, 2);
-  } catch {
-    return null;
-  }
-}
-
 export default function PageSEO({
   title,
   description,
@@ -61,25 +35,8 @@ export default function PageSEO({
   ogTitle,
   ogDescription,
 }: PageSEOProps) {
-  const override = usePublicSeoRecord(canonicalPath);
-  const resolvedTitle = override?.metaTitle || override?.seoTitle || title;
-  const resolvedDescription = override?.metaDescription || description;
-  const resolvedCanonical = override?.canonicalUrl || canonicalPath;
-  const resolvedOgTitle = override?.ogTitle || ogTitle || resolvedTitle;
-  const resolvedOgDescription =
-    override?.ogDescription || override?.metaDescription || ogDescription || resolvedDescription;
-  const resolvedImage = override?.ogImage || override?.twitterImage || image;
-  const resolvedTwitterTitle = override?.twitterTitle || resolvedTitle;
-  const resolvedTwitterDescription =
-    override?.twitterDescription || resolvedOgDescription || resolvedDescription;
-  const resolvedRobots = override?.robots || "index, follow";
-  const resolvedSchemaJson =
-    override?.schemaEnabled === false ? null : parseSchemaJson(override?.schemaJson);
-
   useEffect(() => {
-    if (typeof document === "undefined") {
-      return;
-    }
+    if (typeof document === "undefined") return;
 
     const previousTitle = document.title;
 
@@ -89,9 +46,6 @@ export default function PageSEO({
 
     const descriptionTag = getOrCreateTag("meta", 'meta[name="description"]', {
       name: "description",
-    }) as { element: HTMLMetaElement; created: boolean };
-    const robotsTag = getOrCreateTag("meta", 'meta[name="robots"]', {
-      name: "robots",
     }) as { element: HTMLMetaElement; created: boolean };
 
     const ogTitleTag = getOrCreateTag("meta", 'meta[property="og:title"]', {
@@ -123,7 +77,6 @@ export default function PageSEO({
     const previous = {
       canonicalHref: canonical.element.getAttribute("href"),
       description: descriptionTag.element.getAttribute("content"),
-      robots: robotsTag.element.getAttribute("content"),
       ogTitle: ogTitleTag.element.getAttribute("content"),
       ogDescription: ogDescriptionTag.element.getAttribute("content"),
       ogUrl: ogUrlTag.element.getAttribute("content"),
@@ -134,47 +87,25 @@ export default function PageSEO({
       twitterDescription: twitterDescriptionTag.element.getAttribute("content"),
     };
 
-    const schemaSelector = 'script[data-page-seo-schema="true"]';
-    const existingSchema = document.head.querySelector<HTMLScriptElement>(schemaSelector);
-    const createdSchema = !existingSchema && Boolean(resolvedSchemaJson);
-    const schemaElement =
-      existingSchema ??
-      (resolvedSchemaJson
-        ? (() => {
-            const script = document.createElement("script");
-            script.type = "application/ld+json";
-            script.dataset.pageSeoSchema = "true";
-            document.head.appendChild(script);
-            return script;
-          })()
-        : null);
-    const previousSchema = existingSchema?.textContent ?? null;
+    document.title = title;
 
-    document.title = resolvedTitle;
-
-    const canonicalHref = normalizeCanonicalValue(resolvedCanonical);
-    if (canonicalHref) {
-      canonical.element.setAttribute("href", canonicalHref);
+    if (canonicalPath) {
+      canonical.element.setAttribute("href", new URL(canonicalPath, window.location.origin).href);
     }
-
-    descriptionTag.element.setAttribute("content", resolvedDescription);
-    robotsTag.element.setAttribute("content", resolvedRobots);
-    ogTitleTag.element.setAttribute("content", resolvedOgTitle);
-    ogDescriptionTag.element.setAttribute("content", resolvedOgDescription);
-    ogUrlTag.element.setAttribute("content", canonicalHref ?? window.location.href);
+    descriptionTag.element.setAttribute("content", description);
+    ogTitleTag.element.setAttribute("content", ogTitle ?? title);
+    ogDescriptionTag.element.setAttribute("content", ogDescription ?? description);
+    ogUrlTag.element.setAttribute(
+      "content",
+      canonicalPath ? new URL(canonicalPath, window.location.origin).href : window.location.href,
+    );
     ogTypeTag.element.setAttribute("content", "website");
     ogSiteNameTag.element.setAttribute("content", "Altroz HRMS");
-    twitterCardTag.element.setAttribute("content", resolvedImage ? "summary_large_image" : "summary");
-    twitterTitleTag.element.setAttribute("content", resolvedTwitterTitle);
-    twitterDescriptionTag.element.setAttribute("content", resolvedTwitterDescription);
+    twitterCardTag.element.setAttribute("content", image ? "summary_large_image" : "summary");
+    twitterTitleTag.element.setAttribute("content", title);
+    twitterDescriptionTag.element.setAttribute("content", description);
 
-    if (schemaElement) {
-      schemaElement.textContent = resolvedSchemaJson;
-    } else if (existingSchema) {
-      existingSchema.remove();
-    }
-
-    if (resolvedImage) {
+    if (image) {
       const ogImageTag = getOrCreateTag("meta", 'meta[property="og:image"]', {
         property: "og:image",
       }) as { element: HTMLMetaElement; created: boolean };
@@ -187,56 +118,58 @@ export default function PageSEO({
         twitterImage: twitterImageTag.element.getAttribute("content"),
       };
 
-      ogImageTag.element.setAttribute("content", resolvedImage);
-      twitterImageTag.element.setAttribute("content", resolvedImage);
+      ogImageTag.element.setAttribute("content", image);
+      twitterImageTag.element.setAttribute("content", image);
 
       return () => {
         document.title = previousTitle;
 
         if (canonical.created) canonical.element.remove();
-        else if (previous.canonicalHref !== null) canonical.element.setAttribute("href", previous.canonicalHref);
+        else if (previous.canonicalHref !== null)
+          canonical.element.setAttribute("href", previous.canonicalHref);
 
         if (descriptionTag.created) descriptionTag.element.remove();
-        else if (previous.description !== null) descriptionTag.element.setAttribute("content", previous.description);
-
-        if (robotsTag.created) robotsTag.element.remove();
-        else if (previous.robots !== null) robotsTag.element.setAttribute("content", previous.robots);
+        else if (previous.description !== null)
+          descriptionTag.element.setAttribute("content", previous.description);
 
         if (ogTitleTag.created) ogTitleTag.element.remove();
-        else if (previous.ogTitle !== null) ogTitleTag.element.setAttribute("content", previous.ogTitle);
+        else if (previous.ogTitle !== null)
+          ogTitleTag.element.setAttribute("content", previous.ogTitle);
 
         if (ogDescriptionTag.created) ogDescriptionTag.element.remove();
-        else if (previous.ogDescription !== null) ogDescriptionTag.element.setAttribute("content", previous.ogDescription);
+        else if (previous.ogDescription !== null)
+          ogDescriptionTag.element.setAttribute("content", previous.ogDescription);
 
         if (ogUrlTag.created) ogUrlTag.element.remove();
         else if (previous.ogUrl !== null) ogUrlTag.element.setAttribute("content", previous.ogUrl);
 
         if (ogTypeTag.created) ogTypeTag.element.remove();
-        else if (previous.ogType !== null) ogTypeTag.element.setAttribute("content", previous.ogType);
+        else if (previous.ogType !== null)
+          ogTypeTag.element.setAttribute("content", previous.ogType);
 
         if (ogSiteNameTag.created) ogSiteNameTag.element.remove();
-        else if (previous.ogSiteName !== null) ogSiteNameTag.element.setAttribute("content", previous.ogSiteName);
+        else if (previous.ogSiteName !== null)
+          ogSiteNameTag.element.setAttribute("content", previous.ogSiteName);
 
         if (twitterCardTag.created) twitterCardTag.element.remove();
-        else if (previous.twitterCard !== null) twitterCardTag.element.setAttribute("content", previous.twitterCard);
+        else if (previous.twitterCard !== null)
+          twitterCardTag.element.setAttribute("content", previous.twitterCard);
 
         if (twitterTitleTag.created) twitterTitleTag.element.remove();
-        else if (previous.twitterTitle !== null) twitterTitleTag.element.setAttribute("content", previous.twitterTitle);
+        else if (previous.twitterTitle !== null)
+          twitterTitleTag.element.setAttribute("content", previous.twitterTitle);
 
         if (twitterDescriptionTag.created) twitterDescriptionTag.element.remove();
-        else if (previous.twitterDescription !== null) twitterDescriptionTag.element.setAttribute("content", previous.twitterDescription);
+        else if (previous.twitterDescription !== null)
+          twitterDescriptionTag.element.setAttribute("content", previous.twitterDescription);
 
         if (ogImageTag.created) ogImageTag.element.remove();
-        else if (previousImage.ogImage !== null) ogImageTag.element.setAttribute("content", previousImage.ogImage);
+        else if (previousImage.ogImage !== null)
+          ogImageTag.element.setAttribute("content", previousImage.ogImage);
 
         if (twitterImageTag.created) twitterImageTag.element.remove();
-        else if (previousImage.twitterImage !== null) twitterImageTag.element.setAttribute("content", previousImage.twitterImage);
-
-        if (schemaElement && createdSchema) {
-          schemaElement.remove();
-        } else if (schemaElement && previousSchema !== null) {
-          schemaElement.textContent = previousSchema;
-        }
+        else if (previousImage.twitterImage !== null)
+          twitterImageTag.element.setAttribute("content", previousImage.twitterImage);
       };
     }
 
@@ -244,19 +177,20 @@ export default function PageSEO({
       document.title = previousTitle;
 
       if (canonical.created) canonical.element.remove();
-      else if (previous.canonicalHref !== null) canonical.element.setAttribute("href", previous.canonicalHref);
+      else if (previous.canonicalHref !== null)
+        canonical.element.setAttribute("href", previous.canonicalHref);
 
       if (descriptionTag.created) descriptionTag.element.remove();
-      else if (previous.description !== null) descriptionTag.element.setAttribute("content", previous.description);
-
-      if (robotsTag.created) robotsTag.element.remove();
-      else if (previous.robots !== null) robotsTag.element.setAttribute("content", previous.robots);
+      else if (previous.description !== null)
+        descriptionTag.element.setAttribute("content", previous.description);
 
       if (ogTitleTag.created) ogTitleTag.element.remove();
-      else if (previous.ogTitle !== null) ogTitleTag.element.setAttribute("content", previous.ogTitle);
+      else if (previous.ogTitle !== null)
+        ogTitleTag.element.setAttribute("content", previous.ogTitle);
 
       if (ogDescriptionTag.created) ogDescriptionTag.element.remove();
-      else if (previous.ogDescription !== null) ogDescriptionTag.element.setAttribute("content", previous.ogDescription);
+      else if (previous.ogDescription !== null)
+        ogDescriptionTag.element.setAttribute("content", previous.ogDescription);
 
       if (ogUrlTag.created) ogUrlTag.element.remove();
       else if (previous.ogUrl !== null) ogUrlTag.element.setAttribute("content", previous.ogUrl);
@@ -265,35 +199,22 @@ export default function PageSEO({
       else if (previous.ogType !== null) ogTypeTag.element.setAttribute("content", previous.ogType);
 
       if (ogSiteNameTag.created) ogSiteNameTag.element.remove();
-      else if (previous.ogSiteName !== null) ogSiteNameTag.element.setAttribute("content", previous.ogSiteName);
+      else if (previous.ogSiteName !== null)
+        ogSiteNameTag.element.setAttribute("content", previous.ogSiteName);
 
       if (twitterCardTag.created) twitterCardTag.element.remove();
-      else if (previous.twitterCard !== null) twitterCardTag.element.setAttribute("content", previous.twitterCard);
+      else if (previous.twitterCard !== null)
+        twitterCardTag.element.setAttribute("content", previous.twitterCard);
 
       if (twitterTitleTag.created) twitterTitleTag.element.remove();
-      else if (previous.twitterTitle !== null) twitterTitleTag.element.setAttribute("content", previous.twitterTitle);
+      else if (previous.twitterTitle !== null)
+        twitterTitleTag.element.setAttribute("content", previous.twitterTitle);
 
       if (twitterDescriptionTag.created) twitterDescriptionTag.element.remove();
-      else if (previous.twitterDescription !== null) twitterDescriptionTag.element.setAttribute("content", previous.twitterDescription);
-
-      if (schemaElement && createdSchema) {
-        schemaElement.remove();
-      } else if (schemaElement && previousSchema !== null) {
-        schemaElement.textContent = previousSchema;
-      }
+      else if (previous.twitterDescription !== null)
+        twitterDescriptionTag.element.setAttribute("content", previous.twitterDescription);
     };
-  }, [
-    resolvedCanonical,
-    resolvedDescription,
-    resolvedImage,
-    resolvedOgDescription,
-    resolvedOgTitle,
-    resolvedRobots,
-    resolvedSchemaJson,
-    resolvedTitle,
-    resolvedTwitterDescription,
-    resolvedTwitterTitle,
-  ]);
+  }, [canonicalPath, description, image, ogDescription, ogTitle, title]);
 
   return null;
 }

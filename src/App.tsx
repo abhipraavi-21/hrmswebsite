@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from
 import ScrollRevealManager from "./components/site/ScrollRevealManager";
 import ScrollToTop from "./components/site/ScrollToTop";
 import WhatsAppFloatingButton from "./components/site/WhatsAppFloatingButton";
+import AdminAppRedirect from "./components/site/AdminAppRedirect";
 import {
   companyMenuColumns,
   emailLinks,
@@ -12,13 +13,11 @@ import {
   resourcesMenuItems,
   solutionMenuItems,
 } from "./components/site/nav-data";
-import { PublicSiteDataProvider } from "./site/PublicSiteDataContext";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { logRouteValidation, validateRouteReferences } from "@/utils/routeValidator.js";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const HrmsHomePage = lazy(() => import("./pages/HrmsHomePage"));
-const AdminApp = lazy(() => import("./admin/AdminApp"));
 const CoreHrPage = lazy(() => import("./pages/CoreHrPage"));
 const WorkforceManagementPage = lazy(() => import("./pages/WorkforceManagementPage"));
 const AttendanceManagementPage = lazy(() => import("./pages/AttendanceManagementPage"));
@@ -124,7 +123,6 @@ function AppShell() {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === ROUTES.home;
-  const isAdminRoute = location.pathname.startsWith(ROUTES.admin);
 
   useEffect(() => {
     if (!import.meta.env.DEV) {
@@ -136,25 +134,21 @@ function AppShell() {
   }, []);
 
   useEffect(() => {
-    if (isAdminRoute) {
-      return;
-    }
-
     sessionStorage.setItem("altroz:last-path", location.pathname);
-  }, [isAdminRoute, location.pathname]);
+  }, [location.pathname]);
 
   useEffect(() => {
     const lastPath = sessionStorage.getItem("altroz:last-path");
 
-    if (isHomePage && lastPath && lastPath !== ROUTES.home && !lastPath.startsWith(ROUTES.admin)) {
+    if (isHomePage && lastPath && lastPath !== ROUTES.home) {
       navigate(lastPath, { replace: true });
     }
   }, [isHomePage, navigate]);
 
   return (
     <>
-      {!isAdminRoute ? <WhatsAppFloatingButton /> : null}
-      {!isAdminRoute ? <ScrollRevealManager /> : null}
+      <WhatsAppFloatingButton />
+      <ScrollRevealManager />
       <ScrollToTop />
       <Suspense
         fallback={
@@ -164,7 +158,6 @@ function AppShell() {
         }
       >
         <Routes>
-          <Route path={`${ROUTES.admin}/*`} element={<AdminApp />} />
           <Route path={ROUTES.home} element={<HomePage />} />
           <Route path={ROUTES.hrmsHome} element={<HrmsHomePage />} />
           <Route path={ROUTES.coreHR} element={<CoreHrPage />} />
@@ -282,6 +275,7 @@ function AppShell() {
             element={<Navigate to={ROUTES.workforce} replace />}
           />
           <Route path="/why-altroz" element={<Navigate to={ROUTES.whyAltroz} replace />} />
+          <Route path="/admin/*" element={<AdminAppRedirect />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
@@ -293,9 +287,7 @@ function AppShell() {
 export default function App() {
   return (
     <BrowserRouter>
-      <PublicSiteDataProvider>
-        <AppShell />
-      </PublicSiteDataProvider>
+      <AppShell />
     </BrowserRouter>
   );
 }

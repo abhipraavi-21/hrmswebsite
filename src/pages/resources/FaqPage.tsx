@@ -23,15 +23,16 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/site/Footer";
-import ManagedContentShowcase from "@/components/site/ManagedContentShowcase";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
+import { usePublicContent } from "@/hooks/usePublicContent";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
-import { usePublicContentRecord, usePublishedContent } from "@/site/PublicSiteDataContext";
 import { faqPopularSearches, faqQuickLinks, faqSections } from "./faqData";
+import { getSection } from "@/services/cmsHelpers";
+import { fetchResourcePage } from "@/services/resourceService";
 
 const pageTitle = "Altroz HR FAQs | Knowledge Base and Frequently Asked Questions";
 const pageDescription =
@@ -86,10 +87,10 @@ function SectionHeading({
 }
 
 export default function FaqPage() {
+  const { data: remoteContent } = usePublicContent(() => fetchResourcePage("faq"));
+  const heroSection = getSection(remoteContent, "faq-hero");
   const [query, setQuery] = useState("");
   const [activeSection, setActiveSection] = useState(faqSections[0]?.title ?? "");
-  const managedFaqCollections = usePublishedContent("FAQ");
-  const faqPageContent = usePublicContentRecord(ROUTES.faq, "Page");
   const normalizedQuery = query.trim().toLowerCase();
   const activeSectionData =
     faqSections.find((section) => section.title === activeSection) ?? faqSections[0] ?? null;
@@ -146,25 +147,11 @@ export default function FaqPage() {
     ),
   };
 
-  const faqHeroTitle = faqPageContent?.heroTitle ?? "How can we help you today?";
-  const faqHeroDescription =
-    faqPageContent?.heroDescription ??
-    "Search our knowledge base or browse FAQs by category to get quick, clear answers about Altroz HR.";
-  const faqHeroSummary =
-    faqPageContent?.summary ??
-    "Use the FAQ hub and the published admin-managed FAQ collections together to keep support information current.";
-  const faqCtaTitle =
-    faqPageContent?.ctaTitle ?? "Our HR experts are here to help you choose the right modules for your business.";
-  const faqCtaDescription =
-    faqPageContent?.ctaDescription ??
-    "Explore the right resources, compare topics, and jump into the pages that fit your next step best.";
-  const faqCtaButtonText = faqPageContent?.ctaButtonText ?? "Browse Categories";
-
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_36%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]">
       <PageSEO
-        title={pageTitle}
-        description={pageDescription}
+        title={remoteContent?.metaTitle ?? pageTitle}
+        description={remoteContent?.metaDescription ?? pageDescription}
         canonicalPath={ROUTES.faq}
         ogTitle="Altroz HR FAQs | Knowledge Base and Frequently Asked Questions"
         ogDescription={pageDescription}
@@ -178,17 +165,15 @@ export default function FaqPage() {
             <ScrollReveal className="mx-auto max-w-5xl text-center">
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <CircleHelp className="h-4 w-4" />
-                {faqPageContent?.title ?? "Knowledge Base"}
+                {heroSection?.subheading ?? "Knowledge Base"}
               </div>
 
               <h1 className="mt-5 text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">
-                {faqHeroTitle}
+                {heroSection?.heading ?? "How can we help you today?"}
               </h1>
               <p className="mx-auto mt-5 max-w-4xl text-lg leading-8 text-ink-soft sm:text-xl">
-                {faqHeroDescription}
-              </p>
-              <p className="mx-auto mt-3 max-w-4xl text-sm leading-7 text-ink-soft">
-                {faqHeroSummary}
+                {heroSection?.description ??
+                  "Search our knowledge base or browse FAQs by category to get quick, clear answers about Altroz HR."}
               </p>
 
               <div className="mx-auto mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row">
@@ -204,7 +189,7 @@ export default function FaqPage() {
                   />
                 </label>
                 <a href="#faq-sections" className="btn-primary justify-center sm:w-auto">
-                  {faqCtaButtonText}
+                  Browse Categories
                 </a>
               </div>
 
@@ -232,13 +217,6 @@ export default function FaqPage() {
             </ScrollReveal>
           </div>
         </section>
-
-        <ManagedContentShowcase
-          eyebrow="Admin Managed FAQ Collections"
-          title="Published FAQ collections from the admin panel"
-          description="The FAQ manager can update these collections in the admin workspace, and the public help center will surface the latest approved or published groups here."
-          records={managedFaqCollections}
-        />
 
         <section id="faq-sections" className="pb-16 sm:pb-20 lg:pb-24">
           <div className="site-container">
@@ -368,10 +346,11 @@ export default function FaqPage() {
                       Still have questions?
                     </div>
                     <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                      {faqCtaTitle}
+                      Our HR experts are here to help you choose the right modules for your business.
                     </h2>
                     <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-ink-soft">
-                      {faqCtaDescription}
+                      Explore the right resources, compare topics, and jump into the pages that fit
+                      your next step best.
                     </p>
 
                     <div className="mx-auto mt-8 grid w-full max-w-4xl gap-3 sm:grid-cols-2 xl:grid-cols-4">

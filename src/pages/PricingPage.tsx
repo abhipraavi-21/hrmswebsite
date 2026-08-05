@@ -15,14 +15,15 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
-import { getDefaultManagedPageData } from "@/admin/pageData";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
+import { usePublicContent } from "@/hooks/usePublicContent";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/routes/routeConfig.js";
-import { usePublicContentRecord } from "@/site/PublicSiteDataContext";
+import { getSection } from "@/services/cmsHelpers";
+import { fetchPricingPage } from "@/services/pricingService";
 
 type FeatureState = "included" | "notIncluded" | "limited" | "optional" | "addon";
 
@@ -85,10 +86,8 @@ const clampValue = (value: number, min: number, max: number) => Math.min(max, Ma
 const normalizeEmployeeCount = (value: number) =>
   clampValue(Number.isFinite(value) ? Math.round(value) : calculatorMin, calculatorMin, calculatorMax);
 
-const getRecommendedPlan = (employeeCount: number, plans: PlanCard[]) => {
-  const recommendedIndex = employeeCount < 75 ? 0 : employeeCount < 250 ? 1 : 2;
-  return plans[recommendedIndex]?.name ?? plans[0]?.name ?? "Recommended";
-};
+const getRecommendedPlan = (employeeCount: number) =>
+  employeeCount < 75 ? "Basic" : employeeCount < 250 ? "Professional" : "Premium";
 
 const statusMeta: Record<
   FeatureState,
@@ -593,23 +592,16 @@ function PricingCalculatorSection({
   employeeCount,
   onEmployeeCountChange,
   plans,
-  sectionCopy,
 }: {
   employeeCount: number;
   onEmployeeCountChange: (nextValue: number) => void;
   plans: PlanCard[];
-  sectionCopy: {
-    eyebrow: string;
-    title: string;
-    description: string;
-  };
 }) {
-  const recommendedPlan = getRecommendedPlan(employeeCount, plans);
+  const recommendedPlan = getRecommendedPlan(employeeCount);
   const planTotals = useMemo(
     () =>
-      plans.map((plan, index) => ({
+      plans.map((plan) => ({
         ...plan,
-        index,
         total: plan.price * employeeCount,
       })),
     [employeeCount, plans],
@@ -625,13 +617,14 @@ function PricingCalculatorSection({
         <div className="mx-auto max-w-3xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-primary shadow-sm">
             <Sparkles className="h-3.5 w-3.5" />
-            {sectionCopy.eyebrow}
+            Instant estimate
           </div>
           <h2 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-            {sectionCopy.title}
+            Estimate pricing by team size
           </h2>
           <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-            {sectionCopy.description}
+            Slide the employee count to see how Basic, Professional and Premium scale on your
+            pricing page using the same plan prices from Altroz HRMS.
           </p>
         </div>
 
@@ -745,9 +738,9 @@ function PricingCalculatorSection({
                     <div className="flex items-center justify-between gap-3 py-1">
                       <span>Best for</span>
                       <span className="font-semibold text-ink">
-                        {plan.index === 0
+                        {plan.name === "Basic"
                           ? "Smaller teams"
-                          : plan.index === 1
+                          : plan.name === "Professional"
                             ? "Growing teams"
                             : "Larger rollouts"}
                       </span>
@@ -765,76 +758,63 @@ function PricingCalculatorSection({
 
 export default function PricingPage() {
   const [employeeCount, setEmployeeCount] = useState(100);
-  const pricingContent = usePublicContentRecord(ROUTES.pricing, "Page");
-  const defaultPricingPageData = getDefaultManagedPageData(ROUTES.pricing)?.pricing;
-  const pricingPageData = pricingContent?.pageData?.pricing ?? defaultPricingPageData;
-  const highlightItems = pricingPageData?.highlights?.length ? pricingPageData.highlights : defaultPricingPageData?.highlights ?? [];
-  const planItems = pricingPageData?.planCards?.length ? pricingPageData.planCards : defaultPricingPageData?.planCards ?? [];
-  const featureGroupItems =
-    pricingPageData?.featureGroups?.length ? pricingPageData.featureGroups : defaultPricingPageData?.featureGroups ?? [];
-  const addOnItems = pricingPageData?.addOns?.length ? pricingPageData.addOns : defaultPricingPageData?.addOns ?? [];
-  const heroBadge = pricingPageData?.heroBadge ?? "Pricing sheet";
-  const comparisonFocusTitle =
-    pricingPageData?.comparisonFocusTitle ?? "Section cards for each pricing feature group";
-  const comparisonFocusDescription =
-    pricingPageData?.comparisonFocusDescription ?? "Compare the feature groups across each plan.";
-  const comparisonFocusItems =
-    pricingPageData?.comparisonFocusItems?.length
-      ? pricingPageData.comparisonFocusItems
-      : defaultPricingPageData?.comparisonFocusItems ?? [];
-  const pricingHeroTitle = pricingContent?.heroTitle ?? "Altroz HRMS Pricing Plans";
-  const pricingHeroDescription =
-    pricingContent?.heroDescription ??
-    "Feature comparison for Basic (₹21), Professional (₹36), Premium (₹53) and add-ons, rebuilt as a clear pricing page with plan cards and sectioned feature comparisons.";
-  const pricingCtaTitle =
-    pricingContent?.ctaTitle ?? "Want a tailored walkthrough of your pricing and ROI numbers?";
-  const pricingCtaDescription =
-    pricingContent?.ctaDescription ??
-    "The page now includes the pricing table and add-ons, giving a clear view of the plan structure before you request a tailored walkthrough.";
-  const pricingCtaButtonText = pricingContent?.ctaButtonText ?? "Request a demo";
-  const calculatorSection = pricingPageData?.calculatorSection ?? defaultPricingPageData?.calculatorSection;
-  const planCardsSection = pricingPageData?.planCardsSection ?? defaultPricingPageData?.planCardsSection;
-  const featureComparisonSection =
-    pricingPageData?.featureComparisonSection ?? defaultPricingPageData?.featureComparisonSection;
-  const addOnsSection = pricingPageData?.addOnsSection ?? defaultPricingPageData?.addOnsSection;
-  const ctaEyebrow = pricingPageData?.ctaEyebrow ?? "Next step";
-  const pricingHighlightsData = highlightItems.map((item, index) => ({
-    title: item.title,
-    value: item.value ?? pricingHighlights[index % pricingHighlights.length]?.value ?? "",
-    desc: item.description,
-    icon: pricingHighlights[index % pricingHighlights.length]?.icon ?? <Sparkles className="h-4 w-4" />,
-  }));
-  const pricingPlanCards = planItems.map((item, index) => ({
-    name: item.name,
-    price: item.price,
-    accent: planCards[index % planCards.length]?.accent ?? "bg-primary-soft text-primary",
-    icon: planCards[index % planCards.length]?.icon ?? <BadgeCheck className="h-5 w-5" />,
-    summary: item.summary,
-    bullets: item.bullets,
-  }));
-  const pricingFeatureGroups = featureGroupItems.map((group) => ({
-    title: group.title,
-    description: group.description,
-    rows: group.rows.map((rowItem) => ({
-      label: rowItem.label,
-      basic: rowItem.basic,
-      professional: rowItem.professional,
-      premium: rowItem.premium,
-      note: rowItem.note,
-    })),
-  }));
-  const pricingAddOnCards = addOnItems.map((item, index) => ({
-    title: item.title,
-    description: item.description,
-    note: item.note ?? item.ctaLabel ?? "Optional add-on",
-    accent: addOnCards[index % addOnCards.length]?.accent ?? "bg-primary-soft text-primary",
-  }));
+  const { data: remoteContent } = usePublicContent(fetchPricingPage);
+  const heroSection = getSection(remoteContent, "pricing-hero");
+  const activePlanCards = useMemo<PlanCard[]>(() => {
+    if (!remoteContent?.plans?.length) {
+      return planCards;
+    }
+
+    return remoteContent.plans.map((plan) => ({
+      name: plan.name,
+      price: plan.monthlyPrice,
+      accent: (plan.settings?.accent as string | undefined) ?? "bg-primary-soft text-primary",
+      icon:
+        plan.name === "Basic" ? (
+          <BadgeCheck className="h-5 w-5" />
+        ) : plan.name === "Professional" ? (
+          <ShieldCheck className="h-5 w-5" />
+        ) : (
+          <Crown className="h-5 w-5" />
+        ),
+      summary: plan.shortDescription ?? "",
+      bullets:
+        plan.features
+          ?.slice()
+          .sort((a, b) => a.displayOrder - b.displayOrder)
+          .map((feature) => feature.featureText) ?? [],
+    }));
+  }, [remoteContent?.plans]);
+  const activeHighlights = useMemo(() => {
+    if (!heroSection?.items?.length) {
+      return pricingHighlights;
+    }
+
+    return heroSection.items.map((item) => ({
+      title: item.title ?? "",
+      value: item.subtitle ?? "",
+      desc: item.description ?? "",
+      icon:
+        item.title === "Basic" ? (
+          <BadgeCheck className="h-4 w-4" />
+        ) : item.title === "Professional" ? (
+          <ShieldCheck className="h-4 w-4" />
+        ) : item.title === "Premium" ? (
+          <Crown className="h-4 w-4" />
+        ) : (
+          <Coins className="h-4 w-4" />
+        ),
+    }));
+  }, [heroSection?.items]);
 
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Pricing Plans | Altroz HRMS"
-        description="Compare the Altroz HRMS pricing plans in detail. See Basic, Professional and Premium pricing, feature coverage, and optional add-ons."
+        title={remoteContent?.metaTitle ?? "Pricing Plans | Altroz HRMS"}
+        description={
+          remoteContent?.metaDescription ??
+          "Compare the Altroz HRMS pricing plans in detail. See Basic, Professional and Premium pricing, feature coverage, and optional add-ons."
+        }
         canonicalPath={ROUTES.pricing}
       />
       <TopNavbar />
@@ -849,28 +829,36 @@ export default function PricingPage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <Sparkles className="h-4 w-4" />
-                {heroBadge}
+                {heroSection?.subheading ?? "Pricing sheet"}
               </div>
 
               <h1 className="mt-3 max-w-3xl text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">
-                {pricingHeroTitle}
+                {heroSection?.heading ?? "Altroz HRMS Pricing Plans"}
               </h1>
               <p className="mt-4 max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
-                {pricingHeroDescription}
+                {heroSection?.description ??
+                  "Feature comparison for Basic (₹21), Professional (₹36), Premium (₹53) and add-ons, rebuilt as a clear pricing page with plan cards and sectioned feature comparisons."}
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link to={ROUTES.bookDemo} className="btn-primary">
-                  {pricingCtaButtonText}
+                <Link to={heroSection?.buttonLink ?? ROUTES.bookDemo} className="btn-primary">
+                  {heroSection?.buttonText ?? "Request a demo"}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link to={ROUTES.contact} className="btn-outline">
-                  Talk to sales
+                <Link
+                  to={
+                    ((heroSection?.settings?.secondaryButtonLink as string | undefined) ??
+                      ROUTES.contact)
+                  }
+                  className="btn-outline"
+                >
+                  {(heroSection?.settings?.secondaryButtonText as string | undefined) ??
+                    "Talk to sales"}
                 </Link>
               </div>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                {pricingHighlightsData.map((item) => (
+                {activeHighlights.map((item) => (
                   <div
                     key={item.title}
                     className="soft-card flex h-full flex-col gap-2 p-3.5 sm:p-4"
@@ -890,7 +878,7 @@ export default function PricingPage() {
               <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-primary/10 via-transparent to-success/10 blur-2xl" />
               <div className="relative rounded-xl border border-border bg-white p-5 shadow-float">
                 <div className="grid gap-4 md:grid-cols-3">
-                  {pricingPlanCards.map((plan) => (
+                  {activePlanCards.map((plan) => (
                     <div key={plan.name} className="rounded-xl border border-border bg-white p-4 shadow-sm">
                       <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                         {plan.name}
@@ -908,11 +896,8 @@ export default function PricingPage() {
                         Comparison focus
                       </div>
                       <h2 className="mt-2 text-2xl font-black tracking-tight text-ink">
-                        {comparisonFocusTitle}
+                        Section cards for each pricing feature group
                       </h2>
-                      <p className="mt-2 text-sm leading-6 text-ink-soft">
-                        {comparisonFocusDescription}
-                      </p>
                     </div>
                     <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-white">
                       <Users className="h-6 w-6" />
@@ -920,7 +905,14 @@ export default function PricingPage() {
                   </div>
 
                   <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                    {comparisonFocusItems.map((item) => (
+                    {[
+                      "Employee management",
+                      "Attendance and leave",
+                      "Recruitment and documents",
+                      "Payroll, compliance and reports",
+                      "Assets, performance and administration",
+                      "Optional add-ons and integrations",
+                    ].map((item) => (
                       <div key={item} className="flex items-start gap-3 rounded-2xl bg-white p-3">
                         <CheckCircle2 className="mt-0.5 h-4 w-4 text-primary" />
                         <span className="text-sm leading-6 text-ink">{item}</span>
@@ -936,32 +928,26 @@ export default function PricingPage() {
         <PricingCalculatorSection
           employeeCount={employeeCount}
           onEmployeeCountChange={setEmployeeCount}
-          plans={pricingPlanCards}
-          sectionCopy={{
-            eyebrow: calculatorSection?.eyebrow ?? "Instant estimate",
-            title: calculatorSection?.title ?? "Estimate pricing by team size",
-            description:
-              calculatorSection?.description ??
-              "Slide the employee count to see how the plan pricing scales for your team.",
-          }}
+          plans={activePlanCards}
         />
 
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="container-x">
             <div className="mx-auto max-w-3xl text-center">
               <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
-                {planCardsSection?.eyebrow ?? "Plan cards"}
+                Plan cards
               </div>
               <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                {planCardsSection?.title ?? "Three pricing plans, presented clearly"}
+                Three pricing plans, presented clearly
               </h2>
               <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-                {planCardsSection?.description}
+                The plans below summarize the pricing sheet before the feature sections break the
+                coverage down module by module.
               </p>
             </div>
 
             <div className="mt-10 grid items-stretch gap-5 lg:grid-cols-3">
-              {pricingPlanCards.map((plan) => (
+              {activePlanCards.map((plan) => (
                 <PlanCardView key={plan.name} plan={plan} employeeCount={employeeCount} />
               ))}
             </div>
@@ -972,18 +958,19 @@ export default function PricingPage() {
           <div className="container-x">
             <div className="max-w-3xl">
               <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
-                {featureComparisonSection?.eyebrow ?? "Feature comparison"}
+                Feature comparison
               </div>
               <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                {featureComparisonSection?.title ?? "Section cards for the pricing features"}
+                Section cards for the pricing features
               </h2>
               <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-                {featureComparisonSection?.description}
+                Every major module from the sheet is grouped into a dedicated card so the plan
+                differences are easy to scan, compare and present on desktop or mobile.
               </p>
             </div>
 
             <div className="mt-10 space-y-5">
-              {pricingFeatureGroups.map((group) => (
+              {featureGroups.map((group) => (
                 <FeatureGroupCard key={group.title} group={group} />
               ))}
             </div>
@@ -992,21 +979,8 @@ export default function PricingPage() {
 
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="container-x">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
-                {addOnsSection?.eyebrow ?? "Add-ons"}
-              </div>
-              <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                {addOnsSection?.title ?? "Optional add-ons for deeper rollout needs"}
-              </h2>
-              <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-                {addOnsSection?.description}
-              </p>
-            </div>
-            <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-              {pricingAddOnCards.map((card) => (
-                <AddOnCardView key={card.title} card={card} />
-              ))}
+            <div>
+              <FeatureGroupCard group={addOnGroup} />
             </div>
           </div>
         </section>
@@ -1017,19 +991,20 @@ export default function PricingPage() {
               <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">
-                    {ctaEyebrow}
+                    Next step
                   </div>
                   <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                    {pricingCtaTitle}
+                    Want a tailored walkthrough of your pricing and ROI numbers?
                   </h2>
                   <p className="mt-4 max-w-3xl text-base leading-7 text-ink-soft">
-                    {pricingCtaDescription}
+                    The page now includes the pricing table and add-ons, giving a clear view of
+                    the plan structure before you request a tailored walkthrough.
                   </p>
                 </div>
 
                 <div className="flex flex-wrap gap-3 lg:justify-end">
                   <Link to={ROUTES.bookDemo} className="btn-primary">
-                    {pricingCtaButtonText}
+                    Request a demo
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link to={ROUTES.contact} className="btn-outline">

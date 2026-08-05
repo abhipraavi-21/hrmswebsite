@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import {
   BarChart3,
   Bot,
@@ -18,6 +19,7 @@ import {
 } from "lucide-react";
 import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 import { ROUTES } from "@/routes/routeConfig.js";
+import type { PublicCmsSection } from "@/services/cmsTypes";
 
 const features = [
   {
@@ -134,28 +136,60 @@ const features = [
   },
 ];
 
-export default function Features() {
+const iconMap = {
+  BarChart3,
+  Bot,
+  BriefcaseBusiness,
+  Building2,
+  CalendarDays,
+  Clock3,
+  DoorOpen,
+  FileBarChart2,
+  LogOut,
+  MapPin,
+  Package,
+  ReceiptText,
+  ShieldCheck,
+  UserRound,
+  Users,
+  Wallet,
+};
+
+export default function Features({ section }: { section?: PublicCmsSection | null }) {
+  const activeFeatures =
+    section?.items?.length
+      ? section.items.map((item) => ({
+          id: item.id.toString(),
+          icon: createElement(
+            iconMap[(item.icon as keyof typeof iconMap) ?? "Building2"] ?? Building2,
+          ),
+          title: item.title ?? "",
+          desc: item.description ?? "",
+          href: item.buttonLink ?? "",
+        }))
+      : features;
+
   return (
     <section id="features" className="section bg-surface scroll-mt-24">
       <div className="site-container">
         <ScrollReveal variant="fade-up" className="section-heading">
           <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
-            Everything you need
+            {section?.subheading ?? "Everything you need"}
           </span>
           <h2 className="text-3xl font-bold text-ink md:text-4xl">
-            Powerful features, beautifully simple
+            {section?.heading ?? "Powerful features, beautifully simple"}
           </h2>
           <p className="text-ink-soft">
-            Explore each capability as a dedicated section, so the feature menu can jump straight to
-            the right area.
+            {section?.description ??
+              "Explore each capability as a dedicated section, so the feature menu can jump straight to the right area."}
           </p>
         </ScrollReveal>
 
         <StaggerReveal step={75} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((f) =>
+          {activeFeatures.map((f) =>
             f.href ? (
               <a
-                key={f.title}
+                key={f.id}
                 id={f.id}
                 href={f.href}
                 className="content-card soft-card group scroll-mt-24 block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
@@ -167,7 +201,7 @@ export default function Features() {
                 <p className="mt-1 text-sm text-ink-soft">{f.desc}</p>
               </a>
             ) : (
-              <div key={f.title} id={f.id} className="content-card soft-card group scroll-mt-24">
+              <div key={f.id} id={f.id} className="content-card soft-card group scroll-mt-24">
                 <div className="card-icon grid h-11 w-11 place-items-center rounded-lg bg-primary-soft text-primary transition-colors group-hover:bg-primary group-hover:text-white [&>svg]:h-5 [&>svg]:w-5">
                   {f.icon}
                 </div>

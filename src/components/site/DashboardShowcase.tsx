@@ -2,19 +2,30 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Clock, Mail, TrendingUp, Users, Wallet } from "lucide-react";
 import { ROUTES } from "@/routes/routeConfig.js";
+import type { PublicCmsSection } from "@/services/cmsTypes";
 import AnimatedCounter from "./AnimatedCounter";
 import { ScrollReveal } from "./ScrollReveal";
 
-export default function DashboardShowcase() {
-  const dashboardSections = [
-    { label: "Overview", href: ROUTES.analytics },
-    { label: "Attendance", href: ROUTES.attendanceManagement },
-    { label: "Payroll", href: ROUTES.payroll },
-    { label: "Employees", href: ROUTES.coreHR },
-    { label: "Leaves", href: ROUTES.leaveManagement },
-    { label: "Bulk Email", href: ROUTES.bulkEmail },
-    { label: "Reports", href: ROUTES.reports },
-  ];
+export default function DashboardShowcase({
+  section,
+}: {
+  section?: PublicCmsSection | null;
+}) {
+  const dashboardSections =
+    section?.items?.length
+      ? section.items.map((item) => ({
+          label: item.title ?? "",
+          href: item.buttonLink ?? ROUTES.analytics,
+        }))
+      : [
+          { label: "Overview", href: ROUTES.analytics },
+          { label: "Attendance", href: ROUTES.attendanceManagement },
+          { label: "Payroll", href: ROUTES.payroll },
+          { label: "Employees", href: ROUTES.coreHR },
+          { label: "Leaves", href: ROUTES.leaveManagement },
+          { label: "Bulk Email", href: ROUTES.bulkEmail },
+          { label: "Reports", href: ROUTES.reports },
+        ];
 
   const dashboardStats = [
     {
@@ -37,7 +48,7 @@ export default function DashboardShowcase() {
       icon: <Wallet />,
       label: "Payroll",
       value: 18.4,
-      prefix: "₹",
+      prefix: "\u20B9",
       suffix: "L",
       href: ROUTES.payroll,
       tone: "success" as const,
@@ -59,11 +70,14 @@ export default function DashboardShowcase() {
       <div className="site-container">
         <ScrollReveal variant="fade-up" className="section-heading">
           <span className="eyebrow text-xs font-bold uppercase tracking-wider text-primary">
-            Live Dashboard
+            {section?.subheading ?? "Live Dashboard"}
           </span>
-          <h2 className="text-3xl font-bold text-ink md:text-4xl">One dashboard. Total clarity.</h2>
+          <h2 className="text-3xl font-bold text-ink md:text-4xl">
+            {section?.heading ?? "One dashboard. Total clarity."}
+          </h2>
           <p className="text-ink-soft">
-            Click any module to drill into attendance, payroll, reports, or campaigns in real time.
+            {section?.description ??
+              "Click any module to drill into attendance, payroll, reports, or campaigns in real time."}
           </p>
         </ScrollReveal>
 
@@ -84,7 +98,7 @@ export default function DashboardShowcase() {
               <div className="space-y-1.5 md:col-span-3">
                 {dashboardSections.map((item, index) => (
                   <Link
-                    key={item.label}
+                    key={`${item.label}-${item.href}`}
                     to={item.href}
                     className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm ${
                       index === 0

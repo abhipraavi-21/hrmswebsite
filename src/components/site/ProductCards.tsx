@@ -1,7 +1,9 @@
+import { createElement } from "react";
 import { Link } from "react-router-dom";
 import { Users, Mail, Check, ArrowRight, Building2, UsersRound } from "lucide-react";
 import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 import { ROUTES } from "@/routes/routeConfig.js";
+import type { PublicCmsSection } from "@/services/cmsTypes";
 
 const products = [
   {
@@ -43,6 +45,13 @@ const featureAnchorIds: Record<string, string> = {
   "Automated insights and alerts": "automation",
 };
 
+const iconMap = {
+  Users,
+  Mail,
+  Building2,
+  UsersRound,
+};
+
 const solutionTracks = [
   {
     id: "industry",
@@ -75,27 +84,43 @@ const solutionTracks = [
   },
 ];
 
-export default function ProductCards() {
+export default function ProductCards({ section }: { section?: PublicCmsSection | null }) {
+  const activeProducts =
+    section?.items?.length
+      ? section.items.map((item) => ({
+          id: item.id.toString(),
+          icon: createElement(iconMap[(item.icon as keyof typeof iconMap) ?? "Users"] ?? Users, {
+            className: "h-6 w-6",
+          }),
+          eyebrow: item.subtitle ?? "HRMS Platform",
+          title: item.title ?? "",
+          desc: item.description ?? "",
+          href: item.buttonLink ?? ROUTES.learn,
+          features: (item.extraData?.features as string[] | undefined) ?? [],
+          color: (item.extraData?.accent as string | undefined) ?? "primary",
+        }))
+      : products;
+
   return (
     <section id="solutions" className="section bg-white scroll-mt-24">
       <div className="site-container">
         <ScrollReveal variant="fade-up" className="section-heading">
           <h2 className="text-3xl font-bold text-ink md:text-4xl">
-            One unified platform for all HR needs
+            {section?.heading ?? "One unified platform for all HR needs"}
           </h2>
           <p className="text-ink-soft">
-            Built to work seamlessly together - manage your people and your communication from a
-            single dashboard.
+            {section?.description ??
+              "Built to work seamlessly together - manage your people and your communication from a single dashboard."}
           </p>
         </ScrollReveal>
 
         <StaggerReveal step={90} className="grid gap-6 md:grid-cols-2">
-          {products.map((p) => {
+          {activeProducts.map((p) => {
             const isPrimary = p.color === "primary";
             return (
               <div
                 id={p.id}
-                key={p.eyebrow}
+                key={p.id}
                 className="content-card soft-card relative overflow-hidden"
               >
                 <div

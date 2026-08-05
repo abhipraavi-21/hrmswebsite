@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { ScrollReveal } from "./ScrollReveal";
 import { ROUTES } from "@/routes/routeConfig.js";
+import type { PublicCmsSection } from "@/services/cmsTypes";
 
-export default function CTA() {
+export default function CTA({ section }: { section?: PublicCmsSection | null }) {
   return (
     <section id="trial" className="cta-section bg-white scroll-mt-24">
       <div className="site-container">
@@ -11,21 +12,28 @@ export default function CTA() {
           <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-success/30 blur-3xl" />
           <div className="relative">
             <h2 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-white md:text-5xl">
-              Ready to simplify HR and business communication?
+              {section?.heading ?? "Ready to simplify HR and business communication?"}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-white/80">
-              Join thousands of growing businesses already running their teams and campaigns on one
-              platform.
+              {section?.description ??
+                "Join thousands of growing businesses already running their teams and campaigns on one platform."}
             </p>
             <div className="button-group mt-7 justify-center">
               <Link
-                to={ROUTES.bookDemo}
+                to={section?.buttonLink ?? ROUTES.bookDemo}
                 className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-semibold text-primary transition-colors hover:bg-primary-soft"
               >
-                Book Free Demo
+                {section?.buttonText ?? "Book Free Demo"}
               </Link>
-              <Link to={ROUTES.pricing} className="btn-success">
-                View Pricing
+              <Link
+                to={
+                  ((section?.settings?.secondaryButtonLink as string | undefined) ??
+                    ROUTES.pricing)
+                }
+                className="btn-success"
+              >
+                {(section?.settings?.secondaryButtonText as string | undefined) ??
+                  "View Pricing"}
               </Link>
             </div>
           </div>

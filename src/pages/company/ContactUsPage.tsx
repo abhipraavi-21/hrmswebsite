@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, CalendarDays, Headphones, Loader2, MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { getDefaultManagedPageData } from "@/admin/pageData";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
@@ -33,7 +32,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/routes/routeConfig.js";
-import { usePublicContentRecord } from "@/site/PublicSiteDataContext";
 import {
   buildWhatsAppHref,
   contactConfig,
@@ -45,6 +43,9 @@ import {
   preferredContactMethods,
   serviceOptions,
 } from "@/config/contactInfo";
+import { usePublicContent } from "@/hooks/usePublicContent";
+import { getSection } from "@/services/cmsHelpers";
+import { fetchContactPage, submitContactEnquiry } from "@/services/contactService";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Please enter your full name."),
@@ -229,9 +230,20 @@ function HeroPathCard({
 
 export default function ContactUsPage() {
   const [status, setStatus] = useState<StatusState>({ type: "idle", message: "" });
-  const contactContent = usePublicContentRecord(ROUTES.contact, "Page");
-  const defaultContactPageData = getDefaultManagedPageData(ROUTES.contact)?.contact;
-  const contactPageData = contactContent?.pageData?.contact ?? defaultContactPageData;
+  const { data: remoteContent } = usePublicContent(fetchContactPage);
+  const heroSection = getSection(remoteContent, "contact-hero");
+  const quickContactSection = getSection(remoteContent, "quick-contact");
+  const formSection = getSection(remoteContent, "contact-form");
+  const ctaSection = getSection(remoteContent, "contact-cta");
+  const contactSettings = remoteContent?.settings as
+    | {
+        form_heading?: string;
+        form_description?: string;
+        submit_button_text?: string;
+        success_message?: string;
+        error_message?: string;
+      }
+    | undefined;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -243,71 +255,116 @@ export default function ContactUsPage() {
   const activeService =
     serviceOptions.find((item) => item.enquiryType === enquiryType) ?? serviceOptions[0];
 
-  const contactHeroBadge = contactPageData?.heroBadge ?? "Contact Us";
-  const heroPathSource = contactPageData?.heroPaths?.length ? contactPageData.heroPaths : defaultContactPageData?.heroPaths ?? [];
-  const quickContactSource =
-    contactPageData?.quickContactMethods?.length
-      ? contactPageData.quickContactMethods
-      : defaultContactPageData?.quickContactMethods ?? [];
-  const quickContactSection =
-    contactPageData?.quickContactSection ?? defaultContactPageData?.quickContactSection;
-  const formSection = contactPageData?.formSection ?? defaultContactPageData?.formSection;
-  const ctaEyebrow = contactPageData?.ctaEyebrow ?? "Ready to Start";
-  const heroPathIconKeys = ["messageSquare", "calendarDays", "headphones"] as const;
-  const quickContactIconKeys = ["messageSquare", "calendarDays", "headphones"] as const;
-  const heroPaths = heroPathSource.map((item, index) => ({
-    label: item.title,
-    description: item.description,
-    href: item.href ?? "#contact-form",
-    iconKey: heroPathIconKeys[index % heroPathIconKeys.length],
-  }));
-  const quickContactMethods = quickContactSource.map((item, index) => ({
-    id: item.id,
-    label: item.title,
-    description: item.description,
-    href: item.href ?? contactMethods[index % contactMethods.length]?.href ?? ROUTES.contact,
-    iconKey: quickContactIconKeys[index % quickContactIconKeys.length],
-  }));
-  const contactHeroTitle = contactContent?.heroTitle ?? "Get in Touch with Altroz HRMS";
-  const contactHeroDescription =
-    contactContent?.heroDescription ??
-    "We are here to help you simplify your HR operations. Whether you are evaluating HRMS software, requesting a product demonstration, planning implementation, or looking for product support, the Altroz Technologies team can help you identify the right next step.";
-  const contactSummary =
-    contactContent?.summary ??
-    "Use the verified WhatsApp route or the enquiry form below. Our team will review your enquiry and contact you using the details provided.";
-  const contactCtaTitle =
-    contactContent?.ctaTitle ?? "Ready to Simplify Your HR Operations?";
-  const contactCtaDescription =
-    contactContent?.ctaDescription ??
-    "Connect with Altroz HRMS to explore attendance, payroll, leave, employee management, recruitment, reporting, and HR automation from one centralized platform.";
-  const contactCtaButtonText = contactContent?.ctaButtonText ?? "Book Free Demo";
+  const quickContactMethods = contactMethods.slice(0, 3);
+  const heroPaths = useMemo(() => {
+    if (!heroSection?.items?.length) {
+      return [
+        {
+          iconKey: "messageSquare" as const,
+          title: "Product Enquiry",
+          text: "Ask about product fit, pricing, or the right starting point.",
+          href: "#contact-form",
+        },
+        {
+          iconKey: "calendarDays" as const,
+          title: "Book a Demo",
+          text: "Open the demo workflow for a guided product walkthrough.",
+          href: ROUTES.bookDemo,
+        },
+        {
+          iconKey: "headphones" as const,
+          title: "Support",
+          text: "Use the support route for customer help and product questions.",
+          href: ROUTES.support,
+        },
+      ];
+    }
+
+    return heroSection.items.map((item) => ({
+      iconKey: (item.icon as keyof typeof iconMap | undefined) ?? "messageSquare",
+      title: item.title ?? "",
+      text: item.description ?? "",
+      href: item.buttonLink ?? "#contact-form",
+    }));
+  }, [heroSection?.items]);
+  const quickCards = useMemo(() => {
+    if (!quickContactSection?.items?.length) {
+      return quickContactMethods.map((item) => ({
+        label: item.label,
+        description: item.description,
+        href: item.href,
+        iconKey: item.icon as keyof typeof iconMap,
+      }));
+    }
+
+    return quickContactSection.items.map((item) => ({
+      label: item.title ?? "",
+      description: item.description ?? "",
+      href: item.buttonLink ?? "#",
+      iconKey: (item.icon as keyof typeof iconMap | undefined) ?? "messageSquare",
+    }));
+  }, [quickContactMethods, quickContactSection?.items]);
 
   const onSubmit = async (values: FormValues) => {
     setStatus({ type: "loading", message: "Preparing your WhatsApp enquiry..." });
+    try {
+      await submitContactEnquiry({
+        fullName: values.fullName,
+        email: values.businessEmail,
+        phone: values.mobileNumber,
+        companyName: values.companyName,
+        subject: values.enquiryType,
+        message: values.message,
+        sourcePage: ROUTES.contact,
+        extraData: {
+          city: values.city,
+          industry: values.industry,
+          employeeRange: values.employeeRange,
+          interestedModule: values.interestedModule,
+          preferredContactMethod: values.preferredContactMethod,
+        },
+      });
 
-    const message = buildEnquiryMessage(values, activeService.label);
-    const href = buildWhatsAppHref(message);
-    const opened = window.open(href, "_blank", "noopener,noreferrer");
+      const message = buildEnquiryMessage(values, activeService.label);
+      const href = buildWhatsAppHref(message);
+      const opened = window.open(href, "_blank", "noopener,noreferrer");
 
-    if (!opened) {
+      if (!opened) {
+        setStatus({
+          type: "error",
+          message:
+            contactSettings?.error_message ??
+            "Your browser blocked the WhatsApp window. Please allow popups and try again.",
+        });
+        return;
+      }
+
+      setStatus({
+        type: "success",
+        message:
+          contactSettings?.success_message ??
+          "Your enquiry draft opened in WhatsApp. Send it there to complete submission.",
+      });
+    } catch (error) {
       setStatus({
         type: "error",
-        message: "Your browser blocked the WhatsApp window. Please allow popups and try again.",
+        message:
+          contactSettings?.error_message ??
+          (error instanceof Error ? error.message : "Unable to submit your enquiry right now."),
       });
-      return;
     }
-
-    setStatus({
-      type: "success",
-      message: "Your enquiry draft opened in WhatsApp. Send it there to complete submission.",
-    });
   };
 
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
-        title="Contact Altroz HRMS | Book a Demo or Sales Consultation"
-        description="Contact Altroz HRMS for product demonstrations, HRMS consultation, attendance, payroll, employee management, implementation support, and customer enquiries."
+        title={
+          remoteContent?.metaTitle ?? "Contact Altroz HRMS | Book a Demo or Sales Consultation"
+        }
+        description={
+          remoteContent?.metaDescription ??
+          "Contact Altroz HRMS for product demonstrations, HRMS consultation, attendance, payroll, employee management, implementation support, and customer enquiries."
+        }
         canonicalPath={ROUTES.contact}
       />
       <TopNavbar />
@@ -319,24 +376,36 @@ export default function ContactUsPage() {
             <ScrollReveal variant="fade-up" className="lg:col-span-6">
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <MessageSquare className="h-4 w-4" />
-                {contactHeroBadge}
+                {heroSection?.subheading ?? "Contact Us"}
               </div>
               <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight text-ink sm:text-5xl">
-                {contactHeroTitle}
+                {heroSection?.heading ?? "Get in Touch with Altroz HRMS"}
               </h1>
               <p className="mt-4 max-w-xl text-base leading-7 text-ink-soft">
-                {contactHeroDescription}
+                {heroSection?.description ??
+                  "We are here to help you simplify your HR operations. Whether you are evaluating HRMS software, requesting a product demonstration, planning implementation, or looking for product support, the Altroz Technologies team can help you identify the right next step."}
               </p>
               <p className="mt-3 max-w-xl text-sm leading-6 text-ink-soft">
-                {contactSummary}
+                {(heroSection?.settings?.secondaryDescription as string | undefined) ??
+                  "Use the verified WhatsApp route or the enquiry form below. Our team will review your enquiry and contact you using the details provided."}
               </p>
 
               <div className="button-group mt-6">
                 <Button asChild className="btn-primary">
-                  <a href="#contact-form">Send an Enquiry</a>
+                  <a href={heroSection?.buttonLink ?? "#contact-form"}>
+                    {heroSection?.buttonText ?? "Send an Enquiry"}
+                  </a>
                 </Button>
                 <Button asChild variant="outline" className="btn-outline">
-                  <Link to={ROUTES.bookDemo}>{contactCtaButtonText}</Link>
+                  <Link
+                    to={
+                      ((heroSection?.settings?.secondaryButtonLink as string | undefined) ??
+                        ROUTES.bookDemo)
+                    }
+                  >
+                    {(heroSection?.settings?.secondaryButtonText as string | undefined) ??
+                      "Book Free Demo"}
+                  </Link>
                 </Button>
               </div>
             </ScrollReveal>
@@ -345,9 +414,9 @@ export default function ContactUsPage() {
               <div className="grid gap-4 sm:grid-cols-2">
                 {heroPaths.map((item) => (
                   <HeroPathCard
-                    key={item.label}
-                    label={item.label}
-                    description={item.description}
+                    key={item.title}
+                    label={item.title}
+                    description={item.text}
                     href={item.href}
                     iconKey={item.iconKey}
                   />
@@ -361,21 +430,18 @@ export default function ContactUsPage() {
           <div className="site-container">
             <SectionHeading
               align="center"
-              eyebrow={quickContactSection?.eyebrow ?? "Quick Contact"}
-              title={quickContactSection?.title ?? "Choose the Best Way to Reach Us"}
-              description={
-                quickContactSection?.description ??
-                "Use one of the verified paths below to reach the Altroz HRMS team."
-              }
+              eyebrow="Quick Contact"
+              title="Choose the Best Way to Reach Us"
+              description="Use one of the verified paths below to reach the Altroz HRMS team."
             />
 
             <StaggerReveal
               step={70}
               className="mx-auto mt-8 grid max-w-5xl gap-4 md:grid-cols-2 xl:grid-cols-3"
             >
-              {quickContactMethods.map((item) => (
+              {quickCards.map((item) => (
                 <ContactCard
-                  key={item.id}
+                  key={`${item.label}-${item.href}`}
                   label={item.label}
                   description={item.description}
                   href={item.href}
@@ -390,9 +456,14 @@ export default function ContactUsPage() {
           <div className="site-container">
             <div className="mx-auto w-full max-w-4xl rounded-[2rem] border border-border bg-white p-5 shadow-float md:p-6">
               <SectionHeading
-                eyebrow={formSection?.eyebrow ?? "Send a Message"}
-                title={formSection?.title ?? "Share your enquiry with the Altroz HRMS team"}
+                eyebrow={formSection?.subheading ?? "Send a Message"}
+                title={
+                  contactSettings?.form_heading ??
+                  formSection?.heading ??
+                  "Share your enquiry with the Altroz HRMS team"
+                }
                 description={
+                  contactSettings?.form_description ??
                   formSection?.description ??
                   "Fill in the details below and the form will prepare a WhatsApp enquiry draft using the verified channel."
                 }
@@ -697,7 +768,7 @@ export default function ContactUsPage() {
                           Preparing...
                         </>
                       ) : (
-                        "Send Enquiry"
+                        contactSettings?.submit_button_text ?? "Send Enquiry"
                       )}
                     </Button>
                   </div>
@@ -716,23 +787,34 @@ export default function ContactUsPage() {
               <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
                 <div className="lg:col-span-7">
                   <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
-                    {ctaEyebrow}
+                    {ctaSection?.subheading ?? "Ready to Start"}
                   </div>
                   <h2 className="mt-2 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-                    {contactCtaTitle}
+                    {ctaSection?.heading ?? "Ready to Simplify Your HR Operations?"}
                   </h2>
                   <p className="mt-4 max-w-2xl text-ink-soft">
-                    {contactCtaDescription}
+                    {ctaSection?.description ??
+                      "Connect with Altroz HRMS to explore attendance, payroll, leave, employee management, recruitment, reporting, and HR automation from one centralized platform."}
                   </p>
                 </div>
 
                 <div className="lg:col-span-5">
                   <div className="button-group lg:justify-end">
                     <Button asChild className="btn-primary">
-                      <a href="#contact-form">Send an Enquiry</a>
+                      <a href={ctaSection?.buttonLink ?? "#contact-form"}>
+                        {ctaSection?.buttonText ?? "Send an Enquiry"}
+                      </a>
                     </Button>
                     <Button asChild variant="outline" className="btn-outline">
-                      <Link to={ROUTES.bookDemo}>{contactCtaButtonText}</Link>
+                      <Link
+                        to={
+                          ((ctaSection?.settings?.secondaryButtonLink as string | undefined) ??
+                            ROUTES.bookDemo)
+                        }
+                      >
+                        {(ctaSection?.settings?.secondaryButtonText as string | undefined) ??
+                          "Book Free Demo"}
+                      </Link>
                     </Button>
                   </div>
                 </div>

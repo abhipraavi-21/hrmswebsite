@@ -27,9 +27,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import Footer from "@/components/site/Footer";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
-import { getDefaultManagedPageData } from "@/admin/pageData";
 import { ROUTES } from "@/routes/routeConfig.js";
-import { usePublicContentRecord } from "@/site/PublicSiteDataContext";
 
 const productCards = [
   {
@@ -335,88 +333,6 @@ const faqItems = [
 ];
 
 export default function HomePage() {
-  const homeContent = usePublicContentRecord(ROUTES.home, "Page");
-  const defaultHomePageData = getDefaultManagedPageData(ROUTES.home)?.home;
-  const homePageData = homeContent?.pageData?.home ?? defaultHomePageData;
-  const productItems = homePageData?.productCards?.length ? homePageData.productCards : defaultHomePageData?.productCards ?? [];
-  const strengthItems = homePageData?.strengths?.length ? homePageData.strengths : defaultHomePageData?.strengths ?? [];
-  const ecosystemItems =
-    homePageData?.ecosystemCards?.length ? homePageData.ecosystemCards : defaultHomePageData?.ecosystemCards ?? [];
-  const industryItems = homePageData?.industries?.length ? homePageData.industries : defaultHomePageData?.industries ?? [];
-  const workflowItems = homePageData?.workflows?.length ? homePageData.workflows : defaultHomePageData?.workflows ?? [];
-  const benefitItems = homePageData?.benefits?.length ? homePageData.benefits : defaultHomePageData?.benefits ?? [];
-  const faqContentItems = homePageData?.faqs?.length ? homePageData.faqs : defaultHomePageData?.faqs ?? [];
-  const heroBadge = homePageData?.heroBadge ?? "Trusted Enterprise Business Software";
-  const heroSubtitle = homePageData?.heroSubtitle ?? "One Platform. Three Enterprise Solutions. A Single Trusted Brand.";
-  const overviewTitle = homePageData?.overviewTitle ?? "One brand. Three product experiences.";
-  const heroTitle =
-    homeContent?.heroTitle ??
-    "Business Management Software That Brings HR, Assets, and Communication Together";
-  const heroDescription =
-    homeContent?.heroDescription ??
-    "Altroz Technologies Pvt. Ltd. builds enterprise-ready business management software that helps organisations manage people, assets, and communication from one trusted ecosystem. Whether you need HR software, asset management software, or a bulk email platform, Altroz gives your business the tools to work smarter, reduce manual effort, and grow with confidence.";
-  const heroSummary =
-    homeContent?.summary ??
-    homePageData?.overviewDescription ??
-    "Choose HR, Asset Management, or Bulk Email as a standalone product or use them together in one Altroz ecosystem.";
-  const ctaTitle =
-    homeContent?.ctaTitle ?? "Transform Your Business with Altroz Software Solutions";
-  const ctaDescription =
-    homeContent?.ctaDescription ??
-    "Discover the right software for your business. Whether you need HR management, asset management, or business email communication, Altroz provides enterprise-ready solutions designed to simplify everyday operations.";
-  const ctaButtonText = homeContent?.ctaButtonText ?? "Book Free Demo";
-  const productsSection = homePageData?.productsSection ?? defaultHomePageData?.productsSection;
-  const strengthsSection = homePageData?.strengthsSection ?? defaultHomePageData?.strengthsSection;
-  const ecosystemSection = homePageData?.ecosystemSection ?? defaultHomePageData?.ecosystemSection;
-  const industriesSection = homePageData?.industriesSection ?? defaultHomePageData?.industriesSection;
-  const workflowsSection = homePageData?.workflowsSection ?? defaultHomePageData?.workflowsSection;
-  const benefitsSection = homePageData?.benefitsSection ?? defaultHomePageData?.benefitsSection;
-  const faqSection = homePageData?.faqSection ?? defaultHomePageData?.faqSection;
-  const ctaEyebrow = homePageData?.ctaEyebrow ?? "Final CTA";
-  const homeProductCards = productItems.map((item, index) => {
-    const visual = productCards[index % productCards.length];
-    const features = item.bullets?.length ? item.bullets : visual.features;
-
-    return {
-      title: item.title,
-      eyebrow: item.note ?? visual.eyebrow,
-      description: item.description,
-      href: item.href ?? visual.href,
-      icon: visual.icon,
-      accent: visual.accent,
-      features,
-      snippet: features.slice(0, 3).length ? features.slice(0, 3) : visual.snippet,
-      snippetLabel: visual.snippetLabel,
-    };
-  });
-  const homeStrengths = strengthItems.map((item, index) => ({
-    title: item.title,
-    description: item.description,
-    icon: companyStrengths[index % companyStrengths.length]?.icon ?? <Sparkles className="h-5 w-5" />,
-  }));
-  const homeEcosystemCards = ecosystemItems.map((item, index) => ({
-    title: item.title,
-    description: item.description,
-    icon: ecosystemCards[index % ecosystemCards.length]?.icon ?? <Users className="h-5 w-5" />,
-  }));
-  const homeIndustries = industryItems.map((item, index) => ({
-    title: item.title,
-    description: item.description,
-    icon: industries[index % industries.length]?.icon ?? <Building2 className="h-5 w-5" />,
-  }));
-  const homeWorkflowExamples = workflowItems.map((item) => ({
-    title: item.title,
-    steps: item.steps,
-  }));
-  const homeBenefits = benefitItems.map((item) => ({
-    title: item.title,
-    description: item.description,
-  }));
-  const homeFaqItems = faqContentItems.map((item) => ({
-    question: item.question,
-    answer: item.answer,
-  }));
-
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
@@ -436,19 +352,23 @@ export default function HomePage() {
               <div className="mx-auto max-w-6xl px-0 text-center">
                 <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                   <Sparkles className="h-3.5 w-3.5" />
-                  {heroBadge}
+                  Trusted Enterprise Business Software
                 </span>
 
                 <h1 className="mx-auto mt-4 max-w-6xl text-balance text-4xl font-black leading-[1.03] tracking-[-0.04em] text-ink sm:text-5xl lg:text-[4.35rem]">
-                  {heroTitle}
+                  Business Management Software That Brings HR, Assets, and Communication Together
                 </h1>
 
                 <h2 className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
-                  {heroSubtitle}
+                  One Platform. Three Enterprise Solutions. A Single Trusted Brand.
                 </h2>
 
                 <p className="mx-auto mt-4 max-w-5xl text-lg leading-8 text-ink-soft sm:text-xl">
-                  {heroDescription}
+                  Altroz Technologies Pvt. Ltd. builds enterprise-ready business management software
+                  that helps organisations manage people, assets, and communication from one trusted
+                  ecosystem. Whether you need HR software, asset management software, or a bulk email
+                  platform, Altroz gives your business the tools to work smarter, reduce manual effort,
+                  and grow with confidence.
                 </p>
 
                 <div className="mt-6 flex flex-wrap justify-center gap-3">
@@ -457,7 +377,7 @@ export default function HomePage() {
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link to={ROUTES.bookDemo} className="btn-outline">
-                    {ctaButtonText}
+                    Book Free Demo
                   </Link>
                 </div>
               </div>
@@ -469,15 +389,16 @@ export default function HomePage() {
                       Business at a glance
                     </div>
                     <h3 className="mt-2 text-2xl font-black tracking-tight text-ink">
-                      {overviewTitle}
+                      One brand. Three product experiences.
                     </h3>
                     <p className="mt-2 text-sm leading-6 text-ink-soft">
-                      {heroSummary}
+                      Choose HR, Asset Management, or Bulk Email as a standalone product or use them
+                      together in one Altroz ecosystem.
                     </p>
                   </div>
 
                   <div className="grid gap-3 sm:grid-cols-3">
-                    {homeProductCards.map((item) => (
+                    {productCards.map((item) => (
                       <div key={item.title} className="soft-card px-4 py-3">
                         <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
                           {item.eyebrow}
@@ -498,18 +419,20 @@ export default function HomePage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                {productsSection?.eyebrow ?? "Our Products"}
+                Our Products
               </span>
               <h2 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                {productsSection?.title ?? "One Company. Three Powerful Business Solutions."}
+                One Company. Three Powerful Business Solutions.
               </h2>
               <p className="mt-3 text-ink-soft">
-                {productsSection?.description}
+                Altroz Technologies brings together enterprise-grade software products that solve
+                everyday business challenges. Explore the solution that fits your team, or use them
+                together for a fully connected way of working.
               </p>
             </div>
 
             <div className="mx-auto mt-10 grid max-w-6xl gap-5 lg:grid-cols-3">
-              {homeProductCards.map((card) => (
+              {productCards.map((card) => (
                 <article
                   key={card.title}
                   className="soft-card flex h-full min-h-[34rem] flex-col overflow-hidden p-6 md:p-7"
@@ -575,18 +498,19 @@ export default function HomePage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                {strengthsSection?.eyebrow ?? "Why Businesses Choose Altroz"}
+                Why Businesses Choose Altroz
               </span>
               <h2 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                {strengthsSection?.title ?? "Reliable software built for day-to-day business work"}
+                Reliable software built for day-to-day business work
               </h2>
               <p className="mt-3 text-ink-soft">
-                {strengthsSection?.description}
+                Altroz combines practical product design, cloud access, and business-grade control so
+                teams can move faster without losing visibility.
               </p>
             </div>
 
             <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-              {homeStrengths.map((item) => (
+              {companyStrengths.map((item) => (
                 <article key={item.title} className="soft-card p-6">
                   <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
                     {item.icon}
@@ -604,17 +528,19 @@ export default function HomePage() {
             <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                  {ecosystemSection?.eyebrow ?? "Altroz Ecosystem"}
+                  Altroz Ecosystem
                 </span>
                 <h2 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                  {ecosystemSection?.title ?? "One brand at the top, three connected product nodes underneath"}
+                  One brand at the top, three connected product nodes underneath
                 </h2>
                 <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
-                  {ecosystemSection?.description}
+                  Altroz Technologies is the parent brand, and each product can work on its own or
+                  together as a connected ecosystem. Businesses can adopt only the product they
+                  need, or combine them as they grow.
                 </p>
 
                 <div className="mt-6 space-y-3 rounded-[1.75rem] border border-border bg-white p-6 shadow-float">
-                  {homeEcosystemCards.map((card) => (
+                  {ecosystemCards.map((card) => (
                     <div key={card.title} className="flex items-start gap-3 rounded-2xl bg-surface/60 p-4">
                       <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
                         {card.icon}
@@ -646,7 +572,7 @@ export default function HomePage() {
                   <div className="mx-auto mt-4 h-14 w-px border-l border-dashed border-primary/40" />
 
                   <div className="grid gap-4 md:grid-cols-3">
-                    {homeEcosystemCards.map((card) => (
+                    {ecosystemCards.map((card) => (
                       <div
                         key={card.title}
                         className="rounded-[1.5rem] border border-border bg-gradient-to-br from-primary/10 via-white to-white p-4 shadow-sm"
@@ -673,18 +599,19 @@ export default function HomePage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                {industriesSection?.eyebrow ?? "Industries We Serve"}
+                Industries We Serve
               </span>
               <h2 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                {industriesSection?.title ?? "Built for businesses across many sectors"}
+                Built for businesses across many sectors
               </h2>
               <p className="mt-3 text-ink-soft">
-                {industriesSection?.description}
+                From manufacturing plants to corporate offices, Altroz gives each team a clearer way
+                to manage people, assets, and communication.
               </p>
             </div>
 
             <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {homeIndustries.map((industry) => (
+              {industries.map((industry) => (
                 <article key={industry.title} className="soft-card p-6">
                   <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
                     {industry.icon}
@@ -701,18 +628,19 @@ export default function HomePage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                {workflowsSection?.eyebrow ?? "Why Our Products Work Better Together"}
+                Why Our Products Work Better Together
               </span>
               <h2 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                {workflowsSection?.title ?? "Connected workflows that keep business moments moving"}
+                Connected workflows that keep business moments moving
               </h2>
               <p className="mt-3 text-ink-soft">
-                {workflowsSection?.description}
+                Altroz HR, Altroz Asset Management, and Altroz Bulk Email can be used together to
+                support complete business workflows with less manual effort.
               </p>
             </div>
 
             <div className="mt-10 grid gap-5 lg:grid-cols-2">
-              {homeWorkflowExamples.map((item) => (
+              {workflowExamples.map((item) => (
                 <article key={item.title} className="soft-card p-6">
                   <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                     Workflow Example
@@ -738,18 +666,18 @@ export default function HomePage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                {benefitsSection?.eyebrow ?? "Business Benefits"}
+                Business Benefits
               </span>
               <h2 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                {benefitsSection?.title ?? "A clearer way to run the business every day"}
+                A clearer way to run the business every day
               </h2>
               <p className="mt-3 text-ink-soft">
-                {benefitsSection?.description}
+                These benefits are what teams feel after adopting Altroz across HR, assets, and email.
               </p>
             </div>
 
             <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {homeBenefits.map((item) => (
+              {businessBenefits.map((item) => (
                 <article key={item.title} className="soft-card p-6">
                   <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
                     <CheckCircle2 className="h-5 w-5" />
@@ -766,19 +694,16 @@ export default function HomePage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl text-center">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                {faqSection?.eyebrow ?? "Frequently Asked Questions"}
+                Frequently Asked Questions
               </span>
               <h2 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                {faqSection?.title ?? "Clear answers for teams reviewing Altroz"}
+                Clear answers for teams reviewing Altroz
               </h2>
-              <p className="mt-3 text-ink-soft">
-                {faqSection?.description}
-              </p>
             </div>
 
             <div className="mx-auto mt-10 max-w-4xl">
               <Accordion type="single" collapsible className="space-y-3">
-                {homeFaqItems.map((item, index) => (
+                {faqItems.map((item, index) => (
                   <AccordionItem
                     key={item.question}
                     value={`faq-${index}`}
@@ -804,13 +729,15 @@ export default function HomePage() {
               <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                    {ctaEyebrow}
+                    Final CTA
                   </span>
                   <h2 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                    {ctaTitle}
+                    Transform Your Business with Altroz Software Solutions
                   </h2>
                   <p className="mt-4 max-w-3xl text-base leading-7 text-ink-soft">
-                    {ctaDescription}
+                    Discover the right software for your business. Whether you need HR management,
+                    asset management, or business email communication, Altroz provides
+                    enterprise-ready solutions designed to simplify everyday operations.
                   </p>
                 </div>
 
@@ -819,7 +746,7 @@ export default function HomePage() {
                     Explore Products
                   </Link>
                   <Link to={ROUTES.bookDemo} className="btn-primary">
-                    {ctaButtonText}
+                    Book Free Demo
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>

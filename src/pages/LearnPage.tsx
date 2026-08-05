@@ -26,12 +26,13 @@ import {
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Footer from "@/components/site/Footer";
 import BulkEmailNavbar from "@/components/site/BulkEmailNavbar";
-import ManagedContentShowcase from "@/components/site/ManagedContentShowcase";
 import PageSEO from "@/components/site/PageSEO";
 import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
+import { usePublicContent } from "@/hooks/usePublicContent";
 import { ROUTES } from "@/routes/routeConfig.js";
-import { usePublicContentRecord, usePublishedContent } from "@/site/PublicSiteDataContext";
 import { cn } from "@/lib/utils";
+import { getSection } from "@/services/cmsHelpers";
+import { fetchResourcePage } from "@/services/resourceService";
 
 type FeatureCard = {
   title: string;
@@ -702,29 +703,19 @@ const heroBullets = [
 ];
 
 export default function LearnPage() {
-  const managedLearnResources = usePublishedContent("Learn Resource");
-  const learnPageContent = usePublicContentRecord(ROUTES.learn, "Page");
-  const learnHeroTitle =
-    learnPageContent?.heroTitle ??
-    "Learn Business Email Communication, Bulk Email & Campaign Management";
-  const learnHeroDescription =
-    learnPageContent?.heroDescription ??
-    "Whether you are sending your first email campaign or managing communication for an entire organisation, this learning hub helps you understand business email the simple way. Explore practical guides on email broadcasting, campaign planning, SMTP, templates, scheduling and analytics.";
-  const learnHeroSummary =
-    learnPageContent?.summary ??
-    "The content is written in plain language and grounded in real business examples so you can communicate better before you even open a piece of software.";
-  const learnCtaTitle =
-    learnPageContent?.ctaTitle ?? "Start Learning Business Email Communication Today";
-  const learnCtaDescription =
-    learnPageContent?.ctaDescription ??
-    "Explore expert guides, practical tutorials and best practices to improve business communication with Altroz Bulk Email.";
-  const learnCtaButtonText = learnPageContent?.ctaButtonText ?? "Start Learning";
-
+  const { data: remoteContent } = usePublicContent(() => fetchResourcePage("learn"));
+  const heroSection = getSection(remoteContent, "learn-hero");
   return (
     <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
-        title="Email Communication Guide | Learn Bulk Email, Campaigns & SMTP | Altroz Bulk Email"
-        description="Explore a free learning hub for business email communication, bulk email, campaign planning, SMTP, templates, scheduling and analytics."
+        title={
+          remoteContent?.metaTitle ??
+          "Email Communication Guide | Learn Bulk Email, Campaigns & SMTP | Altroz Bulk Email"
+        }
+        description={
+          remoteContent?.metaDescription ??
+          "Explore a free learning hub for business email communication, bulk email, campaign planning, SMTP, templates, scheduling and analytics."
+        }
         canonicalPath={ROUTES.learn}
       />
       <style>{`
@@ -761,14 +752,15 @@ export default function LearnPage() {
                 <ScrollReveal variant="fade-up" className="text-center lg:text-left">
                   <div className="inline-flex items-center gap-2 rounded-full border border-[#1d4ed8]/20 bg-gradient-to-r from-white via-[#eff6ff] to-[#fff7ef] px-4 py-2 text-xs font-extrabold tracking-normal text-[#1d4ed8] shadow-sm">
                     <Sparkles className="h-3.5 w-3.5" />
-                    Free Learning Hub
+                    {heroSection?.subheading ?? "Free Learning Hub"}
                   </div>
 
                   <AnimatedTitle
                     as="h1"
                     className="mx-auto mt-4 max-w-6xl text-4xl sm:text-5xl lg:mx-0 lg:text-[4.15rem]"
                   >
-                    {learnHeroTitle}
+                    {heroSection?.heading ??
+                      "Learn Business Email Communication, Bulk Email & Campaign Management"}
                   </AnimatedTitle>
 
                   <h2 className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-[#1d4ed8] sm:text-3xl lg:mx-0">
@@ -776,16 +768,18 @@ export default function LearnPage() {
                   </h2>
 
                   <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-ink-soft sm:text-lg lg:mx-0">
-                    {learnHeroDescription}
+                    {heroSection?.description ??
+                      "Whether you are sending your first email campaign or managing communication for an entire organisation, this learning hub helps you understand business email the simple way. Explore practical guides on email broadcasting, campaign planning, SMTP, templates, scheduling and analytics."}
                   </p>
 
                   <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-ink-soft sm:text-lg lg:mx-0">
-                    {learnHeroSummary}
+                    The content is written in plain language and grounded in real business examples so you
+                    can communicate better before you even open a piece of software.
                   </p>
 
                   <div className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                     <Link to={ROUTES.bulkEmailBroadcast} className="btn-primary">
-                      {learnCtaButtonText}
+                      Start Learning
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <a href="#featured-guides" className="btn-outline">
@@ -835,13 +829,6 @@ export default function LearnPage() {
             </div>
           </div>
         </section>
-
-        <ManagedContentShowcase
-          eyebrow="Admin Managed Learn Resources"
-          title="Published resources from the learning control panel"
-          description="These cards are fed by the admin and SEO panel, so approved or published learning resources can appear on the public frontend without manual code edits."
-          records={managedLearnResources}
-        />
 
         <section id="featured-guides" className="section scroll-mt-24">
           <div className="site-container">
@@ -1104,17 +1091,18 @@ export default function LearnPage() {
               <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-[#d97706]/18 blur-3xl" />
               <div className="relative">
                 <h2 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-white md:text-5xl">
-                  {learnCtaTitle}
+                  Start Learning Business Email Communication Today
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-white/80">
-                  {learnCtaDescription}
+                  Explore expert guides, practical tutorials and best practices to improve business
+                  communication with Altroz Bulk Email.
                 </p>
                 <div className="button-group mt-7 justify-center">
                   <Link
                     to={ROUTES.bulkEmailBroadcast}
                     className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-semibold text-[#1d4ed8] transition-colors hover:bg-[#fffbf4]"
                   >
-                    {learnCtaButtonText}
+                    Explore Articles
                   </Link>
                   <Link
                     to={ROUTES.bookDemo}
