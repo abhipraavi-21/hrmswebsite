@@ -43,7 +43,7 @@ const blogFeedItems: BlogFeedItem[] = [
     description: featuredPost.description,
     meta: "4 min read",
     href: featuredPost.href,
-    image: modelScreenshots.workforceDashboard,
+    image: featuredPost.coverImage ?? modelScreenshots.workforceDashboard,
     tags: ["HRMS overview", "Employee data", "One source of truth"],
     ctaLabel: "Read guide",
   },

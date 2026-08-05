@@ -10,7 +10,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ROUTES } from "@/routes/routeConfig.js";
-import { modelScreenshots } from "@/lib/modelScreenshots";
 import { getBlogPostBySlug } from "@/data/blogPosts";
 
 function SectionCard({
@@ -268,7 +267,7 @@ export default function BlogArticlePage() {
                   <div className="px-6 sm:px-8">
                     <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface/30">
                       <img
-                        src={modelScreenshots.workforceDashboard}
+                        src={post.coverImage ?? "https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=60&w=3000"}
                         alt={post.title}
                         className="h-full w-full object-cover"
                       />

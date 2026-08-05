@@ -25,6 +25,7 @@ export type BlogPost = {
   category: string;
   description: string;
   meta: string;
+  coverImage?: string;
   heroSummary: string;
   heroPoints: string[];
   quickAnswer: string;
@@ -49,6 +50,8 @@ export const blogPosts: BlogPost[] = [
     description:
       "A practical, in-depth resource on Human Resource Management Systems - what they are, how they work, why Indian businesses need them, and how to choose one.",
     meta: "By the Altroz HR Editorial Team | Reading time: ~24 minutes | Updated August 5, 2026",
+    coverImage:
+      "https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=60&w=3000",
     heroSummary:
       "HRMS centralises the employee lifecycle from hiring to exit, giving HR teams one source of truth instead of juggling spreadsheets, biometric exports, emails, and paper files.",
     heroPoints: [
