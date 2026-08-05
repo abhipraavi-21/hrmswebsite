@@ -3,7 +3,6 @@
 import { useState, type ReactNode } from "react";
 import {
   ArrowRight,
-  ArrowUpRight,
   BookOpen,
   CalendarDays,
   ChevronRight,
@@ -70,110 +69,6 @@ const blogFeedItems: BlogFeedItem[] = [
     image: modelScreenshots.payrollDashboard,
     tags: ["Payroll", "Deductions", "Compliance"],
     ctaLabel: "View payroll",
-  },
-  {
-    label: "Leave",
-    title: "Leave approvals that flow straight into records",
-    description:
-      "Keep leave requests, balances, and approvals aligned so managers and employees always see the same numbers.",
-    meta: "2 min read",
-    href: ROUTES.leaveManagement,
-    image: modelScreenshots.leaveDashboard,
-    tags: ["Leave", "Approvals", "Balance tracking"],
-    ctaLabel: "Explore leave",
-    reverse: true,
-  },
-  {
-    label: "Core HR",
-    title: "Employee records arranged in one central profile",
-    description:
-      "Understand how core HR data, documents, and organization details work together as the base of the HR system.",
-    meta: "2 min read",
-    href: ROUTES.coreHR,
-    image: modelScreenshots.coreHrTable,
-    tags: ["Employee records", "Profiles", "Documents"],
-    ctaLabel: "See Core HR",
-  },
-  {
-    label: "Recruitment",
-    title: "Hiring workflows that move candidates faster",
-    description:
-      "Follow the recruitment journey from open role to shortlist, interviews, and onboarding without scattered follow-up.",
-    meta: "3 min read",
-    href: ROUTES.recruitment,
-    image: modelScreenshots.positions,
-    tags: ["Hiring", "Candidates", "Onboarding"],
-    ctaLabel: "Open recruiting",
-    reverse: true,
-  },
-  {
-    label: "Performance",
-    title: "Performance cycles that stay visible to everyone",
-    description:
-      "Review how goals, evaluations, and manager feedback fit into a simple digital review rhythm.",
-    meta: "2 min read",
-    href: ROUTES.performance,
-    image: modelScreenshots.performanceEvaluations,
-    tags: ["Goals", "Reviews", "Feedback"],
-    ctaLabel: "Review performance",
-  },
-  {
-    label: "ESS",
-    title: "Employee self-service that reduces routine HR questions",
-    description:
-      "Give employees direct access to key information so HR spends less time re-sharing the same records.",
-    meta: "2 min read",
-    href: ROUTES.employeeSelfService,
-    image: modelScreenshots.employeeReport,
-    tags: ["ESS", "Payslips", "Downloads"],
-    ctaLabel: "View ESS",
-    reverse: true,
-  },
-  {
-    label: "Automation",
-    title: "HR automation that keeps routine tasks moving",
-    description:
-      "Automated workflows help approvals, reminders, and document generation stay consistent as the team grows.",
-    meta: "3 min read",
-    href: ROUTES.automation,
-    image: modelScreenshots.generatedDocuments,
-    tags: ["Automation", "Approvals", "Documents"],
-    ctaLabel: "See automation",
-  },
-  {
-    label: "Analytics",
-    title: "Reports and insights for faster HR decisions",
-    description:
-      "Turn attendance, payroll, and workforce activity into clear reports that help leaders act sooner.",
-    meta: "3 min read",
-    href: ROUTES.analytics,
-    image: modelScreenshots.salaryReport,
-    tags: ["Reports", "Insights", "Trends"],
-    ctaLabel: "Open analytics",
-    reverse: true,
-  },
-  {
-    label: "Exit",
-    title: "Offboarding that keeps final records in order",
-    description:
-      "Keep the end of the employee lifecycle tidy with structured final steps, handovers, and exit records.",
-    meta: "2 min read",
-    href: ROUTES.exitManagement,
-    image: modelScreenshots.employeeReport,
-    tags: ["Exit", "Handovers", "Records"],
-    ctaLabel: "Explore exit",
-  },
-  {
-    label: "Compliance",
-    title: "Documentation and compliance made easier to track",
-    description:
-      "Use connected HR records to keep documents organised and ready whenever they are needed for review.",
-    meta: "2 min read",
-    href: ROUTES.complianceGuides,
-    image: modelScreenshots.generatedDocuments,
-    tags: ["Compliance", "Documents", "Audit readiness"],
-    ctaLabel: "Read guides",
-    reverse: true,
   },
 ];
 
@@ -285,7 +180,7 @@ export default function BlogPage() {
 
             <StaggerReveal step={80} className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <StatCard icon={<Target className="h-5 w-5" />} label="Featured guide" value="1 article" />
-              <StatCard icon={<Sparkles className="h-5 w-5" />} label="Topic cards" value="11 stories" />
+              <StatCard icon={<Sparkles className="h-5 w-5" />} label="Topic cards" value="3 stories" />
               <StatCard icon={<ShieldCheck className="h-5 w-5" />} label="HR theme" value="Blue + green" />
               <StatCard icon={<CalendarDays className="h-5 w-5" />} label="Updated" value="2026" />
             </StaggerReveal>
