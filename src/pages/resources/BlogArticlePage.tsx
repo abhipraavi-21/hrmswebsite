@@ -279,15 +279,15 @@ export default function BlogArticlePage() {
                       {post.heroSummary}
                     </p>
 
-                    <div className="mt-6 grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-                      <div className="soft-card p-5">
+                    <div className="mt-6 grid gap-4 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+                      <div className="soft-card self-start p-5">
                         <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                           Quick answer
                         </div>
                         <p className="mt-3 text-sm leading-7 text-ink-soft">{post.quickAnswer}</p>
                       </div>
 
-                      <div className="soft-card p-5">
+                      <div className="soft-card self-start p-5">
                         <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                           Key takeaways
                         </div>
