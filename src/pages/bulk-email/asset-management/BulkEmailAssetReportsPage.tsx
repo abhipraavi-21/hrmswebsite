@@ -357,18 +357,18 @@ const screenCards: CardData[] = [
 
 const showcaseImages = [
   {
-    src: "/asset-management/education-showcase-1.png",
-    alt: "Educational institution team collaborating on planning and organization",
-    label: "Visual 01",
-    title: "Structured collaboration for campus planning",
-    description: "Use this image to show how teams coordinate around asset planning, ownership and reporting.",
-  },
-  {
     src: "/asset-management/education-showcase-2.png",
     alt: "Team discussing organization management in a modern office setting",
-    label: "Visual 02",
+    label: "Visual 01",
     title: "A broader view of organization management",
-    description: "Use this larger landscape image as a strong secondary visual for the educational institution page.",
+    description: "Use this larger landscape image as the featured visual for the educational institution page.",
+  },
+  {
+    src: "/asset-management/education-showcase-1.png",
+    alt: "Educational institution team collaborating on planning and organization",
+    label: "Visual 02",
+    title: "Structured collaboration for campus planning",
+    description: "Use this image to show how teams coordinate around asset planning, ownership and reporting.",
   },
 ];
 
@@ -928,7 +928,7 @@ export default function BulkEmailAssetReportsPage() {
               center
             />
 
-            <div className="mt-8 grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
+            <div className="mt-8 grid gap-5 lg:grid-cols-[1.08fr_0.92fr]">
               {showcaseImages.map((card) => (
                 <ScrollReveal key={card.label} variant="fade-up">
                   <VisualCard {...card} />
