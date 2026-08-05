@@ -355,6 +355,23 @@ const screenCards: CardData[] = [
   },
 ];
 
+const showcaseImages = [
+  {
+    src: "/asset-management/education-showcase-1.png",
+    alt: "Educational institution team collaborating on planning and organization",
+    label: "Visual 01",
+    title: "Structured collaboration for campus planning",
+    description: "Use this image to show how teams coordinate around asset planning, ownership and reporting.",
+  },
+  {
+    src: "/asset-management/education-showcase-2.png",
+    alt: "Team discussing organization management in a modern office setting",
+    label: "Visual 02",
+    title: "A broader view of organization management",
+    description: "Use this larger landscape image as a strong secondary visual for the educational institution page.",
+  },
+];
+
 const reasonCards: CardData[] = [
   {
     title: "Simple Asset Registration",
@@ -607,6 +624,33 @@ function SectionCard({ title, description, icon: Icon, benefit }: CardData) {
           Business benefit: {benefit}
         </div>
       ) : null}
+    </article>
+  );
+}
+
+function VisualCard({
+  src,
+  alt,
+  label,
+  title,
+  description,
+}: {
+  src: string;
+  alt: string;
+  label: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <article className="soft-card overflow-hidden p-4">
+      <div className="relative overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-sm">
+        <img src={src} alt={alt} className="h-full w-full object-cover" />
+      </div>
+      <div className="mt-4">
+        <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-primary">{label}</div>
+        <h3 className="mt-2 text-xl font-bold tracking-tight text-ink">{title}</h3>
+        <p className="mt-2 text-sm leading-7 text-ink-soft">{description}</p>
+      </div>
     </article>
   );
 }
@@ -883,6 +927,14 @@ export default function BulkEmailAssetReportsPage() {
               description="Each screen helps a different kind of manager review the same asset data with the right emphasis."
               center
             />
+
+            <div className="mt-8 grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
+              {showcaseImages.map((card) => (
+                <ScrollReveal key={card.label} variant="fade-up">
+                  <VisualCard {...card} />
+                </ScrollReveal>
+              ))}
+            </div>
 
             <StaggerReveal step={35} className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {screenCards.map((card) => (
