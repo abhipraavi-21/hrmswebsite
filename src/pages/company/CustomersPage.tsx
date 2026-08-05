@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
+import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
 import {
   Accordion,
@@ -1506,7 +1507,7 @@ function usePageMeta(title: string, description: string, canonicalPath: string) 
     }
 
     metaTag.content = description;
-    canonicalTag.href = `${window.location.origin}${canonicalPath}`;
+    canonicalTag.href = resolveSiteUrl(canonicalPath);
 
     return () => {
       document.title = previousTitle;

@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
+import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
 import { usePublicContent } from "@/hooks/usePublicContent";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -110,8 +111,7 @@ export default function FaqPage() {
     setActiveSection(sectionTitle);
   }
 
-  const origin = typeof window !== "undefined" ? window.location.origin : "https://www.altrozhr.com";
-  const faqUrl = new URL(ROUTES.faq, origin).href;
+  const faqUrl = resolveSiteUrl(ROUTES.faq);
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -121,7 +121,7 @@ export default function FaqPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: new URL(ROUTES.home, origin).href,
+        item: resolveSiteUrl(ROUTES.home),
       },
       {
         "@type": "ListItem",

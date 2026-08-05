@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { resolveSiteUrl } from "@/lib/siteUrl";
 
 type PageSEOProps = {
   title: string;
@@ -90,14 +91,14 @@ export default function PageSEO({
     document.title = title;
 
     if (canonicalPath) {
-      canonical.element.setAttribute("href", new URL(canonicalPath, window.location.origin).href);
+      canonical.element.setAttribute("href", resolveSiteUrl(canonicalPath));
     }
     descriptionTag.element.setAttribute("content", description);
     ogTitleTag.element.setAttribute("content", ogTitle ?? title);
     ogDescriptionTag.element.setAttribute("content", ogDescription ?? description);
     ogUrlTag.element.setAttribute(
       "content",
-      canonicalPath ? new URL(canonicalPath, window.location.origin).href : window.location.href,
+      canonicalPath ? resolveSiteUrl(canonicalPath) : window.location.href,
     );
     ogTypeTag.element.setAttribute("content", "website");
     ogSiteNameTag.element.setAttribute("content", "Altroz HRMS");

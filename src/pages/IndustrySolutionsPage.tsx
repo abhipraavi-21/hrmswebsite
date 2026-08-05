@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
+import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
 import {
   Accordion,
@@ -585,7 +586,7 @@ function usePageMeta(title: string, description: string) {
       canonical.rel = "canonical";
       head.appendChild(canonical);
     }
-    canonical.href = new URL("/industry-solutions", window.location.origin).href;
+    canonical.href = resolveSiteUrl("/industry-solutions");
 
     return () => {
       document.title = previousTitle;

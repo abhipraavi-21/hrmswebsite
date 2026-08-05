@@ -47,29 +47,6 @@ const blogFeedItems: BlogFeedItem[] = [
     tags: ["HRMS overview", "Employee data", "One source of truth"],
     ctaLabel: "Read guide",
   },
-  {
-    label: "Attendance",
-    title: "Attendance data that stays payroll ready",
-    description:
-      "See how attendance, shifts, and approvals connect back to salary processing without re-entry or spreadsheet cleanup.",
-    meta: "3 min read",
-    href: ROUTES.attendanceManagement,
-    image: modelScreenshots.attendanceDashboard,
-    tags: ["Attendance", "Shifts", "Approvals"],
-    ctaLabel: "Open module",
-    reverse: true,
-  },
-  {
-    label: "Payroll",
-    title: "Payroll runs backed by clean workforce data",
-    description:
-      "Explore how linked salary, deductions, and statutory details reduce manual correction work for HR teams.",
-    meta: "3 min read",
-    href: ROUTES.payroll,
-    image: modelScreenshots.payrollDashboard,
-    tags: ["Payroll", "Deductions", "Compliance"],
-    ctaLabel: "View payroll",
-  },
 ];
 
 function StatCard({
@@ -331,7 +308,7 @@ export default function BlogPage() {
                 <div className="soft-card p-8 text-center">
                   <div className="text-lg font-bold text-ink">No matching stories found</div>
                   <p className="mt-2 text-sm leading-7 text-ink-soft">
-                    Try a broader search term like attendance, payroll, leave, or compliance.
+                    Try a broader search term like HRMS, guide, or workflow.
                   </p>
                   <button type="button" onClick={() => setQuery("")} className="btn-primary mt-5">
                     Clear search

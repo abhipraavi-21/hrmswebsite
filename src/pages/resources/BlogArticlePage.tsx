@@ -5,6 +5,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
+import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
@@ -194,7 +195,7 @@ export default function BlogArticlePage() {
     headline: post.title,
     description: post.description,
     articleSection: post.category,
-    mainEntityOfPage: new URL(post.href, window.location.origin).href,
+    mainEntityOfPage: resolveSiteUrl(post.href),
     author: {
       "@type": "Organization",
       name: "Altroz HR Editorial Team",
@@ -213,7 +214,7 @@ export default function BlogArticlePage() {
       "@type": "ListItem",
       position: index + 1,
       name: item.label,
-      item: new URL(item.href, window.location.origin).href,
+      item: resolveSiteUrl(item.href),
     })),
   };
 

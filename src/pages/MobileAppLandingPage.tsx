@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
+import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ROUTES } from "@/routes/routeConfig.js";
@@ -262,6 +263,8 @@ const faqItems = [
 
 export default function MobileAppLandingPage() {
   const appUrl = typeof window !== "undefined" ? window.location.href : "";
+  const homeUrl = resolveSiteUrl(ROUTES.home);
+  const mobileAppUrl = resolveSiteUrl(ROUTES.mobileAppLanding);
 
   const schema = [
     {
@@ -272,13 +275,13 @@ export default function MobileAppLandingPage() {
           "@type": "ListItem",
           position: 1,
           name: "Home",
-          item: new URL(ROUTES.home, typeof window !== "undefined" ? window.location.origin : "https://www.altrozhr.com").href,
+          item: homeUrl,
         },
         {
           "@type": "ListItem",
           position: 2,
           name: "Mobile App",
-          item: appUrl || new URL(ROUTES.mobileAppLanding, "https://www.altrozhr.com").href,
+          item: appUrl || mobileAppUrl,
         },
       ],
     },
@@ -289,7 +292,7 @@ export default function MobileAppLandingPage() {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Android, iOS",
       description: pageDescription,
-      url: appUrl || new URL(ROUTES.mobileAppLanding, "https://www.altrozhr.com").href,
+      url: appUrl || mobileAppUrl,
     },
     {
       "@context": "https://schema.org",

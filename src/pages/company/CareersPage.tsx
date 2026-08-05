@@ -37,6 +37,7 @@ import {
 } from "lucide-react";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
+import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
 import { Button } from "@/components/ui/button";
 import {
@@ -209,7 +210,7 @@ function usePageSeo(title: string, description: string, canonicalPath: string) {
       canonical.rel = "canonical";
       head.appendChild(canonical);
     }
-    canonical.href = `${window.location.origin}${canonicalPath}`;
+    canonical.href = resolveSiteUrl(canonicalPath);
 
     return () => {
       document.title = previousTitle;

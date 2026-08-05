@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
+import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
 import { modelScreenshots } from "@/lib/modelScreenshots";
 import {
@@ -466,7 +467,7 @@ function usePageMeta(title: string, description: string) {
       canonical.rel = "canonical";
       head.appendChild(canonical);
     }
-    canonical.href = new URL("/products/workforce-management", window.location.origin).href;
+    canonical.href = resolveSiteUrl("/products/workforce-management");
 
     return () => {
       document.title = previousTitle;
