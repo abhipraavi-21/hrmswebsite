@@ -18,6 +18,94 @@ const pageInclude = [
   { model: models.ResourcePage, as: "resourcePage" },
 ];
 
+async function ensureAllSeedPagesExist() {
+  const existingPages = await models.Page.findAll({
+    attributes: ["page_key"],
+  });
+  const existingKeys = new Set(existingPages.map((page) => page.page_key));
+
+  for (const seedPage of cmsSeedPages) {
+    if (!existingKeys.has(seedPage.pageKey)) {
+      await upsertSeedPage(seedPage);
+      existingKeys.add(seedPage.pageKey);
+    }
+  }
+}
+
+async function ensureSeedPageExists(pageKey) {
+  const existingPage = await models.Page.findOne({
+    where: { page_key: pageKey },
+    attributes: ["id"],
+  });
+
+  if (existingPage) {
+    return;
+  }
+
+  const seedPage = getSeedPageByKey(pageKey);
+
+  if (seedPage) {
+    await upsertSeedPage(seedPage);
+  }
+}
+
+async function ensureSeedSections(page) {
+  const seedPage = getSeedPageByKey(page.page_key);
+
+  if (!seedPage) {
+    return page;
+  }
+
+  const existingKeys = new Set((page.sections ?? []).map((section) => section.section_key));
+  const missingSections = seedPage.sections.filter((section) => !existingKeys.has(section.sectionKey));
+
+  if (!missingSections.length) {
+    return page;
+  }
+
+  for (const [sectionIndex, seedSection] of missingSections.entries()) {
+    const createdSection = await models.PageSection.create({
+      page_id: page.id,
+      section_key: seedSection.sectionKey,
+      section_type: seedSection.sectionType,
+      internal_name: seedSection.internalName,
+      heading: seedSection.heading ?? null,
+      subheading: seedSection.subheading ?? null,
+      description: seedSection.description ?? null,
+      image_url: seedSection.imageUrl ?? null,
+      image_alt: seedSection.imageAlt ?? null,
+      background_image_url: seedSection.backgroundImageUrl ?? null,
+      background_image_alt: seedSection.backgroundImageAlt ?? null,
+      button_text: seedSection.buttonText ?? null,
+      button_link: seedSection.buttonLink ?? null,
+      settings_json: seedSection.settings ?? {},
+      display_order: seedSection.displayOrder ?? page.sections.length + sectionIndex,
+      is_active: seedSection.isActive ?? true,
+      is_required: seedSection.isRequired ?? false,
+    });
+
+    for (const [itemIndex, seedItem] of (seedSection.items ?? []).entries()) {
+      await models.SectionItem.create({
+        section_id: createdSection.id,
+        item_type: seedItem.itemType,
+        title: seedItem.title ?? null,
+        subtitle: seedItem.subtitle ?? null,
+        description: seedItem.description ?? null,
+        icon: seedItem.icon ?? null,
+        image_url: seedItem.imageUrl ?? null,
+        image_alt: seedItem.imageAlt ?? null,
+        button_text: seedItem.buttonText ?? null,
+        button_link: seedItem.buttonLink ?? null,
+        extra_data_json: seedItem.extraData ?? {},
+        display_order: seedItem.displayOrder ?? itemIndex,
+        is_active: seedItem.isActive ?? true,
+      });
+    }
+  }
+
+  return models.Page.findByPk(page.id, { include: pageInclude });
+}
+
 function normalizeSectionInput(payload = {}) {
   return {
     section_key: payload.sectionKey,
@@ -27,7 +115,9 @@ function normalizeSectionInput(payload = {}) {
     subheading: payload.subheading ?? null,
     description: payload.description ?? null,
     image_url: payload.imageUrl ?? null,
+    image_alt: payload.imageAlt ?? null,
     background_image_url: payload.backgroundImageUrl ?? null,
+    background_image_alt: payload.backgroundImageAlt ?? null,
     button_text: payload.buttonText ?? null,
     button_link: payload.buttonLink ?? null,
     settings_json: payload.settings ?? {},
@@ -45,6 +135,7 @@ function normalizeItemInput(payload = {}) {
     description: payload.description ?? null,
     icon: payload.icon ?? null,
     image_url: payload.imageUrl ?? null,
+    image_alt: payload.imageAlt ?? null,
     button_text: payload.buttonText ?? null,
     button_link: payload.buttonLink ?? null,
     extra_data_json: payload.extraData ?? {},
@@ -54,6 +145,8 @@ function normalizeItemInput(payload = {}) {
 }
 
 export async function listAdminPages() {
+  await ensureAllSeedPagesExist();
+
   const pages = await models.Page.findAll({
     include: [{ model: models.ResourcePage, as: "resourcePage" }],
     order: [
@@ -82,18 +175,33 @@ export async function listAdminPages() {
 }
 
 export async function getPageById(id) {
-  const page = await models.Page.findByPk(id, {
-    include: pageInclude,
-  });
+  let page = null;
+
+  if (typeof id === "number" || /^\d+$/.test(String(id))) {
+    page = await models.Page.findByPk(Number(id), {
+      include: pageInclude,
+    });
+  }
+
+  if (!page && typeof id === "string") {
+    await ensureSeedPageExists(id);
+
+    page = await models.Page.findOne({
+      where: { page_key: id },
+      include: pageInclude,
+    });
+  }
 
   if (!page) {
     throw new AppError("Page not found", 404);
   }
 
-  return page;
+  return ensureSeedSections(page);
 }
 
 export async function getPageByKey(pageKey, { publishedOnly = false } = {}) {
+  await ensureSeedPageExists(pageKey);
+
   const page = await models.Page.findOne({
     where: {
       page_key: pageKey,
@@ -106,7 +214,7 @@ export async function getPageByKey(pageKey, { publishedOnly = false } = {}) {
     throw new AppError("Page not found", 404);
   }
 
-  return page;
+  return ensureSeedSections(page);
 }
 
 export async function getPageBySlug(slug, { publishedOnly = false } = {}) {
@@ -128,7 +236,7 @@ export async function getPageBySlug(slug, { publishedOnly = false } = {}) {
     throw new AppError("Resource page not found", 404);
   }
 
-  return resource.page;
+  return ensureSeedSections(resource.page);
 }
 
 export async function listResources({ publishedOnly = false } = {}) {
@@ -149,6 +257,7 @@ export async function listResources({ publishedOnly = false } = {}) {
     slug: resource.slug,
     shortDescription: resource.short_description,
     featuredImage: resource.featured_image,
+    featuredImageAlt: resource.featured_image_alt,
     status: resource.status,
     displayOrder: resource.display_order,
     page: resource.page
@@ -175,6 +284,7 @@ export async function updatePage(id, payload) {
     og_title: payload.ogTitle ?? null,
     og_description: payload.ogDescription ?? null,
     og_image: payload.ogImage ?? null,
+    og_image_alt: payload.ogImageAlt ?? null,
     indexable: payload.indexable ?? true,
     status: payload.status ?? page.status,
   });
@@ -306,6 +416,7 @@ export async function createResource(payload) {
     og_title: payload.ogTitle ?? null,
     og_description: payload.ogDescription ?? null,
     og_image: payload.ogImage ?? null,
+    og_image_alt: payload.ogImageAlt ?? null,
     indexable: payload.indexable ?? true,
     status: payload.status ?? "draft",
     seed_version: seedVersion,
@@ -317,6 +428,7 @@ export async function createResource(payload) {
     slug: payload.slug,
     short_description: payload.shortDescription ?? null,
     featured_image: payload.featuredImage ?? null,
+    featured_image_alt: payload.featuredImageAlt ?? null,
     status: payload.status ?? "draft",
     display_order: payload.displayOrder ?? 0,
   });
@@ -343,6 +455,7 @@ export async function updateResource(id, payload) {
     og_title: payload.ogTitle ?? resource.page.og_title,
     og_description: payload.ogDescription ?? resource.page.og_description,
     og_image: payload.ogImage ?? resource.page.og_image,
+    og_image_alt: payload.ogImageAlt ?? resource.page.og_image_alt,
     indexable: payload.indexable ?? resource.page.indexable,
     status: payload.status ?? resource.page.status,
   });
@@ -352,6 +465,7 @@ export async function updateResource(id, payload) {
     slug: payload.slug ?? resource.slug,
     short_description: payload.shortDescription ?? resource.short_description,
     featured_image: payload.featuredImage ?? resource.featured_image,
+    featured_image_alt: payload.featuredImageAlt ?? resource.featured_image_alt,
     status: payload.status ?? resource.status,
     display_order: payload.displayOrder ?? resource.display_order,
   });
@@ -410,6 +524,7 @@ export async function upsertSeedPage(seedPage) {
         og_title: seedPage.meta.ogTitle ?? null,
         og_description: seedPage.meta.ogDescription ?? null,
         og_image: seedPage.meta.ogImage ?? null,
+        og_image_alt: seedPage.meta.ogImageAlt ?? null,
         indexable: seedPage.meta.indexable ?? true,
         status: seedPage.status ?? "published",
         seed_version: seedVersion,
@@ -428,6 +543,7 @@ export async function upsertSeedPage(seedPage) {
         og_title: seedPage.meta.ogTitle ?? null,
         og_description: seedPage.meta.ogDescription ?? null,
         og_image: seedPage.meta.ogImage ?? null,
+        og_image_alt: seedPage.meta.ogImageAlt ?? null,
         indexable: seedPage.meta.indexable ?? true,
         status: seedPage.status ?? "published",
         seed_version: seedVersion,
@@ -444,6 +560,7 @@ export async function upsertSeedPage(seedPage) {
           slug: seedPage.resource.slug,
           short_description: seedPage.resource.shortDescription ?? null,
           featured_image: seedPage.resource.featuredImage ?? null,
+          featured_image_alt: seedPage.resource.featuredImageAlt ?? null,
           status: seedPage.resource.status ?? "published",
           display_order: seedPage.resource.displayOrder ?? 0,
         },
@@ -456,6 +573,7 @@ export async function upsertSeedPage(seedPage) {
           slug: seedPage.resource.slug,
           short_description: seedPage.resource.shortDescription ?? null,
           featured_image: seedPage.resource.featuredImage ?? null,
+          featured_image_alt: seedPage.resource.featuredImageAlt ?? null,
           status: seedPage.resource.status ?? "published",
           display_order: seedPage.resource.displayOrder ?? 0,
         },
@@ -476,7 +594,9 @@ export async function upsertSeedPage(seedPage) {
           subheading: seedSection.subheading ?? null,
           description: seedSection.description ?? null,
           image_url: seedSection.imageUrl ?? null,
+          image_alt: seedSection.imageAlt ?? null,
           background_image_url: seedSection.backgroundImageUrl ?? null,
+          background_image_alt: seedSection.backgroundImageAlt ?? null,
           button_text: seedSection.buttonText ?? null,
           button_link: seedSection.buttonLink ?? null,
           settings_json: seedSection.settings ?? {},
@@ -497,6 +617,7 @@ export async function upsertSeedPage(seedPage) {
             description: seedItem.description ?? null,
             icon: seedItem.icon ?? null,
             image_url: seedItem.imageUrl ?? null,
+            image_alt: seedItem.imageAlt ?? null,
             button_text: seedItem.buttonText ?? null,
             button_link: seedItem.buttonLink ?? null,
             extra_data_json: seedItem.extraData ?? {},

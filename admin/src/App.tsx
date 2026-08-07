@@ -1,13 +1,12 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AdminLayout } from "./layouts/AdminLayout";
 import { ChangePasswordPage } from "./pages/ChangePasswordPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LoginPage } from "./pages/auth/LoginPage";
-import { MediaPage } from "./pages/cms/MediaPage";
+import { BlogPostsManagerPage } from "./pages/cms/BlogPostsManagerPage";
 import { PageEditorPage } from "./pages/cms/PageEditorPage";
-import { PricingManagerPage } from "./pages/cms/PricingManagerPage";
-import { ResourcesPage } from "./pages/cms/ResourcesPage";
+import { PagesOverviewPage } from "./pages/cms/PagesOverviewPage";
 import { ProfilePage } from "./pages/ProfilePage";
 
 export default function App() {
@@ -17,10 +16,13 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AdminLayout />}>
           <Route path="/" element={<DashboardPage />} />
+          <Route path="/pages" element={<PagesOverviewPage />} />
           <Route path="/pages/:pageKey" element={<PageEditorPage />} />
-          <Route path="/resources" element={<ResourcesPage />} />
-          <Route path="/pricing" element={<PricingManagerPage />} />
-          <Route path="/media" element={<MediaPage />} />
+          <Route path="/blog-posts" element={<BlogPostsManagerPage />} />
+          <Route path="/blog-posts/:blogGroup" element={<BlogPostsManagerPage />} />
+          <Route path="/resources" element={<Navigate to="/pages" replace />} />
+          <Route path="/pricing" element={<Navigate to="/pages/pricing" replace />} />
+          <Route path="/media" element={<Navigate to="/pages" replace />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/change-password" element={<ChangePasswordPage />} />
         </Route>

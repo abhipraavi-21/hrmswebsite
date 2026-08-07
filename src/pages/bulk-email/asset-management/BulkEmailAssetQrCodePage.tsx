@@ -54,12 +54,12 @@ const quickLinks = [
   { label: "Asset Tracking", href: ROUTES.bulkEmailAssetTracking },
   { label: "Asset Maintenance", href: ROUTES.bulkEmailAssetMaintenance },
   { label: "Asset Reports", href: ROUTES.bulkEmailAssetReports },
-  { label: "Pricing", href: ROUTES.pricing },
+  { label: "Pricing", href: ROUTES.assetManagementPricing },
   { label: "Book Demo", href: ROUTES.bookDemo },
   { label: "About Us", href: ROUTES.about },
   { label: "Help Center", href: ROUTES.support },
-  { label: "FAQs", href: ROUTES.faq },
-  { label: "Contact Us", href: ROUTES.contact },
+  { label: "FAQs", href: ROUTES.assetManagementFaq },
+  { label: "Contact Us", href: ROUTES.assetManagementContact },
 ];
 
 const challengeCards: CardData[] = [
@@ -993,7 +993,7 @@ export default function BulkEmailAssetQrCodePage() {
                     Book Free Demo
                     <ArrowRight className="h-4 w-4" />
                   </Link>
-                  <Link to={ROUTES.contact} className="btn-outline">
+                  <Link to={ROUTES.assetManagementContact} className="btn-outline">
                     Talk to Our Experts
                   </Link>
                 </div>

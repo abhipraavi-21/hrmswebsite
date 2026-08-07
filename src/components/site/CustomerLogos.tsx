@@ -1,6 +1,7 @@
 import * as React from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import type { PublicCmsSection } from "@/services/cmsTypes";
 import { ScrollReveal } from "./ScrollReveal";
 
 const customerLogos = [
@@ -50,7 +51,11 @@ const customerLogos = [
   },
 ];
 
-export default function CustomerLogos() {
+export default function CustomerLogos({
+  section,
+}: {
+  section?: PublicCmsSection | null;
+}) {
   const autoplay = React.useRef(
     Autoplay({
       delay: 1400,
@@ -60,13 +65,23 @@ export default function CustomerLogos() {
       playOnInit: true,
     }),
   );
+  const logos =
+    section?.items?.length
+      ? section.items
+          .filter((item) => item.imageUrl)
+          .map((item) => ({
+            name: item.title ?? "Customer logo",
+            src: item.imageUrl ?? "",
+            alt: item.imageAlt ?? item.title ?? "Customer logo",
+          }))
+      : customerLogos;
 
   return (
     <section id="customers" className="section-compact bg-surface scroll-mt-24">
       <div className="site-container">
         <ScrollReveal variant="fade-up" className="section-heading">
           <h2 className="text-3xl font-bold text-ink md:text-4xl">
-            Trusted by teams we've partnered with
+            {section?.heading ?? "Trusted by teams we've partnered with"}
           </h2>
         </ScrollReveal>
 
@@ -82,7 +97,7 @@ export default function CustomerLogos() {
             aria-label="Customer logos carousel"
           >
             <CarouselContent className="-ml-3 py-2">
-              {customerLogos.map((logo, index) => (
+              {logos.map((logo, index) => (
                 <CarouselItem
                   key={logo.name}
                   className="basis-[78%] pl-3 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
@@ -91,7 +106,7 @@ export default function CustomerLogos() {
                     <div className="flex h-36 items-center justify-center rounded-[1.4rem] border border-border bg-white px-5 py-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card">
                       <img
                         src={logo.src}
-                        alt={logo.name}
+                        alt={"alt" in logo ? logo.alt : logo.name}
                         loading="lazy"
                         decoding="async"
                         className="max-h-20 w-full max-w-full object-contain"

@@ -22,6 +22,7 @@ export type CmsItem = {
   description?: string | null;
   icon?: string | null;
   imageUrl?: string | null;
+  imageAlt?: string | null;
   buttonText?: string | null;
   buttonLink?: string | null;
   extraData?: Record<string, unknown>;
@@ -38,7 +39,9 @@ export type CmsSection = {
   subheading?: string | null;
   description?: string | null;
   imageUrl?: string | null;
+  imageAlt?: string | null;
   backgroundImageUrl?: string | null;
+  backgroundImageAlt?: string | null;
   buttonText?: string | null;
   buttonLink?: string | null;
   settings?: Record<string, unknown>;
@@ -76,6 +79,7 @@ export type CmsPage = {
   ogTitle?: string | null;
   ogDescription?: string | null;
   ogImage?: string | null;
+  ogImageAlt?: string | null;
   indexable: boolean;
   status: "draft" | "published";
   sections: CmsSection[];
@@ -87,6 +91,7 @@ export type ResourceSummary = {
   slug: string;
   shortDescription?: string | null;
   featuredImage?: string | null;
+  featuredImageAlt?: string | null;
   status: "draft" | "published";
   displayOrder: number;
   page: {
@@ -149,4 +154,56 @@ export type MediaItem = {
   fileSize: number;
   altText?: string | null;
   createdAt: string;
+};
+
+export type BlogTable = {
+  headers: string[];
+  rows: string[][];
+};
+
+export type BlogSection = {
+  id: string;
+  title: string;
+  bodyHtml?: string | null;
+  bullets: string[];
+  table?: BlogTable | null;
+};
+
+export type BlogFaq = {
+  question: string;
+  answer: string;
+};
+
+export type BlogRelatedLink = {
+  label: string;
+  href: string;
+  description?: string | null;
+};
+
+export type BlogGroup = "hrms" | "bulk-email" | "asset-management";
+
+export type BlogPost = {
+  id: number;
+  title: string;
+  slug: string;
+  href: string;
+  publicUrl?: string;
+  blogGroup: BlogGroup;
+  category: string;
+  readingTimeLabel?: string | null;
+  descriptionHtml?: string | null;
+  metaTitle: string;
+  metaDescription: string;
+  heroSummaryHtml?: string | null;
+  quickAnswerHtml?: string | null;
+  heroPoints: string[];
+  keyTakeaways: string[];
+  sections: BlogSection[];
+  faqs: BlogFaq[];
+  relatedLinks: BlogRelatedLink[];
+  coverImageUrl?: string | null;
+  coverImageAlt?: string | null;
+  status: "draft" | "published";
+  displayOrder: number;
+  publishedAt?: string | null;
 };

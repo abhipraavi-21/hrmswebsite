@@ -23,7 +23,7 @@ export function ResourcesPage() {
             <div className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-500">{resource.slug}</div>
             <h2 className="mt-2 text-2xl font-semibold">{resource.resourceName}</h2>
             <p className="mt-3 text-sm leading-7 text-slate-500">{resource.shortDescription}</p>
-            <Link className="btn-primary mt-5" to={`/pages/${resource.page?.pageKey}`}>
+            <Link className="btn-primary mt-5" to={`/pages/${resource.page?.id}`}>
               Open Editor
             </Link>
           </article>

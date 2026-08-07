@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, Building2, ChevronRight, Clock3, Mail, Phone } from "lucide-react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
@@ -10,34 +10,58 @@ import TopNavbar from "@/components/site/TopNavbar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ROUTES } from "@/routes/routeConfig.js";
-import { getBlogPostBySlug } from "@/data/blogPosts";
+import { usePublicContent } from "@/hooks/usePublicContent";
+import { fetchPublicBlogPost } from "@/services/blogService";
+import { isExternalHref, ROUTES } from "@/routes/routeConfig.js";
+import {
+  BLOG_GROUP_PAGE_CONTENT,
+  FALLBACK_BLOG_IMAGE,
+  formatBlogDate,
+  resolveBlogGroupFromPath,
+  resolveBlogListingPath,
+  resolveBlogPostPath,
+  stripHtmlToText,
+} from "./blogUtils";
+
+function SafeRichText({
+  html,
+  className,
+}: {
+  html?: string | null;
+  className: string;
+}) {
+  if (!html) {
+    return null;
+  }
+
+  return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+}
 
 function SectionCard({
   title,
   id,
-  paragraphs,
+  bodyHtml,
   bullets,
   table,
 }: {
   title: string;
   id: string;
-  paragraphs: string[];
+  bodyHtml?: string | null;
   bullets?: string[];
   table?: {
     headers: string[];
     rows: string[][];
-  };
+  } | null;
 }) {
   return (
     <section id={id} className="rounded-[1.5rem] border border-border bg-white p-6 shadow-sm sm:p-8">
       <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">Article section</div>
       <h2 className="mt-4 text-2xl font-black tracking-tight text-ink sm:text-3xl">{title}</h2>
-      <div className="mt-5 space-y-5 text-base leading-8 text-ink-soft">
-        {paragraphs.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
-      </div>
+
+      <SafeRichText
+        html={bodyHtml}
+        className="mt-5 space-y-5 text-base leading-8 text-ink-soft [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0 [&_p+*]:mt-5"
+      />
 
       {bullets && bullets.length > 0 ? (
         <ul className="mt-7 space-y-4 text-sm leading-7 text-ink-soft">
@@ -63,10 +87,10 @@ function SectionCard({
               </tr>
             </thead>
             <tbody>
-              {table.rows.map((row) => (
-                <tr key={row[0]}>
+              {table.rows.map((row, rowIndex) => (
+                <tr key={`${row[0] ?? "row"}-${rowIndex}`}>
                   {row.map((cell, index) => (
-                    <td key={`${row[0]}-${index}`} className="border-b border-border px-4 py-3 text-ink-soft">
+                    <td key={`${rowIndex}-${index}`} className="border-b border-border px-4 py-3 text-ink-soft">
                       {cell}
                     </td>
                   ))}
@@ -77,6 +101,43 @@ function SectionCard({
         </div>
       ) : null}
     </section>
+  );
+}
+
+function RelatedLinkCard({
+  href,
+  label,
+  description,
+}: {
+  href: string;
+  label: string;
+  description?: string | null;
+}) {
+  const content = (
+    <>
+      <div className="text-sm font-bold text-ink">{label}</div>
+      <p className="mt-1 text-sm leading-6 text-ink-soft">{description}</p>
+      <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">
+        Open topic <ArrowRight className="h-4 w-4" />
+      </span>
+    </>
+  );
+
+  const className =
+    "rounded-2xl border border-border bg-surface/35 p-5 transition-shadow hover:shadow-sm";
+
+  if (isExternalHref(href)) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link to={href} className={className}>
+      {content}
+    </Link>
   );
 }
 
@@ -173,29 +234,105 @@ function DemoSidebar() {
   );
 }
 
+function ArticleState({
+  title,
+  description,
+  blogPath,
+}: {
+  title: string;
+  description: string;
+  blogPath: string;
+}) {
+  return (
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]">
+      <TopNavbar />
+      <MainNavbar />
+
+      <main className="overflow-x-hidden">
+        <section className="py-16 sm:py-20 lg:py-24">
+          <div className="site-container max-w-5xl">
+            <div className="rounded-[2rem] border border-border bg-white p-8 text-center shadow-float sm:p-10">
+              <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">Blog article</div>
+              <h1 className="mt-4 text-3xl font-black tracking-tight text-ink sm:text-4xl">{title}</h1>
+              <p className="mx-auto mt-4 max-w-3xl text-base leading-8 text-ink-soft">{description}</p>
+
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
+                <Link to={blogPath} className="btn-primary">
+                  Back to blog
+                </Link>
+                <Link to={ROUTES.bookDemo} className="btn-outline">
+                  Book a demo
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
+
 export default function BlogArticlePage() {
   const { slug } = useParams();
-  const post = slug ? getBlogPostBySlug(slug) : null;
+  const location = useLocation();
+  const fallbackGroup = resolveBlogGroupFromPath(location.pathname);
+  const fallbackPageCopy = BLOG_GROUP_PAGE_CONTENT[fallbackGroup];
+  const fallbackBlogPath = resolveBlogListingPath(fallbackGroup, location.pathname);
+  const { data: post, error, loading } = usePublicContent(
+    () => (slug ? fetchPublicBlogPost(slug) : Promise.resolve(null)),
+    [slug],
+  );
 
-  if (!post) {
-    return <Navigate to={ROUTES.blog} replace />;
+  if (!slug) {
+    return <ArticleState title="Blog article not found" description="This article URL is incomplete." blogPath={fallbackBlogPath} />;
   }
 
-  const canonicalPath = post.href;
-  const publishedDate = "August 5, 2026";
+  if (loading) {
+    return (
+      <ArticleState
+        title="Loading blog article..."
+        description="We&apos;re fetching the latest published version of this article from the live CMS feed."
+        blogPath={fallbackBlogPath}
+      />
+    );
+  }
+
+  if (!post) {
+    return (
+      <ArticleState
+        title="This blog post is not available yet"
+        description={
+          error ??
+          "If you just created this article in the admin panel, switch its status to Published and save it before opening the public page."
+        }
+        blogPath={fallbackBlogPath}
+      />
+    );
+  }
+
+  const pageCopy = BLOG_GROUP_PAGE_CONTENT[post.blogGroup];
+  const canonicalPath = resolveBlogPostPath(post.blogGroup, post.slug, location.pathname);
+  const blogPath = resolveBlogListingPath(post.blogGroup, location.pathname);
+  const publishedDate = formatBlogDate(post.publishedAt);
+  const descriptionText = stripHtmlToText(post.descriptionHtml) || post.metaDescription;
+  const heroSummaryText = stripHtmlToText(post.heroSummaryHtml);
   const breadcrumbUrl = [
     { label: "Home", href: ROUTES.home },
-    { label: "Blog", href: ROUTES.blog },
-    { label: post.title, href: post.href },
+    { label: pageCopy.badge, href: blogPath },
+    { label: post.title, href: canonicalPath },
   ];
 
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
-    description: post.description,
+    description: descriptionText || post.metaDescription,
     articleSection: post.category,
-    mainEntityOfPage: resolveSiteUrl(post.href),
+    mainEntityOfPage: resolveSiteUrl(canonicalPath),
+    datePublished: post.publishedAt ?? undefined,
+    dateModified: post.updatedAt ?? post.publishedAt ?? undefined,
     author: {
       "@type": "Organization",
       name: "Altroz HR Editorial Team",
@@ -204,7 +341,7 @@ export default function BlogArticlePage() {
       "@type": "Organization",
       name: "Altroz HR",
     },
-    keywords: post.heroPoints.join(", "),
+    keywords: [post.category, ...post.heroPoints].join(", "),
   };
 
   const breadcrumbSchema = {
@@ -223,10 +360,10 @@ export default function BlogArticlePage() {
     "@type": "FAQPage",
     mainEntity: post.faqs.map((item) => ({
       "@type": "Question",
-      name: item.q,
+      name: item.question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: item.a,
+        text: stripHtmlToText(item.answer),
       },
     })),
   };
@@ -234,11 +371,13 @@ export default function BlogArticlePage() {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]">
       <PageSEO
-        title={`${post.title} | Altroz HR Blog`}
-        description={post.description}
+        title={post.metaTitle || `${post.title} | Altroz HR Blog`}
+        description={post.metaDescription}
         canonicalPath={canonicalPath}
-        ogTitle={post.title}
-        ogDescription={post.description}
+        image={post.coverImageUrl ?? undefined}
+        imageAlt={post.coverImageAlt ?? post.title}
+        ogTitle={post.metaTitle || post.title}
+        ogDescription={post.metaDescription}
       />
       <TopNavbar />
       <MainNavbar />
@@ -255,37 +394,43 @@ export default function BlogArticlePage() {
                       <span className="text-border">-</span>
                       <span>{post.category}</span>
                       <span className="text-border">-</span>
-                      <span>~24 min read</span>
+                      <span>{post.readingTimeLabel ?? "Read now"}</span>
                     </div>
                     <h1 className="mt-4 max-w-4xl text-3xl font-black tracking-tight text-ink sm:text-4xl lg:text-[2.7rem] lg:leading-tight">
                       {post.title}
                     </h1>
-                    <p className="mt-4 max-w-4xl text-base leading-8 text-ink-soft sm:text-lg">
-                      {post.description}
-                    </p>
+
+                    <SafeRichText
+                      html={post.descriptionHtml}
+                      className="mt-4 max-w-4xl text-base leading-8 text-ink-soft sm:text-lg [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0"
+                    />
                   </div>
 
                   <div className="px-6 sm:px-8">
                     <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface/30">
                       <img
-                        src={post.coverImage ?? "https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=60&w=3000"}
-                        alt={post.title}
+                        src={post.coverImageUrl ?? FALLBACK_BLOG_IMAGE}
+                        alt={post.coverImageAlt ?? post.title}
                         className="h-full w-full object-cover"
                       />
                     </div>
                   </div>
 
                   <div className="p-6 sm:p-8">
-                    <p className="max-w-4xl text-base leading-8 text-ink-soft sm:text-lg">
-                      {post.heroSummary}
-                    </p>
+                    <SafeRichText
+                      html={post.heroSummaryHtml}
+                      className="max-w-4xl text-base leading-8 text-ink-soft sm:text-lg [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0"
+                    />
 
                     <div className="mt-6 grid gap-4 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
                       <div className="soft-card self-start p-5">
                         <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                           Quick answer
                         </div>
-                        <p className="mt-3 text-sm leading-7 text-ink-soft">{post.quickAnswer}</p>
+                        <SafeRichText
+                          html={post.quickAnswerHtml}
+                          className="mt-3 text-sm leading-7 text-ink-soft [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0"
+                        />
                       </div>
 
                       <div className="soft-card self-start p-5">
@@ -307,107 +452,113 @@ export default function BlogArticlePage() {
                       <Link to={ROUTES.bookDemo} className="btn-primary">
                         Book Free Demo
                       </Link>
-                      <Link to={ROUTES.blog} className="btn-outline">
+                      <Link to={blogPath} className="btn-outline">
                         Back to Blog
                       </Link>
                     </div>
 
-                    <div className="mt-6 rounded-[1.35rem] border border-border bg-surface/35 p-4">
-                      <div className="text-sm font-bold text-ink">On this page</div>
-                      <nav className="mt-3 flex flex-wrap gap-2">
-                        {post.sections.map((section) => (
-                          <a
-                            key={section.id}
-                            href={`#${section.id}`}
-                            className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm text-ink-soft transition-colors hover:border-primary/25 hover:text-primary"
-                          >
-                            <ChevronRight className="h-4 w-4 shrink-0" />
-                            <span>{section.title}</span>
-                          </a>
-                        ))}
-                      </nav>
-                    </div>
+                    {post.sections.length > 0 ? (
+                      <div className="mt-6 rounded-[1.35rem] border border-border bg-surface/35 p-4">
+                        <div className="text-sm font-bold text-ink">On this page</div>
+                        <nav className="mt-3 flex flex-wrap gap-2">
+                          {post.sections.map((section) => (
+                            <a
+                              key={section.id}
+                              href={`#${section.id}`}
+                              className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm text-ink-soft transition-colors hover:border-primary/25 hover:text-primary"
+                            >
+                              <ChevronRight className="h-4 w-4 shrink-0" />
+                              <span>{section.title}</span>
+                            </a>
+                          ))}
+                        </nav>
+                      </div>
+                    ) : null}
                   </div>
                 </article>
 
-                <div className="space-y-6">
-                  {post.sections.map((section) => (
-                    <SectionCard
-                      key={section.id}
-                      id={section.id}
-                      title={section.title}
-                      paragraphs={section.paragraphs}
-                      bullets={section.bullets}
-                      table={section.table}
-                    />
-                  ))}
-                </div>
-
-                <section className="rounded-[1.75rem] border border-border bg-white p-6 shadow-float sm:p-8">
-                  <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
-                    Frequently Asked Questions
-                  </div>
-                  <h2 className="mt-4 text-2xl font-black tracking-tight text-ink sm:text-3xl">
-                    Common questions about HRMS
-                  </h2>
-                  <Accordion type="single" collapsible className="mt-6 space-y-3">
-                    {post.faqs.map((item) => (
-                      <AccordionItem
-                        key={item.q}
-                        value={item.q}
-                        className="overflow-hidden rounded-[1.35rem] border border-border bg-surface/35 px-4 py-0"
-                      >
-                        <AccordionTrigger className="py-5 text-left text-base font-semibold text-ink hover:no-underline">
-                          {item.q}
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-5 text-sm leading-7 text-ink-soft">
-                          {item.a}
-                        </AccordionContent>
-                      </AccordionItem>
+                {post.sections.length > 0 ? (
+                  <div className="space-y-6">
+                    {post.sections.map((section) => (
+                      <SectionCard
+                        key={section.id}
+                        id={section.id}
+                        title={section.title}
+                        bodyHtml={section.bodyHtml}
+                        bullets={section.bullets}
+                        table={section.table}
+                      />
                     ))}
-                  </Accordion>
-                </section>
+                  </div>
+                ) : null}
 
-                <section className="rounded-[1.75rem] border border-border bg-white p-6 shadow-float sm:p-8">
-                  <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                    <div className="max-w-2xl">
-                      <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
-                        Related links
+                {post.faqs.length > 0 ? (
+                  <section className="rounded-[1.75rem] border border-border bg-white p-6 shadow-float sm:p-8">
+                    <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+                      Frequently Asked Questions
+                    </div>
+                    <h2 className="mt-4 text-2xl font-black tracking-tight text-ink sm:text-3xl">
+                      Common questions about this topic
+                    </h2>
+                    <Accordion type="single" collapsible className="mt-6 space-y-3">
+                      {post.faqs.map((item) => (
+                        <AccordionItem
+                          key={item.question}
+                          value={item.question}
+                          className="overflow-hidden rounded-[1.35rem] border border-border bg-surface/35 px-4 py-0"
+                        >
+                          <AccordionTrigger className="py-5 text-left text-base font-semibold text-ink hover:no-underline">
+                            {item.question}
+                          </AccordionTrigger>
+                          <AccordionContent className="pb-5">
+                            <SafeRichText
+                              html={item.answer}
+                              className="text-sm leading-7 text-ink-soft [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0"
+                            />
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </section>
+                ) : null}
+
+                {post.relatedLinks.length > 0 ? (
+                  <section className="rounded-[1.75rem] border border-border bg-white p-6 shadow-float sm:p-8">
+                    <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                      <div className="max-w-2xl">
+                        <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+                          Related links
+                        </div>
+                        <h2 className="mt-4 text-2xl font-black tracking-tight text-ink sm:text-3xl">
+                          Keep exploring related topics
+                        </h2>
+                        <p className="mt-4 text-sm leading-7 text-ink-soft">
+                          These links connect the article to the product areas and guides it depends on most.
+                        </p>
                       </div>
-                      <h2 className="mt-4 text-2xl font-black tracking-tight text-ink sm:text-3xl">
-                        Keep exploring related HR topics
-                      </h2>
-                      <p className="mt-4 text-sm leading-7 text-ink-soft">
-                        These pages connect the HRMS guide to the product areas it depends on most.
-                      </p>
+
+                      <div className="flex flex-wrap gap-3">
+                        <Link to={pageCopy.primaryCtaHref} className="btn-primary">
+                          {pageCopy.primaryCtaLabel}
+                        </Link>
+                        <Link to={ROUTES.contact} className="btn-outline">
+                          Contact Us
+                        </Link>
+                      </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-3">
-                      <Link to={ROUTES.hrmsHome} className="btn-primary">
-                        Explore HR Solutions
-                      </Link>
-                      <Link to={ROUTES.contact} className="btn-outline">
-                        Contact Us
-                      </Link>
+                    <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+                      {post.relatedLinks.map((link) => (
+                        <RelatedLinkCard
+                          key={`${link.label}-${link.href}`}
+                          href={link.href}
+                          label={link.label}
+                          description={link.description}
+                        />
+                      ))}
                     </div>
-                  </div>
-
-                  <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-                    {post.relatedLinks.map((link) => (
-                      <Link
-                        key={link.label}
-                        to={link.href}
-                        className="rounded-2xl border border-border bg-surface/35 p-5 transition-shadow hover:shadow-sm"
-                      >
-                        <div className="text-sm font-bold text-ink">{link.label}</div>
-                        <p className="mt-1 text-sm leading-6 text-ink-soft">{link.description}</p>
-                        <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">
-                          Open topic <ArrowRight className="h-4 w-4" />
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </section>
+                  </section>
+                ) : null}
               </div>
 
               <DemoSidebar />
@@ -421,7 +572,9 @@ export default function BlogArticlePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      {post.faqs.length > 0 ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      ) : null}
 
       <Footer />
     </div>

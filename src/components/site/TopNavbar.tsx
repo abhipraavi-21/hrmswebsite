@@ -49,7 +49,9 @@ export function TopNavbarShell({
   const isHomePage = location.pathname === ROUTES.home;
   const isHrmsHomePage = location.pathname.startsWith(ROUTES.hrmsHome);
   const isBulkEmailPage = location.pathname.startsWith(ROUTES.bulkEmail);
-  const isAssetManagementPage = location.pathname.startsWith(ROUTES.bulkEmailAssetManagement);
+  const isAssetManagementPage =
+    location.pathname.startsWith(ROUTES.assetManagementHome) ||
+    location.pathname.startsWith(ROUTES.assetManagement);
   const currentTab =
     forceActiveTab ??
     (isAssetManagementPage ? "asset" : isBulkEmailPage ? "email" : isHrmsHomePage ? "hrms" : isHomePage ? null : activeTab);
@@ -145,7 +147,7 @@ export function TopNavbarShell({
                     />
                     <MobileTopLevelLink
                       label="Asset Management"
-                      href={ROUTES.bulkEmailAssetManagement}
+                      href={ROUTES.assetManagementHome}
                       onNavigate={() => setMobileOpen(false)}
                     />
                     <MobileFeaturesGroup onNavigate={() => setMobileOpen(false)} />
@@ -169,7 +171,7 @@ export function TopNavbarShell({
                     />
                     <MobileTopLevelLink
                       label="Pricing"
-                      href={ROUTES.pricing}
+                      href={ROUTES.hrmsPricing}
                       onNavigate={() => setMobileOpen(false)}
                     />
                     <MobileTopLevelLink
@@ -189,7 +191,7 @@ export function TopNavbarShell({
                     Request Demo
                   </Link>
                   <Link
-                    to={ROUTES.pricing}
+                    to={ROUTES.hrmsPricing}
                     onClick={() => setMobileOpen(false)}
                     className="btn-primary justify-center text-sm"
                   >
@@ -245,14 +247,14 @@ export function TopNavbarShell({
             }}
             isOpen={false}
           />
-          <ProductTab
-            label="Asset Management"
-            icon={<Package className="h-4 w-4" />}
-            active={currentTab === "asset"}
-            onClick={() => {
-              setActiveTab("asset");
-              navigate(ROUTES.bulkEmailAssetManagement);
-            }}
+            <ProductTab
+              label="Asset Management"
+              icon={<Package className="h-4 w-4" />}
+              active={currentTab === "asset"}
+              onClick={() => {
+                setActiveTab("asset");
+                navigate(ROUTES.assetManagementHome);
+              }}
             onHover={() => {
               setOpen(null);
             }}
@@ -265,7 +267,7 @@ export function TopNavbarShell({
 
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:flex lg:items-center lg:justify-end lg:gap-2">
           <Link
-            to={ROUTES.contact}
+            to={ROUTES.hrmsContact}
             className="nav-link btn-ghost justify-center px-2.5 py-1.5 text-xs sm:px-3 sm:text-sm"
           >
             Contact Sales

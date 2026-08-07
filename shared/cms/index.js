@@ -1,6 +1,8 @@
 import { ROUTES } from "../../src/routes/routeConfig.js";
+import { blogSeedPosts } from "../blog/index.js";
+import { hrmsPricingFeatureSections } from "../pricingFeatureSections.js";
 
-export const seedVersion = "2026-08-04";
+export const seedVersion = "2026-08-05";
 
 const createMeta = ({
   title,
@@ -10,6 +12,7 @@ const createMeta = ({
   ogTitle,
   ogDescription,
   ogImage = null,
+  ogImageAlt = null,
   indexable = true,
 }) => ({
   title,
@@ -19,8 +22,2248 @@ const createMeta = ({
   ogTitle,
   ogDescription,
   ogImage,
+  ogImageAlt,
   indexable,
 });
+
+const pricingPlanColumns = ["Basic", "Professional", "Premium"];
+
+const createPricingFeatureComparisonSections = (startOrder = 0) =>
+  hrmsPricingFeatureSections.map((section, sectionIndex) => ({
+    sectionKey: section.sectionKey,
+    sectionType: "pricing_feature_comparison",
+    internalName: section.heading,
+    heading: section.heading,
+    subheading: section.eyebrow ?? "Feature Section",
+    description: section.description,
+    settings: {
+      planColumns: pricingPlanColumns,
+    },
+    displayOrder: startOrder + sectionIndex,
+    items: section.rows.map((feature, featureIndex) => ({
+      itemType: "pricing_feature_row",
+      title: feature.title,
+      description: feature.note ?? null,
+      displayOrder: featureIndex,
+      extraData: {
+        basic: feature.basic,
+        professional: feature.professional,
+        premium: feature.premium,
+      },
+    })),
+  }));
+
+const createManagedCmsPage = ({
+  pageKey,
+  pageName,
+  route,
+  title,
+  description,
+  keywords,
+  heroEyebrow,
+  heroTitle,
+  heroDescription,
+  buttonText = "Book Free Demo",
+  buttonLink = ROUTES.bookDemo,
+  secondaryButtonText = "Explore Features",
+  secondaryButtonLink,
+  sections,
+}) => ({
+  pageKey,
+  pageName,
+  slug: route.replace(/^\/+/, ""),
+  status: "published",
+  meta: createMeta({
+    title,
+    description,
+    keywords,
+    canonicalUrl: route,
+    ogTitle: title,
+    ogDescription: description,
+  }),
+  sections:
+    sections ??
+    [
+      {
+        sectionKey: "hero",
+        sectionType: "hero",
+        internalName: "Hero",
+        heading: heroTitle,
+        subheading: heroEyebrow,
+        description: heroDescription,
+        buttonText,
+        buttonLink,
+        isRequired: true,
+        settings: {
+          secondaryButtonText,
+          secondaryButtonLink: secondaryButtonLink ?? route,
+        },
+      },
+    ],
+});
+
+const createHeroSection = ({
+  sectionKey = "hero",
+  internalName = "Hero",
+  heading,
+  subheading,
+  description,
+  buttonText = "Book Free Demo",
+  buttonLink = ROUTES.bookDemo,
+  settings = {},
+  items = [],
+}) => ({
+  sectionKey,
+  sectionType: "hero",
+  internalName,
+  heading,
+  subheading,
+  description,
+  buttonText,
+  buttonLink,
+  settings,
+  items,
+});
+
+const createIconCardsSection = ({
+  sectionKey,
+  internalName,
+  heading,
+  subheading,
+  description,
+  items = [],
+}) => ({
+  sectionKey,
+  sectionType: "icon_cards",
+  internalName,
+  heading,
+  subheading,
+  description,
+  items,
+});
+
+const createFaqSection = ({
+  sectionKey = "faq",
+  internalName = "FAQ",
+  heading,
+  subheading,
+  description,
+  buttonText = "Book Free Demo",
+  buttonLink = ROUTES.bookDemo,
+  settings = {},
+  items = [],
+}) => ({
+  sectionKey,
+  sectionType: "faq",
+  internalName,
+  heading,
+  subheading,
+  description,
+  buttonText,
+  buttonLink,
+  settings,
+  items,
+});
+
+const createCtaSection = ({
+  sectionKey = "cta",
+  internalName = "Final CTA",
+  heading,
+  description,
+  buttonText = "Book Free Demo",
+  buttonLink = ROUTES.bookDemo,
+  settings = {},
+}) => ({
+  sectionKey,
+  sectionType: "cta_banner",
+  internalName,
+  heading,
+  description,
+  buttonText,
+  buttonLink,
+  settings,
+});
+
+const featuredHrmsBlogPost =
+  blogSeedPosts.find((post) => post.blogGroup === "hrms") ?? blogSeedPosts[0] ?? null;
+
+const fallbackHrmsBlogCoverImage =
+  "https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=60&w=3000";
+
+function getBlogPostPath(basePath, slug) {
+  return `${basePath.replace(/\/+$/, "")}/${slug.replace(/^\/+/, "")}`;
+}
+
+function getHrmsRelatedLinkIcon(label) {
+  switch (label) {
+    case "Employee Management":
+      return "Users";
+    case "Attendance Management":
+      return "CalendarDays";
+    case "Payroll":
+      return "Wallet";
+    case "Compliance Guides":
+      return "ShieldCheck";
+    default:
+      return "ArrowRight";
+  }
+}
+
+function createHrmsBlogLandingSections({ blogPath = ROUTES.blog } = {}) {
+  const featuredPost =
+    featuredHrmsBlogPost ??
+    {
+      slug: "what-is-hrms",
+      title: "What is HRMS? The Complete Guide for Indian Businesses (2026)",
+      description:
+        "A practical, in-depth resource on Human Resource Management Systems - what they are, how they work, why Indian businesses need them, and how to choose one.",
+      heroSummary:
+        "HRMS centralises the employee lifecycle from hiring to exit, giving HR teams one source of truth instead of juggling spreadsheets, biometric exports, emails, and paper files.",
+      quickAnswer:
+        "HRMS is software that helps businesses manage employee records, attendance, leave, payroll, recruitment, performance, and reporting in one place.",
+      heroPoints: [
+        "Manage the full employee lifecycle from hire to exit in one system",
+        "Automate attendance, leave, payroll, and document workflows",
+        "Reduce compliance risk and manual re-entry as headcount grows",
+        "Give employees self-service access to their own records and payslips",
+      ],
+      relatedLinks: [
+        {
+          label: "Employee Management",
+          href: ROUTES.coreHR,
+          description: "See how employee profiles, documents, and records are managed in Altroz HR.",
+        },
+        {
+          label: "Attendance Management",
+          href: ROUTES.attendanceManagement,
+          description: "Explore attendance tracking, shifts, and approvals connected to HRMS workflows.",
+        },
+        {
+          label: "Payroll",
+          href: ROUTES.payroll,
+          description: "See how payroll fits into the broader HRMS workflow.",
+        },
+        {
+          label: "Compliance Guides",
+          href: ROUTES.complianceGuides,
+          description: "Read more about statutory HR topics that an HRMS helps support.",
+        },
+      ],
+      coverImage: fallbackHrmsBlogCoverImage,
+      readingTimeLabel: "~24 min read",
+    };
+
+  const featuredPostPath = getBlogPostPath(blogPath, featuredPost.slug);
+
+  return [
+    createHeroSection({
+      heading: "Learn everything about HR operations, attendance, payroll, and automation",
+      subheading: "HRMS Blog",
+      description:
+        "A clean editorial layout for your HRMS content, with practical guides, product links, and the same blue-green colour theme used across the rest of the site.",
+      buttonText: "Explore HRMS",
+      buttonLink: ROUTES.hrmsHome,
+      settings: {
+        badgeText: "HRMS Blog",
+        secondaryButtonText: "Book Free Demo",
+        secondaryButtonLink: ROUTES.bookDemo,
+      },
+    }),
+    createIconCardsSection({
+      sectionKey: "story-stats",
+      internalName: "Story Stats",
+      heading: "Quick stat cards used in the hero layout",
+      subheading: "Stat Cards",
+      description:
+        "These four cards summarise the current editorial setup and can be updated directly from the admin panel.",
+      items: [
+        {
+          itemType: "stat_card",
+          title: "1 article",
+          subtitle: "Featured guide",
+          description: "Current spotlight article shown in the large editorial panel.",
+          icon: "Target",
+        },
+        {
+          itemType: "stat_card",
+          title: "3 stories",
+          subtitle: "Topic cards",
+          description: "A compact way to highlight the main story areas at the top of the page.",
+          icon: "Sparkles",
+        },
+        {
+          itemType: "stat_card",
+          title: "Blue + green",
+          subtitle: "HR theme",
+          description: "Keeps the blog page aligned with the wider Altroz HR visual language.",
+          icon: "ShieldCheck",
+        },
+        {
+          itemType: "stat_card",
+          title: "2026",
+          subtitle: "Updated",
+          description: "Shows that the editorial layout is current and ready for active content.",
+          icon: "CalendarDays",
+        },
+      ],
+    }),
+    {
+      sectionKey: "story-search",
+      sectionType: "custom",
+      internalName: "Story Search",
+      heading: "Search bar placeholder",
+      subheading: "Search",
+      description:
+        "Use this field to control the helper text shown inside the topic search box at the top of the blog landing page.",
+      settings: {
+        placeholderText: "Search HRMS guides, payroll, attendance, leave, reports...",
+      },
+      items: [],
+    },
+    {
+      sectionKey: "featured-guide",
+      sectionType: "icon_cards",
+      internalName: "Featured Guide",
+      heading: featuredPost.title,
+      subheading: "Featured article",
+      description: featuredPost.heroSummary,
+      imageUrl: featuredPost.coverImage ?? fallbackHrmsBlogCoverImage,
+      buttonText: "Read full guide",
+      buttonLink: featuredPostPath,
+      settings: {
+        badgeText: "Featured article",
+        readingTime: featuredPost.readingTimeLabel ?? "~24 min read",
+        secondaryButtonText: "Explore attendance",
+        secondaryButtonLink: ROUTES.attendanceManagement,
+        tertiaryButtonText: "Compliance guides",
+        tertiaryButtonLink: ROUTES.complianceGuides,
+      },
+      items: (featuredPost.heroPoints ?? []).slice(0, 4).map((point, index) => ({
+        itemType: "highlight_card",
+        title: `Key point ${index + 1}`,
+        description: point,
+        icon: "ChevronRight",
+      })),
+    },
+    {
+      sectionKey: "learning-dashboard",
+      sectionType: "icon_cards",
+      internalName: "Learning Dashboard",
+      heading: "Structured learning, simple navigation",
+      subheading: "Learning dashboard",
+      description:
+        "A visual panel that connects the main guide with related attendance and payroll workflows for faster discovery.",
+      imageUrl: featuredPost.coverImage ?? fallbackHrmsBlogCoverImage,
+      settings: {
+        badgeText: "HRMS",
+        caption: "Use this block for a dashboard image, two quick feature cards, and one fast answer panel.",
+      },
+      items: [
+        {
+          itemType: "feature_card",
+          title: "Attendance",
+          description: "Track time, shifts, and approvals",
+          icon: "CalendarDays",
+        },
+        {
+          itemType: "feature_card",
+          title: "Payroll",
+          description: "Connect clean inputs to salary runs",
+          icon: "Wallet",
+        },
+        {
+          itemType: "text_card",
+          title: "Quick answer",
+          description: featuredPost.quickAnswer,
+          icon: "Sparkles",
+        },
+      ],
+    },
+    createIconCardsSection({
+      sectionKey: "latest-stories",
+      internalName: "Latest Stories",
+      heading: "Browse the HRMS story feed",
+      subheading: "Latest stories",
+      description:
+        "A stacked card layout keeps the page easy to scan on mobile while still giving each topic enough space to feel like a proper editorial feature.",
+      items: [
+        {
+          itemType: "story_card",
+          title: featuredPost.title,
+          subtitle: "Featured guide",
+          description: featuredPost.description,
+          icon: "BookOpen",
+          imageUrl: featuredPost.coverImage ?? fallbackHrmsBlogCoverImage,
+          buttonText: "Read guide",
+          buttonLink: featuredPostPath,
+          extraData: {
+            readingTime: featuredPost.readingTimeLabel ?? "~24 min read",
+            category: featuredPost.category ?? "HR Software",
+          },
+        },
+      ],
+    }),
+    {
+      sectionKey: "related-topics",
+      sectionType: "icon_cards",
+      internalName: "Related Topics",
+      heading: "Related HR topics connected to this blog",
+      subheading: "Continue exploring",
+      description:
+        "These links keep the blog landing page useful and connect readers back to the product areas that support the HRMS workflow.",
+      buttonText: "Explore HRMS",
+      buttonLink: ROUTES.hrmsHome,
+      settings: {
+        secondaryButtonText: "Book a demo",
+        secondaryButtonLink: ROUTES.bookDemo,
+      },
+      items: (featuredPost.relatedLinks ?? []).slice(0, 4).map((link) => ({
+        itemType: "related_link",
+        title: link.label,
+        description: link.description,
+        icon: getHrmsRelatedLinkIcon(link.label),
+        buttonText: "Open topic",
+        buttonLink: link.href,
+      })),
+    },
+  ];
+}
+
+const bulkEmailManagedSections = [
+  {
+    sectionKey: "hero",
+    sectionType: "hero",
+    internalName: "Hero",
+    heading: "Bulk Email Software Built for Reliable Business Communication",
+    subheading: "Bulk Email",
+    description:
+      "Send, schedule and track every business email from one simple dashboard. Altroz Bulk Email is an enterprise bulk email broadcasting platform that helps businesses send large volumes of email campaigns without losing control or visibility.",
+    buttonText: "Book Free Demo",
+    buttonLink: ROUTES.bookDemo,
+    isRequired: true,
+    settings: {
+      badgeText: "Trusted Business Email Broadcasting Platform",
+      secondaryButtonText: "View Features",
+      secondaryButtonLink: "#features",
+    },
+    items: [
+      {
+        itemType: "value_card",
+        title: "What it does",
+        subtitle:
+          "Bulk email broadcasting, scheduling and delivery tracking from one dashboard",
+        description: "One workspace for campaigns, queue visibility and campaign history.",
+      },
+      {
+        itemType: "value_card",
+        title: "Who it is for",
+        subtitle:
+          "Business owners, SMEs, enterprises, HR and marketing teams, institutes and organisations",
+        description: "Built for teams that need structured communication at scale.",
+      },
+      {
+        itemType: "value_card",
+        title: "Business value",
+        subtitle: "Centralized control, better visibility and organized business communication",
+        description: "Keep every broadcast easy to manage, monitor and review.",
+      },
+    ],
+  },
+  {
+    sectionKey: "trusted-toolkit",
+    sectionType: "icon_cards",
+    internalName: "Trusted Toolkit",
+    heading: "A premium snapshot of what businesses get with Altroz Bulk Email",
+    subheading: "Trusted Business Communication Platform",
+    description:
+      "A clean, organized toolkit for campaigns, scheduling, templates, delivery and reporting.",
+    items: [
+      {
+        itemType: "feature_card",
+        title: "Bulk Email Campaigns",
+        description:
+          "Create and send bulk email campaigns to your entire contact base in a single, organized broadcast.",
+        icon: "Send",
+      },
+      {
+        itemType: "feature_card",
+        title: "Campaign Scheduling",
+        description:
+          "Plan campaigns in advance and let Altroz Bulk Email send them automatically at the scheduled time.",
+        icon: "CalendarClock",
+      },
+      {
+        itemType: "feature_card",
+        title: "Delivery Tracking",
+        description:
+          "Follow every broadcast from queue to inbox with real-time email status and delivery tracking.",
+        icon: "MailCheck",
+      },
+      {
+        itemType: "feature_card",
+        title: "Email Templates",
+        description:
+          "Use ready email templates or upload your own HTML email design for a consistent brand look.",
+        icon: "FileText",
+      },
+      {
+        itemType: "feature_card",
+        title: "SMTP Support",
+        description:
+          "Connect your own SMTP through simple sender email configuration for dependable email delivery.",
+        icon: "ServerCog",
+      },
+      {
+        itemType: "feature_card",
+        title: "Analytics",
+        description:
+          "Understand how each campaign performed with clear, easy-to-read email analytics and reports.",
+        icon: "BarChart3",
+      },
+    ],
+  },
+  {
+    sectionKey: "why-choose",
+    sectionType: "icon_cards",
+    internalName: "Why Choose",
+    heading: "The platform teams choose when they need clarity, control and scale",
+    subheading: "Why Choose Altroz Bulk Email",
+    description: "Eight practical reasons businesses keep their communication in one place.",
+    items: [
+      {
+        itemType: "feature_card",
+        title: "Easy Campaign Management",
+        description:
+          "Manage every bulk email campaign - draft, scheduled or sent - from one organized screen.",
+        icon: "Layers3",
+      },
+      {
+        itemType: "feature_card",
+        title: "Centralized Dashboard",
+        description:
+          "View campaign activity, subscription usage and recent broadcasts together in one place.",
+        icon: "LayoutDashboard",
+      },
+      {
+        itemType: "feature_card",
+        title: "Fast Bulk Email Broadcasting",
+        description:
+          "Broadcast emails to large contact lists efficiently through a structured broadcast queue.",
+        icon: "Send",
+      },
+      {
+        itemType: "feature_card",
+        title: "Schedule Campaigns",
+        description:
+          "Set the exact date and time for a campaign so messages reach the inbox at the right moment.",
+        icon: "CalendarClock",
+      },
+      {
+        itemType: "feature_card",
+        title: "Delivery Tracking",
+        description:
+          "Know exactly what happened to every email with status and delivery reports when needed.",
+        icon: "MailCheck",
+      },
+      {
+        itemType: "feature_card",
+        title: "Simple User Interface",
+        description:
+          "A clean, uncluttered interface that business users can learn quickly without technical training.",
+        icon: "Sparkles",
+      },
+      {
+        itemType: "feature_card",
+        title: "Reusable Email Templates",
+        description:
+          "Save time on every campaign by reusing email templates or uploading your own HTML content.",
+        icon: "FileText",
+      },
+      {
+        itemType: "feature_card",
+        title: "Business-Focused Platform",
+        description:
+          "Built around HR updates, marketing broadcasts and institutional notices - not just marketing-only use cases.",
+        icon: "BadgeCheck",
+      },
+    ],
+  },
+  {
+    sectionKey: "product-overview",
+    sectionType: "icon_cards",
+    internalName: "Product Overview",
+    heading: "A closer look at the platform workspaces inside Altroz Bulk Email",
+    subheading: "Product Overview",
+    description: "The product is organised around the major workflows users touch every day.",
+    items: [
+      {
+        itemType: "overview_card",
+        title: "Dashboard",
+        description:
+          "The dashboard gives you a single view of recent broadcasts, subscription usage and campaign activity.",
+        icon: "LayoutDashboard",
+      },
+      {
+        itemType: "overview_card",
+        title: "Campaigns",
+        description:
+          "The campaigns workspace is where every bulk email broadcast is created, organized and reviewed.",
+        icon: "Layers3",
+      },
+      {
+        itemType: "overview_card",
+        title: "Scheduling",
+        description:
+          "Email scheduling lets you decide exactly when a campaign should go out for your audience.",
+        icon: "CalendarClock",
+      },
+      {
+        itemType: "overview_card",
+        title: "Reports",
+        description:
+          "Delivery reports and email status give a clear picture of how each broadcast performed.",
+        icon: "BarChart3",
+      },
+      {
+        itemType: "overview_card",
+        title: "Templates",
+        description:
+          "Choose from email templates or upload your own HTML email so every campaign stays on brand.",
+        icon: "FileText",
+      },
+      {
+        itemType: "overview_card",
+        title: "SMTP",
+        description:
+          "SMTP configuration and sender email configuration connect the outgoing mail server you control.",
+        icon: "ServerCog",
+      },
+    ],
+  },
+  {
+    sectionKey: "workflow",
+    sectionType: "timeline",
+    internalName: "How It Works",
+    heading: "From idea to delivery in five clear steps",
+    subheading: "How It Works",
+    description: "A simple workflow that keeps every broadcast easy to create, send and review.",
+    items: [
+      {
+        itemType: "step",
+        title: "Create Campaign",
+        subtitle: "Step 1",
+        description:
+          "Start a new bulk email campaign from the dashboard and give it a name your team will recognize later.",
+      },
+      {
+        itemType: "step",
+        title: "Upload Email Content",
+        subtitle: "Step 2",
+        description:
+          "Add your message using a ready email template, or upload your own HTML email design and attachments.",
+      },
+      {
+        itemType: "step",
+        title: "Schedule or Send",
+        subtitle: "Step 3",
+        description:
+          "Choose to broadcast the campaign immediately or queue it for a future date and time.",
+      },
+      {
+        itemType: "step",
+        title: "Track Delivery",
+        subtitle: "Step 4",
+        description:
+          "Follow the broadcast queue and monitor email status as the campaign moves toward delivery.",
+      },
+      {
+        itemType: "step",
+        title: "Review Reports",
+        subtitle: "Step 5",
+        description:
+          "Check delivery reports and email analytics to understand how the campaign performed.",
+      },
+    ],
+  },
+  {
+    sectionKey: "core-features",
+    sectionType: "icon_cards",
+    internalName: "Core Features",
+    heading: "The complete feature set of Altroz Bulk Email",
+    subheading: "Core Features",
+    description:
+      "Premium feature cards that explain what each part of the product does and why it matters.",
+    items: [
+      {
+        itemType: "feature_card",
+        title: "Bulk Email Broadcasting",
+        description:
+          "Send a single email out to a large list of recipients in one organized broadcast.",
+        icon: "Send",
+      },
+      {
+        itemType: "feature_card",
+        title: "Campaign Management",
+        description:
+          "Create, organize and review every campaign, with full campaign history available for reference.",
+        icon: "Layers3",
+      },
+      {
+        itemType: "feature_card",
+        title: "Email Scheduling",
+        description: "Set a future date and time for a campaign to be sent automatically.",
+        icon: "CalendarClock",
+      },
+      {
+        itemType: "feature_card",
+        title: "Templates",
+        description:
+          "Use built-in email templates or upload your own HTML email design.",
+        icon: "FileText",
+      },
+      {
+        itemType: "feature_card",
+        title: "Dashboard",
+        description:
+          "A central screen summarising campaign activity, recent broadcasts and subscription usage.",
+        icon: "LayoutDashboard",
+      },
+      {
+        itemType: "feature_card",
+        title: "Analytics",
+        description:
+          "Review email analytics for each campaign you have sent and improve future campaigns.",
+        icon: "BarChart3",
+      },
+      {
+        itemType: "feature_card",
+        title: "SMTP Configuration",
+        description:
+          "Configure your own SMTP and sender email settings for outgoing campaigns.",
+        icon: "ServerCog",
+      },
+      {
+        itemType: "feature_card",
+        title: "Delivery Reports",
+        description:
+          "Detailed reports on email status and delivery outcomes for every broadcast.",
+        icon: "MailCheck",
+      },
+    ],
+  },
+  {
+    sectionKey: "business-use-cases",
+    sectionType: "icon_cards",
+    internalName: "Business Use Cases",
+    heading: "How different industries use Altroz Bulk Email every day",
+    subheading: "Business Use Cases",
+    description:
+      "Purpose-built examples for teams that need organized communication across multiple workflows.",
+    items: [
+      {
+        itemType: "use_case",
+        title: "HR Communication",
+        description:
+          "HR teams use Altroz Bulk Email to send policy updates, onboarding information and company-wide announcements.",
+        icon: "Users",
+      },
+      {
+        itemType: "use_case",
+        title: "Marketing Campaigns",
+        description:
+          "Marketing teams plan and schedule campaigns, use templates and review analytics to see how each broadcast performed.",
+        icon: "Megaphone",
+      },
+      {
+        itemType: "use_case",
+        title: "Education",
+        description:
+          "Educational institutes broadcast circulars, admission updates and event notices to students, parents and staff.",
+        icon: "GraduationCap",
+      },
+      {
+        itemType: "use_case",
+        title: "Healthcare",
+        description:
+          "Healthcare organizations send appointment reminders, health advisories and administrative updates with confidence.",
+        icon: "HeartPulse",
+      },
+      {
+        itemType: "use_case",
+        title: "Manufacturing",
+        description:
+          "Manufacturing companies use scheduled campaigns to share supplier updates, internal bulletins and business notices.",
+        icon: "Factory",
+      },
+      {
+        itemType: "use_case",
+        title: "Retail",
+        description:
+          "Retail businesses broadcast offers, updates and customer communication using reusable templates and scheduling.",
+        icon: "ShoppingBag",
+      },
+    ],
+  },
+  {
+    sectionKey: "business-benefits",
+    sectionType: "icon_cards",
+    internalName: "Why Businesses Love It",
+    heading: "Everyday benefits that make the platform easy to keep using",
+    subheading: "Why Businesses Love It",
+    description: "The value cards reinforce the practical experience of using the platform.",
+    items: [
+      {
+        itemType: "benefit_card",
+        title: "Easy Setup",
+        description:
+          "Get started quickly with straightforward sender email and SMTP configuration.",
+        icon: "Clock3",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Simple Navigation",
+        description: "Find campaigns, templates and reports without a learning curve.",
+        icon: "Workflow",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Campaign Visibility",
+        description: "See the status of every campaign from draft to delivery in one place.",
+        icon: "CheckCircle2",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Better Communication",
+        description: "Keep business messaging organized, timely and consistent.",
+        icon: "MessageSquareMore",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Organized Broadcasts",
+        description:
+          "Manage the broadcast queue clearly, so nothing is sent by mistake or missed.",
+        icon: "Send",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Delivery Monitoring",
+        description: "Stay informed with real-time email status and delivery reports.",
+        icon: "MailCheck",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Business Ready",
+        description: "Built for real business communication needs, not just marketing sends.",
+        icon: "ShieldCheck",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Scalable Platform",
+        description: "Supports growing communication needs as campaign volume increases.",
+        icon: "TrendingUp",
+      },
+    ],
+  },
+  {
+    sectionKey: "faq",
+    sectionType: "faq",
+    internalName: "FAQ",
+    heading: "Answers to the most common bulk email questions",
+    subheading: "Frequently Asked Questions",
+    description: "Clear, direct answers that help visitors understand how the platform works.",
+    settings: {
+      secondaryHeading: "Let us show you the right bulk email workflow",
+      secondaryDescription:
+        "Bring your sender setup, SMTP flow, templates and campaign goals to a live demo.",
+      features: [
+        "Campaign scheduling",
+        "Template uploads",
+        "Delivery tracking",
+        "Subscription usage",
+      ],
+      secondaryButtonText: "Contact Sales",
+      secondaryButtonLink: ROUTES.contact,
+    },
+    buttonText: "Book Free Demo",
+    buttonLink: ROUTES.bookDemo,
+    items: [
+      {
+        itemType: "faq",
+        title: "What is bulk email software?",
+        description:
+          "Bulk email software is a platform that lets a business create, send and manage email campaigns to a large group of recipients at once, instead of sending messages individually.",
+      },
+      {
+        itemType: "faq",
+        title: "How does Altroz Bulk Email work?",
+        description:
+          "You create a campaign, add your content using a template or your own HTML email, then send it immediately or schedule it. Altroz Bulk Email then broadcasts the email and lets you track delivery through reports.",
+      },
+      {
+        itemType: "faq",
+        title: "Can I schedule campaigns in advance?",
+        description:
+          "Yes. Email scheduling lets you set a future date and time, and the campaign is sent automatically through the broadcast queue.",
+      },
+      {
+        itemType: "faq",
+        title: "Can I upload my own HTML email templates?",
+        description:
+          "Yes. You can upload your own HTML email design or use the ready templates available on the platform.",
+      },
+      {
+        itemType: "faq",
+        title: "Can I attach files to a campaign?",
+        description:
+          "Yes. Altroz Bulk Email supports uploading attachments as part of your email campaign.",
+      },
+      {
+        itemType: "faq",
+        title: "How does SMTP configuration work in Altroz Bulk Email?",
+        description:
+          "You connect your outgoing mail server through SMTP configuration and set up your sender email so campaigns are sent through a setup your business controls.",
+      },
+      {
+        itemType: "faq",
+        title: "How do I track email delivery?",
+        description:
+          "Every campaign includes delivery tracking, so you can view email status and delivery reports for each broadcast.",
+      },
+      {
+        itemType: "faq",
+        title: "Can businesses manage multiple campaigns at once?",
+        description:
+          "Yes. The campaign management workspace lets you organise multiple campaigns and review complete campaign history.",
+      },
+    ],
+  },
+  {
+    sectionKey: "cta",
+    sectionType: "cta_banner",
+    internalName: "Final CTA",
+    heading: "Ready to Simplify Your Business Email Communication?",
+    description:
+      "Bring every bulk email campaign, schedule and delivery report into one centralised dashboard. See how Altroz Bulk Email fits your business communication needs.",
+    buttonText: "Book Free Demo",
+    buttonLink: ROUTES.bookDemo,
+    settings: {
+      secondaryButtonText: "View Features",
+      secondaryButtonLink: "#trusted",
+    },
+  },
+];
+
+const assetManagementSuiteSections = [
+  {
+    sectionKey: "hero",
+    sectionType: "hero",
+    internalName: "Hero",
+    heading: "Asset Management Software to Track, Organise and Monitor Every Business Asset",
+    subheading: "Asset Management",
+    description:
+      "Manage every business asset from one centralised platform. Altroz Asset Management helps businesses register, organise, assign, monitor and maintain physical assets across branches and departments with accurate, real-time data.",
+    buttonText: "Book Free Demo",
+    buttonLink: ROUTES.bookDemo,
+    isRequired: true,
+    settings: {
+      badgeText: "Enterprise Asset Management Software",
+      secondaryButtonText: "Explore Features",
+      secondaryButtonLink: "#features",
+      secondaryHeading:
+        "Complete visibility for assets, maintenance, branches and departments",
+      secondaryDescription:
+        "Use a dashboard that keeps ownership, service status and distribution clear at a glance. Instead of waiting on manual reports, managers can review live asset data, compare locations and act on issues faster.",
+      secondaryDescriptionTwo:
+        "Whether you are tracking office equipment, field tools or specialized machinery, the platform helps your team stay organised, reduce manual work and make more confident decisions.",
+      features: [
+        "Reduce loss with visible ownership",
+        "Cut manual follow-up during employee exits",
+        "Spot maintenance and warranty issues earlier",
+      ],
+    },
+    items: [
+      { itemType: "metric", title: "Asset visibility", subtitle: "Real-time view" },
+      { itemType: "metric", title: "Maintenance control", subtitle: "Faster follow-up" },
+      { itemType: "metric", title: "Branch coverage", subtitle: "Multi-location tracking" },
+      { itemType: "metric", title: "Audit readiness", subtitle: "Clear records" },
+    ],
+  },
+  {
+    sectionKey: "what-is-asset-management",
+    sectionType: "content_split",
+    internalName: "What Is Asset Management",
+    heading: "Understanding the process behind better visibility and control",
+    subheading: "What is Asset Management?",
+    description:
+      "Asset management helps businesses register, organise, assign, monitor and maintain physical assets throughout their useful life.",
+    items: [
+      {
+        itemType: "content_card",
+        title: "A structured way to track the physical assets your business owns",
+        subtitle: "Understanding Asset Management",
+        description:
+          "Asset management is the structured process of registering, organising, tracking and maintaining the physical assets a business owns, such as laptops, machinery, tools, furniture, vehicles and equipment, throughout their working life.",
+        extraData: {
+          secondaryDescription:
+            "It ensures every asset is accounted for, correctly assigned, properly maintained and easy to locate whenever it is needed.",
+          features: [
+            "Outdated records kept in scattered spreadsheets that are rarely updated on time.",
+            "Unclear ownership with no clear record of which employee or department holds an asset.",
+            "Duplicate purchases when one branch already has assets another branch needs.",
+            "Missed maintenance because warranty and service dates are not tracked well.",
+            "Difficult audits when physical verification becomes time-consuming and error-prone.",
+          ],
+        },
+      },
+      {
+        itemType: "content_card",
+        title: "One central system improves visibility, accountability and efficiency",
+        subtitle: "Cloud-Based Visibility",
+        description:
+          "A cloud-based asset management platform like Altroz Asset Management centralises all asset information in one place. Every asset is registered once, categorised correctly and made searchable across branches and departments.",
+        extraData: {
+          features: [
+            "Teams can see asset status, assignment history, maintenance records and documents instantly.",
+            "Management no longer depends on outdated spreadsheets or manual follow-ups.",
+            "The platform improves accountability and reduces the risk of asset loss.",
+            "Real-time visibility makes it easier to understand how organisational resources are used.",
+          ],
+        },
+      },
+    ],
+  },
+  {
+    sectionKey: "asset-lifecycle",
+    sectionType: "timeline",
+    internalName: "Asset Lifecycle",
+    heading: "Every business asset moves through a defined lifecycle",
+    subheading: "Complete Asset Lifecycle",
+    description:
+      "Understanding the lifecycle helps businesses plan better, control costs and extend the useful life of their assets.",
+    items: [
+      { itemType: "step", title: "Register Asset", subtitle: "Step 1", description: "Add the asset with category, type, branch, and location details." },
+      { itemType: "step", title: "Assign Asset", subtitle: "Step 2", description: "Allocate the asset to an employee and update the status to In Use." },
+      { itemType: "step", title: "Track Usage", subtitle: "Step 3", description: "Keep the owner, location, and status visible on the dashboard." },
+      { itemType: "step", title: "Maintenance", subtitle: "Step 4", description: "Mark the asset under maintenance and raise due alerts in advance." },
+      { itemType: "step", title: "Issue / Return", subtitle: "Step 5", description: "Move assets between Available and In Use as they are issued or returned." },
+      { itemType: "step", title: "Transfer", subtitle: "Step 6", description: "Record handovers so ownership history stays complete." },
+    ],
+  },
+  {
+    sectionKey: "core-features",
+    sectionType: "icon_cards",
+    internalName: "Core Features",
+    heading: "The platform includes the practical tools teams use every day",
+    subheading: "Core Asset Management Features",
+    description:
+      "Every feature below is part of the Altroz Asset Management module and is organised to mirror the way teams actually work.",
+    items: [
+      {
+        itemType: "feature_card",
+        title: "Asset Registration, Categories and Types",
+        description:
+          "Create a structured asset register with clear metadata so records stay searchable as the asset base grows.",
+        icon: "Tag",
+        subtitle:
+          "Add asset name, category, type, branch, location, and current status",
+      },
+      {
+        itemType: "feature_card",
+        title: "Assignment, Ownership and Location",
+        description:
+          "Give every asset a visible owner and deployment location so handoffs stay traceable.",
+        icon: "Laptop",
+        subtitle: "Assign assets directly to employees with a traceable ownership history",
+      },
+      {
+        itemType: "feature_card",
+        title: "Issue, Return, Handover and Recovery",
+        description:
+          "Use a clear workflow for moving assets in and out of employee possession without losing the trail.",
+        icon: "RotateCcw",
+        subtitle: "Log issue and return actions digitally instead of using paper slips",
+      },
+      {
+        itemType: "feature_card",
+        title: "Maintenance and Alerts",
+        description:
+          "Stay ahead of servicing and warranty timelines so assets do not quietly fall out of service.",
+        icon: "Wrench",
+        subtitle: "Mark assets under maintenance and log servicing events",
+      },
+      {
+        itemType: "feature_card",
+        title: "QR Codes and Bulk Import",
+        description:
+          "Speed up onboarding and asset identification with QR codes and migration tools.",
+        icon: "QrCode",
+        subtitle: "Generate a unique QR code for each registered asset",
+      },
+      {
+        itemType: "feature_card",
+        title: "Search, Reports and Access Control",
+        description:
+          "Find records quickly, report on the asset base, and keep sensitive data limited to the right roles.",
+        icon: "BarChart3",
+        subtitle: "Search and filter by branch, owner, category, type, or status",
+      },
+    ],
+  },
+  {
+    sectionKey: "why-businesses-need-it",
+    sectionType: "icon_cards",
+    internalName: "Why Businesses Need It",
+    heading: "The most common asset tracking problems all point back to visibility",
+    subheading: "Why Businesses Need Asset Management Software",
+    description:
+      "These outcomes explain why businesses move away from spreadsheets and choose a centralized system.",
+    items: [
+      {
+        itemType: "benefit_card",
+        title: "One register for everything",
+        description:
+          "Record laptops, desktops, furniture, tools, vehicles, and field equipment in a single searchable system.",
+        icon: "Package",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Replace scattered manual tracking",
+        description:
+          "Move away from Excel sheets, WhatsApp messages, and paper handover forms that are easy to lose.",
+        icon: "ClipboardCheck",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Keep ownership visible",
+        description:
+          "See who has what, where it is located, and which department or branch it belongs to.",
+        icon: "ShieldCheck",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Plan maintenance earlier",
+        description:
+          "Use due-date and warranty alerts to keep assets in service and avoid last-minute breakdowns.",
+        icon: "Wrench",
+      },
+    ],
+  },
+  {
+    sectionKey: "workflow",
+    sectionType: "timeline",
+    internalName: "How It Works",
+    heading: "A simple workflow keeps asset information accurate and up to date",
+    subheading: "How Altroz Asset Management Works",
+    description:
+      "From registration to reporting, the system follows a clear sequence that keeps every change visible.",
+    items: [
+      { itemType: "step", title: "Register", subtitle: "Step 1", description: "Add the asset into the central register with its category, branch and asset details." },
+      { itemType: "step", title: "Assign", subtitle: "Step 2", description: "Allocate the asset to an employee, team or branch with a visible ownership trail." },
+      { itemType: "step", title: "Monitor", subtitle: "Step 3", description: "Track the asset status, location, maintenance and movement from the dashboard." },
+      { itemType: "step", title: "Maintain", subtitle: "Step 4", description: "Keep service records, due dates and warranty activity visible in one place." },
+      { itemType: "step", title: "Report", subtitle: "Step 5", description: "Generate audit-ready reports on asset usage, movement, maintenance and ownership." },
+    ],
+  },
+  {
+    sectionKey: "business-benefits",
+    sectionType: "icon_cards",
+    internalName: "Business Benefits",
+    heading: "The platform improves visibility, speed and day-to-day control",
+    subheading: "Business Benefits",
+    description:
+      "These outcomes are the practical reasons teams adopt a centralized asset platform.",
+    items: [
+      { itemType: "benefit_card", title: "Reduce asset loss with clearer ownership records", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
+      { itemType: "benefit_card", title: "See every asset, owner, and location from one dashboard", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
+      { itemType: "benefit_card", title: "Assign equipment in minutes instead of using manual paperwork", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
+      { itemType: "benefit_card", title: "Track pending recoveries during transfers and exits", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
+      { itemType: "benefit_card", title: "Improve accountability with named issue, return, and handover events", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
+      { itemType: "benefit_card", title: "Plan servicing before assets go out of service", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
+      { itemType: "benefit_card", title: "Keep audit-ready records whenever they are needed", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
+      { itemType: "benefit_card", title: "Spend less time searching spreadsheets and more time working", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
+    ],
+  },
+  {
+    sectionKey: "industries",
+    sectionType: "icon_cards",
+    internalName: "Industry Solutions",
+    heading: "The platform is useful across many industries",
+    subheading: "Industry Solutions",
+    description:
+      "Each industry has different asset-management needs, but the need for visibility and control is the same.",
+    items: [
+      { itemType: "industry_card", title: "Manufacturing", description: "Track tools, machinery accessories, and equipment across shop floors.", icon: "Factory" },
+      { itemType: "industry_card", title: "IT Companies", description: "Manage laptops, monitors, and peripherals across employees and teams.", icon: "Laptop" },
+      { itemType: "industry_card", title: "Healthcare", description: "Keep track of equipment and devices across departments and facilities.", icon: "HeartPulse" },
+      { itemType: "industry_card", title: "Education", description: "Manage lab equipment, computers, and furniture across campuses.", icon: "GraduationCap" },
+      { itemType: "industry_card", title: "Retail", description: "Track POS devices, furniture, and store equipment across outlets.", icon: "ShoppingBag" },
+      { itemType: "industry_card", title: "Logistics", description: "Track handheld devices, vehicles-related equipment, and warehouse assets.", icon: "Truck" },
+    ],
+  },
+  {
+    sectionKey: "asset-screens",
+    sectionType: "icon_cards",
+    internalName: "Asset Screens",
+    heading: "The screen set covers registration, tracking, maintenance and reporting",
+    subheading: "Asset Screens",
+    description:
+      "Each screen helps a different kind of manager review the same asset data with the right emphasis.",
+    items: [
+      { itemType: "screen_card", title: "Dashboard", description: "A central summary of total assets, in-use items, maintenance alerts and recent movement.", icon: "LayoutDashboard", subtitle: "Business value: Fast overview for managers and admins." },
+      { itemType: "screen_card", title: "Asset Register", description: "A searchable register for all assets with ownership, branch and category details.", icon: "Package", subtitle: "Business value: Cleaner record management and faster lookups." },
+      { itemType: "screen_card", title: "Tracking View", description: "Visibility into where the asset is, who has it and what status it is currently in.", icon: "MapPin", subtitle: "Business value: Less confusion around asset movement." },
+      { itemType: "screen_card", title: "Maintenance View", description: "Maintenance schedules, repair notes and warranty-related information in one place.", icon: "Wrench", subtitle: "Business value: Better control over servicing and uptime." },
+      { itemType: "screen_card", title: "Reports", description: "Status, branch, category and owner reports that support planning and audits.", icon: "BarChart3", subtitle: "Business value: Audit-ready reporting from one platform." },
+      { itemType: "screen_card", title: "QR Code Management", description: "Generate and use QR labels so assets can be identified faster in the field or office.", icon: "QrCode", subtitle: "Business value: Faster verification and fewer manual mistakes." },
+    ],
+  },
+  {
+    sectionKey: "faq",
+    sectionType: "faq",
+    internalName: "FAQ",
+    heading: "Common questions about Altroz Asset Management",
+    subheading: "Frequently Asked Questions",
+    description: "A concise answer set for the questions businesses ask most often.",
+    items: [
+      {
+        itemType: "faq",
+        title: "What is Asset Management Software?",
+        description:
+          "It is a system used to register, assign, track, and maintain company assets from one central platform instead of using manual spreadsheets and paper records.",
+      },
+      {
+        itemType: "faq",
+        title: "How is Altroz HR different from tracking assets on Excel?",
+        description:
+          "Altroz HR gives you a live asset register, defined workflows, alerts, and an audit trail that spreadsheets cannot maintain reliably as the asset count grows.",
+      },
+      {
+        itemType: "faq",
+        title: "Can I assign assets directly to employees?",
+        description:
+          "Yes. Employee Asset Allocation lets you assign an asset to a specific employee and track ownership until it is returned, transferred, or retired.",
+      },
+      {
+        itemType: "faq",
+        title: "Does the software track asset location and branch?",
+        description:
+          "Yes. Every asset can be mapped to a branch, department, and location so teams know where each item is placed.",
+      },
+      {
+        itemType: "faq",
+        title: "What happens when an employee is transferred or exits?",
+        description:
+          "Asset Handover and Asset Recovery features let you transfer assets or flag pending recoveries so nothing is missed during exits.",
+      },
+      {
+        itemType: "faq",
+        title: "How does maintenance tracking work?",
+        description:
+          "You can mark an asset under maintenance, and the system raises maintenance due alerts so servicing can be planned in advance.",
+      },
+    ],
+  },
+  {
+    sectionKey: "cta",
+    sectionType: "cta_banner",
+    internalName: "Final CTA",
+    heading: "Take Complete Control of Your Business Assets",
+    description:
+      "Manage your organisation's assets from procurement to retirement using one centralised platform. Improve visibility, simplify operations and make informed decisions with Altroz Asset Management.",
+    buttonText: "Book Free Demo",
+    buttonLink: ROUTES.bookDemo,
+    settings: {
+      secondaryButtonText: "Talk to Our Experts",
+      secondaryButtonLink: ROUTES.contact,
+    },
+  },
+];
+
+const managedSolutionPages = [
+  createManagedCmsPage({
+    pageKey: "core-hr",
+    pageName: "Core HR",
+    route: ROUTES.coreHR,
+    title: "Core HR Software for Employee Records & Organisation Structure | Altroz HR",
+    description:
+      "Manage employee records, departments, documents and organisation structure from one centralised Core HR platform with Altroz HR.",
+    keywords: ["core hr software", "employee records", "organisation structure", "hr platform"],
+    heroEyebrow: "Core HR",
+    heroTitle: "Core HR Software for Employee Records and Organisation Structure",
+    heroDescription:
+      "Manage employee profiles, departments, designations and essential HR records from one centralised Core HR platform.",
+    secondaryButtonLink: `${ROUTES.coreHR}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "attendance-management",
+    pageName: "Attendance Management",
+    route: ROUTES.attendanceManagement,
+    title: "Attendance Management Software with GPS & Shift Tracking | Altroz HR",
+    description:
+      "Track employee attendance, shifts, GPS check-ins, overtime and approvals from one centralised dashboard with Altroz HR.",
+    keywords: ["attendance software", "gps attendance", "shift tracking", "time tracking"],
+    heroEyebrow: "Attendance",
+    heroTitle: "Attendance Management Software with GPS, Shift and Time Tracking",
+    heroDescription:
+      "Track check-ins, shifts, overtime and approvals with one attendance workflow built for growing teams.",
+    secondaryButtonLink: `${ROUTES.attendanceManagement}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "payroll",
+    pageName: "Payroll",
+    route: ROUTES.payroll,
+    title: "Payroll Software for Salary Processing & Compliance | Altroz HR",
+    description:
+      "Run payroll, salary structures, deductions, PF, ESI and payslips from one centralised payroll platform with Altroz HR.",
+    keywords: ["payroll software", "salary processing", "payslips", "payroll compliance"],
+    heroEyebrow: "Payroll",
+    heroTitle: "Payroll Software for Salary Processing and Compliance",
+    heroDescription:
+      "Process salaries, deductions and statutory compliance from one payroll workflow that reduces manual work.",
+    secondaryButtonLink: `${ROUTES.payroll}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "leave-management",
+    pageName: "Leave Management",
+    route: ROUTES.leaveManagement,
+    title: "Leave Management Software for Requests, Balances & Approvals | Altroz HR",
+    description:
+      "Manage leave requests, policies, balances and approvals in one auditable workflow with Altroz HR leave management software.",
+    keywords: ["leave management", "leave approval", "leave balance", "absence management"],
+    heroEyebrow: "Leave Management",
+    heroTitle: "Leave Management Software for Requests, Balances and Approvals",
+    heroDescription:
+      "Keep leave policies, requests, balances and approvals in one auditable workflow instead of using scattered manual records.",
+    secondaryButtonLink: `${ROUTES.leaveManagement}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "recruitment-ats",
+    pageName: "Recruitment ATS",
+    route: ROUTES.recruitment,
+    title: "Recruitment ATS Software for Hiring & Candidate Tracking | Altroz HR",
+    description:
+      "Track candidates from sourcing to offer with Altroz HR recruitment software built for hiring teams and growing businesses.",
+    keywords: ["recruitment software", "ats software", "candidate tracking", "hiring software"],
+    heroEyebrow: "Recruitment",
+    heroTitle: "Recruitment ATS Software for Hiring and Candidate Tracking",
+    heroDescription:
+      "Manage sourcing, screening, interview coordination and offer movement from one recruitment workflow.",
+    secondaryButtonLink: `${ROUTES.recruitment}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "performance-management",
+    pageName: "Performance Management",
+    route: ROUTES.performance,
+    title: "Performance Management Software for Reviews, Goals & Feedback | Altroz HR",
+    description:
+      "Manage employee goals, appraisals, reviews and feedback cycles from one centralised performance management platform with Altroz HR.",
+    keywords: ["performance management", "employee appraisals", "goals and feedback", "review software"],
+    heroEyebrow: "Performance",
+    heroTitle: "Performance Management Software for Reviews, Goals and Feedback",
+    heroDescription:
+      "Run structured reviews, goals and feedback cycles from one platform designed to keep performance conversations organised.",
+    secondaryButtonLink: `${ROUTES.performance}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email",
+    pageName: "Bulk Email",
+    route: ROUTES.bulkEmail,
+    title: "Bulk Email Software for Business Campaigns | Altroz",
+    description:
+      "Altroz Bulk Email helps businesses send, schedule and track email campaigns from one dashboard. Book a free demo to see it in action.",
+    keywords: ["bulk email software", "email campaigns", "email scheduling", "email broadcasting"],
+    heroEyebrow: "Bulk Email",
+    heroTitle: "Bulk Email Software Built for Reliable Business Communication",
+    heroDescription:
+      "Send, schedule and track business email campaigns from one dashboard built for organised communication at scale.",
+    secondaryButtonLink: `${ROUTES.bulkEmail}#features`,
+    sections: bulkEmailManagedSections,
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email-broadcast",
+    pageName: "Bulk Email Broadcast",
+    route: ROUTES.bulkEmailBroadcast,
+    title: "Bulk Email Broadcast Software | Altroz Bulk Email",
+    description:
+      "Altroz Bulk Email offers bulk email broadcast software to create, schedule and track business email campaigns. Book a free demo today.",
+    keywords: ["email broadcast", "bulk email broadcast", "campaign delivery", "business email software"],
+    heroEyebrow: "Broadcast",
+    heroTitle: "Bulk Email Broadcast Software for Planned Business Communication",
+    heroDescription:
+      "Create, schedule and track one-to-many business email campaigns without losing control or visibility.",
+    secondaryButtonLink: `${ROUTES.bulkEmailBroadcast}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email-templates",
+    pageName: "Bulk Email Templates",
+    route: ROUTES.bulkEmailTemplates,
+    title: "Bulk Email Templates | Altroz",
+    description:
+      "Altroz Bulk Email templates help businesses create branded email campaigns faster with reusable layouts, HTML upload support and clean campaign structure.",
+    keywords: ["email templates", "html email templates", "bulk email design", "campaign templates"],
+    heroEyebrow: "Templates",
+    heroTitle: "Bulk Email Templates for Faster Brand-Consistent Campaigns",
+    heroDescription:
+      "Use reusable layouts and HTML upload support to keep every business email on brand and easy to launch.",
+    secondaryButtonLink: `${ROUTES.bulkEmailTemplates}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email-analytics",
+    pageName: "Bulk Email Analytics",
+    route: ROUTES.bulkEmailAnalytics,
+    title: "Email Analytics Software | Altroz Bulk Email",
+    description:
+      "Track email campaign performance with Altroz Bulk Email Analytics. Monitor delivery status, broadcast activity and reports on one dashboard.",
+    keywords: ["email analytics", "campaign reports", "delivery tracking", "email performance"],
+    heroEyebrow: "Analytics",
+    heroTitle: "Email Analytics Software for Delivery, Status and Campaign Visibility",
+    heroDescription:
+      "Monitor delivery status, campaign activity and report history from one organised analytics view.",
+    secondaryButtonLink: `${ROUTES.bulkEmailAnalytics}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email-scheduling",
+    pageName: "Bulk Email Scheduling",
+    route: ROUTES.bulkEmailScheduling,
+    title: "Email Scheduling Software | Altroz Bulk Email",
+    description:
+      "Schedule email campaigns in advance with Altroz Bulk Email. Plan delivery time, manage the queue and track delivery from one dashboard.",
+    keywords: ["email scheduling", "scheduled email campaigns", "broadcast queue", "planned email sends"],
+    heroEyebrow: "Scheduling",
+    heroTitle: "Email Scheduling Software for Planned Campaign Delivery",
+    heroDescription:
+      "Create campaigns in advance, choose the delivery time and keep scheduled communication organised from one dashboard.",
+    secondaryButtonLink: `${ROUTES.bulkEmailScheduling}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email-smtp",
+    pageName: "Bulk Email SMTP",
+    route: ROUTES.bulkEmailSmtp,
+    title: "SMTP Configuration Software for Secure Business Email Delivery | Altroz Bulk Email",
+    description:
+      "Altroz Bulk Email lets businesses connect their own SMTP server, configure sender identity, secure delivery and monitor email activity from one dashboard.",
+    keywords: ["smtp configuration", "sender email setup", "secure email delivery", "smtp software"],
+    heroEyebrow: "SMTP",
+    heroTitle: "SMTP Configuration Software for Secure Business Email Delivery",
+    heroDescription:
+      "Connect your own SMTP server, manage sender identity and monitor delivery using one centralised workflow.",
+    secondaryButtonLink: `${ROUTES.bulkEmailSmtp}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email-hr-communication",
+    pageName: "Bulk Email HR Communication",
+    route: ROUTES.bulkEmailHrCommunication,
+    title: "HR Communication Software for Centralised Employee Communication | Altroz Bulk Email",
+    description:
+      "Altroz Bulk Email helps HR teams send company announcements, policy updates, onboarding emails and internal circulars from one centralised dashboard.",
+    keywords: ["hr communication", "employee communication", "internal announcements", "policy emails"],
+    heroEyebrow: "HR Communication",
+    heroTitle: "HR Communication Software for Centralised Employee Communication",
+    heroDescription:
+      "Send employee announcements, policy updates, onboarding emails and internal circulars from one clear communication workflow.",
+    secondaryButtonLink: `${ROUTES.bulkEmailHrCommunication}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-product",
+    pageName: "Asset Management Product",
+    route: ROUTES.assetManagement,
+    title: "Asset Management Software for Businesses | Altroz HR",
+    description:
+      "Manage company assets with Altroz HR Asset Management Software. Track allocation, issue-return, maintenance, warranty, reports, QR codes, and audit-ready records.",
+    keywords: ["asset management software", "asset register", "asset allocation", "asset audits"],
+    heroEyebrow: "Asset Management",
+    heroTitle: "Asset Management Software to Track, Allocate and Manage Company Assets",
+    heroDescription:
+      "Register, assign, track and maintain company assets from one central dashboard built for HR, Admin and IT teams.",
+    secondaryButtonLink: `${ROUTES.assetManagement}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-suite",
+    pageName: "Asset Management Suite",
+    route: ROUTES.assetManagementHome,
+    title: "Asset Management Software | Altroz Asset Management",
+    description:
+      "Register, assign, track and maintain business assets from one platform. Altroz Asset Management gives complete visibility across branches and departments.",
+    keywords: ["asset management", "asset tracking", "asset maintenance", "branch asset control"],
+    heroEyebrow: "Asset Management",
+    heroTitle: "Asset Management Software for Complete Visibility and Control",
+    heroDescription:
+      "Manage business assets across branches and departments using one structured platform for registration, tracking and maintenance.",
+    secondaryButtonLink: `${ROUTES.assetManagementHome}#features`,
+    sections: assetManagementSuiteSections,
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-dashboard",
+    pageName: "Asset Dashboard",
+    route: ROUTES.bulkEmailAssetDashboard,
+    title: "IT Asset Management Dashboard | Altroz Asset Management",
+    description:
+      "Track, assign, maintain and monitor IT equipment from one centralized dashboard with QR code tracking, warranty records and reports.",
+    keywords: ["it asset dashboard", "asset monitoring", "hardware tracking", "asset visibility"],
+    heroEyebrow: "Asset Dashboard",
+    heroTitle: "IT Asset Management Dashboard for Real-Time Asset Visibility",
+    heroDescription:
+      "Track ownership, maintenance and lifecycle data for IT equipment from one centralised dashboard.",
+    secondaryButtonLink: `${ROUTES.bulkEmailAssetDashboard}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-tracking",
+    pageName: "Asset Tracking",
+    route: ROUTES.bulkEmailAssetTracking,
+    title: "Asset Tracking Software | Altroz Asset Management",
+    description:
+      "Track business assets in real time with Altroz Asset Management. Assign, transfer and monitor assets by employee, department and branch using QR codes.",
+    keywords: ["asset tracking software", "qr asset tracking", "asset transfer", "branch asset tracking"],
+    heroEyebrow: "Asset Tracking",
+    heroTitle: "Asset Tracking Software for Real-Time Ownership and Location Visibility",
+    heroDescription:
+      "Track what the business owns, where assets are and who is responsible for them using one centralised system.",
+    secondaryButtonLink: `${ROUTES.bulkEmailAssetTracking}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-qr-code",
+    pageName: "QR Asset Management",
+    route: ROUTES.bulkEmailAssetQrCode,
+    title: "QR Code Asset Management Software | Altroz Asset Mgmt",
+    description:
+      "Identify, assign and track every business asset using QR Codes. Generate, print and scan QR labels with Altroz Asset Management.",
+    keywords: ["qr code asset management", "qr asset labels", "asset scanning", "asset identification"],
+    heroEyebrow: "QR Asset Management",
+    heroTitle: "QR Code Asset Management Software for Faster Identification and Tracking",
+    heroDescription:
+      "Generate, print and scan QR labels so each physical asset stays connected to one live digital record.",
+    secondaryButtonLink: `${ROUTES.bulkEmailAssetQrCode}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-maintenance",
+    pageName: "Asset Maintenance",
+    route: ROUTES.bulkEmailAssetMaintenance,
+    title: "Asset Maintenance Software | Altroz Asset Management",
+    description:
+      "Manage preventive maintenance, repair history, warranty tracking and service records from one platform. Reduce downtime with Altroz Asset Management.",
+    keywords: ["asset maintenance software", "preventive maintenance", "repair history", "warranty tracking"],
+    heroEyebrow: "Asset Maintenance",
+    heroTitle: "Asset Maintenance Software for Preventive Service and Downtime Reduction",
+    heroDescription:
+      "Manage maintenance schedules, repairs, service history and warranty timelines from one structured workflow.",
+    secondaryButtonLink: `${ROUTES.bulkEmailAssetMaintenance}#features`,
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-reports",
+    pageName: "Asset Reports",
+    route: ROUTES.bulkEmailAssetReports,
+    title: "Asset Reporting & Analytics Software | Altroz Asset Management",
+    description:
+      "Turn asset data into real-time dashboards, maintenance KPIs and audit-ready reports. See how Altroz Asset Management gives you total operational visibility.",
+    keywords: ["asset reporting", "asset analytics", "asset dashboards", "audit reports"],
+    heroEyebrow: "Asset Reports",
+    heroTitle: "Asset Reporting and Analytics Software for Operational Visibility",
+    heroDescription:
+      "Turn asset data into dashboards, KPIs and audit-ready reports that help leadership review operations with confidence.",
+    secondaryButtonLink: `${ROUTES.bulkEmailAssetReports}#features`,
+  }),
+];
+
+const managedAdminPages = [
+  createManagedCmsPage({
+    pageKey: "hrms-resource-learn",
+    pageName: "HRMS Learn",
+    route: ROUTES.hrmsLearn,
+    title: "Learn HRMS, Payroll & Attendance Workflows | Altroz HR",
+    description:
+      "Learn the core HRMS workflows your team uses every day, including employee records, attendance, payroll, leave and recruitment.",
+    keywords: ["hrms learn", "attendance guide", "payroll guide", "hr workflows"],
+    heroEyebrow: "HRMS Learning Hub",
+    heroTitle: "Learn HRMS, Attendance, Payroll and Everyday People Operations",
+    heroDescription:
+      "A simple learning hub for HR teams, founders and operations managers who want to understand the workflows behind modern HRMS software.",
+    sections: [
+      createHeroSection({
+        heading: "Learn HRMS, Attendance, Payroll and Everyday People Operations",
+        subheading: "HRMS Learning Hub",
+        description:
+          "A simple learning hub for HR teams, founders and operations managers who want to understand the workflows behind modern HRMS software.",
+        buttonText: "Explore Core HR",
+        buttonLink: ROUTES.coreHR,
+        settings: {
+          badgeText: "Practical HRMS learning",
+          heroBullets: [
+            "Understand the main HRMS modules in plain business language.",
+            "See how attendance, payroll and leave connect inside one workflow.",
+            "Move from basic concepts to implementation-ready understanding.",
+          ],
+          secondaryButtonText: "Open HRMS",
+          secondaryButtonLink: ROUTES.hrmsHome,
+        },
+      }),
+      createIconCardsSection({
+        sectionKey: "learning-topics",
+        internalName: "Learning Topics",
+        heading: "Start with the topics HR and operations teams ask about most",
+        subheading: "Learning Topics",
+        description:
+          "Each topic card opens the matching product page so the learning path and the product journey stay connected.",
+        items: [
+          { itemType: "guide_card", title: "Core HR", subtitle: "Employee records", description: "Learn how central employee records, departments and designations fit together inside a modern HRMS.", icon: "Users", buttonText: "Open Core HR", buttonLink: ROUTES.coreHR },
+          { itemType: "guide_card", title: "Attendance", subtitle: "Time and shifts", description: "Understand biometric attendance, GPS check-ins, shifts and everyday attendance visibility.", icon: "CalendarDays", buttonText: "Open Attendance", buttonLink: ROUTES.attendanceManagement },
+          { itemType: "guide_card", title: "Payroll", subtitle: "Salary processing", description: "See how attendance data, deductions and salary approvals connect inside payroll workflows.", icon: "Wallet", buttonText: "Open Payroll", buttonLink: ROUTES.payroll },
+          { itemType: "guide_card", title: "Leave Management", subtitle: "Policies and approvals", description: "Learn how leave balances, requests and approvals work together without manual follow-up.", icon: "ClipboardList", buttonText: "Open Leave", buttonLink: ROUTES.leaveManagement },
+          { itemType: "guide_card", title: "Recruitment", subtitle: "Hiring process", description: "Follow the hiring flow from vacancies to candidate tracking and structured recruitment records.", icon: "BriefcaseBusiness", buttonText: "Open Recruitment", buttonLink: ROUTES.recruitment },
+          { itemType: "guide_card", title: "Performance", subtitle: "Goals and reviews", description: "Understand review cycles, feedback and goal-setting processes in one structured workflow.", icon: "Target", buttonText: "Open Performance", buttonLink: ROUTES.performance },
+        ],
+      }),
+      createCtaSection({
+        heading: "Ready to see these HRMS workflows in one live platform?",
+        description:
+          "Open the HRMS page or book a guided walkthrough to see how the modules fit together in practice.",
+        settings: {
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "hrms-resource-blog",
+    pageName: "HRMS Blog",
+    route: ROUTES.hrmsBlog,
+    title: "HRMS Blog | Altroz HR",
+    description:
+      featuredHrmsBlogPost?.description ??
+      "A practical, in-depth resource on Human Resource Management Systems - what they are, how they work, why Indian businesses need them, and how to choose one.",
+    keywords: ["hr blog", "attendance articles", "payroll articles", "hr operations blog"],
+    heroEyebrow: "HRMS Blog",
+    heroTitle: "Learn everything about HR operations, attendance, payroll, and automation",
+    heroDescription:
+      "A clean editorial layout for your HRMS content, with practical guides, product links, and the same blue-green colour theme used across the rest of the site.",
+    sections: createHrmsBlogLandingSections({ blogPath: ROUTES.hrmsBlog }),
+  }),
+  createManagedCmsPage({
+    pageKey: "hrms-resource-faq",
+    pageName: "HRMS FAQs",
+    route: ROUTES.hrmsFaq,
+    title: "HRMS FAQs for Payroll, Attendance and Employee Management | Altroz HR",
+    description:
+      "Find quick answers to common HRMS questions covering employee records, attendance, leave, payroll, compliance and onboarding workflows.",
+    keywords: ["hrms faq", "payroll faq", "attendance faq", "employee management faq"],
+    heroEyebrow: "HRMS FAQ",
+    heroTitle: "Quick Answers to Common HRMS, Payroll and Attendance Questions",
+    heroDescription:
+      "A simple question-and-answer hub for teams evaluating employee management, attendance, payroll and compliance workflows.",
+    sections: [
+      createHeroSection({
+        heading: "Quick Answers to Common HRMS, Payroll and Attendance Questions",
+        subheading: "HRMS FAQ",
+        description:
+          "A simple question-and-answer hub for teams evaluating employee management, attendance, payroll and compliance workflows.",
+        buttonText: "Browse HRMS",
+        buttonLink: ROUTES.hrmsHome,
+        settings: {
+          badgeText: "Knowledge base",
+          popularSearches: ["What is HRMS?", "How does payroll work?", "What is GPS attendance?"],
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      }),
+      createFaqSection({
+        heading: "The questions HR and operations teams usually ask first",
+        subheading: "Frequently Asked Questions",
+        description: "These answers keep the buying and learning process simple for business users.",
+        buttonText: "Book Free Demo",
+        buttonLink: ROUTES.bookDemo,
+        settings: {
+          secondaryHeading: "Need a guided explanation for your team?",
+          secondaryDescription:
+            "Use a live walkthrough if your team wants help connecting the FAQs to your actual workflows.",
+          features: ["Attendance and leave", "Payroll and deductions", "Employee records", "Compliance workflows"],
+          secondaryButtonText: "Open HRMS",
+          secondaryButtonLink: ROUTES.hrmsHome,
+        },
+        items: [
+          { itemType: "faq", title: "What is HRMS?", description: "HRMS is software that helps manage the employee lifecycle, including records, attendance, leave, payroll and related workflows from one place." },
+          { itemType: "faq", title: "Why do businesses move away from spreadsheets?", description: "As teams grow, spreadsheets make approvals, payroll, attendance and records harder to control, review and audit consistently." },
+          { itemType: "faq", title: "How does payroll connect with attendance and leave?", description: "Payroll becomes more reliable when attendance, leave balances and employee records are already structured in the same system." },
+          { itemType: "faq", title: "Can HRMS help with employee self-service?", description: "Yes. Employees can usually view attendance, requests, documents and HR information without depending on manual HR follow-up." },
+          { itemType: "faq", title: "Is HRMS useful only for large companies?", description: "No. Smaller and growing teams often benefit the most because structured workflows reduce confusion early." },
+        ],
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "hrms-resource-compliance-guides",
+    pageName: "HRMS Compliance Guides",
+    route: ROUTES.hrmsComplianceGuides,
+    title: "HR Compliance Guides for Payroll, PF and ESIC | Altroz HR",
+    description:
+      "Explore simple compliance guides covering payroll records, PF, ESIC, attendance inputs, employee documents and day-to-day HR process control.",
+    keywords: ["hr compliance guides", "pf", "esic", "payroll compliance", "employee records"],
+    heroEyebrow: "Compliance Guides",
+    heroTitle: "Simple Compliance Guides for Payroll, Records and Everyday HR Operations",
+    heroDescription:
+      "A practical compliance knowledge hub that keeps payroll, attendance, employee records and documentation connected in one learning flow.",
+    sections: [
+      createHeroSection({
+        heading: "Simple Compliance Guides for Payroll, Records and Everyday HR Operations",
+        subheading: "Compliance Guides",
+        description:
+          "A practical compliance knowledge hub that keeps payroll, attendance, employee records and documentation connected in one learning flow.",
+        buttonText: "Open Payroll",
+        buttonLink: ROUTES.payroll,
+        settings: {
+          badgeText: "Educational compliance content",
+          heroBullets: [
+            "Understand the common topics HR and payroll teams handle repeatedly.",
+            "Keep compliance concepts linked to day-to-day process design.",
+            "Use the guides as a starting point before workflow discussions.",
+          ],
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      }),
+      createIconCardsSection({
+        sectionKey: "compliance-topics",
+        internalName: "Compliance Topics",
+        heading: "Common compliance topics Indian teams need to review clearly",
+        subheading: "Compliance Topics",
+        description:
+          "These cards keep the focus on practical understanding, not legal complexity.",
+        items: [
+          { itemType: "category_card", title: "PF and ESIC", subtitle: "Statutory deductions", description: "Understand the record-keeping and payroll impact behind PF and ESIC workflows.", icon: "ShieldCheck", buttonText: "Open Payroll", buttonLink: ROUTES.payroll },
+          { itemType: "category_card", title: "Payroll Records", subtitle: "Salary workflows", description: "See how attendance, deductions and records connect to clean payroll operations.", icon: "Wallet", buttonText: "Open Payroll", buttonLink: ROUTES.payroll },
+          { itemType: "category_card", title: "Employee Documents", subtitle: "Record control", description: "Keep letters, acknowledgements and employee records easier to retrieve and review.", icon: "FileText", buttonText: "Open Core HR", buttonLink: ROUTES.coreHR },
+          { itemType: "category_card", title: "Attendance and Leave", subtitle: "Input quality", description: "Strong attendance and leave inputs make payroll and compliance reviews more reliable.", icon: "CalendarDays", buttonText: "Open Attendance", buttonLink: ROUTES.attendanceManagement },
+        ],
+      }),
+      createCtaSection({
+        heading: "Need help connecting compliance topics to live HR workflows?",
+        description:
+          "See how attendance, payroll and records stay aligned inside Altroz HR.",
+        settings: {
+          secondaryButtonText: "Open HRMS",
+          secondaryButtonLink: ROUTES.hrmsHome,
+        },
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email-pricing",
+    pageName: "Bulk Email Pricing",
+    route: ROUTES.bulkEmailPricing,
+    title: "Bulk Email Pricing Page | Altroz Bulk Email",
+    description:
+      "Present your bulk email pricing structure clearly with editable plans, delivery coverage, scheduling, templates, analytics and onboarding information.",
+    keywords: ["bulk email pricing", "email platform pricing", "campaign pricing", "smtp pricing"],
+    heroEyebrow: "Bulk Email Pricing",
+    heroTitle: "Present Your Bulk Email Pricing, Setup and Coverage Clearly",
+    heroDescription:
+      "An editable pricing page for campaign sending, scheduling, templates, delivery visibility and onboarding coverage.",
+    sections: [
+      createHeroSection({
+        heading: "Present Your Bulk Email Pricing, Setup and Coverage Clearly",
+        subheading: "Bulk Email Pricing",
+        description:
+          "An editable pricing page for campaign sending, scheduling, templates, delivery visibility and onboarding coverage.",
+        buttonText: "Book Free Demo",
+        buttonLink: ROUTES.bookDemo,
+        settings: {
+          badgeText: "Editable pricing page",
+          heroBullets: [
+            "Show plans, inclusions and setup details without a complex admin.",
+            "Edit headings, descriptions and pricing cards in one place.",
+            "Keep your commercial page simple for non-technical users.",
+          ],
+          secondaryButtonText: "Contact Sales",
+          secondaryButtonLink: ROUTES.bulkEmailContacts,
+        },
+        items: [
+          { itemType: "pricing_highlight", title: "Campaign sending", subtitle: "Editable plan card", description: "Describe volume, sending model or plan notes in simple language.", icon: "Send" },
+          { itemType: "pricing_highlight", title: "Templates", subtitle: "Editable inclusion", description: "Show whether templates, HTML uploads or branded layouts are included.", icon: "FileText" },
+          { itemType: "pricing_highlight", title: "Analytics", subtitle: "Editable feature", description: "Explain what delivery visibility, reports or status tracking are included.", icon: "BarChart3" },
+          { itemType: "pricing_highlight", title: "Onboarding", subtitle: "Editable support", description: "Add setup, training or sender-configuration details for new customers.", icon: "Users" },
+        ],
+      }),
+      createIconCardsSection({
+        sectionKey: "pricing-cards",
+        internalName: "Pricing Cards",
+        heading: "Use simple plan cards instead of an overcomplicated pricing table",
+        subheading: "Pricing Cards",
+        description:
+          "Each card can be edited directly from admin so your client can maintain the page easily.",
+        items: [
+          { itemType: "plan_card", title: "Starter", subtitle: "Editable price", description: "Position this plan for smaller teams and low-volume campaign needs.", icon: "Sparkles", extraData: { features: ["Basic campaign sending", "Simple templates", "Email scheduling"] } },
+          { itemType: "plan_card", title: "Growth", subtitle: "Editable price", description: "Use this plan for teams that want stronger delivery visibility and reusable workflows.", icon: "TrendingUp", extraData: { features: ["Delivery visibility", "Reusable templates", "Scheduled campaigns"] } },
+          { itemType: "plan_card", title: "Enterprise", subtitle: "Editable price", description: "Present higher-volume communication, controls and onboarding support here.", icon: "ShieldCheck", extraData: { features: ["Advanced delivery tracking", "Sender setup guidance", "Business-ready support"] } },
+        ],
+      }),
+      createFaqSection({
+        heading: "A few helpful questions to keep the commercial discussion simple",
+        subheading: "Pricing FAQ",
+        description: "Use this section to explain how pricing, setup and support are presented.",
+        buttonText: "Contact Sales",
+        buttonLink: ROUTES.bulkEmailContacts,
+        settings: {
+          secondaryHeading: "Need a tailored quote instead of fixed public pricing?",
+          secondaryDescription:
+            "Use the contact path for custom volume, onboarding or sender-configuration discussions.",
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+        items: [
+          { itemType: "faq", title: "Can pricing cards be edited from admin?", description: "Yes. Titles, subtitles, descriptions and feature bullets can be updated in the page editor." },
+          { itemType: "faq", title: "Can I show custom or contact-sales pricing instead of fixed rates?", description: "Yes. Replace numeric pricing with custom-quote language if that suits your sales process better." },
+          { itemType: "faq", title: "Can I explain setup and onboarding separately?", description: "Yes. Use the card descriptions and FAQ content to present setup, training and sender-configuration details clearly." },
+        ],
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email-resource-learn",
+    pageName: "Bulk Email Learn",
+    route: ROUTES.bulkEmailLearn,
+    title: "Learn Bulk Email, Campaigns and SMTP | Altroz Bulk Email",
+    description:
+      "Explore practical bulk email learning content covering broadcasts, scheduling, templates, SMTP and delivery visibility.",
+    keywords: ["bulk email learn", "smtp guide", "campaign guide", "email scheduling"],
+    heroEyebrow: "Bulk Email Learning Hub",
+    heroTitle: "Learn Bulk Email, Templates, Scheduling and Business Email Delivery",
+    heroDescription:
+      "A simple learning hub for teams that want to understand broadcast email workflows before or during product evaluation.",
+    sections: [
+      createHeroSection({
+        heading: "Learn Bulk Email, Templates, Scheduling and Business Email Delivery",
+        subheading: "Bulk Email Learning Hub",
+        description:
+          "A simple learning hub for teams that want to understand broadcast email workflows before or during product evaluation.",
+        buttonText: "Open Bulk Email",
+        buttonLink: ROUTES.bulkEmail,
+        settings: {
+          badgeText: "Plain-language learning",
+          heroBullets: [
+            "Understand campaigns, templates and delivery steps clearly.",
+            "Learn the workflow before diving into the product interface.",
+            "Keep the path simple for business users and non-technical teams.",
+          ],
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      }),
+      createIconCardsSection({
+        sectionKey: "bulk-learning-topics",
+        internalName: "Learning Topics",
+        heading: "Start with the bulk-email topics most teams need first",
+        subheading: "Learning Topics",
+        description:
+          "These cards mirror the main product workspaces so learning and product exploration stay aligned.",
+        items: [
+          { itemType: "guide_card", title: "Email Broadcasts", subtitle: "Campaign sending", description: "Learn how businesses create and send one-to-many email broadcasts in a controlled workflow.", icon: "Send", buttonText: "Open Broadcast", buttonLink: ROUTES.bulkEmailBroadcast },
+          { itemType: "guide_card", title: "Templates", subtitle: "Reusable layouts", description: "Understand branded layouts, HTML uploads and how templates reduce repeated work.", icon: "FileText", buttonText: "Open Templates", buttonLink: ROUTES.bulkEmailTemplates },
+          { itemType: "guide_card", title: "Scheduling", subtitle: "Planned delivery", description: "See how scheduled sending helps businesses time communication more reliably.", icon: "CalendarClock", buttonText: "Open Scheduling", buttonLink: ROUTES.bulkEmailScheduling },
+          { itemType: "guide_card", title: "SMTP", subtitle: "Sender setup", description: "Get a clear introduction to sender identity, SMTP setup and controlled outbound delivery.", icon: "ServerCog", buttonText: "Open SMTP", buttonLink: ROUTES.bulkEmailSmtp },
+        ],
+      }),
+      createCtaSection({
+        heading: "Ready to move from learning to a live bulk-email walkthrough?",
+        description:
+          "See how campaigns, scheduling, templates and delivery visibility work inside the product.",
+        settings: {
+          secondaryButtonText: "Open Bulk Email",
+          secondaryButtonLink: ROUTES.bulkEmail,
+        },
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email-resource-blog",
+    pageName: "Bulk Email Blog",
+    route: ROUTES.bulkEmailBlog,
+    title: "Bulk Email Blog for Campaigns, SMTP and Delivery Visibility | Altroz",
+    description:
+      "Read practical bulk email articles covering broadcasts, scheduling, templates, SMTP setup and delivery visibility for business teams.",
+    keywords: ["bulk email blog", "email campaigns blog", "smtp articles", "delivery tracking articles"],
+    heroEyebrow: "Bulk Email Blog",
+    heroTitle: "Practical Bulk Email Articles for Campaigns, Scheduling and SMTP Workflows",
+    heroDescription:
+      "A simple content hub for business communication teams that need clear, useful guidance on campaign operations.",
+    sections: [
+      createHeroSection({
+        heading: "Practical Bulk Email Articles for Campaigns, Scheduling and SMTP Workflows",
+        subheading: "Bulk Email Blog",
+        description:
+          "A simple content hub for business communication teams that need clear, useful guidance on campaign operations.",
+        buttonText: "Open Bulk Email",
+        buttonLink: ROUTES.bulkEmail,
+        settings: {
+          badgeText: "Business communication insights",
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      }),
+      createIconCardsSection({
+        sectionKey: "blog-topics",
+        internalName: "Blog Topics",
+        heading: "Featured article topics for bulk email and sender operations",
+        subheading: "Blog Topics",
+        description:
+          "Use these cards to highlight the email topics your prospects search for most often.",
+        items: [
+          { itemType: "topic_card", title: "Broadcast Planning", subtitle: "Campaign strategy", description: "Explain how teams plan campaigns, timing and internal review before sending.", icon: "Send", buttonText: "Open Broadcast", buttonLink: ROUTES.bulkEmailBroadcast },
+          { itemType: "topic_card", title: "Reusable Templates", subtitle: "Brand consistency", description: "Show how templates improve consistency and speed across repeated campaigns.", icon: "FileText", buttonText: "Open Templates", buttonLink: ROUTES.bulkEmailTemplates },
+          { itemType: "topic_card", title: "SMTP Setup", subtitle: "Controlled delivery", description: "Cover sender setup, SMTP basics and why controlled delivery matters to businesses.", icon: "ServerCog", buttonText: "Open SMTP", buttonLink: ROUTES.bulkEmailSmtp },
+          { itemType: "topic_card", title: "Delivery Visibility", subtitle: "Reports and status", description: "Help teams understand delivery status, analytics and review workflows after a send.", icon: "BarChart3", buttonText: "Open Analytics", buttonLink: ROUTES.bulkEmailAnalytics },
+          { itemType: "topic_card", title: "HR Communication", subtitle: "Internal messaging", description: "Discuss how HR teams use bulk email for updates, policies and employee communication.", icon: "Users", buttonText: "Open HR Communication", buttonLink: ROUTES.bulkEmailHrCommunication },
+          { itemType: "topic_card", title: "Education Broadcasts", subtitle: "Institution communication", description: "Show how institutions use scheduling and templates for announcements and notices.", icon: "GraduationCap", buttonText: "Open Education", buttonLink: ROUTES.bulkEmailEducation },
+        ],
+      }),
+      createCtaSection({
+        heading: "Need help turning these ideas into a working campaign setup?",
+        description:
+          "Use a live walkthrough to connect the articles to your real campaign process.",
+        settings: {
+          secondaryButtonText: "Contact Sales",
+          secondaryButtonLink: ROUTES.bulkEmailContacts,
+        },
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "bulk-email-resource-faq",
+    pageName: "Bulk Email FAQs",
+    route: ROUTES.bulkEmailFaq,
+    title: "Bulk Email FAQs for Campaigns, Templates and SMTP | Altroz",
+    description:
+      "Find simple answers about bulk email campaigns, templates, scheduling, SMTP configuration and delivery visibility.",
+    keywords: ["bulk email faq", "smtp faq", "campaign faq", "email templates faq"],
+    heroEyebrow: "Bulk Email FAQ",
+    heroTitle: "Simple Answers for Bulk Email Campaigns, Templates and SMTP Questions",
+    heroDescription:
+      "A clear FAQ page for teams that want straightforward answers before they evaluate or launch a platform.",
+    sections: [
+      createHeroSection({
+        heading: "Simple Answers for Bulk Email Campaigns, Templates and SMTP Questions",
+        subheading: "Bulk Email FAQ",
+        description:
+          "A clear FAQ page for teams that want straightforward answers before they evaluate or launch a platform.",
+        buttonText: "Open Bulk Email",
+        buttonLink: ROUTES.bulkEmail,
+        settings: {
+          badgeText: "Knowledge base",
+          popularSearches: ["What is bulk email?", "How does SMTP work?", "Can I schedule campaigns?"],
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      }),
+      createFaqSection({
+        heading: "The questions business teams usually ask before sending at scale",
+        subheading: "Frequently Asked Questions",
+        description: "Keep the answers short, clear and easy to update from admin.",
+        buttonText: "Contact Sales",
+        buttonLink: ROUTES.bulkEmailContacts,
+        settings: {
+          secondaryHeading: "Need help with sender setup, campaigns or templates?",
+          secondaryDescription:
+            "Use a live conversation when the question is more practical than technical.",
+          features: ["Campaign workflows", "Scheduling", "Templates and HTML", "SMTP configuration"],
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+        items: [
+          { itemType: "faq", title: "What is bulk email software?", description: "Bulk email software helps businesses create, schedule, send and review email campaigns from one platform instead of manual one-by-one sending." },
+          { itemType: "faq", title: "Can I schedule campaigns in advance?", description: "Yes. Scheduled sending lets teams prepare campaigns earlier and release them at a planned time." },
+          { itemType: "faq", title: "Can I use templates or my own HTML?", description: "Yes. Businesses can usually use reusable templates or upload their own HTML layout for brand consistency." },
+          { itemType: "faq", title: "Why does SMTP matter?", description: "SMTP setup matters because it controls how your outgoing mail is sent and how the sender identity is configured." },
+          { itemType: "faq", title: "Can I review delivery status after a campaign?", description: "Yes. Delivery visibility and reporting help teams understand what happened after a broadcast is sent." },
+        ],
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-resource-learn",
+    pageName: "Asset Management Learn",
+    route: ROUTES.assetManagementLearn,
+    title: "Learn Asset Management, Tracking and Maintenance Workflows | Altroz",
+    description:
+      "Learn the basics of asset registers, assignment, lifecycle tracking, maintenance and reporting in simple business language.",
+    keywords: ["asset management learn", "asset tracking guide", "maintenance guide", "asset register"],
+    heroEyebrow: "Asset Management Learning Hub",
+    heroTitle: "Learn Asset Registers, Tracking, Maintenance and Everyday Control Workflows",
+    heroDescription:
+      "A simple learning hub for teams that want to understand asset management before introducing a structured platform.",
+    sections: [
+      createHeroSection({
+        heading: "Learn Asset Registers, Tracking, Maintenance and Everyday Control Workflows",
+        subheading: "Asset Management Learning Hub",
+        description:
+          "A simple learning hub for teams that want to understand asset management before introducing a structured platform.",
+        buttonText: "Open Asset Management",
+        buttonLink: ROUTES.assetManagementHome,
+        settings: {
+          badgeText: "Practical asset learning",
+          heroBullets: [
+            "Understand asset registration, ownership and transfer basics.",
+            "Learn how maintenance and warranty visibility reduce surprises.",
+            "Keep audits, branch control and reporting in one simple learning path.",
+          ],
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      }),
+      createIconCardsSection({
+        sectionKey: "asset-learning-topics",
+        internalName: "Learning Topics",
+        heading: "Start with the asset-management topics operational teams ask about most",
+        subheading: "Learning Topics",
+        description:
+          "These cards are designed for admin, IT, HR and operations teams that need a shared understanding.",
+        items: [
+          { itemType: "guide_card", title: "Asset Register", subtitle: "Source of truth", description: "Learn how a structured asset register keeps ownership, status and location visible in one place.", icon: "Package", buttonText: "Open Asset Management", buttonLink: ROUTES.assetManagementHome },
+          { itemType: "guide_card", title: "Assignment and Handover", subtitle: "Ownership flow", description: "Understand how issue, return and handover records reduce confusion across teams.", icon: "RotateCcw", buttonText: "Open Asset Tracking", buttonLink: ROUTES.bulkEmailAssetTracking },
+          { itemType: "guide_card", title: "Maintenance and Warranty", subtitle: "Service visibility", description: "See how service events, due dates and warranty tracking support better upkeep.", icon: "Wrench", buttonText: "Open Asset Maintenance", buttonLink: ROUTES.bulkEmailAssetMaintenance },
+          { itemType: "guide_card", title: "Reports and Audits", subtitle: "Operational review", description: "Learn how reports support planning, branch review and audit-readiness.", icon: "BarChart3", buttonText: "Open Asset Reports", buttonLink: ROUTES.bulkEmailAssetReports },
+        ],
+      }),
+      createCtaSection({
+        heading: "Ready to see asset workflows inside one live platform?",
+        description:
+          "Open the main Asset Management page or book a walkthrough for your team.",
+        settings: {
+          secondaryButtonText: "Open Asset Management",
+          secondaryButtonLink: ROUTES.assetManagementHome,
+        },
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-guide",
+    pageName: "Asset Management Guide",
+    route: ROUTES.assetManagementGuide,
+    title: "Asset Management Guide for Registers, Tracking and Maintenance | Altroz",
+    description:
+      "Explore a practical asset management guide covering registration, assignment, movement, maintenance, QR workflows and reporting.",
+    keywords: ["asset management guide", "asset tracking guide", "qr code assets", "asset lifecycle"],
+    heroEyebrow: "Asset Management Guide",
+    heroTitle: "A Practical Guide to Asset Registration, Ownership, Maintenance and Reporting",
+    heroDescription:
+      "Use this guide page to explain the basics of asset-management structure in language that non-technical clients can understand.",
+    sections: [
+      createHeroSection({
+        heading: "A Practical Guide to Asset Registration, Ownership, Maintenance and Reporting",
+        subheading: "Asset Management Guide",
+        description:
+          "Use this guide page to explain the basics of asset-management structure in language that non-technical clients can understand.",
+        buttonText: "Open Asset Management",
+        buttonLink: ROUTES.assetManagementHome,
+        settings: {
+          badgeText: "Guide page",
+          heroBullets: [
+            "Explain the asset lifecycle clearly from registration to audit.",
+            "Keep assignment, tracking and maintenance connected in one page.",
+            "Use simple sections that are easy to edit from admin later.",
+          ],
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      }),
+      createIconCardsSection({
+        sectionKey: "guide-sections",
+        internalName: "Guide Sections",
+        heading: "The guide can be organized around the parts of asset control your client understands fastest",
+        subheading: "Guide Sections",
+        description:
+          "Use these cards to present the process in the same simple order your team explains it.",
+        items: [
+          { itemType: "guide_card", title: "Register Assets", subtitle: "Foundational step", description: "Capture the asset name, category, type, branch and current status in one register.", icon: "Package", buttonText: "Open Main Page", buttonLink: ROUTES.assetManagementHome },
+          { itemType: "guide_card", title: "Assign Ownership", subtitle: "Employee or branch", description: "Keep the current owner, assignee or department visible instead of relying on memory.", icon: "Users", buttonText: "Open Tracking", buttonLink: ROUTES.bulkEmailAssetTracking },
+          { itemType: "guide_card", title: "Track Maintenance", subtitle: "Service follow-up", description: "Review maintenance events, warranty timelines and service planning in one place.", icon: "Wrench", buttonText: "Open Maintenance", buttonLink: ROUTES.bulkEmailAssetMaintenance },
+          { itemType: "guide_card", title: "Review Reports", subtitle: "Audit and planning", description: "Use reports to check locations, ownership, status and movement history clearly.", icon: "BarChart3", buttonText: "Open Reports", buttonLink: ROUTES.bulkEmailAssetReports },
+        ],
+      }),
+      createCtaSection({
+        heading: "Need this guide turned into a working asset workflow?",
+        description:
+          "Use the product walkthrough to connect the guide to real operational screens.",
+        settings: {
+          secondaryButtonText: "Contact Us",
+          secondaryButtonLink: ROUTES.contact,
+        },
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-resource-blog",
+    pageName: "Asset Management Blog",
+    route: ROUTES.assetManagementBlog,
+    title: "Asset Management Blog for Tracking, Maintenance and Audits | Altroz",
+    description:
+      "Read practical asset-management articles covering registers, ownership, maintenance, branch visibility, QR workflows and audit readiness.",
+    keywords: ["asset management blog", "asset tracking blog", "maintenance blog", "asset audits blog"],
+    heroEyebrow: "Asset Management Blog",
+    heroTitle: "Practical Asset Articles for Tracking, Maintenance, Ownership and Audit Readiness",
+    heroDescription:
+      "A content hub for admin, HR, IT and operations teams managing business assets across locations and departments.",
+    sections: [
+      createHeroSection({
+        heading: "Practical Asset Articles for Tracking, Maintenance, Ownership and Audit Readiness",
+        subheading: "Asset Management Blog",
+        description:
+          "A content hub for admin, HR, IT and operations teams managing business assets across locations and departments.",
+        buttonText: "Open Asset Management",
+        buttonLink: ROUTES.assetManagementHome,
+        settings: {
+          badgeText: "Operational asset insights",
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      }),
+      createIconCardsSection({
+        sectionKey: "asset-blog-topics",
+        internalName: "Asset Blog Topics",
+        heading: "Featured asset-management topics for teams that want cleaner control",
+        subheading: "Blog Topics",
+        description:
+          "Use these topic cards to surface the asset questions prospects usually research first.",
+        items: [
+          { itemType: "topic_card", title: "Asset Register Basics", subtitle: "One source of truth", description: "Explain why a searchable asset register matters more than scattered manual lists.", icon: "Package", buttonText: "Open Main Page", buttonLink: ROUTES.assetManagementHome },
+          { itemType: "topic_card", title: "Ownership Tracking", subtitle: "Employee and branch control", description: "Show how asset ownership, assignment and location visibility reduce confusion.", icon: "Users", buttonText: "Open Tracking", buttonLink: ROUTES.bulkEmailAssetTracking },
+          { itemType: "topic_card", title: "Maintenance Planning", subtitle: "Uptime and service", description: "Discuss service records, warranty tracking and maintenance reminders for better control.", icon: "Wrench", buttonText: "Open Maintenance", buttonLink: ROUTES.bulkEmailAssetMaintenance },
+          { itemType: "topic_card", title: "QR Code Workflows", subtitle: "Faster verification", description: "Cover how QR labels support quick verification, movement checks and record accuracy.", icon: "QrCode", buttonText: "Open QR Code Page", buttonLink: ROUTES.bulkEmailAssetQrCode },
+          { itemType: "topic_card", title: "Audit Readiness", subtitle: "Review and reporting", description: "Explain how reports and movement history help teams prepare for reviews more confidently.", icon: "BarChart3", buttonText: "Open Reports", buttonLink: ROUTES.bulkEmailAssetReports },
+          { itemType: "topic_card", title: "Branch Visibility", subtitle: "Multi-location control", description: "Discuss how centralized records help branches avoid duplicate buying and lost visibility.", icon: "MapPin", buttonText: "Open Dashboard", buttonLink: ROUTES.bulkEmailAssetDashboard },
+        ],
+      }),
+      createCtaSection({
+        heading: "Want to move from asset articles to a live product walkthrough?",
+        description:
+          "See how the asset-management workflows look in the actual system.",
+        settings: {
+          secondaryButtonText: "Open Asset Management",
+          secondaryButtonLink: ROUTES.assetManagementHome,
+        },
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-resource-faq",
+    pageName: "Asset Management FAQs",
+    route: ROUTES.assetManagementFaq,
+    title: "Asset Management FAQs for Registers, Tracking and Maintenance | Altroz",
+    description:
+      "Find simple answers about asset registers, assignment, maintenance, QR tracking, reporting and audit-ready workflows.",
+    keywords: ["asset management faq", "asset tracking faq", "maintenance faq", "asset register faq"],
+    heroEyebrow: "Asset Management FAQ",
+    heroTitle: "Simple Answers for Asset Registers, Tracking, Maintenance and Reporting Questions",
+    heroDescription:
+      "A clear FAQ page for business teams that want quick answers without technical complexity.",
+    sections: [
+      createHeroSection({
+        heading: "Simple Answers for Asset Registers, Tracking, Maintenance and Reporting Questions",
+        subheading: "Asset Management FAQ",
+        description:
+          "A clear FAQ page for business teams that want quick answers without technical complexity.",
+        buttonText: "Open Asset Management",
+        buttonLink: ROUTES.assetManagementHome,
+        settings: {
+          badgeText: "Knowledge base",
+          popularSearches: ["What is an asset register?", "How do handovers work?", "Can I track maintenance?"],
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      }),
+      createFaqSection({
+        heading: "The questions admin, IT and operations teams usually ask first",
+        subheading: "Frequently Asked Questions",
+        description: "Keep the answers short and editable so the page stays easy for your client to manage.",
+        buttonText: "Contact Us",
+        buttonLink: ROUTES.contact,
+        settings: {
+          secondaryHeading: "Need help explaining the workflow to your team?",
+          secondaryDescription:
+            "A live walkthrough is often easier than a long technical document.",
+          features: ["Registration and assignment", "Tracking and movement", "Maintenance and warranty", "Reports and audits"],
+          secondaryButtonText: "Open Asset Management",
+          secondaryButtonLink: ROUTES.assetManagementHome,
+        },
+        items: [
+          { itemType: "faq", title: "What is asset management software?", description: "Asset management software helps businesses register, assign, track, maintain and review company assets from one place." },
+          { itemType: "faq", title: "Why is an asset register important?", description: "A proper asset register gives one source of truth for ownership, status, location and history." },
+          { itemType: "faq", title: "Can assets be assigned to employees or branches?", description: "Yes. A structured platform can keep the current owner, assignee or branch visible at all times." },
+          { itemType: "faq", title: "Can I track maintenance and warranty activity?", description: "Yes. Maintenance and warranty visibility help teams avoid missed service work and unclear asset status." },
+          { itemType: "faq", title: "How do reports help?", description: "Reports help teams review ownership, movement, branch coverage, maintenance and audit readiness more clearly." },
+        ],
+      }),
+    ],
+  }),
+  createManagedCmsPage({
+    pageKey: "asset-management-pricing",
+    pageName: "Asset Management Pricing",
+    route: ROUTES.assetManagementPricing,
+    title: "Asset Management Pricing Page | Altroz Asset Management",
+    description:
+      "Show editable asset-management pricing details for registration, tracking, maintenance, QR workflows, reports and onboarding coverage.",
+    keywords: ["asset management pricing", "asset tracking pricing", "qr asset pricing", "maintenance pricing"],
+    heroEyebrow: "Asset Management Pricing",
+    heroTitle: "Present Your Asset Management Pricing, Coverage and Setup Clearly",
+    heroDescription:
+      "An editable pricing page for asset registers, ownership tracking, maintenance workflows, QR support and reporting coverage.",
+    sections: [
+      createHeroSection({
+        heading: "Present Your Asset Management Pricing, Coverage and Setup Clearly",
+        subheading: "Asset Management Pricing",
+        description:
+          "An editable pricing page for asset registers, ownership tracking, maintenance workflows, QR support and reporting coverage.",
+        buttonText: "Book Free Demo",
+        buttonLink: ROUTES.bookDemo,
+        settings: {
+          badgeText: "Editable pricing page",
+          heroBullets: [
+            "Keep pricing cards simple for non-technical users.",
+            "Edit plan labels, subtitles and coverage notes from admin.",
+            "Use cards and FAQs instead of a complicated pricing system.",
+          ],
+          secondaryButtonText: "Contact Us",
+          secondaryButtonLink: ROUTES.contact,
+        },
+        items: [
+          { itemType: "pricing_highlight", title: "Asset register", subtitle: "Editable coverage", description: "Show whether registration, categories and branches are included in the plan.", icon: "Package" },
+          { itemType: "pricing_highlight", title: "Tracking", subtitle: "Editable workflow", description: "Explain assignment, transfer, return and movement visibility for each package.", icon: "MapPin" },
+          { itemType: "pricing_highlight", title: "Maintenance", subtitle: "Editable support", description: "Describe service tracking, due alerts and warranty coverage in simple language.", icon: "Wrench" },
+          { itemType: "pricing_highlight", title: "Reports", subtitle: "Editable visibility", description: "Add the reporting, audit or dashboard access details that matter to buyers.", icon: "BarChart3" },
+        ],
+      }),
+      createIconCardsSection({
+        sectionKey: "asset-pricing-cards",
+        internalName: "Pricing Cards",
+        heading: "Use clean plan cards to explain what each level of asset coverage includes",
+        subheading: "Pricing Cards",
+        description:
+          "This keeps the commercial page manageable for your client while still showing useful plan detail.",
+        items: [
+          { itemType: "plan_card", title: "Starter", subtitle: "Editable price", description: "Use this card for smaller teams that want a cleaner asset register and basic ownership visibility.", icon: "Sparkles", extraData: { features: ["Asset register", "Basic assignment", "Simple reports"] } },
+          { itemType: "plan_card", title: "Growth", subtitle: "Editable price", description: "Position this plan for organizations that need stronger movement, branch and maintenance control.", icon: "TrendingUp", extraData: { features: ["Ownership tracking", "Maintenance workflows", "Branch visibility"] } },
+          { itemType: "plan_card", title: "Enterprise", subtitle: "Editable price", description: "Use this plan for organizations that want broader control, reporting and onboarding support.", icon: "ShieldCheck", extraData: { features: ["QR workflows", "Advanced reports", "Operational onboarding"] } },
+        ],
+      }),
+      createFaqSection({
+        heading: "Helpful pricing questions for operational buyers",
+        subheading: "Pricing FAQ",
+        description: "Use this section to explain pricing structure in plain business language.",
+        buttonText: "Contact Us",
+        buttonLink: ROUTES.contact,
+        settings: {
+          secondaryHeading: "Need a custom quote based on asset volume or branches?",
+          secondaryDescription:
+            "Use the contact path when your pricing depends on operational scale or rollout scope.",
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+        items: [
+          { itemType: "faq", title: "Can I edit the plan cards from admin?", description: "Yes. Titles, subtitles, descriptions and bullet points can be edited from the page editor." },
+          { itemType: "faq", title: "Can I avoid fixed public pricing?", description: "Yes. You can present custom-quote or contact-sales language instead of fixed numerical rates." },
+          { itemType: "faq", title: "Can I explain onboarding or branch rollout separately?", description: "Yes. Use the hero cards, card descriptions and FAQ area to explain rollout and setup clearly." },
+        ],
+      }),
+    ],
+  }),
+];
 
 export const cmsSeedPages = [
   {
@@ -95,6 +2338,70 @@ export const cmsSeedPages = [
             description: "38% open rate",
             icon: "Mail",
             buttonLink: ROUTES.automation,
+          },
+        ],
+      },
+      {
+        sectionKey: "customer-logos",
+        sectionType: "logo_strip",
+        internalName: "Customer Logos",
+        heading: "Trusted by teams we've partnered with",
+        isRequired: true,
+        items: [
+          {
+            itemType: "logo",
+            title: "Ordinet Solutions Pvt. Ltd.",
+            imageUrl: "/customer-logos/image1.png",
+          },
+          {
+            itemType: "logo",
+            title: "PANGEA HR Services Pvt. Ltd.",
+            imageUrl: "/customer-logos/image2.png",
+          },
+          {
+            itemType: "logo",
+            title: "Ulka Projects",
+            imageUrl: "/customer-logos/image3.png",
+          },
+          {
+            itemType: "logo",
+            title: "Globular Tech Services Pvt. Ltd.",
+            imageUrl: "/customer-logos/image4.png",
+          },
+          {
+            itemType: "logo",
+            title: "Financial Services",
+            imageUrl: "/customer-logos/image5.jpeg",
+          },
+          {
+            itemType: "logo",
+            title: "BSJ Jewellers",
+            imageUrl: "/customer-logos/image6.png",
+          },
+          {
+            itemType: "logo",
+            title: "Anushka",
+            imageUrl: "/customer-logos/image7.jpeg",
+          },
+          {
+            itemType: "logo",
+            title: "Rajneer Exim Production",
+            imageUrl: "/customer-logos/image8.png",
+          },
+          {
+            itemType: "logo",
+            title: "Enterprise",
+            imageUrl: "/customer-logos/image9.png",
+          },
+          {
+            itemType: "logo",
+            title: "Global Envirotech",
+            imageUrl: "/customer-logos/image10.png",
+          },
+          {
+            itemType: "logo",
+            title: "Gasoline Fuel Systems India",
+            imageUrl: "/customer-logos/image11.png",
           },
         ],
       },
@@ -238,6 +2545,8 @@ export const cmsSeedPages = [
       },
     ],
   },
+  ...managedSolutionPages,
+  ...managedAdminPages,
   {
     pageKey: "pricing",
     pageName: "Pricing",
@@ -299,6 +2608,7 @@ export const cmsSeedPages = [
         description:
           "Every major module from the sheet is grouped into a dedicated card so the plan differences are easy to scan, compare and present on desktop or mobile.",
       },
+      ...createPricingFeatureComparisonSections(3),
       {
         sectionKey: "pricing-faq",
         sectionType: "faq",
@@ -384,6 +2694,160 @@ export const cmsSeedPages = [
         subheading: "Ready to Start",
         description:
           "Connect with Altroz HRMS to explore attendance, payroll, leave, employee management, recruitment, reporting, and HR automation from one centralized platform.",
+        buttonText: "Send an Enquiry",
+        buttonLink: "#contact-form",
+        settings: {
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      },
+    ],
+  },
+  {
+    pageKey: "bulk-email-contact-us",
+    pageName: "Bulk Email Contact Us",
+    slug: "bulk-email/contact-us",
+    status: "published",
+    meta: createMeta({
+      title: "Contact Altroz Bulk Email | Book a Demo or Sales Consultation",
+      description:
+        "Contact Altroz Bulk Email for product demonstrations, campaign consultation, broadcast setup, scheduling, SMTP, and customer enquiries.",
+      keywords: ["bulk email contact", "campaign consultation", "email platform enquiry", "book bulk email demo"],
+      canonicalUrl: ROUTES.bulkEmailContact,
+      ogTitle: "Contact Altroz Bulk Email | Book a Demo or Sales Consultation",
+      ogDescription:
+        "Contact Altroz Bulk Email for product demonstrations, campaign consultation, broadcast setup, scheduling, SMTP, and customer enquiries.",
+    }),
+    sections: [
+      {
+        sectionKey: "contact-hero",
+        sectionType: "hero",
+        internalName: "Hero",
+        heading: "Get in Touch with Altroz Bulk Email",
+        subheading: "Contact Us",
+        description:
+          "We are here to help you simplify your email communication. Whether you are evaluating bulk email software, requesting a product demonstration, planning your campaign workflow, or looking for product support, the Altroz Technologies team can help you identify the right next step.",
+        buttonText: "Send an Enquiry",
+        buttonLink: "#contact-form",
+        settings: {
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+          secondaryDescription:
+            "Use the verified WhatsApp route or the enquiry form below. Our team will review your enquiry and contact you using the details provided.",
+        },
+        items: [
+          { itemType: "hero_path", title: "Product Enquiry", description: "Ask about product fit, pricing, or the right starting point.", icon: "messageSquare", buttonLink: "#contact-form" },
+          { itemType: "hero_path", title: "Book a Demo", description: "Open the demo workflow for a guided product walkthrough.", icon: "calendarDays", buttonLink: ROUTES.bookDemo },
+          { itemType: "hero_path", title: "Support", description: "Use the support route for customer help and product questions.", icon: "headphones", buttonLink: ROUTES.support },
+        ],
+      },
+      {
+        sectionKey: "quick-contact",
+        sectionType: "contact_information",
+        internalName: "Quick Contact",
+        heading: "Choose the best way to reach the Altroz Bulk Email team",
+        subheading: "Quick Contact",
+        description: "Use one of the verified paths below to reach the Altroz Bulk Email team.",
+        items: [
+          { itemType: "contact_card", title: "WhatsApp", description: "Start a chat with the verified WhatsApp channel.", icon: "messageSquare", buttonLink: "https://wa.me/918446337392" },
+          { itemType: "contact_card", title: "Book a Demo", description: "Open the product demo workflow for a guided walkthrough.", icon: "calendarDays", buttonLink: ROUTES.bookDemo },
+          { itemType: "contact_card", title: "Support", description: "Use the support page for customer help and product guidance.", icon: "headphones", buttonLink: ROUTES.support },
+        ],
+      },
+      {
+        sectionKey: "contact-form",
+        sectionType: "custom",
+        internalName: "Enquiry Form",
+        heading: "Share your enquiry with the Altroz Bulk Email team",
+        subheading: "Send a Message",
+        description:
+          "Fill in the details below and the form will prepare a WhatsApp enquiry draft using the verified channel.",
+      },
+      {
+        sectionKey: "contact-cta",
+        sectionType: "cta_banner",
+        internalName: "Final CTA",
+        heading: "Ready to Simplify Your Bulk Email Operations?",
+        subheading: "Ready to Start",
+        description:
+          "Connect with Altroz Bulk Email to explore broadcasting, templates, analytics, scheduling, SMTP configuration, and campaign support from one centralized platform.",
+        buttonText: "Send an Enquiry",
+        buttonLink: "#contact-form",
+        settings: {
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+        },
+      },
+    ],
+  },
+  {
+    pageKey: "asset-management-contact-us",
+    pageName: "Asset Management Contact Us",
+    slug: "asset-management/contact-us",
+    status: "published",
+    meta: createMeta({
+      title: "Contact Altroz Asset Management | Book a Demo or Sales Consultation",
+      description:
+        "Contact Altroz Asset Management for product demonstrations, asset tracking consultation, QR workflows, maintenance planning, reporting, and customer enquiries.",
+      keywords: ["asset management contact", "asset tracking consultation", "qr workflow enquiry", "asset demo"],
+      canonicalUrl: ROUTES.assetManagementContact,
+      ogTitle: "Contact Altroz Asset Management | Book a Demo or Sales Consultation",
+      ogDescription:
+        "Contact Altroz Asset Management for product demonstrations, asset tracking consultation, QR workflows, maintenance planning, reporting, and customer enquiries.",
+    }),
+    sections: [
+      {
+        sectionKey: "contact-hero",
+        sectionType: "hero",
+        internalName: "Hero",
+        heading: "Get in Touch with Altroz Asset Management",
+        subheading: "Contact Us",
+        description:
+          "We are here to help you simplify your asset operations. Whether you are evaluating asset management software, requesting a product demonstration, planning your tracking workflow, or looking for product support, the Altroz Technologies team can help you identify the right next step.",
+        buttonText: "Send an Enquiry",
+        buttonLink: "#contact-form",
+        settings: {
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
+          secondaryDescription:
+            "Use the verified WhatsApp route or the enquiry form below. Our team will review your enquiry and contact you using the details provided.",
+        },
+        items: [
+          { itemType: "hero_path", title: "Product Enquiry", description: "Ask about product fit, pricing, or the right starting point.", icon: "messageSquare", buttonLink: "#contact-form" },
+          { itemType: "hero_path", title: "Book a Demo", description: "Open the demo workflow for a guided product walkthrough.", icon: "calendarDays", buttonLink: ROUTES.bookDemo },
+          { itemType: "hero_path", title: "Support", description: "Use the support route for customer help and product questions.", icon: "headphones", buttonLink: ROUTES.support },
+        ],
+      },
+      {
+        sectionKey: "quick-contact",
+        sectionType: "contact_information",
+        internalName: "Quick Contact",
+        heading: "Choose the best way to reach the Altroz Asset Management team",
+        subheading: "Quick Contact",
+        description: "Use one of the verified paths below to reach the Altroz Asset Management team.",
+        items: [
+          { itemType: "contact_card", title: "WhatsApp", description: "Start a chat with the verified WhatsApp channel.", icon: "messageSquare", buttonLink: "https://wa.me/918446337392" },
+          { itemType: "contact_card", title: "Book a Demo", description: "Open the product demo workflow for a guided walkthrough.", icon: "calendarDays", buttonLink: ROUTES.bookDemo },
+          { itemType: "contact_card", title: "Support", description: "Use the support page for customer help and product guidance.", icon: "headphones", buttonLink: ROUTES.support },
+        ],
+      },
+      {
+        sectionKey: "contact-form",
+        sectionType: "custom",
+        internalName: "Enquiry Form",
+        heading: "Share your enquiry with the Altroz Asset Management team",
+        subheading: "Send a Message",
+        description:
+          "Fill in the details below and the form will prepare a WhatsApp enquiry draft using the verified channel.",
+      },
+      {
+        sectionKey: "contact-cta",
+        sectionType: "cta_banner",
+        internalName: "Final CTA",
+        heading: "Ready to Simplify Your Asset Management Operations?",
+        subheading: "Ready to Start",
+        description:
+          "Connect with Altroz Asset Management to explore asset registration, tracking, assignment, maintenance, QR workflows and reporting from one centralized platform.",
         buttonText: "Send an Enquiry",
         buttonLink: "#contact-form",
         settings: {
@@ -549,61 +3013,18 @@ export const cmsSeedPages = [
       status: "published",
     },
     meta: createMeta({
-      title: "HR Blog | Practical HR Articles & Software Insights - Altroz HR",
+      title: "HRMS Blog | Altroz HR",
       description:
-        "Read practical HR articles on attendance, payroll, leave, recruitment and performance management. Simple, actionable HR insights from Altroz HR.",
+        featuredHrmsBlogPost?.description ??
+        "A practical, in-depth resource on Human Resource Management Systems - what they are, how they work, why Indian businesses need them, and how to choose one.",
       keywords: ["hr blog", "attendance", "payroll", "leave", "recruitment"],
       canonicalUrl: ROUTES.blog,
-      ogTitle: "HR Blog - Practical Insights & Software Guides | Altroz HR",
+      ogTitle: "HRMS Blog | Altroz HR",
       ogDescription:
-        "Read practical HR articles on attendance, payroll, leave, recruitment and performance management. Simple, actionable HR insights from Altroz HR.",
+        featuredHrmsBlogPost?.description ??
+        "A practical, in-depth resource on Human Resource Management Systems - what they are, how they work, why Indian businesses need them, and how to choose one.",
     }),
-    sections: [
-      {
-        sectionKey: "blog-hero",
-        sectionType: "hero",
-        internalName: "Blog Hero",
-        heading: "HR Blog - Practical Insights, Software Guides & Workforce Best Practices",
-        subheading: "HR Blog by Altroz HR",
-        description:
-          "Explore simple, practical articles on attendance, payroll, leave, recruitment, performance, and HR automation. Written for Indian businesses, startups, and growing teams who want to build better workplaces with the right HR knowledge and the right HR software.",
-        buttonText: "Browse Articles",
-        buttonLink: "#categories",
-        settings: {
-          secondaryButtonText: "Book Free Demo",
-          secondaryButtonLink: ROUTES.bookDemo,
-        },
-      },
-      {
-        sectionKey: "blog-highlights",
-        sectionType: "icon_cards",
-        internalName: "Blog Highlights",
-        heading: "Latest articles and practical guides",
-        subheading: "Highlight Cards",
-        description:
-          "Fresh HR insights, product updates and business-friendly guidance, organised so readers can quickly find the right topic and move naturally to the right Altroz HR solution.",
-        items: [
-          { itemType: "highlight_card", title: "Latest Articles", description: "Fresh HR insights, product updates and workforce trends, published regularly for Indian businesses.", icon: "CalendarDays", extraData: { tag: "Fresh updates" } },
-          { itemType: "highlight_card", title: "Expert HR Insights", description: "Practical knowledge on compliance, payroll, attendance and performance management, written in simple language.", icon: "Sparkles", extraData: { tag: "Simple guidance" } },
-          { itemType: "highlight_card", title: "Practical Business Guides", description: "Step-by-step guides that help HR teams and founders solve everyday people-management challenges.", icon: "TrendingUp", extraData: { tag: "Actionable advice" } },
-        ],
-      },
-      {
-        sectionKey: "blog-categories",
-        sectionType: "icon_cards",
-        internalName: "Browse Topics",
-        heading: "Featured article and category cards built for easy blog navigation",
-        subheading: "Browse by Topics",
-        description:
-          "The first card spotlights the new HRMS guide, and the remaining cards help readers jump into related HR topics quickly.",
-        items: [
-          { itemType: "category_card", title: "What is HRMS?", description: "A complete guide to HRMS for Indian businesses, with clear explanations of the core modules, benefits, implementation steps, and the difference between manual HR and software-driven HR.", icon: "BookOpen", buttonLink: `${ROUTES.blog}/what-is-hrms` },
-          { itemType: "category_card", title: "Attendance Management", description: "Guides on attendance tracking, GPS attendance, geo-fencing and shift management.", icon: "CalendarDays", buttonLink: ROUTES.attendanceManagement },
-          { itemType: "category_card", title: "Payroll", description: "Practical articles on payroll processing, salary structuring and payroll compliance.", icon: "Wallet", buttonLink: ROUTES.payroll },
-          { itemType: "category_card", title: "Leave Management", description: "Insights on leave policies, approvals and leave tracking for growing teams.", icon: "ClipboardList", buttonLink: ROUTES.leaveManagement },
-        ],
-      },
-    ],
+    sections: createHrmsBlogLandingSections({ blogPath: ROUTES.blog }),
   },
   {
     pageKey: "resource-faq",

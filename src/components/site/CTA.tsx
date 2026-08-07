@@ -28,7 +28,7 @@ export default function CTA({ section }: { section?: PublicCmsSection | null }) 
               <Link
                 to={
                   ((section?.settings?.secondaryButtonLink as string | undefined) ??
-                    ROUTES.pricing)
+                    ROUTES.hrmsPricing)
                 }
                 className="btn-success"
               >

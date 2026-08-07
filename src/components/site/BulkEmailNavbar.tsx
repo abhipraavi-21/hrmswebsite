@@ -45,14 +45,14 @@ const solutionItems: MenuItem[] = [
 ];
 
 const resourceItems: MenuItem[] = [
-  { label: "Learn", href: ROUTES.learn },
-  { label: "Blog", href: ROUTES.blog },
-  { label: "FAQs", href: ROUTES.faq },
+  { label: "Learn", href: ROUTES.bulkEmailLearn },
+  { label: "Blog", href: ROUTES.bulkEmailBlog },
+  { label: "FAQs", href: ROUTES.bulkEmailFaq },
 ];
 
 const companyItems: MenuItem[] = [
   { label: "About", href: ROUTES.about },
-  { label: "Contact", href: ROUTES.bulkEmailContacts },
+  { label: "Contact", href: ROUTES.bulkEmailContact },
   { label: "Help Center", href: ROUTES.support },
 ];
 
@@ -91,7 +91,7 @@ export default function BulkEmailNavbar() {
               Bulk Email
             </Link>
             <Link
-              to={ROUTES.bulkEmailAssetManagement}
+              to={ROUTES.assetManagementHome}
               className={switcherButtonClass}
             >
               <Package className="h-4 w-4 text-ink" />
@@ -176,7 +176,7 @@ export default function BulkEmailNavbar() {
                   <Mail className="h-4 w-4 text-ink" />
                   Bulk Email
                 </Link>
-                <Link to={ROUTES.bulkEmailAssetManagement} className={switcherButtonClass}>
+                <Link to={ROUTES.assetManagementHome} className={switcherButtonClass}>
                   <Package className="h-4 w-4 text-ink" />
                   Asset Management
                 </Link>
@@ -234,7 +234,7 @@ export default function BulkEmailNavbar() {
               </DesktopMenu>
 
               <NavLink
-                to={ROUTES.pricing}
+                to={ROUTES.bulkEmailPricing}
                 className={({ isActive }) =>
                   cn(
                     "nav-link rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",

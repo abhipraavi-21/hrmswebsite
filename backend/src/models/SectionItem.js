@@ -38,6 +38,10 @@ export function initSectionItem(sequelize) {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
+      image_alt: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
       button_text: {
         type: DataTypes.STRING(120),
         allowNull: true,

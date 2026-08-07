@@ -12,6 +12,7 @@ export type PublicCmsItem = {
   description?: string | null;
   icon?: string | null;
   imageUrl?: string | null;
+  imageAlt?: string | null;
   buttonText?: string | null;
   buttonLink?: string | null;
   extraData?: Record<string, unknown>;
@@ -28,7 +29,9 @@ export type PublicCmsSection = {
   subheading?: string | null;
   description?: string | null;
   imageUrl?: string | null;
+  imageAlt?: string | null;
   backgroundImageUrl?: string | null;
+  backgroundImageAlt?: string | null;
   buttonText?: string | null;
   buttonLink?: string | null;
   settings?: Record<string, unknown>;
@@ -49,6 +52,7 @@ export type PublicCmsPage = {
   ogTitle?: string | null;
   ogDescription?: string | null;
   ogImage?: string | null;
+  ogImageAlt?: string | null;
   indexable: boolean;
   status: "draft" | "published";
   sections: PublicCmsSection[];
@@ -60,6 +64,7 @@ export type PublicResourceSummary = {
   slug: string;
   shortDescription?: string | null;
   featuredImage?: string | null;
+  featuredImageAlt?: string | null;
   status: "draft" | "published";
   displayOrder: number;
   page: {
@@ -102,4 +107,57 @@ export type PublicPricingPage = PublicCmsPage & {
 
 export type PublicContactPage = PublicCmsPage & {
   settings: Record<string, unknown>;
+};
+
+export type PublicBlogGroup = "hrms" | "bulk-email" | "asset-management";
+
+export type PublicBlogTable = {
+  headers: string[];
+  rows: string[][];
+};
+
+export type PublicBlogSection = {
+  id: string;
+  title: string;
+  bodyHtml?: string | null;
+  bullets: string[];
+  table?: PublicBlogTable | null;
+};
+
+export type PublicBlogFaq = {
+  question: string;
+  answer: string;
+};
+
+export type PublicBlogRelatedLink = {
+  label: string;
+  href: string;
+  description?: string | null;
+};
+
+export type PublicBlogPost = {
+  id: number;
+  title: string;
+  slug: string;
+  href: string;
+  blogGroup: PublicBlogGroup;
+  category: string;
+  readingTimeLabel?: string | null;
+  descriptionHtml?: string | null;
+  metaTitle: string;
+  metaDescription: string;
+  heroSummaryHtml?: string | null;
+  quickAnswerHtml?: string | null;
+  heroPoints: string[];
+  keyTakeaways: string[];
+  sections: PublicBlogSection[];
+  faqs: PublicBlogFaq[];
+  relatedLinks: PublicBlogRelatedLink[];
+  coverImageUrl?: string | null;
+  coverImageAlt?: string | null;
+  status: "draft" | "published";
+  displayOrder: number;
+  publishedAt?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 };

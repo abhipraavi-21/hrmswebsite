@@ -70,12 +70,24 @@ export default function HrmsHomePage() {
           "Altroz HRMS helps businesses manage employees, attendance, payroll, leave, recruitment, and analytics from one modern platform."
         }
         canonicalPath="/hrms"
+        image={remoteContent?.ogImage ?? undefined}
+        imageAlt={remoteContent?.ogImageAlt ?? undefined}
+        ogTitle={
+          remoteContent?.ogTitle ??
+          remoteContent?.metaTitle ??
+          "Altroz HRMS | HR, Payroll and Attendance Platform"
+        }
+        ogDescription={
+          remoteContent?.ogDescription ??
+          remoteContent?.metaDescription ??
+          "Altroz HRMS helps businesses manage employees, attendance, payroll, leave, recruitment, and analytics from one modern platform."
+        }
       />
       <TopNavbar />
       <MainNavbar />
       <main>
         <Hero section={getSection(remoteContent, "hero")} />
-        <CustomerLogos />
+        <CustomerLogos section={getSection(remoteContent, "customer-logos")} />
         <ProductCards section={getSection(remoteContent, "platform-cards")} />
         <Features section={getSection(remoteContent, "feature-grid")} />
 

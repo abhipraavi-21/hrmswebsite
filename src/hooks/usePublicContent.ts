@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type DependencyList } from "react";
 
 type State<T> = {
   data: T | null;
@@ -6,7 +6,7 @@ type State<T> = {
   loading: boolean;
 };
 
-export function usePublicContent<T>(loader: () => Promise<T>) {
+export function usePublicContent<T>(loader: () => Promise<T>, deps: DependencyList = []) {
   const [state, setState] = useState<State<T>>({
     data: null,
     error: null,
@@ -45,7 +45,7 @@ export function usePublicContent<T>(loader: () => Promise<T>) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, deps);
 
   return state;
 }

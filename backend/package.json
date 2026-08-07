@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon --watch server.js --watch src --watch ../shared --ext js,mjs,cjs,json server.js",
     "start": "node server.js",
     "migrate": "sequelize-cli db:migrate --config src/config/sequelize-cli.cjs --migrations-path src/migrations",
     "seed": "sequelize-cli db:seed:all --config src/config/sequelize-cli.cjs --seeders-path src/seeders",

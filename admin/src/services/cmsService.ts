@@ -2,9 +2,11 @@ import { api } from "./api";
 import type {
   AdminUser,
   ApiResponse,
+  BlogGroup,
   CmsPage,
   CmsPageSummary,
   CmsSection,
+  BlogPost,
   DashboardSummary,
   MediaItem,
   PricingFeature,
@@ -74,6 +76,20 @@ export const pricingService = {
   updateFeature: (id: number | string, payload: Partial<PricingFeature>) =>
     unwrap<PricingFeature>(api.put(`/admin/pricing-plans/features/${id}`, payload)),
   removeFeature: (id: number | string) => unwrap(api.delete(`/admin/pricing-plans/features/${id}`)),
+};
+
+export const blogPostService = {
+  list: (blogGroup?: BlogGroup) =>
+    unwrap<BlogPost[]>(
+      api.get("/admin/blog-posts", {
+        params: blogGroup ? { blogGroup } : undefined,
+      }),
+    ),
+  get: (id: number | string) => unwrap<BlogPost>(api.get(`/admin/blog-posts/${id}`)),
+  create: (payload: Partial<BlogPost>) => unwrap<BlogPost>(api.post("/admin/blog-posts", payload)),
+  update: (id: number | string, payload: Partial<BlogPost>) =>
+    unwrap<BlogPost>(api.put(`/admin/blog-posts/${id}`, payload)),
+  remove: (id: number | string) => unwrap(api.delete(`/admin/blog-posts/${id}`)),
 };
 
 export const mediaService = {

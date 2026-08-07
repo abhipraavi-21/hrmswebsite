@@ -6,6 +6,7 @@ type PageSEOProps = {
   description: string;
   canonicalPath?: string;
   image?: string;
+  imageAlt?: string;
   ogTitle?: string;
   ogDescription?: string;
 };
@@ -33,6 +34,7 @@ export default function PageSEO({
   description,
   canonicalPath,
   image,
+  imageAlt,
   ogTitle,
   ogDescription,
 }: PageSEOProps) {
@@ -113,14 +115,30 @@ export default function PageSEO({
       const twitterImageTag = getOrCreateTag("meta", 'meta[name="twitter:image"]', {
         name: "twitter:image",
       }) as { element: HTMLMetaElement; created: boolean };
+      const ogImageAltTag = imageAlt
+        ? (getOrCreateTag("meta", 'meta[property="og:image:alt"]', {
+            property: "og:image:alt",
+          }) as { element: HTMLMetaElement; created: boolean })
+        : null;
+      const twitterImageAltTag = imageAlt
+        ? (getOrCreateTag("meta", 'meta[name="twitter:image:alt"]', {
+            name: "twitter:image:alt",
+          }) as { element: HTMLMetaElement; created: boolean })
+        : null;
 
       const previousImage = {
         ogImage: ogImageTag.element.getAttribute("content"),
         twitterImage: twitterImageTag.element.getAttribute("content"),
+        ogImageAlt: ogImageAltTag?.element.getAttribute("content") ?? null,
+        twitterImageAlt: twitterImageAltTag?.element.getAttribute("content") ?? null,
       };
 
       ogImageTag.element.setAttribute("content", image);
       twitterImageTag.element.setAttribute("content", image);
+      if (imageAlt && ogImageAltTag && twitterImageAltTag) {
+        ogImageAltTag.element.setAttribute("content", imageAlt);
+        twitterImageAltTag.element.setAttribute("content", imageAlt);
+      }
 
       return () => {
         document.title = previousTitle;
@@ -171,6 +189,20 @@ export default function PageSEO({
         if (twitterImageTag.created) twitterImageTag.element.remove();
         else if (previousImage.twitterImage !== null)
           twitterImageTag.element.setAttribute("content", previousImage.twitterImage);
+
+        if (ogImageAltTag) {
+          if (ogImageAltTag.created) ogImageAltTag.element.remove();
+          else if (previousImage.ogImageAlt !== null)
+            ogImageAltTag.element.setAttribute("content", previousImage.ogImageAlt);
+          else ogImageAltTag.element.removeAttribute("content");
+        }
+
+        if (twitterImageAltTag) {
+          if (twitterImageAltTag.created) twitterImageAltTag.element.remove();
+          else if (previousImage.twitterImageAlt !== null)
+            twitterImageAltTag.element.setAttribute("content", previousImage.twitterImageAlt);
+          else twitterImageAltTag.element.removeAttribute("content");
+        }
       };
     }
 
@@ -215,7 +247,7 @@ export default function PageSEO({
       else if (previous.twitterDescription !== null)
         twitterDescriptionTag.element.setAttribute("content", previous.twitterDescription);
     };
-  }, [canonicalPath, description, image, ogDescription, ogTitle, title]);
+  }, [canonicalPath, description, image, imageAlt, ogDescription, ogTitle, title]);
 
   return null;
 }

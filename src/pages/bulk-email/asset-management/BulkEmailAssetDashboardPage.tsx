@@ -987,7 +987,7 @@ export default function BulkEmailAssetDashboardPage() {
                       Book Free Demo
                       <ArrowRight className="h-4 w-4" />
                     </Link>
-                    <Link to={ROUTES.contactUs} className="btn-outline">
+                    <Link to={ROUTES.assetManagementContact} className="btn-outline">
                       Contact Our Team
                     </Link>
                   </div>

@@ -3,17 +3,20 @@ import { validateRequest } from "../middleware/validateRequest.js";
 import { publicEnquirySchema } from "../validators/contact.validators.js";
 import {
   getContact,
-  getHrms,
   getPage,
+  getHrms,
   getPricing,
   getResource,
   getResources,
   submitContactEnquiry,
 } from "../controllers/public/content.controller.js";
+import { getPublicPost, listPublicPosts } from "../controllers/public/blog.controller.js";
 
 const router = Router();
 
 router.get("/pages/:pageKey", getPage);
+router.get("/blog-posts", listPublicPosts);
+router.get("/blog-posts/:slug", getPublicPost);
 router.get("/hrms", getHrms);
 router.get("/resources", getResources);
 router.get("/resources/:slug", getResource);

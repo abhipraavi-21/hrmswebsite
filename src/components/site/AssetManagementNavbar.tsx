@@ -31,7 +31,7 @@ type MenuItem = {
 
 const featureItems: MenuItem[] = [
   { label: "Asset Dashboard", href: ROUTES.bulkEmailAssetDashboard },
-  { label: "Asset Management", href: ROUTES.bulkEmailAssetManagement },
+  { label: "Asset Management", href: ROUTES.assetManagementHome },
   { label: "Asset Tracking", href: ROUTES.bulkEmailAssetTracking },
   { label: "QR Code Asset Management", href: ROUTES.bulkEmailAssetQrCode },
   { label: "Asset Maintenance", href: ROUTES.bulkEmailAssetMaintenance },
@@ -43,19 +43,19 @@ const solutionItems: MenuItem[] = [
   { label: "Manufacturing Assets", href: ROUTES.bulkEmailAssetTracking },
   { label: "Healthcare Assets", href: ROUTES.bulkEmailAssetMaintenance },
   { label: "Educational Institutions", href: ROUTES.bulkEmailAssetReports },
-  { label: "Corporate Offices", href: ROUTES.bulkEmailAssetManagement },
+  { label: "Corporate Offices", href: ROUTES.assetManagementHome },
 ];
 
 const resourceItems: MenuItem[] = [
-  { label: "Learn", href: ROUTES.learn },
-  { label: "Asset Management Guide", href: ROUTES.complianceGuides },
-  { label: "Blog", href: ROUTES.blog },
-  { label: "FAQs", href: ROUTES.faq },
+  { label: "Learn", href: ROUTES.assetManagementLearn },
+  { label: "Asset Management Guide", href: ROUTES.assetManagementGuide },
+  { label: "Blog", href: ROUTES.assetManagementBlog },
+  { label: "FAQs", href: ROUTES.assetManagementFaq },
 ];
 
 const companyItems: MenuItem[] = [
   { label: "About Us", href: ROUTES.about },
-  { label: "Contact Us", href: ROUTES.contact },
+  { label: "Contact Us", href: ROUTES.assetManagementContact },
   { label: "Help Center", href: ROUTES.support },
 ];
 
@@ -87,7 +87,7 @@ export default function AssetManagementNavbar() {
               <Mail className="h-4 w-4 text-ink" />
               Bulk Email
             </Link>
-            <Link to={ROUTES.bulkEmailAssetManagement} className={switcherButtonClass}>
+            <Link to={ROUTES.assetManagementHome} className={switcherButtonClass}>
               <Package className="h-4 w-4 text-ink" />
               Asset Management
             </Link>
@@ -156,7 +156,7 @@ export default function AssetManagementNavbar() {
                     />
                     <MobileTopLevelLink
                       label="Pricing"
-                      href={ROUTES.pricing}
+                      href={ROUTES.assetManagementPricing}
                       onNavigate={() => setMobileOpen(false)}
                     />
                   </Accordion>
@@ -198,7 +198,7 @@ export default function AssetManagementNavbar() {
                   <Mail className="h-4 w-4 text-ink" />
                   Bulk Email
                 </Link>
-                <Link to={ROUTES.bulkEmailAssetManagement} className={switcherButtonClass}>
+                <Link to={ROUTES.assetManagementHome} className={switcherButtonClass}>
                   <Package className="h-4 w-4 text-ink" />
                   Asset Management
                 </Link>
@@ -259,7 +259,7 @@ export default function AssetManagementNavbar() {
               </DesktopMenu>
 
               <NavLink
-                to={ROUTES.pricing}
+                to={ROUTES.assetManagementPricing}
                 className={({ isActive }) =>
                   cn(
                     "nav-link rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",

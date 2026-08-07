@@ -31,6 +31,10 @@ export function initResourcePage(sequelize) {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
+      featured_image_alt: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
       status: {
         type: DataTypes.ENUM("draft", "published"),
         allowNull: false,

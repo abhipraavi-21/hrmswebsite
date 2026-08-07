@@ -5,6 +5,7 @@ import { initSectionItem } from "./SectionItem.js";
 import { initResourcePage } from "./ResourcePage.js";
 import { initPricingPlan } from "./PricingPlan.js";
 import { initPricingFeature } from "./PricingFeature.js";
+import { initBlogPost } from "./BlogPost.js";
 import { initContactSetting } from "./ContactSetting.js";
 import { initContactEnquiry } from "./ContactEnquiry.js";
 import { initMedia } from "./Media.js";
@@ -18,6 +19,7 @@ export default function initModels(sequelize) {
   const ResourcePage = initResourcePage(sequelize);
   const PricingPlan = initPricingPlan(sequelize);
   const PricingFeature = initPricingFeature(sequelize);
+  const BlogPost = initBlogPost(sequelize);
   const ContactSetting = initContactSetting(sequelize);
   const ContactEnquiry = initContactEnquiry(sequelize);
   const Media = initMedia(sequelize);
@@ -49,6 +51,7 @@ export default function initModels(sequelize) {
     ResourcePage,
     PricingPlan,
     PricingFeature,
+    BlogPost,
     ContactSetting,
     ContactEnquiry,
     Media,

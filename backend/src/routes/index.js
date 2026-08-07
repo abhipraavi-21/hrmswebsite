@@ -6,6 +6,7 @@ import adminResourcesRoutes from "./admin/resources.routes.js";
 import adminPricingRoutes from "./admin/pricing.routes.js";
 import adminMediaRoutes from "./admin/media.routes.js";
 import adminDashboardRoutes from "./admin/dashboard.routes.js";
+import adminBlogRoutes from "./admin/blog.routes.js";
 import { requireAdminAuth } from "../middleware/auth.js";
 
 const router = Router();
@@ -16,6 +17,7 @@ router.use("/admin/dashboard", requireAdminAuth, adminDashboardRoutes);
 router.use("/admin/pages", requireAdminAuth, adminPagesRoutes);
 router.use("/admin/resources", requireAdminAuth, adminResourcesRoutes);
 router.use("/admin/pricing-plans", requireAdminAuth, adminPricingRoutes);
+router.use("/admin/blog-posts", requireAdminAuth, adminBlogRoutes);
 router.use("/admin/media", requireAdminAuth, adminMediaRoutes);
 
 export default router;

@@ -334,7 +334,7 @@ export default function MainNavbar() {
 
         <div className="flex items-center justify-end gap-2">
           <Link
-            to={ROUTES.contact}
+            to={ROUTES.hrmsContact}
             className="btn-primary inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"
           >
             Start Free Trial

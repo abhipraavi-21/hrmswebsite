@@ -54,12 +54,14 @@ const BulkEmailSmtpPage = lazy(() => import("./pages/bulk-email/BulkEmailSmtpPag
 const BulkEmailHrCommunicationPage = lazy(() => import("./pages/bulk-email/BulkEmailHrCommunicationPage"));
 const BulkEmailMarketingPage = lazy(() => import("./pages/bulk-email/BulkEmailMarketingPage"));
 const BulkEmailEducationPage = lazy(() => import("./pages/bulk-email/BulkEmailEducationPage"));
+const AssetManagementContactPage = lazy(() => import("./pages/AssetManagementContactPage"));
 const IntegrationsPage = lazy(() => import("./pages/integrations/IntegrationsPage"));
 const BusinessAppsPage = lazy(() => import("./pages/integrations/BusinessAppsPage"));
 const AccountingPage = lazy(() => import("./pages/integrations/AccountingPage"));
 const AssetManagementPage = lazy(() => import("./pages/integrations/AssetManagementPage"));
 const DevicesApiPage = lazy(() => import("./pages/integrations/DevicesApiPage"));
 const LearnPage = lazy(() => import("./pages/LearnPage"));
+const AssetManagementGuidePage = lazy(() => import("./pages/AssetManagementGuidePage"));
 const BlogPage = lazy(() => import("./pages/resources/BlogPage"));
 const BlogArticlePage = lazy(() => import("./pages/resources/BlogArticlePage"));
 const FaqPage = lazy(() => import("./pages/resources/FaqPage"));
@@ -182,9 +184,11 @@ function AppShell() {
           <Route path={ROUTES.exitManagement} element={<ExitManagementPage />} />
           <Route path={ROUTES.employeeSelfService} element={<EmployeeSelfServicePage />} />
           <Route path={ROUTES.roiCalculator} element={<RoiCalculatorPage />} />
-          <Route path={ROUTES.pricing} element={<PricingPage />} />
+          <Route path={ROUTES.hrmsPricing} element={<PricingPage />} />
+          <Route path={ROUTES.pricing} element={<Navigate to={ROUTES.hrmsPricing} replace />} />
           <Route path={ROUTES.bulkEmailBroadcast} element={<BulkEmailBroadcastPage />} />
           <Route path={ROUTES.bulkEmail} element={<BulkEmailPage />} />
+          <Route path={ROUTES.bulkEmailPricing} element={<PricingPage />} />
           <Route path={ROUTES.bulkEmailCampaigns} element={<Navigate to={ROUTES.bulkEmail} replace />} />
           <Route path={ROUTES.bulkEmailAssetManagement} element={<BulkEmailAssetManagementPage />} />
           <Route path={ROUTES.bulkEmailAssetDashboard} element={<BulkEmailAssetDashboardPage />} />
@@ -196,7 +200,11 @@ function AppShell() {
           />
           <Route path={ROUTES.bulkEmailAssetReports} element={<BulkEmailAssetReportsPage />} />
           <Route path={ROUTES.bulkEmailTemplates} element={<BulkEmailTemplatesPage />} />
-          <Route path={ROUTES.bulkEmailContacts} element={<BulkEmailContactsPage />} />
+          <Route path={ROUTES.bulkEmailContact} element={<BulkEmailContactsPage />} />
+          <Route
+            path={ROUTES.bulkEmailContacts}
+            element={<Navigate to={ROUTES.bulkEmailContact} replace />}
+          />
           <Route path={ROUTES.bulkEmailAnalytics} element={<BulkEmailAnalyticsPage />} />
           <Route path={ROUTES.bulkEmailAutomation} element={<BulkEmailAutomationPage />} />
           <Route path={ROUTES.bulkEmailScheduling} element={<BulkEmailSchedulingPage />} />
@@ -211,20 +219,41 @@ function AppShell() {
           <Route path={ROUTES.businessApps} element={<BusinessAppsPage />} />
           <Route path={ROUTES.accounting} element={<AccountingPage />} />
           <Route path={ROUTES.assetManagement} element={<AssetManagementPage />} />
+          <Route path={ROUTES.assetManagementHome} element={<AssetManagementPage />} />
           <Route path={ROUTES.devicesApi} element={<DevicesApiPage />} />
           <Route path={ROUTES.learn} element={<LearnPage />} />
+          <Route path={ROUTES.hrmsLearn} element={<LearnPage />} />
+          <Route path={ROUTES.bulkEmailLearn} element={<LearnPage />} />
+          <Route path={ROUTES.assetManagementLearn} element={<LearnPage />} />
           <Route path={ROUTES.blog} element={<BlogPage />} />
           <Route path={`${ROUTES.blog}/:slug`} element={<BlogArticlePage />} />
+          <Route path={ROUTES.hrmsBlog} element={<BlogPage />} />
+          <Route path={ROUTES.bulkEmailBlog} element={<BlogPage />} />
+          <Route path={ROUTES.assetManagementBlog} element={<BlogPage />} />
+          <Route path={ROUTES.hrmsBlogPost} element={<BlogArticlePage />} />
+          <Route path={ROUTES.bulkEmailBlogPost} element={<BlogArticlePage />} />
+          <Route path={ROUTES.assetManagementBlogPost} element={<BlogArticlePage />} />
           <Route path={ROUTES.faq} element={<FaqPage />} />
+          <Route path={ROUTES.hrmsFaq} element={<FaqPage />} />
+          <Route path={ROUTES.bulkEmailFaq} element={<FaqPage />} />
+          <Route path={ROUTES.assetManagementFaq} element={<FaqPage />} />
           <Route path={ROUTES.complianceGuides} element={<ComplianceGuidesPage />} />
+          <Route path={ROUTES.hrmsComplianceGuides} element={<ComplianceGuidesPage />} />
           <Route path={ROUTES.supportResources} element={<SupportPage />} />
+          <Route path={ROUTES.assetManagementGuide} element={<AssetManagementGuidePage />} />
+          <Route path={ROUTES.assetManagementPricing} element={<PricingPage />} />
           <Route path={ROUTES.about} element={<AboutUsPage />} />
           <Route path={ROUTES.whyAltroz} element={<WhyAltrozPage />} />
           <Route path={ROUTES.customers} element={<CustomersPage />} />
           <Route path={ROUTES.testimonials} element={<TestimonialsPage />} />
           <Route path={ROUTES.partner} element={<PartnerWithUsPage />} />
           <Route path={ROUTES.careers} element={<CareersPage />} />
-          <Route path={ROUTES.contact} element={<ContactUsPage />} />
+          <Route path={ROUTES.hrmsContact} element={<ContactUsPage />} />
+          <Route
+            path={ROUTES.assetManagementContact}
+            element={<AssetManagementContactPage />}
+          />
+          <Route path={ROUTES.contact} element={<Navigate to={ROUTES.hrmsContact} replace />} />
           <Route path={ROUTES.support} element={<CompanySupportPage />} />
           <Route path={ROUTES.bookDemo} element={<BookDemoPage />} />
 

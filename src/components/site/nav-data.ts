@@ -44,8 +44,8 @@ export const solutionMenuItems = [
 export const resourcesMenuItems = [
   { label: "Learn", href: ROUTES.learn },
   { label: "Compliance Guides", href: ROUTES.complianceGuides },
-  { label: "Blog", href: ROUTES.blog },
-  { label: "FAQ", href: ROUTES.faq },
+  { label: "Blog", href: ROUTES.hrmsBlog },
+  { label: "FAQ", href: ROUTES.hrmsFaq },
 ];
 
 export const companyMenuColumns = [
@@ -67,7 +67,7 @@ export const companyMenuColumns = [
   {
     title: "Support",
     links: [
-      { label: "Contact Us", href: ROUTES.contact },
+      { label: "Contact Us", href: ROUTES.hrmsContact },
       { label: "Help Center", href: ROUTES.support },
       { label: "Book Demo", href: ROUTES.bookDemo },
     ],
@@ -75,7 +75,7 @@ export const companyMenuColumns = [
 ];
 
 export const navItems = [
-  { label: "Pricing", href: ROUTES.pricing },
+  { label: "Pricing", href: ROUTES.hrmsPricing },
   { label: "Partner With Us", href: ROUTES.partner },
 ];
 

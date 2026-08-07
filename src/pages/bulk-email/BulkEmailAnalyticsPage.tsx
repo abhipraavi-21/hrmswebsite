@@ -884,7 +884,7 @@ export default function BulkEmailAnalyticsPage() {
                   <Link to={ROUTES.bookDemo} className="btn-primary">
                     Book Free Demo
                   </Link>
-                  <Link to={ROUTES.contact} className="btn-ghost">
+                  <Link to={ROUTES.bulkEmailContact} className="btn-ghost">
                     Contact Sales
                   </Link>
                 </div>
@@ -936,7 +936,7 @@ export default function BulkEmailAnalyticsPage() {
                     Book Free Demo
                   </Link>
                   <Link
-                    to={ROUTES.contact}
+                    to={ROUTES.bulkEmailContact}
                     className="inline-flex items-center rounded-lg border border-white/25 bg-white/10 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/15"
                   >
                     Contact Sales

@@ -69,7 +69,7 @@ JWT_EXPIRES_IN=1d
 
 ADMIN_NAME=Super Admin
 ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=ChangeThisPassword123!
+    ADMIN_PASSWORD=ChangeThisPassword123!
 
 UPLOAD_DIR=src/uploads
 MAX_FILE_SIZE_MB=5

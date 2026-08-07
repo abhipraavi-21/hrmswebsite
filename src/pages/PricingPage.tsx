@@ -12,12 +12,18 @@ import {
   Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import Footer from "@/components/site/Footer";
+import ManagedCmsShowcasePage from "@/components/site/ManagedCmsShowcasePage";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
+import {
+  PricingFeatureComparisonSection,
+  PRICING_FEATURE_SECTION_TYPE,
+} from "@/components/site/PricingFeatureComparisonSection";
 import TopNavbar from "@/components/site/TopNavbar";
 import { usePublicContent } from "@/hooks/usePublicContent";
 import { cn } from "@/lib/utils";
@@ -84,15 +90,16 @@ const calculatorMax = 3000;
 const clampValue = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 const normalizeEmployeeCount = (value: number) =>
-  clampValue(Number.isFinite(value) ? Math.round(value) : calculatorMin, calculatorMin, calculatorMax);
+  clampValue(
+    Number.isFinite(value) ? Math.round(value) : calculatorMin,
+    calculatorMin,
+    calculatorMax,
+  );
 
 const getRecommendedPlan = (employeeCount: number) =>
   employeeCount < 75 ? "Basic" : employeeCount < 250 ? "Professional" : "Premium";
 
-const statusMeta: Record<
-  FeatureState,
-  { label: string; className: string; icon: ReactNode }
-> = {
+const statusMeta: Record<FeatureState, { label: string; className: string; icon: ReactNode }> = {
   included: {
     label: "Included",
     className: "border-emerald-200 bg-emerald-50 text-emerald-700",
@@ -464,20 +471,16 @@ function StatusChip({ state }: { state: FeatureState }) {
   );
 }
 
-function PlanCardView({
-  plan,
-  employeeCount,
-}: {
-  plan: PlanCard;
-  employeeCount: number;
-}) {
+function PlanCardView({ plan, employeeCount }: { plan: PlanCard; employeeCount: number }) {
   const monthlyTotal = plan.price * employeeCount;
 
   return (
     <article className="soft-card relative flex h-full min-h-[420px] flex-col overflow-hidden p-6 shadow-sm">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">{plan.name}</div>
+          <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
+            {plan.name}
+          </div>
           <h3 className="mt-2 text-4xl font-black tracking-tight text-ink">
             ₹{formatPrice(monthlyTotal)}
           </h3>
@@ -575,7 +578,9 @@ function FeatureGroupCard({ group }: { group: FeatureGroup }) {
 function AddOnCardView({ card }: { card: AddOnCard }) {
   return (
     <article className="soft-card flex h-full flex-col p-5 sm:p-6">
-      <div className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${card.accent}`}>
+      <div
+        className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${card.accent}`}
+      >
         <Coins className="h-5 w-5" />
       </div>
       <h3 className="mt-4 text-xl font-bold text-ink">{card.title}</h3>
@@ -670,7 +675,11 @@ function PricingCalculatorSection({
                         key={tick}
                         className={cn(
                           "text-left",
-                          tick === 3000 ? "text-right" : tick === 1000 || tick === 2000 ? "text-center" : "",
+                          tick === 3000
+                            ? "text-right"
+                            : tick === 1000 || tick === 2000
+                              ? "text-center"
+                              : "",
                         )}
                       >
                         {tick === 3000 ? "3000+" : tick}
@@ -686,9 +695,9 @@ function PricingCalculatorSection({
             </div>
           </div>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-3 lg:gap-5">
-          {planTotals.map((plan) => {
-            const isRecommended = plan.name === recommendedPlan;
+          <div className="mt-6 grid gap-4 md:grid-cols-3 lg:gap-5">
+            {planTotals.map((plan) => {
+              const isRecommended = plan.name === recommendedPlan;
 
               return (
                 <article
@@ -757,6 +766,36 @@ function PricingCalculatorSection({
 }
 
 export default function PricingPage() {
+  const location = useLocation();
+
+  if (location.pathname.startsWith(ROUTES.bulkEmailPricing)) {
+    return (
+      <ManagedCmsShowcasePage
+        pageKey="bulk-email-pricing"
+        canonicalPath={location.pathname}
+        navbarVariant="bulkEmail"
+        fallbackTitle="Bulk Email Pricing Page | Altroz Bulk Email"
+        fallbackDescription="Present your bulk email pricing structure clearly with editable plans, delivery coverage, scheduling, templates, analytics and onboarding information."
+      />
+    );
+  }
+
+  if (location.pathname.startsWith(ROUTES.assetManagementPricing)) {
+    return (
+      <ManagedCmsShowcasePage
+        pageKey="asset-management-pricing"
+        canonicalPath={location.pathname}
+        navbarVariant="assetManagement"
+        fallbackTitle="Asset Management Pricing Page | Altroz Asset Management"
+        fallbackDescription="Show editable asset-management pricing details for registration, tracking, maintenance, QR workflows, reports and onboarding coverage."
+      />
+    );
+  }
+
+  return <HrmsPricingPage />;
+}
+
+function HrmsPricingPage() {
   const [employeeCount, setEmployeeCount] = useState(100);
   const { data: remoteContent } = usePublicContent(fetchPricingPage);
   const heroSection = getSection(remoteContent, "pricing-hero");
@@ -806,6 +845,13 @@ export default function PricingPage() {
         ),
     }));
   }, [heroSection?.items]);
+  const customFeatureSections = useMemo(
+    () =>
+      (remoteContent?.sections ?? [])
+        .filter((section) => section.sectionType === PRICING_FEATURE_SECTION_TYPE)
+        .sort((a, b) => a.displayOrder - b.displayOrder),
+    [remoteContent?.sections],
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -815,7 +861,17 @@ export default function PricingPage() {
           remoteContent?.metaDescription ??
           "Compare the Altroz HRMS pricing plans in detail. See Basic, Professional and Premium pricing, feature coverage, and optional add-ons."
         }
-        canonicalPath={ROUTES.pricing}
+        canonicalPath={ROUTES.hrmsPricing}
+        image={remoteContent?.ogImage ?? undefined}
+        imageAlt={remoteContent?.ogImageAlt ?? undefined}
+        ogTitle={
+          remoteContent?.ogTitle ?? remoteContent?.metaTitle ?? "Pricing Plans | Altroz HRMS"
+        }
+        ogDescription={
+          remoteContent?.ogDescription ??
+          remoteContent?.metaDescription ??
+          "Compare the Altroz HRMS pricing plans in detail. See Basic, Professional and Premium pricing, feature coverage, and optional add-ons."
+        }
       />
       <TopNavbar />
       <MainNavbar />
@@ -847,8 +903,8 @@ export default function PricingPage() {
                 </Link>
                 <Link
                   to={
-                    ((heroSection?.settings?.secondaryButtonLink as string | undefined) ??
-                      ROUTES.contact)
+                    (heroSection?.settings?.secondaryButtonLink as string | undefined) ??
+                    ROUTES.hrmsContact
                   }
                   className="btn-outline"
                 >
@@ -879,11 +935,16 @@ export default function PricingPage() {
               <div className="relative rounded-xl border border-border bg-white p-5 shadow-float">
                 <div className="grid gap-4 md:grid-cols-3">
                   {activePlanCards.map((plan) => (
-                    <div key={plan.name} className="rounded-xl border border-border bg-white p-4 shadow-sm">
+                    <div
+                      key={plan.name}
+                      className="rounded-xl border border-border bg-white p-4 shadow-sm"
+                    >
                       <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                         {plan.name}
                       </div>
-                      <div className="mt-2 text-2xl font-black text-ink">₹{formatPrice(plan.price)}</div>
+                      <div className="mt-2 text-2xl font-black text-ink">
+                        ₹{formatPrice(plan.price)}
+                      </div>
                       <div className="mt-1 text-sm text-ink-soft">per employee / month</div>
                     </div>
                   ))}
@@ -970,20 +1031,26 @@ export default function PricingPage() {
             </div>
 
             <div className="mt-10 space-y-5">
-              {featureGroups.map((group) => (
-                <FeatureGroupCard key={group.title} group={group} />
-              ))}
+              {customFeatureSections.length
+                ? customFeatureSections.map((section) => (
+                    <PricingFeatureComparisonSection key={section.id} section={section} />
+                  ))
+                : featureGroups.map((group) => (
+                    <FeatureGroupCard key={group.title} group={group} />
+                  ))}
             </div>
           </div>
         </section>
 
-        <section className="py-14 sm:py-16 lg:py-20">
-          <div className="container-x">
-            <div>
-              <FeatureGroupCard group={addOnGroup} />
+        {!customFeatureSections.length ? (
+          <section className="py-14 sm:py-16 lg:py-20">
+            <div className="container-x">
+              <div>
+                <FeatureGroupCard group={addOnGroup} />
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : null}
 
         <section className="hero-gradient py-14 sm:py-16 lg:py-20">
           <div className="container-x">
@@ -997,8 +1064,8 @@ export default function PricingPage() {
                     Want a tailored walkthrough of your pricing and ROI numbers?
                   </h2>
                   <p className="mt-4 max-w-3xl text-base leading-7 text-ink-soft">
-                    The page now includes the pricing table and add-ons, giving a clear view of
-                    the plan structure before you request a tailored walkthrough.
+                    The page now includes the pricing table and add-ons, giving a clear view of the
+                    plan structure before you request a tailored walkthrough.
                   </p>
                 </div>
 
@@ -1007,7 +1074,7 @@ export default function PricingPage() {
                     Request a demo
                     <ArrowRight className="h-4 w-4" />
                   </Link>
-                  <Link to={ROUTES.contact} className="btn-outline">
+                  <Link to={ROUTES.hrmsContact} className="btn-outline">
                     Contact us
                   </Link>
                 </div>

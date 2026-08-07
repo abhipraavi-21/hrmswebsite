@@ -52,6 +52,10 @@ export function initPage(sequelize) {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
+      og_image_alt: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
       indexable: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

@@ -1150,7 +1150,7 @@ export default function BulkEmailSmtpPage() {
                     Book Free Demo
                   </Link>
                   <Link
-                    to={ROUTES.contact}
+                    to={ROUTES.bulkEmailContact}
                     className="inline-flex items-center rounded-lg border border-white/25 bg-white/10 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/15"
                   >
                     Talk to Our Experts

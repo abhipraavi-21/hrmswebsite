@@ -38,7 +38,7 @@ const hrFooterColumns = [
       { label: "Testimonials", href: ROUTES.testimonials },
       { label: "Careers", href: ROUTES.careers },
       { label: "Partner With Us", href: ROUTES.partner },
-      { label: "Contact Us", href: ROUTES.contact },
+      { label: "Contact Us", href: ROUTES.hrmsContact },
       { label: "Help Center", href: ROUTES.support },
     ],
   },
@@ -46,7 +46,7 @@ const hrFooterColumns = [
     title: "Resources",
     links: [
       { label: "Learn", href: ROUTES.learn },
-      { label: "Pricing", href: ROUTES.pricing },
+      { label: "Pricing", href: ROUTES.hrmsPricing },
       { label: "Industry Solutions", href: ROUTES.industrySolutions },
       { label: "HR Business Applications", href: ROUTES.businessApps },
       { label: "Employee Lifecycle", href: `${ROUTES.businessApps}#employee-lifecycle` },
@@ -91,7 +91,7 @@ const bulkEmailFooterColumns = [
   {
     title: "Support",
     links: [
-      { label: "Contact Us", href: ROUTES.bulkEmailContacts },
+      { label: "Contact Us", href: ROUTES.bulkEmailContact },
       { label: "Book Demo", href: ROUTES.bookDemo },
     ],
   },
@@ -130,7 +130,7 @@ const assetManagementFooterColumns = [
   {
     title: "Support",
     links: [
-      { label: "Contact Us", href: ROUTES.bulkEmailContacts },
+      { label: "Contact Us", href: ROUTES.assetManagementContact },
       { label: "Book Demo", href: ROUTES.bookDemo },
     ],
   },
@@ -145,7 +145,15 @@ const socialIcons = {
 
 export default function Footer() {
   const { pathname } = useLocation();
-  const isAssetManagementPage = pathname.startsWith("/bulk-email/asset-management");
+  const isAssetManagementPage =
+    pathname.startsWith(ROUTES.assetManagementHome) ||
+    pathname.startsWith(ROUTES.assetManagementContact) ||
+    pathname.startsWith(ROUTES.assetManagementGuide) ||
+    pathname.startsWith(ROUTES.assetManagementLearn) ||
+    pathname.startsWith(ROUTES.assetManagementBlog) ||
+    pathname.startsWith(ROUTES.assetManagementFaq) ||
+    pathname.startsWith(ROUTES.assetManagementPricing) ||
+    pathname.startsWith(ROUTES.bulkEmailAssetManagement);
   const isBulkEmailPage = pathname.startsWith("/bulk-email");
   const footerColumns = isAssetManagementPage
     ? assetManagementFooterColumns

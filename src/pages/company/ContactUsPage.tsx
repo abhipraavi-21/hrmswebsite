@@ -315,7 +315,7 @@ export default function ContactUsPage() {
         companyName: values.companyName,
         subject: values.enquiryType,
         message: values.message,
-        sourcePage: ROUTES.contact,
+        sourcePage: ROUTES.hrmsContact,
         extraData: {
           city: values.city,
           industry: values.industry,
@@ -365,7 +365,19 @@ export default function ContactUsPage() {
           remoteContent?.metaDescription ??
           "Contact Altroz HRMS for product demonstrations, HRMS consultation, attendance, payroll, employee management, implementation support, and customer enquiries."
         }
-        canonicalPath={ROUTES.contact}
+        canonicalPath={ROUTES.hrmsContact}
+        image={remoteContent?.ogImage ?? undefined}
+        imageAlt={remoteContent?.ogImageAlt ?? undefined}
+        ogTitle={
+          remoteContent?.ogTitle ??
+          remoteContent?.metaTitle ??
+          "Contact Altroz HRMS | Book a Demo or Sales Consultation"
+        }
+        ogDescription={
+          remoteContent?.ogDescription ??
+          remoteContent?.metaDescription ??
+          "Contact Altroz HRMS for product demonstrations, HRMS consultation, attendance, payroll, employee management, implementation support, and customer enquiries."
+        }
       />
       <TopNavbar />
       <MainNavbar />

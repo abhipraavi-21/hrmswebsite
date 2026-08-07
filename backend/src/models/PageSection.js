@@ -42,7 +42,15 @@ export function initPageSection(sequelize) {
         type: DataTypes.STRING(255),
         allowNull: true,
       },
+      image_alt: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
       background_image_url: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
+      background_image_alt: {
         type: DataTypes.STRING(255),
         allowNull: true,
       },

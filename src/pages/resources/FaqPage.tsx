@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import {
   ArrowRight,
@@ -21,7 +21,7 @@ import {
   Wallet,
   Workflow,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
@@ -30,16 +30,23 @@ import TopNavbar from "@/components/site/TopNavbar";
 import { usePublicContent } from "@/hooks/usePublicContent";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ROUTES } from "@/routes/routeConfig.js";
-import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
+import { ScrollReveal } from "@/components/site/ScrollReveal";
 import { faqPopularSearches, faqQuickLinks, faqSections } from "./faqData";
-import { getSection } from "@/services/cmsHelpers";
-import { fetchResourcePage } from "@/services/resourceService";
+import { getSection, getSectionItems } from "@/services/cmsHelpers";
+import { fetchPageByKey } from "@/services/pageService";
+import type { PublicCmsPage } from "@/services/cmsTypes";
 
-const pageTitle = "Altroz HR FAQs | Knowledge Base and Frequently Asked Questions";
-const pageDescription =
+const DEFAULT_PAGE_TITLE = "Altroz HR FAQs | Knowledge Base and Frequently Asked Questions";
+const DEFAULT_PAGE_DESCRIPTION =
   "Everything HR Managers, Business Owners, Startups, SMEs, Enterprises, Payroll Executives, Recruiters, and Operations Teams need to know about Altroz HR - the complete HR software for modern businesses.";
-
-const totalQuestions = faqSections.reduce((sum, section) => sum + section.items.length, 0);
+const DEFAULT_HERO_DESCRIPTION =
+  "Search our knowledge base or browse FAQs by category to get quick, clear answers about Altroz HR.";
+const DEFAULT_SEARCH_PLACEHOLDER =
+  "Search FAQs - e.g. 'leave approval', 'payroll', 'GPS attendance'...";
+const DEFAULT_CTA_HEADING =
+  "Our HR experts are here to help you choose the right modules for your business.";
+const DEFAULT_CTA_DESCRIPTION =
+  "Explore the right resources, compare topics, and jump into the pages that fit your next step best.";
 
 const sectionIconMap: Record<string, ReactNode> = {
   "General HR Software": <BookOpen className="h-5 w-5" />,
@@ -58,60 +65,235 @@ const sectionIconMap: Record<string, ReactNode> = {
   "Implementation & Security": <Building2 className="h-5 w-5" />,
 };
 
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+type FaqEntry = {
+  q: string;
+  a: string;
+};
+
+type FaqSectionView = {
+  title: string;
+  description?: string;
+  items: FaqEntry[];
+  ctaText?: string | null;
+  ctaLink?: string | null;
+};
+
+type QuickLink = {
+  label: string;
+  href: string;
+};
+
+type FaqPageConfig = {
+  pageKey: string;
+  canonicalPath: string;
+  fallbackPopularSearches: string[];
+  fallbackQuickLinks: QuickLink[];
+};
+
+const FALLBACK_FAQ_SECTIONS: FaqSectionView[] = faqSections.map((section) => ({
+  title: section.title,
+  items: section.items,
+}));
+
+const FAQ_PAGE_CONFIGS: Record<"default" | "hrms" | "bulkEmail" | "assetManagement", FaqPageConfig> = {
+  default: {
+    pageKey: "hrms-resource-faq",
+    canonicalPath: ROUTES.hrmsFaq,
+    fallbackPopularSearches: faqPopularSearches,
+    fallbackQuickLinks: faqQuickLinks,
+  },
+  hrms: {
+    pageKey: "hrms-resource-faq",
+    canonicalPath: ROUTES.hrmsFaq,
+    fallbackPopularSearches: faqPopularSearches,
+    fallbackQuickLinks: faqQuickLinks,
+  },
+  bulkEmail: {
+    pageKey: "bulk-email-resource-faq",
+    canonicalPath: ROUTES.bulkEmailFaq,
+    fallbackPopularSearches: [
+      "What is bulk email?",
+      "How does SMTP work?",
+      "Can I schedule campaigns?",
+    ],
+    fallbackQuickLinks: [
+      { label: "Learn", href: ROUTES.bulkEmailLearn },
+      { label: "Blog", href: ROUTES.bulkEmailBlog },
+      { label: "FAQs", href: ROUTES.bulkEmailFaq },
+      { label: "Help Center", href: ROUTES.support },
+    ],
+  },
+  assetManagement: {
+    pageKey: "asset-management-resource-faq",
+    canonicalPath: ROUTES.assetManagementFaq,
+    fallbackPopularSearches: [
+      "What is an asset register?",
+      "How do handovers work?",
+      "Can I track maintenance?",
+    ],
+    fallbackQuickLinks: [
+      { label: "Learn", href: ROUTES.assetManagementLearn },
+      { label: "Blog", href: ROUTES.assetManagementBlog },
+      { label: "FAQs", href: ROUTES.assetManagementFaq },
+      { label: "Help Center", href: ROUTES.support },
+    ],
+  },
+};
+
+function resolveFaqPageConfig(pathname: string) {
+  if (pathname.startsWith(ROUTES.bulkEmailFaq)) {
+    return FAQ_PAGE_CONFIGS.bulkEmail;
+  }
+
+  if (pathname.startsWith(ROUTES.assetManagementFaq)) {
+    return FAQ_PAGE_CONFIGS.assetManagement;
+  }
+
+  if (pathname.startsWith(ROUTES.hrmsFaq)) {
+    return FAQ_PAGE_CONFIGS.hrms;
+  }
+
+  return FAQ_PAGE_CONFIGS.default;
+}
+
+function buildCmsFaqSections(page: PublicCmsPage | null | undefined): FaqSectionView[] {
+  return (
+    page?.sections
+      .filter((section) => section.sectionType === "faq")
+      .map((section) => ({
+        title:
+          section.heading?.trim() ||
+          section.internalName?.trim() ||
+          section.subheading?.trim() ||
+          "Frequently Asked Questions",
+        description: section.description?.trim() || "",
+        ctaText: section.buttonText ?? null,
+        ctaLink: section.buttonLink ?? null,
+        items: getSectionItems(section, "faq")
+          .map((item) => ({
+            q: item.title?.trim() || "",
+            a: item.description?.trim() || "",
+          }))
+          .filter((item) => item.q && item.a),
+      }))
+      .filter((section) => section.items.length > 0) ?? []
+  );
+}
+
+function getStringArray(value: unknown, fallback: string[]) {
+  if (!Array.isArray(value)) {
+    return fallback;
+  }
+
+  const items = value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+  return items.length > 0 ? items : fallback;
 }
 
 function getSectionIcon(title: string) {
   return sectionIconMap[title] ?? <Sparkles className="h-5 w-5" />;
 }
 
-function SectionHeading({
-  eyebrow,
-  title,
-  description,
+function ActionLink({
+  href,
+  className,
+  children,
 }: {
-  eyebrow: string;
-  title: string;
-  description: string;
+  href: string;
+  className: string;
+  children: ReactNode;
 }) {
+  if (!href || href.startsWith("#")) {
+    return (
+      <a href={href || "#"} className={className}>
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <ScrollReveal className="mx-auto max-w-3xl text-center">
-      <div className="text-xs font-bold uppercase tracking-[0.26em] text-primary">{eyebrow}</div>
-      <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">{title}</h2>
-      <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">{description}</p>
-    </ScrollReveal>
+    <Link to={href} className={className}>
+      {children}
+    </Link>
   );
 }
 
 export default function FaqPage() {
-  const { data: remoteContent } = usePublicContent(() => fetchResourcePage("faq"));
-  const heroSection = getSection(remoteContent, "faq-hero");
+  const location = useLocation();
+  const pageConfig = resolveFaqPageConfig(location.pathname);
+  const { data: remoteContent } = usePublicContent(
+    () => fetchPageByKey(pageConfig.pageKey),
+    [pageConfig.pageKey],
+  );
   const [query, setQuery] = useState("");
-  const [activeSection, setActiveSection] = useState(faqSections[0]?.title ?? "");
-  const normalizedQuery = query.trim().toLowerCase();
-  const activeSectionData =
-    faqSections.find((section) => section.title === activeSection) ?? faqSections[0] ?? null;
+  const [activeSection, setActiveSection] = useState("");
 
+  const heroSection = getSection(remoteContent, "hero") ?? getSection(remoteContent, "faq-hero");
+  const quickLinksSection = getSection(remoteContent, "faq-quick-links");
+  const cmsFaqSections = buildCmsFaqSections(remoteContent);
+  const effectiveSections =
+    cmsFaqSections.length > 0
+      ? cmsFaqSections
+      : pageConfig.pageKey === FAQ_PAGE_CONFIGS.default.pageKey
+      ? FALLBACK_FAQ_SECTIONS
+      : [];
+  const activeSectionData =
+    effectiveSections.find((section) => section.title === activeSection) ?? effectiveSections[0] ?? null;
+  const normalizedQuery = query.trim().toLowerCase();
   const visibleItems = activeSectionData
     ? activeSectionData.items.filter((item) => {
-        if (!normalizedQuery) return true;
+        if (!normalizedQuery) {
+          return true;
+        }
 
         const haystack = `${item.q} ${item.a}`.toLowerCase();
         return haystack.includes(normalizedQuery);
       })
     : [];
-
   const visibleQuestions = visibleItems.length;
+  const totalQuestions = effectiveSections.reduce((sum, section) => sum + section.items.length, 0);
+  const totalCategories = effectiveSections.length;
+  const popularSearches = getStringArray(
+    heroSection?.settings?.popularSearches,
+    pageConfig.fallbackPopularSearches,
+  );
+  const quickLinks =
+    getSectionItems(quickLinksSection, "quick_link")
+      .map((item) => ({
+        label: item.title?.trim() || "",
+        href: item.buttonLink?.trim() || "",
+      }))
+      .filter((item) => item.label && item.href) ?? [];
+  const heroBadgeText = heroSection?.subheading ?? "Knowledge Base";
+  const heroTitle = heroSection?.heading ?? "How can we help you today?";
+  const heroDescription = heroSection?.description ?? DEFAULT_HERO_DESCRIPTION;
+  const heroSearchPlaceholder =
+    typeof heroSection?.settings?.placeholderText === "string"
+      ? heroSection.settings.placeholderText
+      : DEFAULT_SEARCH_PLACEHOLDER;
+  const heroButtonText = heroSection?.buttonText ?? "Browse Categories";
+  const heroButtonLink = heroSection?.buttonLink ?? "#faq-sections";
+  const ctaHeading = quickLinksSection?.heading ?? DEFAULT_CTA_HEADING;
+  const ctaDescription = quickLinksSection?.description ?? DEFAULT_CTA_DESCRIPTION;
+  const ctaButtonText = quickLinksSection?.buttonText ?? activeSectionData?.ctaText ?? "Book a Free Demo";
+  const ctaButtonLink = quickLinksSection?.buttonLink ?? activeSectionData?.ctaLink ?? ROUTES.bookDemo;
+  const seoTitle = remoteContent?.metaTitle ?? DEFAULT_PAGE_TITLE;
+  const seoDescription = remoteContent?.metaDescription ?? DEFAULT_PAGE_DESCRIPTION;
+  const seoOgTitle = remoteContent?.ogTitle ?? seoTitle;
+  const seoOgDescription = remoteContent?.ogDescription ?? seoDescription;
+  const faqUrl = resolveSiteUrl(pageConfig.canonicalPath);
 
-  function handleSectionSelect(sectionTitle: string) {
-    setActiveSection(sectionTitle);
-  }
+  useEffect(() => {
+    const firstSectionTitle = effectiveSections[0]?.title ?? "";
 
-  const faqUrl = resolveSiteUrl(ROUTES.faq);
+    if (!firstSectionTitle) {
+      setActiveSection("");
+      return;
+    }
+
+    if (!effectiveSections.some((section) => section.title === activeSection)) {
+      setActiveSection(firstSectionTitle);
+    }
+  }, [effectiveSections, activeSection]);
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -135,7 +317,7 @@ export default function FaqPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faqSections.flatMap((section) =>
+    mainEntity: effectiveSections.flatMap((section) =>
       section.items.map((item) => ({
         "@type": "Question",
         name: item.q,
@@ -150,11 +332,13 @@ export default function FaqPage() {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_36%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]">
       <PageSEO
-        title={remoteContent?.metaTitle ?? pageTitle}
-        description={remoteContent?.metaDescription ?? pageDescription}
-        canonicalPath={ROUTES.faq}
-        ogTitle="Altroz HR FAQs | Knowledge Base and Frequently Asked Questions"
-        ogDescription={pageDescription}
+        title={seoTitle}
+        description={seoDescription}
+        canonicalPath={pageConfig.canonicalPath}
+        ogTitle={seoOgTitle}
+        ogDescription={seoOgDescription}
+        image={remoteContent?.ogImage ?? undefined}
+        imageAlt={remoteContent?.ogImageAlt ?? undefined}
       />
       <TopNavbar />
       <MainNavbar />
@@ -165,15 +349,14 @@ export default function FaqPage() {
             <ScrollReveal className="mx-auto max-w-5xl text-center">
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                 <CircleHelp className="h-4 w-4" />
-                {heroSection?.subheading ?? "Knowledge Base"}
+                {heroBadgeText}
               </div>
 
               <h1 className="mt-5 text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">
-                {heroSection?.heading ?? "How can we help you today?"}
+                {heroTitle}
               </h1>
               <p className="mx-auto mt-5 max-w-4xl text-lg leading-8 text-ink-soft sm:text-xl">
-                {heroSection?.description ??
-                  "Search our knowledge base or browse FAQs by category to get quick, clear answers about Altroz HR."}
+                {heroDescription}
               </p>
 
               <div className="mx-auto mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row">
@@ -183,19 +366,19 @@ export default function FaqPage() {
                     type="search"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Search FAQs — e.g. 'leave approval', 'payroll', 'GPS attendance'..."
+                    placeholder={heroSearchPlaceholder}
                     aria-label="Search FAQs"
                     className="w-full border-0 bg-transparent p-0 text-sm text-ink placeholder:text-ink-soft/70 focus:outline-none focus:ring-0"
                   />
                 </label>
-                <a href="#faq-sections" className="btn-primary justify-center sm:w-auto">
-                  Browse Categories
-                </a>
+                <ActionLink href={heroButtonLink} className="btn-primary justify-center sm:w-auto">
+                  {heroButtonText}
+                </ActionLink>
               </div>
 
               <div className="mt-7 flex flex-wrap justify-center gap-3">
                 <div className="rounded-full border border-primary/10 bg-white px-4 py-2 text-sm font-semibold text-primary shadow-sm">
-                  {faqSections.length} categories
+                  {totalCategories} categories
                 </div>
                 <div className="rounded-full border border-primary/10 bg-white px-4 py-2 text-sm font-semibold text-primary shadow-sm">
                   {totalQuestions} FAQs
@@ -203,7 +386,7 @@ export default function FaqPage() {
               </div>
 
               <div className="mt-8 flex flex-wrap justify-center gap-2">
-                {faqPopularSearches.map((item) => (
+                {popularSearches.map((item) => (
                   <button
                     key={item}
                     type="button"
@@ -234,13 +417,14 @@ export default function FaqPage() {
                   </div>
 
                   <nav className="mt-5 space-y-2">
-                    {faqSections.map((section) => {
+                    {effectiveSections.map((section) => {
                       const isActive = activeSection === section.title;
+
                       return (
                         <button
                           key={section.title}
                           type="button"
-                          onClick={() => handleSectionSelect(section.title)}
+                          onClick={() => setActiveSection(section.title)}
                           className={`flex w-full items-center justify-between gap-3 rounded-2xl border bg-white px-4 py-3 text-left text-sm transition-all hover:border-primary/25 hover:text-primary ${
                             isActive
                               ? "border-primary/30 bg-primary-soft/50 shadow-[0_10px_24px_rgba(11,92,255,0.10)]"
@@ -268,6 +452,11 @@ export default function FaqPage() {
                       <h2 className="mt-2 text-2xl font-black tracking-tight text-ink sm:text-3xl">
                         {activeSectionData?.title ?? "Browse FAQs"}
                       </h2>
+                      {activeSectionData?.description ? (
+                        <p className="mt-3 max-w-2xl text-sm leading-7 text-ink-soft">
+                          {activeSectionData.description}
+                        </p>
+                      ) : null}
                     </div>
                     <p className="max-w-2xl text-sm leading-7 text-ink-soft">
                       {normalizedQuery
@@ -338,7 +527,20 @@ export default function FaqPage() {
                       </button>
                     </ScrollReveal>
                   )
-                ) : null}
+                ) : (
+                  <ScrollReveal className="rounded-[2rem] border border-border bg-white p-8 text-center shadow-float">
+                    <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft text-primary">
+                      <CircleHelp className="h-6 w-6" />
+                    </div>
+                    <h3 className="mt-5 text-2xl font-black tracking-tight text-ink">
+                      No FAQ topics are available yet
+                    </h3>
+                    <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-ink-soft">
+                      Add at least one FAQ section with question items in the admin panel to publish
+                      this page content.
+                    </p>
+                  </ScrollReveal>
+                )}
 
                 <ScrollReveal className="rounded-[2rem] border border-border bg-white p-6 shadow-float sm:p-8">
                   <div className="mx-auto max-w-5xl text-center">
@@ -346,19 +548,18 @@ export default function FaqPage() {
                       Still have questions?
                     </div>
                     <h2 className="mt-3 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                      Our HR experts are here to help you choose the right modules for your business.
+                      {ctaHeading}
                     </h2>
                     <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-ink-soft">
-                      Explore the right resources, compare topics, and jump into the pages that fit
-                      your next step best.
+                      {ctaDescription}
                     </p>
 
                     <div className="mx-auto mt-8 grid w-full max-w-4xl gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                      <Link to={ROUTES.bookDemo} className="btn-primary justify-center">
-                        Book a Free Demo
+                      <ActionLink href={ctaButtonLink} className="btn-primary justify-center">
+                        {ctaButtonText}
                         <ArrowRight className="h-4 w-4" />
-                      </Link>
-                      {faqQuickLinks.map((item) => (
+                      </ActionLink>
+                      {(quickLinks.length > 0 ? quickLinks : pageConfig.fallbackQuickLinks).map((item) => (
                         <Link
                           key={item.label}
                           to={item.href}

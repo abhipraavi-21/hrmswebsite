@@ -1014,7 +1014,7 @@ export default function BulkEmailAssetReportsPage() {
                     Book Free Demo
                     <ArrowRight className="h-4 w-4" />
                   </Link>
-                  <Link to={ROUTES.contact} className="btn-outline">
+                  <Link to={ROUTES.assetManagementContact} className="btn-outline">
                     Talk to Our Experts
                   </Link>
                 </div>
