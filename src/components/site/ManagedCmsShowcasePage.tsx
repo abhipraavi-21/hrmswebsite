@@ -27,6 +27,7 @@ import {
   BarChart3,
   BookOpen,
   BriefcaseBusiness,
+  Building2,
   CalendarClock,
   CalendarDays,
   CheckCircle2,
@@ -79,6 +80,7 @@ const iconMap = {
   BarChart3,
   BookOpen,
   BriefcaseBusiness,
+  Building2,
   CalendarClock,
   CalendarDays,
   CheckCircle2,
@@ -206,6 +208,31 @@ function SectionIntro({
   );
 }
 
+function SectionActions({ section }: { section: PublicCmsSection }) {
+  if (!section.buttonText && typeof section.settings?.secondaryButtonText !== "string") {
+    return null;
+  }
+
+  return (
+    <ScrollReveal className="mt-8 flex flex-wrap justify-center gap-3">
+      {section.buttonText ? (
+        <ActionLink href={section.buttonLink} className="btn-primary justify-center">
+          {section.buttonText}
+          <ArrowRight className="h-4 w-4" />
+        </ActionLink>
+      ) : null}
+      {typeof section.settings?.secondaryButtonText === "string" ? (
+        <ActionLink
+          href={(section.settings?.secondaryButtonLink as string | undefined) ?? "#"}
+          className="btn-outline justify-center"
+        >
+          {section.settings.secondaryButtonText}
+        </ActionLink>
+      ) : null}
+    </ScrollReveal>
+  );
+}
+
 function ItemFeatureList({ item }: { item: PublicCmsItem }) {
   const features = getStringList(item.extraData?.features);
 
@@ -260,7 +287,7 @@ function ContentSplitSection({ section }: { section: PublicCmsSection }) {
   const items = getSectionItems(section);
 
   return (
-    <section className="section">
+    <section id={section.sectionKey} className="section">
       <div className="site-container">
         <SectionIntro
           eyebrow={section.subheading}
@@ -308,6 +335,8 @@ function ContentSplitSection({ section }: { section: PublicCmsSection }) {
             );
           })}
         </div>
+
+        <SectionActions section={section} />
       </div>
     </section>
   );
@@ -321,7 +350,7 @@ function IconCardsSection({ section }: { section: PublicCmsSection }) {
   }
 
   return (
-    <section className="section">
+    <section id={section.sectionKey} className="section">
       <div className="site-container">
         <SectionIntro
           eyebrow={section.subheading}
@@ -341,6 +370,8 @@ function IconCardsSection({ section }: { section: PublicCmsSection }) {
             <InfoCard key={`${section.sectionKey}-${item.title}`} item={item} />
           ))}
         </StaggerReveal>
+
+        <SectionActions section={section} />
       </div>
     </section>
   );
@@ -354,7 +385,7 @@ function TimelineSection({ section }: { section: PublicCmsSection }) {
   }
 
   return (
-    <section className="section bg-white">
+    <section id={section.sectionKey} className="section bg-white">
       <div className="site-container">
         <SectionIntro
           eyebrow={section.subheading}
@@ -395,6 +426,159 @@ function TimelineSection({ section }: { section: PublicCmsSection }) {
   );
 }
 
+function ComparisonTableSection({ section }: { section: PublicCmsSection }) {
+  const items = getSectionItems(section);
+  const headers = getStringList(section.settings?.headers);
+  const firstHeader = headers[0] ?? "Manual Spreadsheet";
+  const secondHeader = headers[1] ?? "Digital Asset Management Platform";
+  const usesDynamicColumns =
+    headers.length > 2 || items.some((item) => Array.isArray(item.extraData?.values));
+
+  if (items.length === 0) {
+    return null;
+  }
+
+  if (usesDynamicColumns) {
+    const tableHeaders = headers.length > 0 ? headers : ["Item", "Details"];
+    const gridTemplateColumns = `minmax(220px, 1.2fr) repeat(${Math.max(
+      0,
+      tableHeaders.length - 1,
+    )}, minmax(150px, 1fr))`;
+    const minWidth = Math.max(720, 220 + tableHeaders.length * 160);
+
+    return (
+      <section id={section.sectionKey} className="section bg-white">
+        <div className="site-container">
+          <SectionIntro
+            eyebrow={section.subheading}
+            title={section.heading}
+            description={section.description}
+            centered
+          />
+
+          <ScrollReveal className="mt-8 overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
+            <div className="overflow-x-auto">
+              <div style={{ minWidth }}>
+                <div
+                  className="grid bg-slate-950 text-xs font-black uppercase tracking-[0.16em] text-white"
+                  style={{ gridTemplateColumns }}
+                >
+                  {tableHeaders.map((header) => (
+                    <div
+                      key={header}
+                      className="border-r border-white/10 px-5 py-4 last:border-r-0"
+                    >
+                      {header}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="divide-y divide-border">
+                  {items.map((item) => {
+                    const values = Array.isArray(item.extraData?.values)
+                      ? item.extraData.values.map((value) => String(value ?? ""))
+                      : [item.description ?? ""];
+                    const rowValues = tableHeaders.slice(1).map((_, index) => values[index] ?? "");
+
+                    return (
+                      <div
+                        key={`${section.sectionKey}-${item.id}`}
+                        className="grid bg-white text-sm leading-7"
+                        style={{ gridTemplateColumns }}
+                      >
+                        <div className="border-r border-border px-5 py-4 font-semibold text-ink">
+                          {item.title}
+                        </div>
+                        {rowValues.map((value, index) => (
+                          <div
+                            key={`${section.sectionKey}-${item.id}-${index}`}
+                            className="border-r border-border px-5 py-4 text-ink-soft last:border-r-0"
+                          >
+                            {value}
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section id={section.sectionKey} className="section bg-white">
+      <div className="site-container">
+        <SectionIntro
+          eyebrow={section.subheading}
+          title={section.heading}
+          description={section.description}
+          centered
+        />
+
+        <ScrollReveal className="mt-8 overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
+          <div className="grid bg-slate-950 text-sm font-black uppercase tracking-[0.16em] text-white sm:grid-cols-2">
+            <div className="border-b border-white/10 px-5 py-4 sm:border-b-0 sm:border-r">
+              {firstHeader}
+            </div>
+            <div className="px-5 py-4">{secondHeader}</div>
+          </div>
+
+          <div className="divide-y divide-border">
+            {items.map((item) => (
+              <div
+                key={`${section.sectionKey}-${item.id}`}
+                className="grid gap-0 bg-white text-sm leading-7 sm:grid-cols-2"
+              >
+                <div className="border-b border-border px-5 py-4 font-semibold text-ink sm:border-b-0 sm:border-r">
+                  {item.title}
+                </div>
+                <div className="px-5 py-4 text-ink-soft">{item.description}</div>
+              </div>
+            ))}
+          </div>
+        </ScrollReveal>
+      </div>
+    </section>
+  );
+}
+
+function ChecklistSection({ section }: { section: PublicCmsSection }) {
+  const items = getSectionItems(section);
+
+  if (items.length === 0) {
+    return null;
+  }
+
+  return (
+    <section id={section.sectionKey} className="section bg-surface">
+      <div className="site-container">
+        <SectionIntro
+          eyebrow={section.subheading}
+          title={section.heading}
+          description={section.description}
+          centered
+        />
+
+        <StaggerReveal className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" step={25}>
+          {items.map((item) => (
+            <div
+              key={`${section.sectionKey}-${item.id}`}
+              className="flex items-start gap-3 rounded-2xl border border-border bg-white p-4 shadow-sm"
+            >
+              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-success" />
+              <span className="text-sm font-semibold leading-7 text-ink">{item.title}</span>
+            </div>
+          ))}
+        </StaggerReveal>
+      </div>
+    </section>
+  );
+}
+
 function FaqSection({ section }: { section: PublicCmsSection }) {
   const items = getSectionItems(section, "faq");
 
@@ -403,7 +587,7 @@ function FaqSection({ section }: { section: PublicCmsSection }) {
   }
 
   return (
-    <section className="section">
+    <section id={section.sectionKey} className="section">
       <div className="site-container">
         <SectionIntro
           eyebrow={section.subheading}
@@ -465,7 +649,7 @@ function FaqSection({ section }: { section: PublicCmsSection }) {
 
 function CtaSection({ section }: { section: PublicCmsSection }) {
   return (
-    <section className="hero-gradient py-14 sm:py-16 lg:py-20">
+    <section id={section.sectionKey} className="hero-gradient py-14 sm:py-16 lg:py-20">
       <div className="site-container">
         <div className="rounded-[2rem] border border-border bg-white p-8 shadow-float md:p-10">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
@@ -514,7 +698,7 @@ function SectionRenderer({ section }: { section: PublicCmsSection }) {
   switch (section.sectionType) {
     case PRICING_FEATURE_SECTION_TYPE:
       return (
-        <section className="section bg-surface">
+        <section id={section.sectionKey} className="section bg-surface">
           <div className="site-container">
             <PricingFeatureComparisonSection section={section} />
           </div>
@@ -526,6 +710,10 @@ function SectionRenderer({ section }: { section: PublicCmsSection }) {
       return <IconCardsSection section={section} />;
     case "timeline":
       return <TimelineSection section={section} />;
+    case "comparison_table":
+      return <ComparisonTableSection section={section} />;
+    case "checklist":
+      return <ChecklistSection section={section} />;
     case "faq":
       return <FaqSection section={section} />;
     case "cta_banner":
@@ -693,7 +881,7 @@ export default function ManagedCmsShowcasePage({
       <PageSEO
         title={remoteContent?.metaTitle ?? fallbackTitle}
         description={remoteContent?.metaDescription ?? fallbackDescription}
-        canonicalPath={canonicalPath}
+        canonicalPath={remoteContent?.canonicalUrl ?? canonicalPath}
         image={remoteContent?.ogImage ?? undefined}
         imageAlt={remoteContent?.ogImageAlt ?? undefined}
         ogTitle={remoteContent?.ogTitle ?? remoteContent?.metaTitle ?? fallbackTitle}

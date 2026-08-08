@@ -9,8 +9,8 @@ export default function AssetManagementGuidePage() {
       pageKey="asset-management-guide"
       canonicalPath={location.pathname}
       navbarVariant="assetManagement"
-      fallbackTitle="Asset Management Guide for Registers, Tracking and Maintenance | Altroz"
-      fallbackDescription="Explore a practical asset management guide covering registration, assignment, movement, maintenance, QR workflows and reporting."
+      fallbackTitle="Asset Management Guide | Complete Business Guide 2026"
+      fallbackDescription="Learn asset management, tracking, maintenance, QR Codes, lifecycle management, reporting, audits, and best practices for modern businesses."
     />
   );
 }

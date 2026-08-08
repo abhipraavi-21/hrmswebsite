@@ -61,6 +61,8 @@ const FIELD_LABEL_OVERRIDES: Record<string, string> = {
   calculatorTicks: "Calculator steps",
   defaultEmployeeCount: "Default employee count",
   planColumns: "Plan columns",
+  headers: "Table headers",
+  values: "Table row values",
 };
 
 const createBlankSection = (): Partial<CmsSection> => ({

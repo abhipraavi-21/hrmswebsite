@@ -786,8 +786,8 @@ export default function PricingPage() {
         pageKey="asset-management-pricing"
         canonicalPath={location.pathname}
         navbarVariant="assetManagement"
-        fallbackTitle="Asset Management Pricing Page | Altroz Asset Management"
-        fallbackDescription="Show editable asset-management pricing details for registration, tracking, maintenance, QR workflows, reports and onboarding coverage."
+        fallbackTitle="Altroz Asset Management Pricing - Plans for Up to 2,000 Assets"
+        fallbackDescription="Explore Altroz Asset Management pricing plans for businesses managing up to 2,000 assets. Compare annual plans and book a demo."
       />
     );
   }

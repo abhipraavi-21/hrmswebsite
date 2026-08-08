@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import {
   ArrowRight,
@@ -13,6 +13,7 @@ import {
   DoorOpen,
   Laptop2,
   Package,
+  QrCode,
   Search,
   ShieldCheck,
   Sparkles,
@@ -28,7 +29,12 @@ import PageSEO from "@/components/site/PageSEO";
 import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
 import { usePublicContent } from "@/hooks/usePublicContent";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { ScrollReveal } from "@/components/site/ScrollReveal";
 import { faqPopularSearches, faqQuickLinks, faqSections } from "./faqData";
@@ -63,6 +69,20 @@ const sectionIconMap: Record<string, ReactNode> = {
   Compliance: <ShieldCheck className="h-5 w-5" />,
   "Employee Lifecycle & Exit Management": <DoorOpen className="h-5 w-5" />,
   "Implementation & Security": <Building2 className="h-5 w-5" />,
+  "General Asset Management FAQs": <BookOpen className="h-5 w-5" />,
+  "Altroz Asset Management FAQs": <Package className="h-5 w-5" />,
+  "Asset Tracking FAQs": <Search className="h-5 w-5" />,
+  "QR Code Asset Management FAQs": <QrCode className="h-5 w-5" />,
+  "Asset Maintenance FAQs": <Workflow className="h-5 w-5" />,
+  "Asset Reports FAQs": <ChartColumn className="h-5 w-5" />,
+  "Asset Dashboard FAQs": <Building2 className="h-5 w-5" />,
+  "IT Asset Management FAQs": <Laptop2 className="h-5 w-5" />,
+  "Manufacturing Asset Management FAQs": <Building2 className="h-5 w-5" />,
+  "Asset Assignment FAQs": <Users className="h-5 w-5" />,
+  "Warranty & Service FAQs": <ShieldCheck className="h-5 w-5" />,
+  "Security & Access FAQs": <ShieldCheck className="h-5 w-5" />,
+  "Implementation & Support FAQs": <Workflow className="h-5 w-5" />,
+  "Pricing & Demo FAQs": <Wallet className="h-5 w-5" />,
 };
 
 type FaqEntry = {
@@ -95,7 +115,10 @@ const FALLBACK_FAQ_SECTIONS: FaqSectionView[] = faqSections.map((section) => ({
   items: section.items,
 }));
 
-const FAQ_PAGE_CONFIGS: Record<"default" | "hrms" | "bulkEmail" | "assetManagement", FaqPageConfig> = {
+const FAQ_PAGE_CONFIGS: Record<
+  "default" | "hrms" | "bulkEmail" | "assetManagement",
+  FaqPageConfig
+> = {
   default: {
     pageKey: "hrms-resource-faq",
     canonicalPath: ROUTES.hrmsFaq,
@@ -185,7 +208,9 @@ function getStringArray(value: unknown, fallback: string[]) {
     return fallback;
   }
 
-  const items = value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+  const items = value.filter(
+    (item): item is string => typeof item === "string" && item.trim().length > 0,
+  );
   return items.length > 0 ? items : fallback;
 }
 
@@ -229,15 +254,19 @@ export default function FaqPage() {
 
   const heroSection = getSection(remoteContent, "hero") ?? getSection(remoteContent, "faq-hero");
   const quickLinksSection = getSection(remoteContent, "faq-quick-links");
-  const cmsFaqSections = buildCmsFaqSections(remoteContent);
-  const effectiveSections =
-    cmsFaqSections.length > 0
-      ? cmsFaqSections
-      : pageConfig.pageKey === FAQ_PAGE_CONFIGS.default.pageKey
-      ? FALLBACK_FAQ_SECTIONS
-      : [];
+  const finalCtaSection = getSection(remoteContent, "faq-final-cta");
+  const cmsFaqSections = useMemo(() => buildCmsFaqSections(remoteContent), [remoteContent]);
+  const effectiveSections = useMemo(() => {
+    if (cmsFaqSections.length > 0) {
+      return cmsFaqSections;
+    }
+
+    return pageConfig.pageKey === FAQ_PAGE_CONFIGS.default.pageKey ? FALLBACK_FAQ_SECTIONS : [];
+  }, [cmsFaqSections, pageConfig.pageKey]);
   const activeSectionData =
-    effectiveSections.find((section) => section.title === activeSection) ?? effectiveSections[0] ?? null;
+    effectiveSections.find((section) => section.title === activeSection) ??
+    effectiveSections[0] ??
+    null;
   const normalizedQuery = query.trim().toLowerCase();
   const visibleItems = activeSectionData
     ? activeSectionData.items.filter((item) => {
@@ -272,15 +301,33 @@ export default function FaqPage() {
       : DEFAULT_SEARCH_PLACEHOLDER;
   const heroButtonText = heroSection?.buttonText ?? "Browse Categories";
   const heroButtonLink = heroSection?.buttonLink ?? "#faq-sections";
+  const heroSecondaryButtonText =
+    typeof heroSection?.settings?.secondaryButtonText === "string"
+      ? heroSection.settings.secondaryButtonText
+      : "";
+  const heroSecondaryButtonLink =
+    typeof heroSection?.settings?.secondaryButtonLink === "string"
+      ? heroSection.settings.secondaryButtonLink
+      : ROUTES.assetManagementHome;
   const ctaHeading = quickLinksSection?.heading ?? DEFAULT_CTA_HEADING;
   const ctaDescription = quickLinksSection?.description ?? DEFAULT_CTA_DESCRIPTION;
-  const ctaButtonText = quickLinksSection?.buttonText ?? activeSectionData?.ctaText ?? "Book a Free Demo";
-  const ctaButtonLink = quickLinksSection?.buttonLink ?? activeSectionData?.ctaLink ?? ROUTES.bookDemo;
+  const ctaButtonText =
+    quickLinksSection?.buttonText ?? activeSectionData?.ctaText ?? "Book a Free Demo";
+  const ctaButtonLink =
+    quickLinksSection?.buttonLink ?? activeSectionData?.ctaLink ?? ROUTES.bookDemo;
+  const finalCtaSecondaryButtonText =
+    typeof finalCtaSection?.settings?.secondaryButtonText === "string"
+      ? finalCtaSection.settings.secondaryButtonText
+      : "";
+  const finalCtaSecondaryButtonLink =
+    typeof finalCtaSection?.settings?.secondaryButtonLink === "string"
+      ? finalCtaSection.settings.secondaryButtonLink
+      : ROUTES.assetManagementContact;
   const seoTitle = remoteContent?.metaTitle ?? DEFAULT_PAGE_TITLE;
   const seoDescription = remoteContent?.metaDescription ?? DEFAULT_PAGE_DESCRIPTION;
   const seoOgTitle = remoteContent?.ogTitle ?? seoTitle;
   const seoOgDescription = remoteContent?.ogDescription ?? seoDescription;
-  const faqUrl = resolveSiteUrl(pageConfig.canonicalPath);
+  const faqUrl = resolveSiteUrl(remoteContent?.canonicalUrl ?? pageConfig.canonicalPath);
 
   useEffect(() => {
     const firstSectionTitle = effectiveSections[0]?.title ?? "";
@@ -334,7 +381,7 @@ export default function FaqPage() {
       <PageSEO
         title={seoTitle}
         description={seoDescription}
-        canonicalPath={pageConfig.canonicalPath}
+        canonicalPath={remoteContent?.canonicalUrl ?? pageConfig.canonicalPath}
         ogTitle={seoOgTitle}
         ogDescription={seoOgDescription}
         image={remoteContent?.ogImage ?? undefined}
@@ -359,7 +406,7 @@ export default function FaqPage() {
                 {heroDescription}
               </p>
 
-              <div className="mx-auto mt-8 flex max-w-2xl flex-col gap-3 sm:flex-row">
+              <div className="mx-auto mt-8 flex max-w-3xl flex-col gap-3 sm:flex-row">
                 <label className="flex h-12 flex-1 items-center gap-3 rounded-full border border-border bg-white px-4 shadow-sm transition-shadow focus-within:shadow-[0_18px_40px_rgba(11,92,255,0.12)]">
                   <Search className="h-4 w-4 shrink-0 text-primary" />
                   <input
@@ -374,6 +421,14 @@ export default function FaqPage() {
                 <ActionLink href={heroButtonLink} className="btn-primary justify-center sm:w-auto">
                   {heroButtonText}
                 </ActionLink>
+                {heroSecondaryButtonText ? (
+                  <ActionLink
+                    href={heroSecondaryButtonLink}
+                    className="btn-outline justify-center sm:w-auto"
+                  >
+                    {heroSecondaryButtonText}
+                  </ActionLink>
+                ) : null}
               </div>
 
               <div className="mt-7 flex flex-wrap justify-center gap-3">
@@ -410,7 +465,9 @@ export default function FaqPage() {
                     <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                       Category Navigation
                     </div>
-                    <h2 className="mt-2 text-xl font-black tracking-tight text-ink">Pick a topic</h2>
+                    <h2 className="mt-2 text-xl font-black tracking-tight text-ink">
+                      Pick a topic
+                    </h2>
                     <p className="mt-2 text-sm leading-7 text-ink-soft">
                       Keep this list open while the right side updates to the topic you select.
                     </p>
@@ -507,13 +564,27 @@ export default function FaqPage() {
                           ))}
                         </Accordion>
                       </div>
+
+                      {activeSectionData.ctaText && activeSectionData.ctaLink ? (
+                        <div className="mt-6 flex justify-end">
+                          <ActionLink
+                            href={activeSectionData.ctaLink}
+                            className="btn-outline justify-center"
+                          >
+                            {activeSectionData.ctaText}
+                            <ArrowRight className="h-4 w-4" />
+                          </ActionLink>
+                        </div>
+                      ) : null}
                     </ScrollReveal>
                   ) : (
                     <ScrollReveal className="rounded-[2rem] border border-border bg-white p-8 text-center shadow-float">
                       <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft text-primary">
                         <Search className="h-6 w-6" />
                       </div>
-                      <h3 className="mt-5 text-2xl font-black tracking-tight text-ink">No matches found</h3>
+                      <h3 className="mt-5 text-2xl font-black tracking-tight text-ink">
+                        No matches found
+                      </h3>
                       <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-ink-soft">
                         Try a different keyword, or clear the search to see every question in this
                         category.
@@ -559,18 +630,58 @@ export default function FaqPage() {
                         {ctaButtonText}
                         <ArrowRight className="h-4 w-4" />
                       </ActionLink>
-                      {(quickLinks.length > 0 ? quickLinks : pageConfig.fallbackQuickLinks).map((item) => (
-                        <Link
-                          key={item.label}
-                          to={item.href}
-                          className="btn-outline justify-center px-4 py-2 text-sm"
-                        >
-                          {item.label}
-                        </Link>
-                      ))}
+                      {(quickLinks.length > 0 ? quickLinks : pageConfig.fallbackQuickLinks).map(
+                        (item) => (
+                          <Link
+                            key={item.label}
+                            to={item.href}
+                            className="btn-outline justify-center px-4 py-2 text-sm"
+                          >
+                            {item.label}
+                          </Link>
+                        ),
+                      )}
                     </div>
                   </div>
                 </ScrollReveal>
+
+                {finalCtaSection ? (
+                  <ScrollReveal className="overflow-hidden rounded-[2.25rem] border border-primary/15 bg-[radial-gradient(circle_at_top_left,_rgba(20,184,166,0.18),_transparent_34%),linear-gradient(135deg,_#071a35_0%,_#0b5cff_100%)] p-8 text-white shadow-float sm:p-10">
+                    <div className="mx-auto max-w-4xl text-center">
+                      {finalCtaSection.subheading ? (
+                        <div className="text-xs font-bold uppercase tracking-[0.24em] text-white/75">
+                          {finalCtaSection.subheading}
+                        </div>
+                      ) : null}
+                      <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
+                        {finalCtaSection.heading}
+                      </h2>
+                      {finalCtaSection.description ? (
+                        <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-white/80">
+                          {finalCtaSection.description}
+                        </p>
+                      ) : null}
+
+                      <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+                        <ActionLink
+                          href={finalCtaSection.buttonLink ?? ROUTES.bookDemo}
+                          className="btn-primary justify-center bg-white text-primary hover:bg-white/90"
+                        >
+                          {finalCtaSection.buttonText ?? "Book a Demo"}
+                          <ArrowRight className="h-4 w-4" />
+                        </ActionLink>
+                        {finalCtaSecondaryButtonText ? (
+                          <ActionLink
+                            href={finalCtaSecondaryButtonLink}
+                            className="inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-full border border-white/35 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                          >
+                            {finalCtaSecondaryButtonText}
+                          </ActionLink>
+                        ) : null}
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                ) : null}
               </div>
             </div>
           </div>

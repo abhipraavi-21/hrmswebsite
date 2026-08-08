@@ -1,4 +1,5 @@
 import { ROUTES } from "../../src/routes/routeConfig.js";
+import { assetManagementFaqSeedCategories } from "../assetManagementFaqSections.js";
 import { blogSeedPosts } from "../blog/index.js";
 import { hrmsPricingFeatureSections } from "../pricingFeatureSections.js";
 
@@ -60,6 +61,9 @@ const createManagedCmsPage = ({
   title,
   description,
   keywords,
+  canonicalUrl,
+  ogTitle,
+  ogDescription,
   heroEyebrow,
   heroTitle,
   heroDescription,
@@ -77,29 +81,27 @@ const createManagedCmsPage = ({
     title,
     description,
     keywords,
-    canonicalUrl: route,
-    ogTitle: title,
-    ogDescription: description,
+    canonicalUrl: canonicalUrl ?? route,
+    ogTitle: ogTitle ?? title,
+    ogDescription: ogDescription ?? description,
   }),
-  sections:
-    sections ??
-    [
-      {
-        sectionKey: "hero",
-        sectionType: "hero",
-        internalName: "Hero",
-        heading: heroTitle,
-        subheading: heroEyebrow,
-        description: heroDescription,
-        buttonText,
-        buttonLink,
-        isRequired: true,
-        settings: {
-          secondaryButtonText,
-          secondaryButtonLink: secondaryButtonLink ?? route,
-        },
+  sections: sections ?? [
+    {
+      sectionKey: "hero",
+      sectionType: "hero",
+      internalName: "Hero",
+      heading: heroTitle,
+      subheading: heroEyebrow,
+      description: heroDescription,
+      buttonText,
+      buttonLink,
+      isRequired: true,
+      settings: {
+        secondaryButtonText,
+        secondaryButtonLink: secondaryButtonLink ?? route,
       },
-    ],
+    },
+  ],
 });
 
 const createHeroSection = ({
@@ -131,6 +133,9 @@ const createIconCardsSection = ({
   heading,
   subheading,
   description,
+  buttonText,
+  buttonLink,
+  settings = {},
   items = [],
 }) => ({
   sectionKey,
@@ -139,6 +144,89 @@ const createIconCardsSection = ({
   heading,
   subheading,
   description,
+  buttonText,
+  buttonLink,
+  settings,
+  items,
+});
+
+const createContentSplitSection = ({
+  sectionKey,
+  internalName,
+  heading,
+  subheading,
+  description,
+  buttonText,
+  buttonLink,
+  settings = {},
+  items = [],
+}) => ({
+  sectionKey,
+  sectionType: "content_split",
+  internalName,
+  heading,
+  subheading,
+  description,
+  buttonText,
+  buttonLink,
+  settings,
+  items,
+});
+
+const createTimelineSection = ({
+  sectionKey,
+  internalName,
+  heading,
+  subheading,
+  description,
+  settings = {},
+  items = [],
+}) => ({
+  sectionKey,
+  sectionType: "timeline",
+  internalName,
+  heading,
+  subheading,
+  description,
+  settings,
+  items,
+});
+
+const createComparisonTableSection = ({
+  sectionKey,
+  internalName,
+  heading,
+  subheading,
+  description,
+  settings = {},
+  items = [],
+}) => ({
+  sectionKey,
+  sectionType: "comparison_table",
+  internalName,
+  heading,
+  subheading,
+  description,
+  settings,
+  items,
+});
+
+const createChecklistSection = ({
+  sectionKey,
+  internalName,
+  heading,
+  subheading,
+  description,
+  settings = {},
+  items = [],
+}) => ({
+  sectionKey,
+  sectionType: "checklist",
+  internalName,
+  heading,
+  subheading,
+  description,
+  settings,
   items,
 });
 
@@ -184,6 +272,38 @@ const createCtaSection = ({
   settings,
 });
 
+const assetManagementFaqRelatedRoutes = {
+  "Read the Asset Management Guide": ROUTES.assetManagementGuide,
+  "Explore Altroz Asset Management": ROUTES.assetManagementHome,
+  "Explore Asset Tracking": ROUTES.bulkEmailAssetTracking,
+  "Explore QR Code Asset Management": ROUTES.bulkEmailAssetQrCode,
+  "Explore Asset Maintenance": ROUTES.bulkEmailAssetMaintenance,
+  "Explore Asset Reports": ROUTES.bulkEmailAssetReports,
+  "Explore the Asset Dashboard": ROUTES.bulkEmailAssetDashboard,
+  "Explore IT Asset Management": ROUTES.bulkEmailAssetDashboard,
+  "Explore Manufacturing Asset Management": ROUTES.bulkEmailAssetTracking,
+  "Contact Us": ROUTES.assetManagementContact,
+  "Book a Demo": ROUTES.bookDemo,
+};
+
+const createAssetManagementFaqSections = () =>
+  assetManagementFaqSeedCategories.map((category) =>
+    createFaqSection({
+      sectionKey: `asset-faq-${category.slug}`,
+      internalName: category.title,
+      heading: category.title,
+      subheading: "Asset Management FAQs",
+      description: category.description,
+      buttonText: category.relatedLabel || "Book a Demo",
+      buttonLink: assetManagementFaqRelatedRoutes[category.relatedLabel] ?? ROUTES.bookDemo,
+      items: category.items.map((item) => ({
+        itemType: "faq",
+        title: item.question,
+        description: item.answer,
+      })),
+    }),
+  );
+
 const featuredHrmsBlogPost =
   blogSeedPosts.find((post) => post.blogGroup === "hrms") ?? blogSeedPosts[0] ?? null;
 
@@ -210,48 +330,47 @@ function getHrmsRelatedLinkIcon(label) {
 }
 
 function createHrmsBlogLandingSections({ blogPath = ROUTES.blog } = {}) {
-  const featuredPost =
-    featuredHrmsBlogPost ??
-    {
-      slug: "what-is-hrms",
-      title: "What is HRMS? The Complete Guide for Indian Businesses (2026)",
-      description:
-        "A practical, in-depth resource on Human Resource Management Systems - what they are, how they work, why Indian businesses need them, and how to choose one.",
-      heroSummary:
-        "HRMS centralises the employee lifecycle from hiring to exit, giving HR teams one source of truth instead of juggling spreadsheets, biometric exports, emails, and paper files.",
-      quickAnswer:
-        "HRMS is software that helps businesses manage employee records, attendance, leave, payroll, recruitment, performance, and reporting in one place.",
-      heroPoints: [
-        "Manage the full employee lifecycle from hire to exit in one system",
-        "Automate attendance, leave, payroll, and document workflows",
-        "Reduce compliance risk and manual re-entry as headcount grows",
-        "Give employees self-service access to their own records and payslips",
-      ],
-      relatedLinks: [
-        {
-          label: "Employee Management",
-          href: ROUTES.coreHR,
-          description: "See how employee profiles, documents, and records are managed in Altroz HR.",
-        },
-        {
-          label: "Attendance Management",
-          href: ROUTES.attendanceManagement,
-          description: "Explore attendance tracking, shifts, and approvals connected to HRMS workflows.",
-        },
-        {
-          label: "Payroll",
-          href: ROUTES.payroll,
-          description: "See how payroll fits into the broader HRMS workflow.",
-        },
-        {
-          label: "Compliance Guides",
-          href: ROUTES.complianceGuides,
-          description: "Read more about statutory HR topics that an HRMS helps support.",
-        },
-      ],
-      coverImage: fallbackHrmsBlogCoverImage,
-      readingTimeLabel: "~24 min read",
-    };
+  const featuredPost = featuredHrmsBlogPost ?? {
+    slug: "what-is-hrms",
+    title: "What is HRMS? The Complete Guide for Indian Businesses (2026)",
+    description:
+      "A practical, in-depth resource on Human Resource Management Systems - what they are, how they work, why Indian businesses need them, and how to choose one.",
+    heroSummary:
+      "HRMS centralises the employee lifecycle from hiring to exit, giving HR teams one source of truth instead of juggling spreadsheets, biometric exports, emails, and paper files.",
+    quickAnswer:
+      "HRMS is software that helps businesses manage employee records, attendance, leave, payroll, recruitment, performance, and reporting in one place.",
+    heroPoints: [
+      "Manage the full employee lifecycle from hire to exit in one system",
+      "Automate attendance, leave, payroll, and document workflows",
+      "Reduce compliance risk and manual re-entry as headcount grows",
+      "Give employees self-service access to their own records and payslips",
+    ],
+    relatedLinks: [
+      {
+        label: "Employee Management",
+        href: ROUTES.coreHR,
+        description: "See how employee profiles, documents, and records are managed in Altroz HR.",
+      },
+      {
+        label: "Attendance Management",
+        href: ROUTES.attendanceManagement,
+        description:
+          "Explore attendance tracking, shifts, and approvals connected to HRMS workflows.",
+      },
+      {
+        label: "Payroll",
+        href: ROUTES.payroll,
+        description: "See how payroll fits into the broader HRMS workflow.",
+      },
+      {
+        label: "Compliance Guides",
+        href: ROUTES.complianceGuides,
+        description: "Read more about statutory HR topics that an HRMS helps support.",
+      },
+    ],
+    coverImage: fallbackHrmsBlogCoverImage,
+    readingTimeLabel: "~24 min read",
+  };
 
   const featuredPostPath = getBlogPostPath(blogPath, featuredPost.slug);
 
@@ -356,7 +475,8 @@ function createHrmsBlogLandingSections({ blogPath = ROUTES.blog } = {}) {
       imageUrl: featuredPost.coverImage ?? fallbackHrmsBlogCoverImage,
       settings: {
         badgeText: "HRMS",
-        caption: "Use this block for a dashboard image, two quick feature cards, and one fast answer panel.",
+        caption:
+          "Use this block for a dashboard image, two quick feature cards, and one fast answer panel.",
       },
       items: [
         {
@@ -450,8 +570,7 @@ const bulkEmailManagedSections = [
       {
         itemType: "value_card",
         title: "What it does",
-        subtitle:
-          "Bulk email broadcasting, scheduling and delivery tracking from one dashboard",
+        subtitle: "Bulk email broadcasting, scheduling and delivery tracking from one dashboard",
         description: "One workspace for campaigns, queue visibility and campaign history.",
       },
       {
@@ -717,8 +836,7 @@ const bulkEmailManagedSections = [
       {
         itemType: "feature_card",
         title: "Templates",
-        description:
-          "Use built-in email templates or upload your own HTML email design.",
+        description: "Use built-in email templates or upload your own HTML email design.",
         icon: "FileText",
       },
       {
@@ -738,15 +856,13 @@ const bulkEmailManagedSections = [
       {
         itemType: "feature_card",
         title: "SMTP Configuration",
-        description:
-          "Configure your own SMTP and sender email settings for outgoing campaigns.",
+        description: "Configure your own SMTP and sender email settings for outgoing campaigns.",
         icon: "ServerCog",
       },
       {
         itemType: "feature_card",
         title: "Delivery Reports",
-        description:
-          "Detailed reports on email status and delivery outcomes for every broadcast.",
+        description: "Detailed reports on email status and delivery outcomes for every broadcast.",
         icon: "MailCheck",
       },
     ],
@@ -840,8 +956,7 @@ const bulkEmailManagedSections = [
       {
         itemType: "benefit_card",
         title: "Organized Broadcasts",
-        description:
-          "Manage the broadcast queue clearly, so nothing is sent by mistake or missed.",
+        description: "Manage the broadcast queue clearly, so nothing is sent by mistake or missed.",
         icon: "Send",
       },
       {
@@ -969,8 +1084,7 @@ const assetManagementSuiteSections = [
       badgeText: "Enterprise Asset Management Software",
       secondaryButtonText: "Explore Features",
       secondaryButtonLink: "#features",
-      secondaryHeading:
-        "Complete visibility for assets, maintenance, branches and departments",
+      secondaryHeading: "Complete visibility for assets, maintenance, branches and departments",
       secondaryDescription:
         "Use a dashboard that keeps ownership, service status and distribution clear at a glance. Instead of waiting on manual reports, managers can review live asset data, compare locations and act on issues faster.",
       secondaryDescriptionTwo:
@@ -1041,12 +1155,42 @@ const assetManagementSuiteSections = [
     description:
       "Understanding the lifecycle helps businesses plan better, control costs and extend the useful life of their assets.",
     items: [
-      { itemType: "step", title: "Register Asset", subtitle: "Step 1", description: "Add the asset with category, type, branch, and location details." },
-      { itemType: "step", title: "Assign Asset", subtitle: "Step 2", description: "Allocate the asset to an employee and update the status to In Use." },
-      { itemType: "step", title: "Track Usage", subtitle: "Step 3", description: "Keep the owner, location, and status visible on the dashboard." },
-      { itemType: "step", title: "Maintenance", subtitle: "Step 4", description: "Mark the asset under maintenance and raise due alerts in advance." },
-      { itemType: "step", title: "Issue / Return", subtitle: "Step 5", description: "Move assets between Available and In Use as they are issued or returned." },
-      { itemType: "step", title: "Transfer", subtitle: "Step 6", description: "Record handovers so ownership history stays complete." },
+      {
+        itemType: "step",
+        title: "Register Asset",
+        subtitle: "Step 1",
+        description: "Add the asset with category, type, branch, and location details.",
+      },
+      {
+        itemType: "step",
+        title: "Assign Asset",
+        subtitle: "Step 2",
+        description: "Allocate the asset to an employee and update the status to In Use.",
+      },
+      {
+        itemType: "step",
+        title: "Track Usage",
+        subtitle: "Step 3",
+        description: "Keep the owner, location, and status visible on the dashboard.",
+      },
+      {
+        itemType: "step",
+        title: "Maintenance",
+        subtitle: "Step 4",
+        description: "Mark the asset under maintenance and raise due alerts in advance.",
+      },
+      {
+        itemType: "step",
+        title: "Issue / Return",
+        subtitle: "Step 5",
+        description: "Move assets between Available and In Use as they are issued or returned.",
+      },
+      {
+        itemType: "step",
+        title: "Transfer",
+        subtitle: "Step 6",
+        description: "Record handovers so ownership history stays complete.",
+      },
     ],
   },
   {
@@ -1064,8 +1208,7 @@ const assetManagementSuiteSections = [
         description:
           "Create a structured asset register with clear metadata so records stay searchable as the asset base grows.",
         icon: "Tag",
-        subtitle:
-          "Add asset name, category, type, branch, location, and current status",
+        subtitle: "Add asset name, category, type, branch, location, and current status",
       },
       {
         itemType: "feature_card",
@@ -1157,11 +1300,40 @@ const assetManagementSuiteSections = [
     description:
       "From registration to reporting, the system follows a clear sequence that keeps every change visible.",
     items: [
-      { itemType: "step", title: "Register", subtitle: "Step 1", description: "Add the asset into the central register with its category, branch and asset details." },
-      { itemType: "step", title: "Assign", subtitle: "Step 2", description: "Allocate the asset to an employee, team or branch with a visible ownership trail." },
-      { itemType: "step", title: "Monitor", subtitle: "Step 3", description: "Track the asset status, location, maintenance and movement from the dashboard." },
-      { itemType: "step", title: "Maintain", subtitle: "Step 4", description: "Keep service records, due dates and warranty activity visible in one place." },
-      { itemType: "step", title: "Report", subtitle: "Step 5", description: "Generate audit-ready reports on asset usage, movement, maintenance and ownership." },
+      {
+        itemType: "step",
+        title: "Register",
+        subtitle: "Step 1",
+        description:
+          "Add the asset into the central register with its category, branch and asset details.",
+      },
+      {
+        itemType: "step",
+        title: "Assign",
+        subtitle: "Step 2",
+        description:
+          "Allocate the asset to an employee, team or branch with a visible ownership trail.",
+      },
+      {
+        itemType: "step",
+        title: "Monitor",
+        subtitle: "Step 3",
+        description:
+          "Track the asset status, location, maintenance and movement from the dashboard.",
+      },
+      {
+        itemType: "step",
+        title: "Maintain",
+        subtitle: "Step 4",
+        description: "Keep service records, due dates and warranty activity visible in one place.",
+      },
+      {
+        itemType: "step",
+        title: "Report",
+        subtitle: "Step 5",
+        description:
+          "Generate audit-ready reports on asset usage, movement, maintenance and ownership.",
+      },
     ],
   },
   {
@@ -1173,14 +1345,62 @@ const assetManagementSuiteSections = [
     description:
       "These outcomes are the practical reasons teams adopt a centralized asset platform.",
     items: [
-      { itemType: "benefit_card", title: "Reduce asset loss with clearer ownership records", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
-      { itemType: "benefit_card", title: "See every asset, owner, and location from one dashboard", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
-      { itemType: "benefit_card", title: "Assign equipment in minutes instead of using manual paperwork", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
-      { itemType: "benefit_card", title: "Track pending recoveries during transfers and exits", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
-      { itemType: "benefit_card", title: "Improve accountability with named issue, return, and handover events", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
-      { itemType: "benefit_card", title: "Plan servicing before assets go out of service", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
-      { itemType: "benefit_card", title: "Keep audit-ready records whenever they are needed", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
-      { itemType: "benefit_card", title: "Spend less time searching spreadsheets and more time working", description: "This outcome follows naturally when the dashboard is used as the single source of truth.", icon: "CheckCircle2" },
+      {
+        itemType: "benefit_card",
+        title: "Reduce asset loss with clearer ownership records",
+        description:
+          "This outcome follows naturally when the dashboard is used as the single source of truth.",
+        icon: "CheckCircle2",
+      },
+      {
+        itemType: "benefit_card",
+        title: "See every asset, owner, and location from one dashboard",
+        description:
+          "This outcome follows naturally when the dashboard is used as the single source of truth.",
+        icon: "CheckCircle2",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Assign equipment in minutes instead of using manual paperwork",
+        description:
+          "This outcome follows naturally when the dashboard is used as the single source of truth.",
+        icon: "CheckCircle2",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Track pending recoveries during transfers and exits",
+        description:
+          "This outcome follows naturally when the dashboard is used as the single source of truth.",
+        icon: "CheckCircle2",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Improve accountability with named issue, return, and handover events",
+        description:
+          "This outcome follows naturally when the dashboard is used as the single source of truth.",
+        icon: "CheckCircle2",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Plan servicing before assets go out of service",
+        description:
+          "This outcome follows naturally when the dashboard is used as the single source of truth.",
+        icon: "CheckCircle2",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Keep audit-ready records whenever they are needed",
+        description:
+          "This outcome follows naturally when the dashboard is used as the single source of truth.",
+        icon: "CheckCircle2",
+      },
+      {
+        itemType: "benefit_card",
+        title: "Spend less time searching spreadsheets and more time working",
+        description:
+          "This outcome follows naturally when the dashboard is used as the single source of truth.",
+        icon: "CheckCircle2",
+      },
     ],
   },
   {
@@ -1192,12 +1412,42 @@ const assetManagementSuiteSections = [
     description:
       "Each industry has different asset-management needs, but the need for visibility and control is the same.",
     items: [
-      { itemType: "industry_card", title: "Manufacturing", description: "Track tools, machinery accessories, and equipment across shop floors.", icon: "Factory" },
-      { itemType: "industry_card", title: "IT Companies", description: "Manage laptops, monitors, and peripherals across employees and teams.", icon: "Laptop" },
-      { itemType: "industry_card", title: "Healthcare", description: "Keep track of equipment and devices across departments and facilities.", icon: "HeartPulse" },
-      { itemType: "industry_card", title: "Education", description: "Manage lab equipment, computers, and furniture across campuses.", icon: "GraduationCap" },
-      { itemType: "industry_card", title: "Retail", description: "Track POS devices, furniture, and store equipment across outlets.", icon: "ShoppingBag" },
-      { itemType: "industry_card", title: "Logistics", description: "Track handheld devices, vehicles-related equipment, and warehouse assets.", icon: "Truck" },
+      {
+        itemType: "industry_card",
+        title: "Manufacturing",
+        description: "Track tools, machinery accessories, and equipment across shop floors.",
+        icon: "Factory",
+      },
+      {
+        itemType: "industry_card",
+        title: "IT Companies",
+        description: "Manage laptops, monitors, and peripherals across employees and teams.",
+        icon: "Laptop",
+      },
+      {
+        itemType: "industry_card",
+        title: "Healthcare",
+        description: "Keep track of equipment and devices across departments and facilities.",
+        icon: "HeartPulse",
+      },
+      {
+        itemType: "industry_card",
+        title: "Education",
+        description: "Manage lab equipment, computers, and furniture across campuses.",
+        icon: "GraduationCap",
+      },
+      {
+        itemType: "industry_card",
+        title: "Retail",
+        description: "Track POS devices, furniture, and store equipment across outlets.",
+        icon: "ShoppingBag",
+      },
+      {
+        itemType: "industry_card",
+        title: "Logistics",
+        description: "Track handheld devices, vehicles-related equipment, and warehouse assets.",
+        icon: "Truck",
+      },
     ],
   },
   {
@@ -1209,12 +1459,53 @@ const assetManagementSuiteSections = [
     description:
       "Each screen helps a different kind of manager review the same asset data with the right emphasis.",
     items: [
-      { itemType: "screen_card", title: "Dashboard", description: "A central summary of total assets, in-use items, maintenance alerts and recent movement.", icon: "LayoutDashboard", subtitle: "Business value: Fast overview for managers and admins." },
-      { itemType: "screen_card", title: "Asset Register", description: "A searchable register for all assets with ownership, branch and category details.", icon: "Package", subtitle: "Business value: Cleaner record management and faster lookups." },
-      { itemType: "screen_card", title: "Tracking View", description: "Visibility into where the asset is, who has it and what status it is currently in.", icon: "MapPin", subtitle: "Business value: Less confusion around asset movement." },
-      { itemType: "screen_card", title: "Maintenance View", description: "Maintenance schedules, repair notes and warranty-related information in one place.", icon: "Wrench", subtitle: "Business value: Better control over servicing and uptime." },
-      { itemType: "screen_card", title: "Reports", description: "Status, branch, category and owner reports that support planning and audits.", icon: "BarChart3", subtitle: "Business value: Audit-ready reporting from one platform." },
-      { itemType: "screen_card", title: "QR Code Management", description: "Generate and use QR labels so assets can be identified faster in the field or office.", icon: "QrCode", subtitle: "Business value: Faster verification and fewer manual mistakes." },
+      {
+        itemType: "screen_card",
+        title: "Dashboard",
+        description:
+          "A central summary of total assets, in-use items, maintenance alerts and recent movement.",
+        icon: "LayoutDashboard",
+        subtitle: "Business value: Fast overview for managers and admins.",
+      },
+      {
+        itemType: "screen_card",
+        title: "Asset Register",
+        description:
+          "A searchable register for all assets with ownership, branch and category details.",
+        icon: "Package",
+        subtitle: "Business value: Cleaner record management and faster lookups.",
+      },
+      {
+        itemType: "screen_card",
+        title: "Tracking View",
+        description:
+          "Visibility into where the asset is, who has it and what status it is currently in.",
+        icon: "MapPin",
+        subtitle: "Business value: Less confusion around asset movement.",
+      },
+      {
+        itemType: "screen_card",
+        title: "Maintenance View",
+        description:
+          "Maintenance schedules, repair notes and warranty-related information in one place.",
+        icon: "Wrench",
+        subtitle: "Business value: Better control over servicing and uptime.",
+      },
+      {
+        itemType: "screen_card",
+        title: "Reports",
+        description: "Status, branch, category and owner reports that support planning and audits.",
+        icon: "BarChart3",
+        subtitle: "Business value: Audit-ready reporting from one platform.",
+      },
+      {
+        itemType: "screen_card",
+        title: "QR Code Management",
+        description:
+          "Generate and use QR labels so assets can be identified faster in the field or office.",
+        icon: "QrCode",
+        subtitle: "Business value: Faster verification and fewer manual mistakes.",
+      },
     ],
   },
   {
@@ -1357,7 +1648,12 @@ const managedSolutionPages = [
     title: "Performance Management Software for Reviews, Goals & Feedback | Altroz HR",
     description:
       "Manage employee goals, appraisals, reviews and feedback cycles from one centralised performance management platform with Altroz HR.",
-    keywords: ["performance management", "employee appraisals", "goals and feedback", "review software"],
+    keywords: [
+      "performance management",
+      "employee appraisals",
+      "goals and feedback",
+      "review software",
+    ],
     heroEyebrow: "Performance",
     heroTitle: "Performance Management Software for Reviews, Goals and Feedback",
     heroDescription:
@@ -1386,7 +1682,12 @@ const managedSolutionPages = [
     title: "Bulk Email Broadcast Software | Altroz Bulk Email",
     description:
       "Altroz Bulk Email offers bulk email broadcast software to create, schedule and track business email campaigns. Book a free demo today.",
-    keywords: ["email broadcast", "bulk email broadcast", "campaign delivery", "business email software"],
+    keywords: [
+      "email broadcast",
+      "bulk email broadcast",
+      "campaign delivery",
+      "business email software",
+    ],
     heroEyebrow: "Broadcast",
     heroTitle: "Bulk Email Broadcast Software for Planned Business Communication",
     heroDescription:
@@ -1400,7 +1701,12 @@ const managedSolutionPages = [
     title: "Bulk Email Templates | Altroz",
     description:
       "Altroz Bulk Email templates help businesses create branded email campaigns faster with reusable layouts, HTML upload support and clean campaign structure.",
-    keywords: ["email templates", "html email templates", "bulk email design", "campaign templates"],
+    keywords: [
+      "email templates",
+      "html email templates",
+      "bulk email design",
+      "campaign templates",
+    ],
     heroEyebrow: "Templates",
     heroTitle: "Bulk Email Templates for Faster Brand-Consistent Campaigns",
     heroDescription:
@@ -1428,7 +1734,12 @@ const managedSolutionPages = [
     title: "Email Scheduling Software | Altroz Bulk Email",
     description:
       "Schedule email campaigns in advance with Altroz Bulk Email. Plan delivery time, manage the queue and track delivery from one dashboard.",
-    keywords: ["email scheduling", "scheduled email campaigns", "broadcast queue", "planned email sends"],
+    keywords: [
+      "email scheduling",
+      "scheduled email campaigns",
+      "broadcast queue",
+      "planned email sends",
+    ],
     heroEyebrow: "Scheduling",
     heroTitle: "Email Scheduling Software for Planned Campaign Delivery",
     heroDescription:
@@ -1442,7 +1753,12 @@ const managedSolutionPages = [
     title: "SMTP Configuration Software for Secure Business Email Delivery | Altroz Bulk Email",
     description:
       "Altroz Bulk Email lets businesses connect their own SMTP server, configure sender identity, secure delivery and monitor email activity from one dashboard.",
-    keywords: ["smtp configuration", "sender email setup", "secure email delivery", "smtp software"],
+    keywords: [
+      "smtp configuration",
+      "sender email setup",
+      "secure email delivery",
+      "smtp software",
+    ],
     heroEyebrow: "SMTP",
     heroTitle: "SMTP Configuration Software for Secure Business Email Delivery",
     heroDescription:
@@ -1456,7 +1772,12 @@ const managedSolutionPages = [
     title: "HR Communication Software for Centralised Employee Communication | Altroz Bulk Email",
     description:
       "Altroz Bulk Email helps HR teams send company announcements, policy updates, onboarding emails and internal circulars from one centralised dashboard.",
-    keywords: ["hr communication", "employee communication", "internal announcements", "policy emails"],
+    keywords: [
+      "hr communication",
+      "employee communication",
+      "internal announcements",
+      "policy emails",
+    ],
     heroEyebrow: "HR Communication",
     heroTitle: "HR Communication Software for Centralised Employee Communication",
     heroDescription:
@@ -1513,7 +1834,12 @@ const managedSolutionPages = [
     title: "Asset Tracking Software | Altroz Asset Management",
     description:
       "Track business assets in real time with Altroz Asset Management. Assign, transfer and monitor assets by employee, department and branch using QR codes.",
-    keywords: ["asset tracking software", "qr asset tracking", "asset transfer", "branch asset tracking"],
+    keywords: [
+      "asset tracking software",
+      "qr asset tracking",
+      "asset transfer",
+      "branch asset tracking",
+    ],
     heroEyebrow: "Asset Tracking",
     heroTitle: "Asset Tracking Software for Real-Time Ownership and Location Visibility",
     heroDescription:
@@ -1527,7 +1853,12 @@ const managedSolutionPages = [
     title: "QR Code Asset Management Software | Altroz Asset Mgmt",
     description:
       "Identify, assign and track every business asset using QR Codes. Generate, print and scan QR labels with Altroz Asset Management.",
-    keywords: ["qr code asset management", "qr asset labels", "asset scanning", "asset identification"],
+    keywords: [
+      "qr code asset management",
+      "qr asset labels",
+      "asset scanning",
+      "asset identification",
+    ],
     heroEyebrow: "QR Asset Management",
     heroTitle: "QR Code Asset Management Software for Faster Identification and Tracking",
     heroDescription:
@@ -1541,7 +1872,12 @@ const managedSolutionPages = [
     title: "Asset Maintenance Software | Altroz Asset Management",
     description:
       "Manage preventive maintenance, repair history, warranty tracking and service records from one platform. Reduce downtime with Altroz Asset Management.",
-    keywords: ["asset maintenance software", "preventive maintenance", "repair history", "warranty tracking"],
+    keywords: [
+      "asset maintenance software",
+      "preventive maintenance",
+      "repair history",
+      "warranty tracking",
+    ],
     heroEyebrow: "Asset Maintenance",
     heroTitle: "Asset Maintenance Software for Preventive Service and Downtime Reduction",
     heroDescription:
@@ -1604,12 +1940,66 @@ const managedAdminPages = [
         description:
           "Each topic card opens the matching product page so the learning path and the product journey stay connected.",
         items: [
-          { itemType: "guide_card", title: "Core HR", subtitle: "Employee records", description: "Learn how central employee records, departments and designations fit together inside a modern HRMS.", icon: "Users", buttonText: "Open Core HR", buttonLink: ROUTES.coreHR },
-          { itemType: "guide_card", title: "Attendance", subtitle: "Time and shifts", description: "Understand biometric attendance, GPS check-ins, shifts and everyday attendance visibility.", icon: "CalendarDays", buttonText: "Open Attendance", buttonLink: ROUTES.attendanceManagement },
-          { itemType: "guide_card", title: "Payroll", subtitle: "Salary processing", description: "See how attendance data, deductions and salary approvals connect inside payroll workflows.", icon: "Wallet", buttonText: "Open Payroll", buttonLink: ROUTES.payroll },
-          { itemType: "guide_card", title: "Leave Management", subtitle: "Policies and approvals", description: "Learn how leave balances, requests and approvals work together without manual follow-up.", icon: "ClipboardList", buttonText: "Open Leave", buttonLink: ROUTES.leaveManagement },
-          { itemType: "guide_card", title: "Recruitment", subtitle: "Hiring process", description: "Follow the hiring flow from vacancies to candidate tracking and structured recruitment records.", icon: "BriefcaseBusiness", buttonText: "Open Recruitment", buttonLink: ROUTES.recruitment },
-          { itemType: "guide_card", title: "Performance", subtitle: "Goals and reviews", description: "Understand review cycles, feedback and goal-setting processes in one structured workflow.", icon: "Target", buttonText: "Open Performance", buttonLink: ROUTES.performance },
+          {
+            itemType: "guide_card",
+            title: "Core HR",
+            subtitle: "Employee records",
+            description:
+              "Learn how central employee records, departments and designations fit together inside a modern HRMS.",
+            icon: "Users",
+            buttonText: "Open Core HR",
+            buttonLink: ROUTES.coreHR,
+          },
+          {
+            itemType: "guide_card",
+            title: "Attendance",
+            subtitle: "Time and shifts",
+            description:
+              "Understand biometric attendance, GPS check-ins, shifts and everyday attendance visibility.",
+            icon: "CalendarDays",
+            buttonText: "Open Attendance",
+            buttonLink: ROUTES.attendanceManagement,
+          },
+          {
+            itemType: "guide_card",
+            title: "Payroll",
+            subtitle: "Salary processing",
+            description:
+              "See how attendance data, deductions and salary approvals connect inside payroll workflows.",
+            icon: "Wallet",
+            buttonText: "Open Payroll",
+            buttonLink: ROUTES.payroll,
+          },
+          {
+            itemType: "guide_card",
+            title: "Leave Management",
+            subtitle: "Policies and approvals",
+            description:
+              "Learn how leave balances, requests and approvals work together without manual follow-up.",
+            icon: "ClipboardList",
+            buttonText: "Open Leave",
+            buttonLink: ROUTES.leaveManagement,
+          },
+          {
+            itemType: "guide_card",
+            title: "Recruitment",
+            subtitle: "Hiring process",
+            description:
+              "Follow the hiring flow from vacancies to candidate tracking and structured recruitment records.",
+            icon: "BriefcaseBusiness",
+            buttonText: "Open Recruitment",
+            buttonLink: ROUTES.recruitment,
+          },
+          {
+            itemType: "guide_card",
+            title: "Performance",
+            subtitle: "Goals and reviews",
+            description:
+              "Understand review cycles, feedback and goal-setting processes in one structured workflow.",
+            icon: "Target",
+            buttonText: "Open Performance",
+            buttonLink: ROUTES.performance,
+          },
         ],
       }),
       createCtaSection({
@@ -1668,23 +2058,54 @@ const managedAdminPages = [
       createFaqSection({
         heading: "The questions HR and operations teams usually ask first",
         subheading: "Frequently Asked Questions",
-        description: "These answers keep the buying and learning process simple for business users.",
+        description:
+          "These answers keep the buying and learning process simple for business users.",
         buttonText: "Book Free Demo",
         buttonLink: ROUTES.bookDemo,
         settings: {
           secondaryHeading: "Need a guided explanation for your team?",
           secondaryDescription:
             "Use a live walkthrough if your team wants help connecting the FAQs to your actual workflows.",
-          features: ["Attendance and leave", "Payroll and deductions", "Employee records", "Compliance workflows"],
+          features: [
+            "Attendance and leave",
+            "Payroll and deductions",
+            "Employee records",
+            "Compliance workflows",
+          ],
           secondaryButtonText: "Open HRMS",
           secondaryButtonLink: ROUTES.hrmsHome,
         },
         items: [
-          { itemType: "faq", title: "What is HRMS?", description: "HRMS is software that helps manage the employee lifecycle, including records, attendance, leave, payroll and related workflows from one place." },
-          { itemType: "faq", title: "Why do businesses move away from spreadsheets?", description: "As teams grow, spreadsheets make approvals, payroll, attendance and records harder to control, review and audit consistently." },
-          { itemType: "faq", title: "How does payroll connect with attendance and leave?", description: "Payroll becomes more reliable when attendance, leave balances and employee records are already structured in the same system." },
-          { itemType: "faq", title: "Can HRMS help with employee self-service?", description: "Yes. Employees can usually view attendance, requests, documents and HR information without depending on manual HR follow-up." },
-          { itemType: "faq", title: "Is HRMS useful only for large companies?", description: "No. Smaller and growing teams often benefit the most because structured workflows reduce confusion early." },
+          {
+            itemType: "faq",
+            title: "What is HRMS?",
+            description:
+              "HRMS is software that helps manage the employee lifecycle, including records, attendance, leave, payroll and related workflows from one place.",
+          },
+          {
+            itemType: "faq",
+            title: "Why do businesses move away from spreadsheets?",
+            description:
+              "As teams grow, spreadsheets make approvals, payroll, attendance and records harder to control, review and audit consistently.",
+          },
+          {
+            itemType: "faq",
+            title: "How does payroll connect with attendance and leave?",
+            description:
+              "Payroll becomes more reliable when attendance, leave balances and employee records are already structured in the same system.",
+          },
+          {
+            itemType: "faq",
+            title: "Can HRMS help with employee self-service?",
+            description:
+              "Yes. Employees can usually view attendance, requests, documents and HR information without depending on manual HR follow-up.",
+          },
+          {
+            itemType: "faq",
+            title: "Is HRMS useful only for large companies?",
+            description:
+              "No. Smaller and growing teams often benefit the most because structured workflows reduce confusion early.",
+          },
         ],
       }),
     ],
@@ -1725,19 +2146,53 @@ const managedAdminPages = [
         internalName: "Compliance Topics",
         heading: "Common compliance topics Indian teams need to review clearly",
         subheading: "Compliance Topics",
-        description:
-          "These cards keep the focus on practical understanding, not legal complexity.",
+        description: "These cards keep the focus on practical understanding, not legal complexity.",
         items: [
-          { itemType: "category_card", title: "PF and ESIC", subtitle: "Statutory deductions", description: "Understand the record-keeping and payroll impact behind PF and ESIC workflows.", icon: "ShieldCheck", buttonText: "Open Payroll", buttonLink: ROUTES.payroll },
-          { itemType: "category_card", title: "Payroll Records", subtitle: "Salary workflows", description: "See how attendance, deductions and records connect to clean payroll operations.", icon: "Wallet", buttonText: "Open Payroll", buttonLink: ROUTES.payroll },
-          { itemType: "category_card", title: "Employee Documents", subtitle: "Record control", description: "Keep letters, acknowledgements and employee records easier to retrieve and review.", icon: "FileText", buttonText: "Open Core HR", buttonLink: ROUTES.coreHR },
-          { itemType: "category_card", title: "Attendance and Leave", subtitle: "Input quality", description: "Strong attendance and leave inputs make payroll and compliance reviews more reliable.", icon: "CalendarDays", buttonText: "Open Attendance", buttonLink: ROUTES.attendanceManagement },
+          {
+            itemType: "category_card",
+            title: "PF and ESIC",
+            subtitle: "Statutory deductions",
+            description:
+              "Understand the record-keeping and payroll impact behind PF and ESIC workflows.",
+            icon: "ShieldCheck",
+            buttonText: "Open Payroll",
+            buttonLink: ROUTES.payroll,
+          },
+          {
+            itemType: "category_card",
+            title: "Payroll Records",
+            subtitle: "Salary workflows",
+            description:
+              "See how attendance, deductions and records connect to clean payroll operations.",
+            icon: "Wallet",
+            buttonText: "Open Payroll",
+            buttonLink: ROUTES.payroll,
+          },
+          {
+            itemType: "category_card",
+            title: "Employee Documents",
+            subtitle: "Record control",
+            description:
+              "Keep letters, acknowledgements and employee records easier to retrieve and review.",
+            icon: "FileText",
+            buttonText: "Open Core HR",
+            buttonLink: ROUTES.coreHR,
+          },
+          {
+            itemType: "category_card",
+            title: "Attendance and Leave",
+            subtitle: "Input quality",
+            description:
+              "Strong attendance and leave inputs make payroll and compliance reviews more reliable.",
+            icon: "CalendarDays",
+            buttonText: "Open Attendance",
+            buttonLink: ROUTES.attendanceManagement,
+          },
         ],
       }),
       createCtaSection({
         heading: "Need help connecting compliance topics to live HR workflows?",
-        description:
-          "See how attendance, payroll and records stay aligned inside Altroz HR.",
+        description: "See how attendance, payroll and records stay aligned inside Altroz HR.",
         settings: {
           secondaryButtonText: "Open HRMS",
           secondaryButtonLink: ROUTES.hrmsHome,
@@ -1776,10 +2231,35 @@ const managedAdminPages = [
           secondaryButtonLink: ROUTES.bulkEmailContacts,
         },
         items: [
-          { itemType: "pricing_highlight", title: "Campaign sending", subtitle: "Editable plan card", description: "Describe volume, sending model or plan notes in simple language.", icon: "Send" },
-          { itemType: "pricing_highlight", title: "Templates", subtitle: "Editable inclusion", description: "Show whether templates, HTML uploads or branded layouts are included.", icon: "FileText" },
-          { itemType: "pricing_highlight", title: "Analytics", subtitle: "Editable feature", description: "Explain what delivery visibility, reports or status tracking are included.", icon: "BarChart3" },
-          { itemType: "pricing_highlight", title: "Onboarding", subtitle: "Editable support", description: "Add setup, training or sender-configuration details for new customers.", icon: "Users" },
+          {
+            itemType: "pricing_highlight",
+            title: "Campaign sending",
+            subtitle: "Editable plan card",
+            description: "Describe volume, sending model or plan notes in simple language.",
+            icon: "Send",
+          },
+          {
+            itemType: "pricing_highlight",
+            title: "Templates",
+            subtitle: "Editable inclusion",
+            description: "Show whether templates, HTML uploads or branded layouts are included.",
+            icon: "FileText",
+          },
+          {
+            itemType: "pricing_highlight",
+            title: "Analytics",
+            subtitle: "Editable feature",
+            description:
+              "Explain what delivery visibility, reports or status tracking are included.",
+            icon: "BarChart3",
+          },
+          {
+            itemType: "pricing_highlight",
+            title: "Onboarding",
+            subtitle: "Editable support",
+            description: "Add setup, training or sender-configuration details for new customers.",
+            icon: "Users",
+          },
         ],
       }),
       createIconCardsSection({
@@ -1790,9 +2270,42 @@ const managedAdminPages = [
         description:
           "Each card can be edited directly from admin so your client can maintain the page easily.",
         items: [
-          { itemType: "plan_card", title: "Starter", subtitle: "Editable price", description: "Position this plan for smaller teams and low-volume campaign needs.", icon: "Sparkles", extraData: { features: ["Basic campaign sending", "Simple templates", "Email scheduling"] } },
-          { itemType: "plan_card", title: "Growth", subtitle: "Editable price", description: "Use this plan for teams that want stronger delivery visibility and reusable workflows.", icon: "TrendingUp", extraData: { features: ["Delivery visibility", "Reusable templates", "Scheduled campaigns"] } },
-          { itemType: "plan_card", title: "Enterprise", subtitle: "Editable price", description: "Present higher-volume communication, controls and onboarding support here.", icon: "ShieldCheck", extraData: { features: ["Advanced delivery tracking", "Sender setup guidance", "Business-ready support"] } },
+          {
+            itemType: "plan_card",
+            title: "Starter",
+            subtitle: "Editable price",
+            description: "Position this plan for smaller teams and low-volume campaign needs.",
+            icon: "Sparkles",
+            extraData: {
+              features: ["Basic campaign sending", "Simple templates", "Email scheduling"],
+            },
+          },
+          {
+            itemType: "plan_card",
+            title: "Growth",
+            subtitle: "Editable price",
+            description:
+              "Use this plan for teams that want stronger delivery visibility and reusable workflows.",
+            icon: "TrendingUp",
+            extraData: {
+              features: ["Delivery visibility", "Reusable templates", "Scheduled campaigns"],
+            },
+          },
+          {
+            itemType: "plan_card",
+            title: "Enterprise",
+            subtitle: "Editable price",
+            description:
+              "Present higher-volume communication, controls and onboarding support here.",
+            icon: "ShieldCheck",
+            extraData: {
+              features: [
+                "Advanced delivery tracking",
+                "Sender setup guidance",
+                "Business-ready support",
+              ],
+            },
+          },
         ],
       }),
       createFaqSection({
@@ -1809,9 +2322,24 @@ const managedAdminPages = [
           secondaryButtonLink: ROUTES.bookDemo,
         },
         items: [
-          { itemType: "faq", title: "Can pricing cards be edited from admin?", description: "Yes. Titles, subtitles, descriptions and feature bullets can be updated in the page editor." },
-          { itemType: "faq", title: "Can I show custom or contact-sales pricing instead of fixed rates?", description: "Yes. Replace numeric pricing with custom-quote language if that suits your sales process better." },
-          { itemType: "faq", title: "Can I explain setup and onboarding separately?", description: "Yes. Use the card descriptions and FAQ content to present setup, training and sender-configuration details clearly." },
+          {
+            itemType: "faq",
+            title: "Can pricing cards be edited from admin?",
+            description:
+              "Yes. Titles, subtitles, descriptions and feature bullets can be updated in the page editor.",
+          },
+          {
+            itemType: "faq",
+            title: "Can I show custom or contact-sales pricing instead of fixed rates?",
+            description:
+              "Yes. Replace numeric pricing with custom-quote language if that suits your sales process better.",
+          },
+          {
+            itemType: "faq",
+            title: "Can I explain setup and onboarding separately?",
+            description:
+              "Yes. Use the card descriptions and FAQ content to present setup, training and sender-configuration details clearly.",
+          },
         ],
       }),
     ],
@@ -1855,10 +2383,46 @@ const managedAdminPages = [
         description:
           "These cards mirror the main product workspaces so learning and product exploration stay aligned.",
         items: [
-          { itemType: "guide_card", title: "Email Broadcasts", subtitle: "Campaign sending", description: "Learn how businesses create and send one-to-many email broadcasts in a controlled workflow.", icon: "Send", buttonText: "Open Broadcast", buttonLink: ROUTES.bulkEmailBroadcast },
-          { itemType: "guide_card", title: "Templates", subtitle: "Reusable layouts", description: "Understand branded layouts, HTML uploads and how templates reduce repeated work.", icon: "FileText", buttonText: "Open Templates", buttonLink: ROUTES.bulkEmailTemplates },
-          { itemType: "guide_card", title: "Scheduling", subtitle: "Planned delivery", description: "See how scheduled sending helps businesses time communication more reliably.", icon: "CalendarClock", buttonText: "Open Scheduling", buttonLink: ROUTES.bulkEmailScheduling },
-          { itemType: "guide_card", title: "SMTP", subtitle: "Sender setup", description: "Get a clear introduction to sender identity, SMTP setup and controlled outbound delivery.", icon: "ServerCog", buttonText: "Open SMTP", buttonLink: ROUTES.bulkEmailSmtp },
+          {
+            itemType: "guide_card",
+            title: "Email Broadcasts",
+            subtitle: "Campaign sending",
+            description:
+              "Learn how businesses create and send one-to-many email broadcasts in a controlled workflow.",
+            icon: "Send",
+            buttonText: "Open Broadcast",
+            buttonLink: ROUTES.bulkEmailBroadcast,
+          },
+          {
+            itemType: "guide_card",
+            title: "Templates",
+            subtitle: "Reusable layouts",
+            description:
+              "Understand branded layouts, HTML uploads and how templates reduce repeated work.",
+            icon: "FileText",
+            buttonText: "Open Templates",
+            buttonLink: ROUTES.bulkEmailTemplates,
+          },
+          {
+            itemType: "guide_card",
+            title: "Scheduling",
+            subtitle: "Planned delivery",
+            description:
+              "See how scheduled sending helps businesses time communication more reliably.",
+            icon: "CalendarClock",
+            buttonText: "Open Scheduling",
+            buttonLink: ROUTES.bulkEmailScheduling,
+          },
+          {
+            itemType: "guide_card",
+            title: "SMTP",
+            subtitle: "Sender setup",
+            description:
+              "Get a clear introduction to sender identity, SMTP setup and controlled outbound delivery.",
+            icon: "ServerCog",
+            buttonText: "Open SMTP",
+            buttonLink: ROUTES.bulkEmailSmtp,
+          },
         ],
       }),
       createCtaSection({
@@ -1879,7 +2443,12 @@ const managedAdminPages = [
     title: "Bulk Email Blog for Campaigns, SMTP and Delivery Visibility | Altroz",
     description:
       "Read practical bulk email articles covering broadcasts, scheduling, templates, SMTP setup and delivery visibility for business teams.",
-    keywords: ["bulk email blog", "email campaigns blog", "smtp articles", "delivery tracking articles"],
+    keywords: [
+      "bulk email blog",
+      "email campaigns blog",
+      "smtp articles",
+      "delivery tracking articles",
+    ],
     heroEyebrow: "Bulk Email Blog",
     heroTitle: "Practical Bulk Email Articles for Campaigns, Scheduling and SMTP Workflows",
     heroDescription:
@@ -1906,12 +2475,66 @@ const managedAdminPages = [
         description:
           "Use these cards to highlight the email topics your prospects search for most often.",
         items: [
-          { itemType: "topic_card", title: "Broadcast Planning", subtitle: "Campaign strategy", description: "Explain how teams plan campaigns, timing and internal review before sending.", icon: "Send", buttonText: "Open Broadcast", buttonLink: ROUTES.bulkEmailBroadcast },
-          { itemType: "topic_card", title: "Reusable Templates", subtitle: "Brand consistency", description: "Show how templates improve consistency and speed across repeated campaigns.", icon: "FileText", buttonText: "Open Templates", buttonLink: ROUTES.bulkEmailTemplates },
-          { itemType: "topic_card", title: "SMTP Setup", subtitle: "Controlled delivery", description: "Cover sender setup, SMTP basics and why controlled delivery matters to businesses.", icon: "ServerCog", buttonText: "Open SMTP", buttonLink: ROUTES.bulkEmailSmtp },
-          { itemType: "topic_card", title: "Delivery Visibility", subtitle: "Reports and status", description: "Help teams understand delivery status, analytics and review workflows after a send.", icon: "BarChart3", buttonText: "Open Analytics", buttonLink: ROUTES.bulkEmailAnalytics },
-          { itemType: "topic_card", title: "HR Communication", subtitle: "Internal messaging", description: "Discuss how HR teams use bulk email for updates, policies and employee communication.", icon: "Users", buttonText: "Open HR Communication", buttonLink: ROUTES.bulkEmailHrCommunication },
-          { itemType: "topic_card", title: "Education Broadcasts", subtitle: "Institution communication", description: "Show how institutions use scheduling and templates for announcements and notices.", icon: "GraduationCap", buttonText: "Open Education", buttonLink: ROUTES.bulkEmailEducation },
+          {
+            itemType: "topic_card",
+            title: "Broadcast Planning",
+            subtitle: "Campaign strategy",
+            description:
+              "Explain how teams plan campaigns, timing and internal review before sending.",
+            icon: "Send",
+            buttonText: "Open Broadcast",
+            buttonLink: ROUTES.bulkEmailBroadcast,
+          },
+          {
+            itemType: "topic_card",
+            title: "Reusable Templates",
+            subtitle: "Brand consistency",
+            description:
+              "Show how templates improve consistency and speed across repeated campaigns.",
+            icon: "FileText",
+            buttonText: "Open Templates",
+            buttonLink: ROUTES.bulkEmailTemplates,
+          },
+          {
+            itemType: "topic_card",
+            title: "SMTP Setup",
+            subtitle: "Controlled delivery",
+            description:
+              "Cover sender setup, SMTP basics and why controlled delivery matters to businesses.",
+            icon: "ServerCog",
+            buttonText: "Open SMTP",
+            buttonLink: ROUTES.bulkEmailSmtp,
+          },
+          {
+            itemType: "topic_card",
+            title: "Delivery Visibility",
+            subtitle: "Reports and status",
+            description:
+              "Help teams understand delivery status, analytics and review workflows after a send.",
+            icon: "BarChart3",
+            buttonText: "Open Analytics",
+            buttonLink: ROUTES.bulkEmailAnalytics,
+          },
+          {
+            itemType: "topic_card",
+            title: "HR Communication",
+            subtitle: "Internal messaging",
+            description:
+              "Discuss how HR teams use bulk email for updates, policies and employee communication.",
+            icon: "Users",
+            buttonText: "Open HR Communication",
+            buttonLink: ROUTES.bulkEmailHrCommunication,
+          },
+          {
+            itemType: "topic_card",
+            title: "Education Broadcasts",
+            subtitle: "Institution communication",
+            description:
+              "Show how institutions use scheduling and templates for announcements and notices.",
+            icon: "GraduationCap",
+            buttonText: "Open Education",
+            buttonLink: ROUTES.bulkEmailEducation,
+          },
         ],
       }),
       createCtaSection({
@@ -1947,7 +2570,11 @@ const managedAdminPages = [
         buttonLink: ROUTES.bulkEmail,
         settings: {
           badgeText: "Knowledge base",
-          popularSearches: ["What is bulk email?", "How does SMTP work?", "Can I schedule campaigns?"],
+          popularSearches: [
+            "What is bulk email?",
+            "How does SMTP work?",
+            "Can I schedule campaigns?",
+          ],
           secondaryButtonText: "Book Free Demo",
           secondaryButtonLink: ROUTES.bookDemo,
         },
@@ -1962,16 +2589,46 @@ const managedAdminPages = [
           secondaryHeading: "Need help with sender setup, campaigns or templates?",
           secondaryDescription:
             "Use a live conversation when the question is more practical than technical.",
-          features: ["Campaign workflows", "Scheduling", "Templates and HTML", "SMTP configuration"],
+          features: [
+            "Campaign workflows",
+            "Scheduling",
+            "Templates and HTML",
+            "SMTP configuration",
+          ],
           secondaryButtonText: "Book Free Demo",
           secondaryButtonLink: ROUTES.bookDemo,
         },
         items: [
-          { itemType: "faq", title: "What is bulk email software?", description: "Bulk email software helps businesses create, schedule, send and review email campaigns from one platform instead of manual one-by-one sending." },
-          { itemType: "faq", title: "Can I schedule campaigns in advance?", description: "Yes. Scheduled sending lets teams prepare campaigns earlier and release them at a planned time." },
-          { itemType: "faq", title: "Can I use templates or my own HTML?", description: "Yes. Businesses can usually use reusable templates or upload their own HTML layout for brand consistency." },
-          { itemType: "faq", title: "Why does SMTP matter?", description: "SMTP setup matters because it controls how your outgoing mail is sent and how the sender identity is configured." },
-          { itemType: "faq", title: "Can I review delivery status after a campaign?", description: "Yes. Delivery visibility and reporting help teams understand what happened after a broadcast is sent." },
+          {
+            itemType: "faq",
+            title: "What is bulk email software?",
+            description:
+              "Bulk email software helps businesses create, schedule, send and review email campaigns from one platform instead of manual one-by-one sending.",
+          },
+          {
+            itemType: "faq",
+            title: "Can I schedule campaigns in advance?",
+            description:
+              "Yes. Scheduled sending lets teams prepare campaigns earlier and release them at a planned time.",
+          },
+          {
+            itemType: "faq",
+            title: "Can I use templates or my own HTML?",
+            description:
+              "Yes. Businesses can usually use reusable templates or upload their own HTML layout for brand consistency.",
+          },
+          {
+            itemType: "faq",
+            title: "Why does SMTP matter?",
+            description:
+              "SMTP setup matters because it controls how your outgoing mail is sent and how the sender identity is configured.",
+          },
+          {
+            itemType: "faq",
+            title: "Can I review delivery status after a campaign?",
+            description:
+              "Yes. Delivery visibility and reporting help teams understand what happened after a broadcast is sent.",
+          },
         ],
       }),
     ],
@@ -1983,7 +2640,12 @@ const managedAdminPages = [
     title: "Learn Asset Management, Tracking and Maintenance Workflows | Altroz",
     description:
       "Learn the basics of asset registers, assignment, lifecycle tracking, maintenance and reporting in simple business language.",
-    keywords: ["asset management learn", "asset tracking guide", "maintenance guide", "asset register"],
+    keywords: [
+      "asset management learn",
+      "asset tracking guide",
+      "maintenance guide",
+      "asset register",
+    ],
     heroEyebrow: "Asset Management Learning Hub",
     heroTitle: "Learn Asset Registers, Tracking, Maintenance and Everyday Control Workflows",
     heroDescription:
@@ -2015,16 +2677,50 @@ const managedAdminPages = [
         description:
           "These cards are designed for admin, IT, HR and operations teams that need a shared understanding.",
         items: [
-          { itemType: "guide_card", title: "Asset Register", subtitle: "Source of truth", description: "Learn how a structured asset register keeps ownership, status and location visible in one place.", icon: "Package", buttonText: "Open Asset Management", buttonLink: ROUTES.assetManagementHome },
-          { itemType: "guide_card", title: "Assignment and Handover", subtitle: "Ownership flow", description: "Understand how issue, return and handover records reduce confusion across teams.", icon: "RotateCcw", buttonText: "Open Asset Tracking", buttonLink: ROUTES.bulkEmailAssetTracking },
-          { itemType: "guide_card", title: "Maintenance and Warranty", subtitle: "Service visibility", description: "See how service events, due dates and warranty tracking support better upkeep.", icon: "Wrench", buttonText: "Open Asset Maintenance", buttonLink: ROUTES.bulkEmailAssetMaintenance },
-          { itemType: "guide_card", title: "Reports and Audits", subtitle: "Operational review", description: "Learn how reports support planning, branch review and audit-readiness.", icon: "BarChart3", buttonText: "Open Asset Reports", buttonLink: ROUTES.bulkEmailAssetReports },
+          {
+            itemType: "guide_card",
+            title: "Asset Register",
+            subtitle: "Source of truth",
+            description:
+              "Learn how a structured asset register keeps ownership, status and location visible in one place.",
+            icon: "Package",
+            buttonText: "Open Asset Management",
+            buttonLink: ROUTES.assetManagementHome,
+          },
+          {
+            itemType: "guide_card",
+            title: "Assignment and Handover",
+            subtitle: "Ownership flow",
+            description:
+              "Understand how issue, return and handover records reduce confusion across teams.",
+            icon: "RotateCcw",
+            buttonText: "Open Asset Tracking",
+            buttonLink: ROUTES.bulkEmailAssetTracking,
+          },
+          {
+            itemType: "guide_card",
+            title: "Maintenance and Warranty",
+            subtitle: "Service visibility",
+            description:
+              "See how service events, due dates and warranty tracking support better upkeep.",
+            icon: "Wrench",
+            buttonText: "Open Asset Maintenance",
+            buttonLink: ROUTES.bulkEmailAssetMaintenance,
+          },
+          {
+            itemType: "guide_card",
+            title: "Reports and Audits",
+            subtitle: "Operational review",
+            description: "Learn how reports support planning, branch review and audit-readiness.",
+            icon: "BarChart3",
+            buttonText: "Open Asset Reports",
+            buttonLink: ROUTES.bulkEmailAssetReports,
+          },
         ],
       }),
       createCtaSection({
         heading: "Ready to see asset workflows inside one live platform?",
-        description:
-          "Open the main Asset Management page or book a walkthrough for your team.",
+        description: "Open the main Asset Management page or book a walkthrough for your team.",
         settings: {
           secondaryButtonText: "Open Asset Management",
           secondaryButtonLink: ROUTES.assetManagementHome,
@@ -2036,54 +2732,1345 @@ const managedAdminPages = [
     pageKey: "asset-management-guide",
     pageName: "Asset Management Guide",
     route: ROUTES.assetManagementGuide,
-    title: "Asset Management Guide for Registers, Tracking and Maintenance | Altroz",
+    title: "Asset Management Guide | Complete Business Guide 2026",
     description:
-      "Explore a practical asset management guide covering registration, assignment, movement, maintenance, QR workflows and reporting.",
-    keywords: ["asset management guide", "asset tracking guide", "qr code assets", "asset lifecycle"],
+      "Learn asset management, tracking, maintenance, QR Codes, lifecycle management, reporting, audits, and best practices for modern businesses.",
+    ogTitle: "Asset Management Guide: Everything Businesses Need to Know",
+    ogDescription:
+      "A complete, practical guide to asset management covering tracking, QR codes, maintenance, audits, reporting, and best practices for businesses of every size.",
+    keywords: [
+      "asset management guide",
+      "asset management",
+      "asset management software guide",
+      "asset tracking guide",
+      "asset lifecycle management",
+      "asset inventory management",
+      "asset maintenance management",
+      "asset management best practices",
+      "business asset management",
+      "digital asset management for businesses",
+      "asset tracking software guide",
+      "enterprise asset management guide",
+      "asset audit guide",
+      "qr code asset management guide",
+    ],
     heroEyebrow: "Asset Management Guide",
-    heroTitle: "A Practical Guide to Asset Registration, Ownership, Maintenance and Reporting",
+    heroTitle: "Asset Management Guide: Everything Businesses Need to Know",
     heroDescription:
-      "Use this guide page to explain the basics of asset-management structure in language that non-technical clients can understand.",
+      "This guide helps businesses understand how to organise, track, maintain, and manage physical assets throughout their lifecycle.",
     sections: [
       createHeroSection({
-        heading: "A Practical Guide to Asset Registration, Ownership, Maintenance and Reporting",
+        heading: "Asset Management Guide: Everything Businesses Need to Know",
         subheading: "Asset Management Guide",
         description:
-          "Use this guide page to explain the basics of asset-management structure in language that non-technical clients can understand.",
-        buttonText: "Open Asset Management",
-        buttonLink: ROUTES.assetManagementHome,
+          "This guide helps businesses understand how to organise, track, maintain, and manage physical assets throughout their lifecycle - from the day an asset is purchased to the day it is retired. Whether you are just starting to think about asset management or looking to move from spreadsheets to a digital system, this page brings together the concepts, workflows, and best practices you need in one place.",
+        buttonText: "Explore the Guide",
+        buttonLink: "#what-is-asset-management",
         settings: {
-          badgeText: "Guide page",
+          badgeText: "Asset Management Guide",
           heroBullets: [
-            "Explain the asset lifecycle clearly from registration to audit.",
-            "Keep assignment, tracking and maintenance connected in one page.",
-            "Use simple sections that are easy to edit from admin later.",
+            "Learn asset management, tracking, maintenance, QR codes, lifecycle management, reporting and audits.",
+            "Understand manual vs digital asset management with a practical business comparison.",
+            "Use the checklist and FAQs as a quick reference for implementation planning.",
           ],
           secondaryButtonText: "Book Free Demo",
           secondaryButtonLink: ROUTES.bookDemo,
         },
+        items: [
+          {
+            itemType: "hero_highlight",
+            title: "22-25 min",
+            subtitle: "Reading time",
+            description: "A complete educational resource for business teams.",
+            icon: "BookOpen",
+          },
+          {
+            itemType: "hero_highlight",
+            title: "2026",
+            subtitle: "Guide edition",
+            description: "Built around modern tracking, QR, reporting and audit practices.",
+            icon: "Sparkles",
+          },
+          {
+            itemType: "hero_highlight",
+            title: "Asset lifecycle",
+            subtitle: "End-to-end",
+            description: "From procurement and registration through retirement and disposal.",
+            icon: "Workflow",
+          },
+          {
+            itemType: "hero_highlight",
+            title: "QR + reports",
+            subtitle: "Operational control",
+            description: "Covers identification, maintenance, audit and reporting workflows.",
+            icon: "QrCode",
+          },
+        ],
+      }),
+      createContentSplitSection({
+        sectionKey: "what-is-asset-management",
+        internalName: "What Is Asset Management",
+        heading: "What Is Asset Management?",
+        subheading: "Asset Management Basics",
+        description:
+          "Asset management is the process of organising, tracking, maintaining, and reviewing the physical items that a business owns and uses to run its operations.",
+        items: [
+          {
+            itemType: "content_card",
+            title: "What is asset management?",
+            subtitle: "Definition",
+            description:
+              "Asset management is the process of organising, tracking, maintaining, and reviewing the physical items - or assets - that a business owns and uses to run its operations. It covers everything from knowing what assets exist, to knowing where they are, who is using them, and what condition they are in.",
+          },
+          {
+            itemType: "content_card",
+            title: "What counts as a business asset?",
+            subtitle: "Common examples",
+            description:
+              "A business asset is any physical item of value that an organisation owns and uses for its work.",
+            extraData: {
+              features: [
+                "Laptops and computers",
+                "Machines and production equipment",
+                "Printers and office devices",
+                "Vehicles",
+                "Tools and equipment used on-site",
+                "Medical equipment",
+                "General office equipment such as furniture and projectors",
+              ],
+            },
+          },
+          {
+            itemType: "content_card",
+            title: "Why do organisations manage assets?",
+            subtitle: "Visibility and control",
+            description:
+              "Businesses manage assets so they always know what they own, where it is, who is responsible for it, and when it needs attention. Without this visibility, organisations risk losing track of expensive equipment, missing maintenance, buying duplicate items, and struggling during audits or financial reporting.",
+          },
+          {
+            itemType: "content_card",
+            title: "How does asset management work?",
+            subtitle: "Basic workflow",
+            description:
+              "At a basic level, asset management works by recording every asset in a central register, assigning it to a person, department, or location, tracking its movement and condition over time, and reviewing that information through reports. This can be done manually or through dedicated software.",
+          },
+          {
+            itemType: "content_card",
+            title: "Manual vs digital asset management",
+            subtitle: "Two approaches",
+            description:
+              "Manual asset management typically relies on spreadsheets, paper registers, or informal records maintained by individual departments. Digital asset management uses dedicated software to centralise records, automate tracking, and make reporting easier. Both approaches answer the same core questions - what do we own, where is it, and what condition is it in - but a digital platform makes those answers easier to keep accurate as a business grows.",
+          },
+        ],
       }),
       createIconCardsSection({
-        sectionKey: "guide-sections",
-        internalName: "Guide Sections",
-        heading: "The guide can be organized around the parts of asset control your client understands fastest",
-        subheading: "Guide Sections",
+        sectionKey: "why-asset-management-matters",
+        internalName: "Why Asset Management Matters",
+        heading: "Why Asset Management Matters",
+        subheading: "Business Problems",
         description:
-          "Use these cards to present the process in the same simple order your team explains it.",
+          "Poor asset management creates real, everyday problems for businesses. These are the most common issues organisations face and how better practices help.",
         items: [
-          { itemType: "guide_card", title: "Register Assets", subtitle: "Foundational step", description: "Capture the asset name, category, type, branch and current status in one register.", icon: "Package", buttonText: "Open Main Page", buttonLink: ROUTES.assetManagementHome },
-          { itemType: "guide_card", title: "Assign Ownership", subtitle: "Employee or branch", description: "Keep the current owner, assignee or department visible instead of relying on memory.", icon: "Users", buttonText: "Open Tracking", buttonLink: ROUTES.bulkEmailAssetTracking },
-          { itemType: "guide_card", title: "Track Maintenance", subtitle: "Service follow-up", description: "Review maintenance events, warranty timelines and service planning in one place.", icon: "Wrench", buttonText: "Open Maintenance", buttonLink: ROUTES.bulkEmailAssetMaintenance },
-          { itemType: "guide_card", title: "Review Reports", subtitle: "Audit and planning", description: "Use reports to check locations, ownership, status and movement history clearly.", icon: "BarChart3", buttonText: "Open Reports", buttonLink: ROUTES.bulkEmailAssetReports },
+          {
+            itemType: "problem_card",
+            title: "Lost Assets",
+            subtitle: "Inconsistent tracking",
+            description: "Why it happens: Assets are not tracked or labelled consistently.",
+            icon: "Package",
+            extraData: {
+              features: [
+                "Business impact: Wasted spend on replacement items and reduced trust in asset records.",
+                "How better asset management helps: A central register with clear identification helps teams always know what exists and where it should be.",
+              ],
+            },
+          },
+          {
+            itemType: "problem_card",
+            title: "Unknown Asset Ownership",
+            subtitle: "No formal assignment",
+            description:
+              "Why it happens: Assets are not formally assigned to a person or department.",
+            icon: "Users",
+            extraData: {
+              features: [
+                "Business impact: No accountability when equipment goes missing or is misused.",
+                "How better asset management helps: Recording asset assignment makes it clear who is responsible for each item.",
+              ],
+            },
+          },
+          {
+            itemType: "problem_card",
+            title: "Manual Registers",
+            subtitle: "Scattered records",
+            description:
+              "Why it happens: Asset details are kept in scattered spreadsheets or paper logs.",
+            icon: "FileText",
+            extraData: {
+              features: [
+                "Business impact: Records become outdated, duplicated, or inconsistent across teams.",
+                "How better asset management helps: A single digital record reduces duplication and keeps information current.",
+              ],
+            },
+          },
+          {
+            itemType: "problem_card",
+            title: "Duplicate Purchases",
+            subtitle: "Low inventory visibility",
+            description: "Why it happens: Teams cannot see what assets are already available.",
+            icon: "ShoppingBag",
+            extraData: {
+              features: [
+                "Business impact: Unnecessary spending on equipment the business already owns.",
+                "How better asset management helps: Clear visibility into existing inventory prevents avoidable repurchasing.",
+              ],
+            },
+          },
+          {
+            itemType: "problem_card",
+            title: "Missed Maintenance",
+            subtitle: "No reminder system",
+            description: "Why it happens: There is no reminder system for scheduled servicing.",
+            icon: "Wrench",
+            extraData: {
+              features: [
+                "Business impact: Equipment breaks down or fails earlier than expected.",
+                "How better asset management helps: Maintenance records and schedules help teams service assets on time.",
+              ],
+            },
+          },
+          {
+            itemType: "problem_card",
+            title: "Expired Warranties",
+            subtitle: "Dates not tracked",
+            description: "Why it happens: Warranty dates are not recorded or tracked.",
+            icon: "ShieldCheck",
+            extraData: {
+              features: [
+                "Business impact: Businesses pay for repairs that could have been covered under warranty.",
+                "How better asset management helps: Recording warranty information helps teams claim coverage before it lapses.",
+              ],
+            },
+          },
+          {
+            itemType: "problem_card",
+            title: "Poor Asset Visibility",
+            subtitle: "Fragmented information",
+            description:
+              "Why it happens: Information about assets is fragmented across departments.",
+            icon: "LayoutDashboard",
+            extraData: {
+              features: [
+                "Business impact: Slower decision-making and difficulty planning purchases or budgets.",
+                "How better asset management helps: Centralised records give managers a clear, current view of all assets.",
+              ],
+            },
+          },
+          {
+            itemType: "problem_card",
+            title: "Difficult Audits",
+            subtitle: "Incomplete data",
+            description: "Why it happens: Asset data is incomplete, outdated, or hard to locate.",
+            icon: "ClipboardCheck",
+            extraData: {
+              features: [
+                "Business impact: Audits take longer and are more likely to surface discrepancies.",
+                "How better asset management helps: Up-to-date, centralised records make audits faster and more accurate.",
+              ],
+            },
+          },
+          {
+            itemType: "problem_card",
+            title: "Scattered Records",
+            subtitle: "No single source of truth",
+            description: "Why it happens: Different teams keep their own separate lists.",
+            icon: "Layers3",
+            extraData: {
+              features: [
+                "Business impact: No single source of truth for asset information.",
+                "How better asset management helps: A shared system consolidates records so everyone works from the same data.",
+              ],
+            },
+          },
+          {
+            itemType: "problem_card",
+            title: "Limited Reporting",
+            subtitle: "Hard to convert data",
+            description:
+              "Why it happens: There is no easy way to pull asset data into a usable report.",
+            icon: "BarChart3",
+            extraData: {
+              features: [
+                "Business impact: Leadership lacks the information needed for planning and budgeting.",
+                "How better asset management helps: Built-in reporting turns raw asset data into insights for decision-making.",
+              ],
+            },
+          },
+        ],
+      }),
+      createTimelineSection({
+        sectionKey: "complete-asset-management-lifecycle",
+        internalName: "Complete Asset Management Lifecycle",
+        heading: "The Complete Asset Management Lifecycle",
+        subheading: "Lifecycle",
+        description:
+          "Every asset moves through a predictable set of stages from the day it is bought to the day it is retired. Understanding this lifecycle helps businesses manage assets more consistently.",
+        items: [
+          {
+            itemType: "lifecycle_step",
+            title: "Procurement",
+            subtitle: "Step 1",
+            description:
+              "The business identifies a need and purchases an asset - for example, buying new laptops for a growing team.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "Asset Registration",
+            subtitle: "Step 2",
+            description:
+              "The new asset is recorded in the asset register with details such as purchase date, cost, and vendor.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "Categorisation",
+            subtitle: "Step 3",
+            description:
+              "The asset is grouped into a category such as IT equipment, furniture, or machinery so it is easier to organise and search.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "QR Code / Identification",
+            subtitle: "Step 4",
+            description:
+              "A unique identifier, such as a QR code or asset tag, is attached so the asset can be recognised quickly.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "Assignment",
+            subtitle: "Step 5",
+            description:
+              "The asset is assigned to a person, department, or location responsible for it, such as a laptop assigned to a new employee.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "Usage",
+            subtitle: "Step 6",
+            description: "The asset is put to work in daily operations.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "Tracking",
+            subtitle: "Step 7",
+            description:
+              "The business keeps a record of the asset's location, condition, and movement over time.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "Maintenance",
+            subtitle: "Step 8",
+            description:
+              "Scheduled or as-needed servicing keeps the asset in good working condition.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "Warranty",
+            subtitle: "Step 9",
+            description:
+              "Warranty details are tracked so repairs can be claimed while coverage is valid.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "Transfer",
+            subtitle: "Step 10",
+            description:
+              "When an asset moves between employees, departments, or branches, the transfer is recorded to keep ownership accurate.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "Reporting",
+            subtitle: "Step 11",
+            description:
+              "Asset data is reviewed through reports to support decisions on budgeting, replacement, and utilisation.",
+          },
+          {
+            itemType: "lifecycle_step",
+            title: "Retirement / Disposal",
+            subtitle: "Step 12",
+            description:
+              "When an asset reaches the end of its useful life, it is formally retired or disposed of and removed from active records.",
+          },
+        ],
+      }),
+      createIconCardsSection({
+        sectionKey: "asset-management-topic-hub",
+        internalName: "Asset Management Topic Hub",
+        heading: "Asset Management Topic Hub",
+        subheading: "Explore Topics",
+        description:
+          "Explore each part of asset management in more depth through the topic cards below.",
+        items: [
+          {
+            itemType: "topic_card",
+            title: "Asset Management Basics",
+            subtitle: "Foundations",
+            description:
+              "Understand the fundamental concepts of asset management - what it is, why it matters, and how it works in practice.",
+            icon: "BookOpen",
+            buttonText: "Learn More",
+            buttonLink: "#what-is-asset-management",
+          },
+          {
+            itemType: "topic_card",
+            title: "Asset Tracking",
+            subtitle: "Visibility",
+            description:
+              "Learn how businesses track assets, maintain visibility, and stay accountable for equipment across teams and locations.",
+            icon: "MapPin",
+            buttonText: "Read Asset Tracking Guide",
+            buttonLink: "#asset-tracking-guide",
+          },
+          {
+            itemType: "topic_card",
+            title: "QR Code Asset Management",
+            subtitle: "Identification",
+            description:
+              "See how QR codes are used to identify assets quickly and accurately, including during audits and maintenance.",
+            icon: "QrCode",
+            buttonText: "Learn About QR Asset Management",
+            buttonLink: "#qr-code-asset-management-guide",
+          },
+          {
+            itemType: "topic_card",
+            title: "Asset Maintenance",
+            subtitle: "Reliability",
+            description:
+              "Explore maintenance planning, service records, and how to keep equipment reliable over its lifetime.",
+            icon: "Wrench",
+            buttonText: "Read Maintenance Guide",
+            buttonLink: "#asset-maintenance-guide",
+          },
+          {
+            itemType: "topic_card",
+            title: "Asset Reports",
+            subtitle: "Decision-making",
+            description:
+              "Understand how asset reporting supports smarter, faster business decisions.",
+            icon: "BarChart3",
+            buttonText: "Explore Asset Reports",
+            buttonLink: "#asset-reporting-guide",
+          },
+          {
+            itemType: "topic_card",
+            title: "Asset Lifecycle Management",
+            subtitle: "End-to-end control",
+            description:
+              "Learn how to manage assets from procurement through to retirement in a structured way.",
+            icon: "Workflow",
+            buttonText: "Learn Lifecycle Management",
+            buttonLink: "#complete-asset-management-lifecycle",
+          },
+        ],
+      }),
+      createContentSplitSection({
+        sectionKey: "asset-tracking-guide",
+        internalName: "Asset Tracking Guide",
+        heading: "Asset Tracking Guide",
+        subheading: "Tracking",
+        description:
+          "Asset tracking gives businesses an ongoing, accurate picture of equipment instead of relying on memory or scattered notes.",
+        buttonText: "Open Asset Tracking",
+        buttonLink: ROUTES.bulkEmailAssetTracking,
+        items: [
+          {
+            itemType: "content_card",
+            title: "What is asset tracking?",
+            subtitle: "Definition",
+            description:
+              "Asset tracking is the process of recording and monitoring where an asset is, who is using it, and how its status changes over time.",
+          },
+          {
+            itemType: "content_card",
+            title: "Why do businesses track assets?",
+            subtitle: "Purpose",
+            description:
+              "Businesses track assets to reduce loss, improve accountability, plan purchases more accurately, and prepare for audits without last-minute scrambling.",
+          },
+          {
+            itemType: "content_card",
+            title: "How does asset assignment work?",
+            subtitle: "Accountability",
+            description:
+              "Asset assignment links a specific asset to the person, team, or department using it. This record makes it clear who is responsible for the item and makes handovers, returns, and transfers easier to manage.",
+          },
+          {
+            itemType: "content_card",
+            title: "How does branch and department tracking work?",
+            subtitle: "Locations",
+            description:
+              "For businesses with multiple locations, assets can be organised and tracked by branch or department. This makes it possible to see how many assets exist at each site and how they are distributed across teams.",
+          },
+          {
+            itemType: "content_card",
+            title: "How can QR codes help identify assets?",
+            subtitle: "Fast lookup",
+            description:
+              "A QR code attached to an asset allows staff to scan and instantly pull up its record - including assignment, category, and history - instead of manually searching a register.",
+          },
+          {
+            itemType: "content_card",
+            title: "How does asset history improve accountability?",
+            subtitle: "History",
+            description:
+              "A recorded history of assignments, transfers, and maintenance activity creates a clear trail for every asset, making it easier to answer questions about who used it, when, and what happened to it.",
+          },
+        ],
+      }),
+      createContentSplitSection({
+        sectionKey: "qr-code-asset-management-guide",
+        internalName: "QR Code Asset Management Guide",
+        heading: "QR Code Asset Management Guide",
+        subheading: "QR Codes",
+        description:
+          "QR code asset management uses unique labels to make each physical asset faster to identify, look up, and verify.",
+        buttonText: "Open QR Code Asset Management",
+        buttonLink: ROUTES.bulkEmailAssetQrCode,
+        items: [
+          {
+            itemType: "content_card",
+            title: "What does QR code asset management mean?",
+            subtitle: "Definition",
+            description:
+              "QR code asset management is the practice of attaching a unique QR code to each physical asset so it can be quickly identified, looked up, and tracked using a scanner or smartphone camera.",
+          },
+          {
+            itemType: "content_card",
+            title: "How do QR codes identify assets?",
+            subtitle: "Unique record",
+            description:
+              "Each QR code is linked to a specific asset record. Scanning the code opens that record, showing details such as the asset's category, assignment, and status without needing to search manually.",
+          },
+          {
+            itemType: "content_card",
+            title: "How do QR labels work?",
+            subtitle: "Labeling",
+            description:
+              "A QR label is a small, durable sticker or tag printed with the asset's unique QR code and attached directly to the item, making it identifiable at a glance.",
+          },
+          {
+            itemType: "content_card",
+            title: "What information can scanning provide?",
+            subtitle: "Record lookup",
+            description:
+              "Scanning an asset's QR code can surface information already stored in its record, such as category, current assignment, and status. The exact details available depend on what has been recorded for that asset.",
+          },
+          {
+            itemType: "content_card",
+            title: "How do QR codes help during audits?",
+            subtitle: "Audit speed",
+            description:
+              "During an audit, staff can scan each asset's QR code to quickly confirm it matches the register, which speeds up verification and reduces manual cross-checking.",
+          },
+          {
+            itemType: "content_card",
+            title: "How can QR codes support maintenance workflows?",
+            subtitle: "Service records",
+            description:
+              "QR codes make it faster to pull up an asset's record before logging a service or repair, helping maintenance teams keep accurate, asset-specific records.",
+          },
+        ],
+      }),
+      createContentSplitSection({
+        sectionKey: "asset-maintenance-guide",
+        internalName: "Asset Maintenance Guide",
+        heading: "Asset Maintenance Guide",
+        subheading: "Maintenance",
+        description:
+          "Asset maintenance keeps equipment in good working condition through servicing, repair records, scheduling, and warranty visibility.",
+        buttonText: "Open Asset Maintenance",
+        buttonLink: ROUTES.bulkEmailAssetMaintenance,
+        items: [
+          {
+            itemType: "content_card",
+            title: "What does asset maintenance mean?",
+            subtitle: "Definition",
+            description:
+              "Asset maintenance is the ongoing process of servicing, repairing, and monitoring assets so they stay in good working condition throughout their useful life.",
+          },
+          {
+            itemType: "content_card",
+            title: "Preventive Maintenance",
+            subtitle: "Planned service",
+            description:
+              "Preventive maintenance means servicing an asset on a planned schedule to reduce the chance of unexpected breakdowns, rather than waiting for something to go wrong.",
+          },
+          {
+            itemType: "content_card",
+            title: "Repair Records",
+            subtitle: "Repair log",
+            description:
+              "Keeping a record of every repair - what was fixed, when, and by whom - helps businesses understand an asset's reliability over time.",
+          },
+          {
+            itemType: "content_card",
+            title: "Service History",
+            subtitle: "Complete log",
+            description:
+              "An asset's service history is the complete log of maintenance and repair activity carried out on it, useful for planning replacements and evaluating performance.",
+          },
+          {
+            itemType: "content_card",
+            title: "Warranty Management",
+            subtitle: "Coverage",
+            description:
+              "Warranty management involves recording warranty start and end dates so repairs can be claimed under coverage before it expires.",
+          },
+          {
+            itemType: "content_card",
+            title: "Maintenance Scheduling",
+            subtitle: "Planning",
+            description:
+              "Maintenance scheduling means planning service dates in advance so upkeep happens consistently rather than being missed or forgotten.",
+          },
+          {
+            itemType: "content_card",
+            title: "Why Maintenance Records Matter",
+            subtitle: "Better decisions",
+            description:
+              "Accurate maintenance records help businesses extend asset lifespan, budget for repairs, and make informed decisions about when to repair versus replace equipment.",
+          },
+        ],
+      }),
+      createContentSplitSection({
+        sectionKey: "asset-reporting-guide",
+        internalName: "Asset Reporting Guide",
+        heading: "Asset Reporting Guide",
+        subheading: "Reports",
+        description:
+          "Asset reports turn raw records into information leadership can act on - helping businesses plan budgets, spot underused equipment, and prepare for audits.",
+        buttonText: "Open Asset Reports",
+        buttonLink: ROUTES.bulkEmailAssetReports,
+        items: [
+          {
+            itemType: "content_card",
+            title: "Why asset reports matter",
+            subtitle: "Decision support",
+            description:
+              "Asset reports help businesses plan budgets, spot underused equipment, and prepare for audits with clearer data.",
+          },
+          {
+            itemType: "content_card",
+            title: "Asset Inventory Reports",
+            subtitle: "Inventory",
+            description: "Show a complete list of assets owned, including category and status.",
+          },
+          {
+            itemType: "content_card",
+            title: "Department Reports",
+            subtitle: "Departments",
+            description:
+              "Break down asset ownership by department, useful for internal cost allocation.",
+          },
+          {
+            itemType: "content_card",
+            title: "Branch Reports",
+            subtitle: "Branches",
+            description: "Show how assets are distributed across different business locations.",
+          },
+          {
+            itemType: "content_card",
+            title: "Maintenance Reports",
+            subtitle: "Service activity",
+            description: "Summarise servicing and repair activity across all assets.",
+          },
+          {
+            itemType: "content_card",
+            title: "Warranty Reports",
+            subtitle: "Coverage",
+            description: "Highlight which assets have active, expiring, or expired warranties.",
+          },
+          {
+            itemType: "content_card",
+            title: "Asset Status Reports",
+            subtitle: "Current status",
+            description:
+              "Show the current condition or usage status of each asset, such as in use, idle, under repair, or retired.",
+          },
+          {
+            itemType: "content_card",
+            title: "How reporting supports decision-making",
+            subtitle: "Planning",
+            description:
+              "With clear, current reports, businesses can decide when to replace ageing equipment, where to reduce unnecessary purchases, and how to allocate budgets more effectively.",
+          },
+        ],
+      }),
+      createIconCardsSection({
+        sectionKey: "asset-management-best-practices",
+        internalName: "Asset Management Best Practices",
+        heading: "Asset Management Best Practices",
+        subheading: "Best Practices",
+        description:
+          "Use these practices to keep asset records reliable, searchable, and useful for everyday business decisions.",
+        items: [
+          {
+            itemType: "best_practice",
+            title: "Maintain a Centralised Asset Register",
+            description:
+              "Keep all asset information in one place so it stays consistent and easy to find.",
+            icon: "Package",
+          },
+          {
+            itemType: "best_practice",
+            title: "Use Consistent Asset Categories",
+            description:
+              "Group similar assets together to make searching, reporting, and audits easier.",
+            icon: "Layers3",
+          },
+          {
+            itemType: "best_practice",
+            title: "Assign Assets Clearly",
+            description: "Record exactly who or which department is responsible for each asset.",
+            icon: "Users",
+          },
+          {
+            itemType: "best_practice",
+            title: "Use Asset Identification Labels",
+            description: "Attach tags or QR codes so assets can be quickly recognised.",
+            icon: "QrCode",
+          },
+          {
+            itemType: "best_practice",
+            title: "Keep Asset Records Updated",
+            description:
+              "Update records whenever an asset's status, location, or condition changes.",
+            icon: "RotateCcw",
+          },
+          {
+            itemType: "best_practice",
+            title: "Track Transfers",
+            description: "Log every time an asset moves between people, departments, or branches.",
+            icon: "Truck",
+          },
+          {
+            itemType: "best_practice",
+            title: "Record Maintenance",
+            description: "Document every service and repair to build a reliable history.",
+            icon: "Wrench",
+          },
+          {
+            itemType: "best_practice",
+            title: "Monitor Warranties",
+            description: "Track warranty periods so coverage is not missed.",
+            icon: "ShieldCheck",
+          },
+          {
+            itemType: "best_practice",
+            title: "Conduct Regular Audits",
+            description: "Periodically verify that physical assets match your records.",
+            icon: "ClipboardCheck",
+          },
+          {
+            itemType: "best_practice",
+            title: "Review Asset Reports",
+            description: "Use reports regularly to guide budgeting and replacement decisions.",
+            icon: "BarChart3",
+          },
+          {
+            itemType: "best_practice",
+            title: "Document Asset History",
+            description:
+              "Maintain a full timeline of each asset's assignments, transfers, and servicing.",
+            icon: "FileText",
+          },
+        ],
+      }),
+      createComparisonTableSection({
+        sectionKey: "manual-vs-digital-asset-management",
+        internalName: "Manual vs Digital Asset Management",
+        heading: "Manual vs Digital Asset Management",
+        subheading: "Comparison",
+        description:
+          "Both approaches aim to help businesses keep track of what they own. Many small businesses start with spreadsheets and grow into digital systems as their asset base expands.",
+        settings: {
+          headers: ["Manual Spreadsheet", "Digital Asset Management Platform"],
+        },
+        items: [
+          {
+            itemType: "comparison_row",
+            title: "Asset records kept in individual files",
+            description: "Centralised, shared asset records",
+          },
+          {
+            itemType: "comparison_row",
+            title: "Tracking updated manually, often inconsistently",
+            description: "Tracking updated as part of the regular workflow",
+          },
+          {
+            itemType: "comparison_row",
+            title: "Assignments noted informally",
+            description: "Assignments recorded systematically against each asset",
+          },
+          {
+            itemType: "comparison_row",
+            title: "Maintenance reminders set manually or missed",
+            description: "Maintenance details recorded and organised in one place",
+          },
+          {
+            itemType: "comparison_row",
+            title: "No built-in QR code support",
+            description: "QR codes can be generated and linked to asset records",
+          },
+          {
+            itemType: "comparison_row",
+            title: "Reports built manually by compiling data",
+            description: "Reports generated directly from existing asset data",
+          },
+          {
+            itemType: "comparison_row",
+            title: "Search limited to spreadsheet filters",
+            description: "Structured search and filters across the full asset database",
+          },
+          {
+            itemType: "comparison_row",
+            title: "Audit preparation is time-consuming",
+            description: "Audit preparation is faster with organised, current records",
+          },
+          {
+            itemType: "comparison_row",
+            title: "Harder to scale as asset count grows",
+            description: "Designed to scale with growing asset volumes",
+          },
+          {
+            itemType: "comparison_row",
+            title: "Data organisation depends on the individual maintaining it",
+            description: "Data organisation is structured and consistent by design",
+          },
+        ],
+      }),
+      createIconCardsSection({
+        sectionKey: "who-needs-asset-management",
+        internalName: "Who Needs Asset Management",
+        heading: "Who Needs Asset Management?",
+        subheading: "Industries",
+        description:
+          "Asset management is useful for any organisation that owns, issues, moves, services, or audits physical assets.",
+        items: [
+          {
+            itemType: "industry_card",
+            title: "Manufacturing",
+            subtitle: "Machinery and tools",
+            description: "Common assets: Machinery, production tools, safety equipment.",
+            icon: "Factory",
+            extraData: {
+              features: [
+                "Main challenge: Keeping heavy equipment running without unplanned downtime.",
+                "How asset management helps: Maintenance tracking and reporting help plan servicing before failures occur.",
+              ],
+            },
+          },
+          {
+            itemType: "industry_card",
+            title: "IT Companies",
+            subtitle: "Devices and servers",
+            description: "Common assets: Laptops, servers, networking equipment.",
+            icon: "Laptop",
+            extraData: {
+              features: [
+                "Main challenge: Knowing which employee has which device at any time.",
+                "How asset management helps: Asset assignment and tracking keep hardware accountable across teams.",
+              ],
+            },
+          },
+          {
+            itemType: "industry_card",
+            title: "Healthcare",
+            subtitle: "Medical equipment",
+            description: "Common assets: Medical equipment, diagnostic devices, facility assets.",
+            icon: "HeartPulse",
+            extraData: {
+              features: [
+                "Main challenge: Ensuring equipment is available, working, and accounted for.",
+                "How asset management helps: Centralised records and maintenance history support reliable equipment upkeep.",
+              ],
+            },
+          },
+          {
+            itemType: "industry_card",
+            title: "Education",
+            subtitle: "Campuses and labs",
+            description: "Common assets: Computers, lab equipment, furniture.",
+            icon: "GraduationCap",
+            extraData: {
+              features: [
+                "Main challenge: Managing assets across classrooms, labs, and campuses.",
+                "How asset management helps: Categorisation and location tracking simplify oversight across departments.",
+              ],
+            },
+          },
+          {
+            itemType: "industry_card",
+            title: "Retail",
+            subtitle: "Stores and POS",
+            description: "Common assets: POS systems, display equipment, store fixtures.",
+            icon: "ShoppingBag",
+            extraData: {
+              features: [
+                "Main challenge: Tracking assets across multiple store locations.",
+                "How asset management helps: Branch-level tracking gives visibility into assets at every outlet.",
+              ],
+            },
+          },
+          {
+            itemType: "industry_card",
+            title: "Warehousing",
+            subtitle: "Shared equipment",
+            description: "Common assets: Material handling equipment, racking, tools.",
+            icon: "Truck",
+            extraData: {
+              features: [
+                "Main challenge: Keeping track of shared equipment used by multiple staff.",
+                "How asset management helps: Assignment and usage tracking clarify accountability on the floor.",
+              ],
+            },
+          },
+          {
+            itemType: "industry_card",
+            title: "Construction",
+            subtitle: "Sites and machinery",
+            description: "Common assets: Tools, heavy machinery, site equipment.",
+            icon: "Wrench",
+            extraData: {
+              features: [
+                "Main challenge: Assets frequently move between sites and teams.",
+                "How asset management helps: Transfer tracking keeps records accurate as equipment relocates.",
+              ],
+            },
+          },
+          {
+            itemType: "industry_card",
+            title: "Corporate Offices",
+            subtitle: "Employee-issued assets",
+            description: "Common assets: Laptops, furniture, office equipment.",
+            icon: "BriefcaseBusiness",
+            extraData: {
+              features: [
+                "Main challenge: Managing assets issued to a growing employee base.",
+                "How asset management helps: A central register simplifies onboarding, offboarding, and audits.",
+              ],
+            },
+          },
+          {
+            itemType: "industry_card",
+            title: "Hospitality",
+            subtitle: "Properties and outlets",
+            description: "Common assets: Kitchen equipment, furniture, guest-facing devices.",
+            icon: "MapPin",
+            extraData: {
+              features: [
+                "Main challenge: Coordinating assets across multiple properties or outlets.",
+                "How asset management helps: Branch reporting supports consistent management across locations.",
+              ],
+            },
+          },
+          {
+            itemType: "industry_card",
+            title: "Government Organisations",
+            subtitle: "Public accountability",
+            description: "Common assets: Office equipment, vehicles, public infrastructure assets.",
+            icon: "ShieldCheck",
+            extraData: {
+              features: [
+                "Main challenge: Maintaining transparent, auditable records of public assets.",
+                "How asset management helps: Structured records and reports support compliance and accountability.",
+              ],
+            },
+          },
+        ],
+      }),
+      createIconCardsSection({
+        sectionKey: "choose-asset-management-software",
+        internalName: "How to Choose Asset Management Software",
+        heading: "How to Choose Asset Management Software",
+        subheading: "Buyer Guide",
+        description:
+          "When evaluating asset management software, assess these factors against your business's actual needs.",
+        buttonText: "Explore Altroz Asset Management",
+        buttonLink: ROUTES.assetManagementHome,
+        settings: {
+          secondaryButtonText: "Compare Pricing",
+          secondaryButtonLink: ROUTES.assetManagementPricing,
+        },
+        items: [
+          {
+            itemType: "selection_factor",
+            title: "Asset Registration",
+            description: "Determines how easily new assets can be added and documented.",
+            icon: "Package",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Asset Tracking",
+            description: "Affects how well you can monitor location, status, and movement.",
+            icon: "MapPin",
+          },
+          {
+            itemType: "selection_factor",
+            title: "QR Code Support",
+            description: "Makes identification and lookup faster in daily operations.",
+            icon: "QrCode",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Asset Assignment",
+            description: "Ensures clear accountability for every asset.",
+            icon: "Users",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Maintenance",
+            description: "Supports scheduling and recording of service activity.",
+            icon: "Wrench",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Warranty Tracking",
+            description: "Helps avoid missed warranty claims.",
+            icon: "ShieldCheck",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Reports",
+            description: "Determines how easily you can turn data into decisions.",
+            icon: "BarChart3",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Dashboard",
+            description: "Affects how quickly your team can see the overall asset picture.",
+            icon: "LayoutDashboard",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Search and Filters",
+            description: "Impacts how easy it is to find specific assets.",
+            icon: "Target",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Multi-Branch Support",
+            description: "Important if your business operates across multiple locations.",
+            icon: "MapPin",
+          },
+          {
+            itemType: "selection_factor",
+            title: "User Access",
+            description: "Controls who can view or edit asset records.",
+            icon: "ShieldCheck",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Ease of Use",
+            description: "Affects how quickly your team can adopt the system.",
+            icon: "Sparkles",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Scalability",
+            description: "Determines whether the platform can grow with your asset base.",
+            icon: "TrendingUp",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Support",
+            description: "Affects how quickly issues are resolved when they arise.",
+            icon: "MailCheck",
+          },
+          {
+            itemType: "selection_factor",
+            title: "Pricing",
+            description:
+              "Should align with the value the platform delivers for your business size.",
+            icon: "Wallet",
+          },
+        ],
+      }),
+      createChecklistSection({
+        sectionKey: "asset-management-checklist",
+        internalName: "Asset Management Checklist",
+        heading: "Asset Management Checklist for Businesses",
+        subheading: "Checklist",
+        description:
+          "Use this checklist as a quick reference when setting up or reviewing your asset management process.",
+        items: [
+          { itemType: "checklist_item", title: "Maintain asset register" },
+          { itemType: "checklist_item", title: "Categorise assets" },
+          { itemType: "checklist_item", title: "Assign unique identification" },
+          { itemType: "checklist_item", title: "Record purchase information" },
+          { itemType: "checklist_item", title: "Record vendor information" },
+          { itemType: "checklist_item", title: "Assign assets" },
+          { itemType: "checklist_item", title: "Track transfers" },
+          { itemType: "checklist_item", title: "Maintain service history" },
+          { itemType: "checklist_item", title: "Monitor warranties" },
+          { itemType: "checklist_item", title: "Conduct regular audits" },
+          { itemType: "checklist_item", title: "Review asset reports" },
+          { itemType: "checklist_item", title: "Update asset status" },
+        ],
+      }),
+      createFaqSection({
+        sectionKey: "asset-management-guide-faq",
+        internalName: "Popular Questions",
+        heading: "Popular Questions",
+        subheading: "FAQs",
+        description:
+          "Answers below are written to be clear and useful for both readers and AI-powered search summaries.",
+        buttonText: "Book a Demo",
+        buttonLink: ROUTES.bookDemo,
+        settings: {
+          secondaryHeading: "Need help applying this guide to your assets?",
+          secondaryDescription:
+            "A guided walkthrough can connect these concepts to your real asset register, branches, maintenance process and reports.",
+          secondaryButtonText: "Explore Asset Management",
+          secondaryButtonLink: ROUTES.assetManagementHome,
+        },
+        items: [
+          {
+            itemType: "faq",
+            title: "What is asset management?",
+            description:
+              "Asset management is the process of organising, tracking, maintaining, and reviewing the physical assets a business owns, from purchase through to retirement.",
+          },
+          {
+            itemType: "faq",
+            title: "Why is asset management important?",
+            description:
+              "It helps businesses avoid lost equipment, missed maintenance, duplicate purchases, and difficult audits by keeping accurate, centralised records.",
+          },
+          {
+            itemType: "faq",
+            title: "What is asset tracking?",
+            description:
+              "Asset tracking is the process of recording where an asset is, who is using it, and how its status changes over time.",
+          },
+          {
+            itemType: "faq",
+            title: "What is asset lifecycle management?",
+            description:
+              "Asset lifecycle management is the practice of managing an asset through every stage of its life - procurement, use, maintenance, and eventual retirement.",
+          },
+          {
+            itemType: "faq",
+            title: "What is an asset register?",
+            description:
+              "An asset register is a central record that lists all the assets a business owns, along with details like category, assignment, and status.",
+          },
+          {
+            itemType: "faq",
+            title: "How do companies track assets?",
+            description:
+              "Companies track assets by recording details in a register, assigning ownership, monitoring status and location, and reviewing this information regularly through reports.",
+          },
+          {
+            itemType: "faq",
+            title: "What is QR Code asset management?",
+            description:
+              "QR Code asset management is the practice of attaching a unique QR code to each asset so it can be identified and looked up quickly by scanning.",
+          },
+          {
+            itemType: "faq",
+            title: "What is asset maintenance?",
+            description:
+              "Asset maintenance is the ongoing process of servicing and repairing assets to keep them in good working condition.",
+          },
+          {
+            itemType: "faq",
+            title: "What is an asset audit?",
+            description:
+              "An asset audit is the process of physically verifying that assets match what is recorded in the asset register.",
+          },
+          {
+            itemType: "faq",
+            title: "What is asset management software?",
+            description:
+              "Asset management software is a digital platform that helps businesses register, track, maintain, and report on their assets in one centralised system.",
+          },
+          {
+            itemType: "faq",
+            title: "How does asset management software work?",
+            description:
+              "It works by centralising asset records and making it easier to assign, track, maintain, and report on assets compared to manual methods like spreadsheets.",
+          },
+          {
+            itemType: "faq",
+            title: "What assets can businesses track?",
+            description:
+              "Businesses commonly track laptops, machinery, vehicles, tools, medical equipment, furniture, and other physical items used in operations.",
+          },
+          {
+            itemType: "faq",
+            title: "How often should assets be audited?",
+            description:
+              "This depends on the business, but many organisations conduct audits periodically - such as quarterly or annually - to keep records accurate.",
+          },
+          {
+            itemType: "faq",
+            title: "How can businesses reduce asset loss?",
+            description:
+              "Assigning clear ownership, labelling assets for identification, and reviewing records regularly all help reduce the risk of lost assets.",
+          },
+          {
+            itemType: "faq",
+            title: "How do QR Codes help track assets?",
+            description:
+              "QR Codes let staff scan an asset to instantly view its record, which speeds up identification during daily use, maintenance, and audits.",
+          },
+          {
+            itemType: "faq",
+            title: "What is the difference between asset tracking and inventory management?",
+            description:
+              "Asset tracking focuses on monitoring individual assets over time, such as location, assignment and condition, while inventory management typically focuses on stock levels and quantities of items.",
+          },
+          {
+            itemType: "faq",
+            title: "What should an asset register contain?",
+            description:
+              "A good asset register typically includes asset name, category, purchase details, assigned owner, location, status, and maintenance history.",
+          },
+          {
+            itemType: "faq",
+            title: "How can businesses manage assets across multiple branches?",
+            description:
+              "By organising asset records with branch or location tags, businesses can see how assets are distributed and track movement between sites.",
+          },
+          {
+            itemType: "faq",
+            title: "What are the benefits of digital asset management?",
+            description:
+              "Digital asset management centralises records, speeds up tracking and reporting, and makes audits and maintenance easier to manage as a business grows.",
+          },
+          {
+            itemType: "faq",
+            title: "How should businesses choose asset management software?",
+            description:
+              "Businesses should evaluate features like tracking, QR code support, maintenance, reporting, ease of use, scalability, and pricing against their specific needs.",
+          },
+          {
+            itemType: "faq",
+            title: "What is asset categorisation?",
+            description:
+              "Asset categorisation is the process of grouping similar assets together, such as IT equipment or furniture, to make records easier to organise and search.",
+          },
+          {
+            itemType: "faq",
+            title: "What is asset assignment?",
+            description:
+              "Asset assignment is the process of recording which person, department, or location is responsible for a specific asset.",
+          },
+          {
+            itemType: "faq",
+            title: "What is a warranty tracking record?",
+            description:
+              "A warranty tracking record notes the start and end dates of an asset's warranty so repairs can be claimed before coverage expires.",
+          },
+          {
+            itemType: "faq",
+            title: "What happens during asset retirement?",
+            description:
+              "During retirement, an asset is formally removed from active use and records, often after it is no longer functional or cost-effective to maintain.",
+          },
+          {
+            itemType: "faq",
+            title: "Can small businesses benefit from asset management?",
+            description:
+              "Yes. Even small businesses with a modest number of assets benefit from having a clear, organised record to prevent loss and support planning as they grow.",
+          },
+        ],
+      }),
+      createIconCardsSection({
+        sectionKey: "asset-guide-related-resources",
+        internalName: "Related Resources",
+        heading: "Related Resources",
+        subheading: "Next Steps",
+        description:
+          "Continue from the guide into the product pages and practical workflows most relevant to asset operations.",
+        items: [
+          {
+            itemType: "related_resource",
+            title: "Altroz Asset Management",
+            description:
+              "Explore the main product page for asset registers, tracking, QR workflows, maintenance and reporting.",
+            icon: "Package",
+            buttonText: "Open Product Page",
+            buttonLink: ROUTES.assetManagementHome,
+          },
+          {
+            itemType: "related_resource",
+            title: "Asset Tracking",
+            description:
+              "See tracking and ownership workflows for assets across teams and locations.",
+            icon: "MapPin",
+            buttonText: "Open Tracking",
+            buttonLink: ROUTES.bulkEmailAssetTracking,
+          },
+          {
+            itemType: "related_resource",
+            title: "QR Code Assets",
+            description: "Learn how QR labels help identify, verify and update assets faster.",
+            icon: "QrCode",
+            buttonText: "Open QR Page",
+            buttonLink: ROUTES.bulkEmailAssetQrCode,
+          },
+          {
+            itemType: "related_resource",
+            title: "Asset Maintenance",
+            description:
+              "Review service, repair and warranty workflows for better equipment upkeep.",
+            icon: "Wrench",
+            buttonText: "Open Maintenance",
+            buttonLink: ROUTES.bulkEmailAssetMaintenance,
+          },
+          {
+            itemType: "related_resource",
+            title: "Asset Reports",
+            description:
+              "Explore reporting workflows for audits, planning, warranties and status visibility.",
+            icon: "BarChart3",
+            buttonText: "Open Reports",
+            buttonLink: ROUTES.bulkEmailAssetReports,
+          },
+          {
+            itemType: "related_resource",
+            title: "Asset Pricing",
+            description:
+              "Compare plan coverage and understand the commercial fit for your business.",
+            icon: "Wallet",
+            buttonText: "Compare Pricing",
+            buttonLink: ROUTES.assetManagementPricing,
+          },
         ],
       }),
       createCtaSection({
-        heading: "Need this guide turned into a working asset workflow?",
+        sectionKey: "altroz-asset-management-cta",
+        internalName: "Altroz Asset Management CTA",
+        heading: "Ready to Move from Manual Asset Management to a Digital Platform?",
         description:
-          "Use the product walkthrough to connect the guide to real operational screens.",
+          "If your business currently manages assets through spreadsheets or paper records, Altroz Asset Management can help you bring everything into one place - centralising asset records, tracking, QR code identification, maintenance, and reporting, so your team always has an accurate, up-to-date view of what you own.",
+        buttonText: "Book a Demo",
+        buttonLink: ROUTES.bookDemo,
         settings: {
-          secondaryButtonText: "Contact Us",
-          secondaryButtonLink: ROUTES.contact,
+          secondaryButtonText: "Explore Asset Management",
+          secondaryButtonLink: ROUTES.assetManagementHome,
+        },
+      }),
+      createCtaSection({
+        sectionKey: "asset-guide-final-cta",
+        internalName: "Final CTA",
+        heading: "Build a Smarter Asset Management Process",
+        description:
+          "Learn how modern asset management can help your organisation improve visibility, accountability, maintenance, and reporting.",
+        buttonText: "Explore Altroz Asset Management",
+        buttonLink: ROUTES.assetManagementHome,
+        settings: {
+          secondaryButtonText: "Book Free Demo",
+          secondaryButtonLink: ROUTES.bookDemo,
         },
       }),
     ],
@@ -2095,14 +4082,20 @@ const managedAdminPages = [
     title: "Asset Management Blog for Tracking, Maintenance and Audits | Altroz",
     description:
       "Read practical asset-management articles covering registers, ownership, maintenance, branch visibility, QR workflows and audit readiness.",
-    keywords: ["asset management blog", "asset tracking blog", "maintenance blog", "asset audits blog"],
+    keywords: [
+      "asset management blog",
+      "asset tracking blog",
+      "maintenance blog",
+      "asset audits blog",
+    ],
     heroEyebrow: "Asset Management Blog",
     heroTitle: "Practical Asset Articles for Tracking, Maintenance, Ownership and Audit Readiness",
     heroDescription:
       "A content hub for admin, HR, IT and operations teams managing business assets across locations and departments.",
     sections: [
       createHeroSection({
-        heading: "Practical Asset Articles for Tracking, Maintenance, Ownership and Audit Readiness",
+        heading:
+          "Practical Asset Articles for Tracking, Maintenance, Ownership and Audit Readiness",
         subheading: "Asset Management Blog",
         description:
           "A content hub for admin, HR, IT and operations teams managing business assets across locations and departments.",
@@ -2122,18 +4115,71 @@ const managedAdminPages = [
         description:
           "Use these topic cards to surface the asset questions prospects usually research first.",
         items: [
-          { itemType: "topic_card", title: "Asset Register Basics", subtitle: "One source of truth", description: "Explain why a searchable asset register matters more than scattered manual lists.", icon: "Package", buttonText: "Open Main Page", buttonLink: ROUTES.assetManagementHome },
-          { itemType: "topic_card", title: "Ownership Tracking", subtitle: "Employee and branch control", description: "Show how asset ownership, assignment and location visibility reduce confusion.", icon: "Users", buttonText: "Open Tracking", buttonLink: ROUTES.bulkEmailAssetTracking },
-          { itemType: "topic_card", title: "Maintenance Planning", subtitle: "Uptime and service", description: "Discuss service records, warranty tracking and maintenance reminders for better control.", icon: "Wrench", buttonText: "Open Maintenance", buttonLink: ROUTES.bulkEmailAssetMaintenance },
-          { itemType: "topic_card", title: "QR Code Workflows", subtitle: "Faster verification", description: "Cover how QR labels support quick verification, movement checks and record accuracy.", icon: "QrCode", buttonText: "Open QR Code Page", buttonLink: ROUTES.bulkEmailAssetQrCode },
-          { itemType: "topic_card", title: "Audit Readiness", subtitle: "Review and reporting", description: "Explain how reports and movement history help teams prepare for reviews more confidently.", icon: "BarChart3", buttonText: "Open Reports", buttonLink: ROUTES.bulkEmailAssetReports },
-          { itemType: "topic_card", title: "Branch Visibility", subtitle: "Multi-location control", description: "Discuss how centralized records help branches avoid duplicate buying and lost visibility.", icon: "MapPin", buttonText: "Open Dashboard", buttonLink: ROUTES.bulkEmailAssetDashboard },
+          {
+            itemType: "topic_card",
+            title: "Asset Register Basics",
+            subtitle: "One source of truth",
+            description:
+              "Explain why a searchable asset register matters more than scattered manual lists.",
+            icon: "Package",
+            buttonText: "Open Main Page",
+            buttonLink: ROUTES.assetManagementHome,
+          },
+          {
+            itemType: "topic_card",
+            title: "Ownership Tracking",
+            subtitle: "Employee and branch control",
+            description:
+              "Show how asset ownership, assignment and location visibility reduce confusion.",
+            icon: "Users",
+            buttonText: "Open Tracking",
+            buttonLink: ROUTES.bulkEmailAssetTracking,
+          },
+          {
+            itemType: "topic_card",
+            title: "Maintenance Planning",
+            subtitle: "Uptime and service",
+            description:
+              "Discuss service records, warranty tracking and maintenance reminders for better control.",
+            icon: "Wrench",
+            buttonText: "Open Maintenance",
+            buttonLink: ROUTES.bulkEmailAssetMaintenance,
+          },
+          {
+            itemType: "topic_card",
+            title: "QR Code Workflows",
+            subtitle: "Faster verification",
+            description:
+              "Cover how QR labels support quick verification, movement checks and record accuracy.",
+            icon: "QrCode",
+            buttonText: "Open QR Code Page",
+            buttonLink: ROUTES.bulkEmailAssetQrCode,
+          },
+          {
+            itemType: "topic_card",
+            title: "Audit Readiness",
+            subtitle: "Review and reporting",
+            description:
+              "Explain how reports and movement history help teams prepare for reviews more confidently.",
+            icon: "BarChart3",
+            buttonText: "Open Reports",
+            buttonLink: ROUTES.bulkEmailAssetReports,
+          },
+          {
+            itemType: "topic_card",
+            title: "Branch Visibility",
+            subtitle: "Multi-location control",
+            description:
+              "Discuss how centralized records help branches avoid duplicate buying and lost visibility.",
+            icon: "MapPin",
+            buttonText: "Open Dashboard",
+            buttonLink: ROUTES.bulkEmailAssetDashboard,
+          },
         ],
       }),
       createCtaSection({
         heading: "Want to move from asset articles to a live product walkthrough?",
-        description:
-          "See how the asset-management workflows look in the actual system.",
+        description: "See how the asset-management workflows look in the actual system.",
         settings: {
           secondaryButtonText: "Open Asset Management",
           secondaryButtonLink: ROUTES.assetManagementHome,
@@ -2145,50 +4191,78 @@ const managedAdminPages = [
     pageKey: "asset-management-resource-faq",
     pageName: "Asset Management FAQs",
     route: ROUTES.assetManagementFaq,
-    title: "Asset Management FAQs for Registers, Tracking and Maintenance | Altroz",
+    title: "Asset Management Software FAQs | Altroz Technologies",
     description:
-      "Find simple answers about asset registers, assignment, maintenance, QR tracking, reporting and audit-ready workflows.",
-    keywords: ["asset management faq", "asset tracking faq", "maintenance faq", "asset register faq"],
-    heroEyebrow: "Asset Management FAQ",
-    heroTitle: "Simple Answers for Asset Registers, Tracking, Maintenance and Reporting Questions",
+      "Find answers to common questions on asset management, asset tracking, QR code asset management, maintenance, reports and Altroz Asset Management. Explore FAQs before booking a demo.",
+    keywords: [
+      "asset management faqs",
+      "asset management software faqs",
+      "asset tracking faqs",
+      "qr code asset management faqs",
+      "asset maintenance faqs",
+      "asset reports faqs",
+      "altroz asset management",
+    ],
+    ogTitle: "Asset Management Software FAQs - Altroz Asset Management",
+    ogDescription:
+      "Everything businesses ask about asset management, tracking, QR codes, maintenance and reporting - answered in one place by Altroz Technologies.",
+    heroEyebrow: "Asset Management FAQs",
+    heroTitle: "Asset Management Software FAQs",
     heroDescription:
-      "A clear FAQ page for business teams that want quick answers without technical complexity.",
+      "Answers to the questions businesses ask most about asset management, asset tracking, QR code asset management, maintenance, reports and Altroz Asset Management - in one place, so you can evaluate the platform before booking a demo.",
     sections: [
       createHeroSection({
-        heading: "Simple Answers for Asset Registers, Tracking, Maintenance and Reporting Questions",
-        subheading: "Asset Management FAQ",
+        heading: "Asset Management Software FAQs",
+        subheading: "Asset Management FAQs",
         description:
-          "A clear FAQ page for business teams that want quick answers without technical complexity.",
-        buttonText: "Open Asset Management",
-        buttonLink: ROUTES.assetManagementHome,
+          "Answers to the questions businesses ask most about asset management, asset tracking, QR code asset management, maintenance, reports and Altroz Asset Management - in one place, so you can evaluate the platform before booking a demo.",
+        buttonText: "Book a Demo",
+        buttonLink: ROUTES.bookDemo,
         settings: {
-          badgeText: "Knowledge base",
-          popularSearches: ["What is an asset register?", "How do handovers work?", "Can I track maintenance?"],
-          secondaryButtonText: "Book Free Demo",
-          secondaryButtonLink: ROUTES.bookDemo,
-        },
-      }),
-      createFaqSection({
-        heading: "The questions admin, IT and operations teams usually ask first",
-        subheading: "Frequently Asked Questions",
-        description: "Keep the answers short and editable so the page stays easy for your client to manage.",
-        buttonText: "Contact Us",
-        buttonLink: ROUTES.contact,
-        settings: {
-          secondaryHeading: "Need help explaining the workflow to your team?",
-          secondaryDescription:
-            "A live walkthrough is often easier than a long technical document.",
-          features: ["Registration and assignment", "Tracking and movement", "Maintenance and warranty", "Reports and audits"],
-          secondaryButtonText: "Open Asset Management",
+          badgeText: "Asset Management FAQs",
+          placeholderText: "Search your question...",
+          popularSearches: ["Asset tracking", "QR Codes", "Maintenance", "Reports", "Pricing"],
+          secondaryButtonText: "Explore Asset Management",
           secondaryButtonLink: ROUTES.assetManagementHome,
         },
+      }),
+      ...createAssetManagementFaqSections(),
+      {
+        sectionKey: "faq-quick-links",
+        sectionType: "quick_links",
+        internalName: "Still Have Questions CTA",
+        heading: "Still Have Questions About Asset Management?",
+        subheading: "Need more help?",
+        description:
+          "If you couldn't find what you were looking for, the Altroz Technologies team is happy to help. Reach out for product information, or book a personalized demonstration to see how Altroz Asset Management fits your business.",
+        buttonText: "Book a Demo",
+        buttonLink: ROUTES.bookDemo,
         items: [
-          { itemType: "faq", title: "What is asset management software?", description: "Asset management software helps businesses register, assign, track, maintain and review company assets from one place." },
-          { itemType: "faq", title: "Why is an asset register important?", description: "A proper asset register gives one source of truth for ownership, status, location and history." },
-          { itemType: "faq", title: "Can assets be assigned to employees or branches?", description: "Yes. A structured platform can keep the current owner, assignee or branch visible at all times." },
-          { itemType: "faq", title: "Can I track maintenance and warranty activity?", description: "Yes. Maintenance and warranty visibility help teams avoid missed service work and unclear asset status." },
-          { itemType: "faq", title: "How do reports help?", description: "Reports help teams review ownership, movement, branch coverage, maintenance and audit readiness more clearly." },
+          {
+            itemType: "quick_link",
+            title: "Contact Us",
+            buttonLink: ROUTES.assetManagementContact,
+          },
+          { itemType: "quick_link", title: "Explore Help Center", buttonLink: ROUTES.support },
+          {
+            itemType: "quick_link",
+            title: "Explore Asset Management",
+            buttonLink: ROUTES.assetManagementHome,
+          },
         ],
+      },
+      createCtaSection({
+        sectionKey: "faq-final-cta",
+        internalName: "Final FAQ CTA",
+        heading: "Ready to Simplify Your Asset Management?",
+        description:
+          "See how Altroz Asset Management can help your business centralize, track, and maintain its assets from one platform, through a personalized product demonstration.",
+        buttonText: "Book a Demo",
+        buttonLink: ROUTES.bookDemo,
+        settings: {
+          secondaryButtonText: "Contact Us",
+          secondaryButtonLink: ROUTES.assetManagementContact,
+        },
       }),
     ],
   }),
@@ -2196,70 +4270,579 @@ const managedAdminPages = [
     pageKey: "asset-management-pricing",
     pageName: "Asset Management Pricing",
     route: ROUTES.assetManagementPricing,
-    title: "Asset Management Pricing Page | Altroz Asset Management",
+    title: "Altroz Asset Management Pricing - Plans for Up to 2,000 Assets",
     description:
-      "Show editable asset-management pricing details for registration, tracking, maintenance, QR workflows, reports and onboarding coverage.",
-    keywords: ["asset management pricing", "asset tracking pricing", "qr asset pricing", "maintenance pricing"],
-    heroEyebrow: "Asset Management Pricing",
-    heroTitle: "Present Your Asset Management Pricing, Coverage and Setup Clearly",
+      "Explore Altroz Asset Management pricing plans for businesses managing up to 2,000 assets. Compare annual plans and book a demo.",
+    keywords: [
+      "asset management software pricing",
+      "asset management pricing",
+      "asset tracking pricing",
+      "qr code asset management pricing",
+      "asset maintenance pricing",
+      "asset management plans",
+    ],
+    ogTitle: "Asset Management Software Pricing | Altroz",
+    ogDescription:
+      "Explore Altroz Asset Management annual plans by asset capacity, compare pricing, and book a demo.",
+    heroEyebrow: "Simple, Transparent Asset Management Pricing",
+    heroTitle: "Choose the Right Asset Management Plan for Your Business",
     heroDescription:
-      "An editable pricing page for asset registers, ownership tracking, maintenance workflows, QR support and reporting coverage.",
+      "Altroz Asset Management offers plans based on the number of assets your organization needs to manage. Whether you are tracking a small office inventory or a large, multi-location asset base, there is a plan built around your asset capacity. All plans are billed annually.",
     sections: [
       createHeroSection({
-        heading: "Present Your Asset Management Pricing, Coverage and Setup Clearly",
-        subheading: "Asset Management Pricing",
+        heading: "Choose the Right Asset Management Plan for Your Business",
+        subheading: "Simple, Transparent Asset Management Pricing",
         description:
-          "An editable pricing page for asset registers, ownership tracking, maintenance workflows, QR support and reporting coverage.",
-        buttonText: "Book Free Demo",
+          "Altroz Asset Management offers plans based on the number of assets your organization needs to manage. Whether you are tracking a small office inventory or a large, multi-location asset base, there is a plan built around your asset capacity. All plans are billed annually.",
+        buttonText: "Book a Free Demo",
         buttonLink: ROUTES.bookDemo,
         settings: {
-          badgeText: "Editable pricing page",
+          badgeText: "Asset Management Pricing",
           heroBullets: [
-            "Keep pricing cards simple for non-technical users.",
-            "Edit plan labels, subtitles and coverage notes from admin.",
-            "Use cards and FAQs instead of a complicated pricing system.",
+            "Choose a plan based on the number of assets you need to manage.",
+            "Our team can help you select the right option based on your organization and workflow.",
+            "Taxes and setup charges are extra.",
           ],
-          secondaryButtonText: "Contact Us",
-          secondaryButtonLink: ROUTES.contact,
+          secondaryButtonText: "Talk to Sales",
+          secondaryButtonLink: ROUTES.assetManagementContact,
+          secondaryHeading: "Annual plans by asset capacity",
+          secondaryDescription:
+            "Compare Starter, Growth, Business and Enterprise plans for up to 2,000 assets.",
         },
         items: [
-          { itemType: "pricing_highlight", title: "Asset register", subtitle: "Editable coverage", description: "Show whether registration, categories and branches are included in the plan.", icon: "Package" },
-          { itemType: "pricing_highlight", title: "Tracking", subtitle: "Editable workflow", description: "Explain assignment, transfer, return and movement visibility for each package.", icon: "MapPin" },
-          { itemType: "pricing_highlight", title: "Maintenance", subtitle: "Editable support", description: "Describe service tracking, due alerts and warranty coverage in simple language.", icon: "Wrench" },
-          { itemType: "pricing_highlight", title: "Reports", subtitle: "Editable visibility", description: "Add the reporting, audit or dashboard access details that matter to buyers.", icon: "BarChart3" },
+          {
+            itemType: "pricing_highlight",
+            title: "Starter",
+            subtitle: "Up to 200 Assets",
+            description: "₹9,999 / year",
+            icon: "Package",
+          },
+          {
+            itemType: "pricing_highlight",
+            title: "Growth",
+            subtitle: "Up to 500 Assets",
+            description: "₹24,999 / year",
+            icon: "TrendingUp",
+          },
+          {
+            itemType: "pricing_highlight",
+            title: "Business",
+            subtitle: "Up to 1,000 Assets",
+            description: "₹39,999 / year",
+            icon: "BriefcaseBusiness",
+          },
+          {
+            itemType: "pricing_highlight",
+            title: "Enterprise",
+            subtitle: "Up to 2,000 Assets",
+            description: "₹59,999 / year",
+            icon: "Crown",
+          },
         ],
       }),
       createIconCardsSection({
         sectionKey: "asset-pricing-cards",
         internalName: "Pricing Cards",
-        heading: "Use clean plan cards to explain what each level of asset coverage includes",
-        subheading: "Pricing Cards",
+        heading: "Four annual plans, differentiated by asset capacity",
+        subheading: "Pricing Plans",
         description:
-          "This keeps the commercial page manageable for your client while still showing useful plan detail.",
+          "Choose the plan that matches the number of assets your organization needs to manage. Contact our sales team for complete pricing and implementation details.",
         items: [
-          { itemType: "plan_card", title: "Starter", subtitle: "Editable price", description: "Use this card for smaller teams that want a cleaner asset register and basic ownership visibility.", icon: "Sparkles", extraData: { features: ["Asset register", "Basic assignment", "Simple reports"] } },
-          { itemType: "plan_card", title: "Growth", subtitle: "Editable price", description: "Position this plan for organizations that need stronger movement, branch and maintenance control.", icon: "TrendingUp", extraData: { features: ["Ownership tracking", "Maintenance workflows", "Branch visibility"] } },
-          { itemType: "plan_card", title: "Enterprise", subtitle: "Editable price", description: "Use this plan for organizations that want broader control, reporting and onboarding support.", icon: "ShieldCheck", extraData: { features: ["QR workflows", "Advanced reports", "Operational onboarding"] } },
+          {
+            itemType: "plan_card",
+            title: "Starter",
+            subtitle: "₹9,999 / year",
+            description: "Best for small businesses and teams starting digital asset management.",
+            icon: "Package",
+            buttonText: "Get Started",
+            buttonLink: ROUTES.bookDemo,
+            extraData: {
+              features: [
+                "Up to 200 Assets",
+                "Billed annually",
+                "Taxes and setup charges are extra",
+              ],
+            },
+          },
+          {
+            itemType: "plan_card",
+            title: "Growth",
+            subtitle: "Popular - ₹24,999 / year",
+            description: "Best for growing businesses managing a larger asset inventory.",
+            icon: "TrendingUp",
+            buttonText: "Choose Growth",
+            buttonLink: ROUTES.bookDemo,
+            extraData: {
+              features: [
+                "Up to 500 Assets",
+                "Billed annually",
+                "Taxes and setup charges are extra",
+              ],
+            },
+          },
+          {
+            itemType: "plan_card",
+            title: "Business",
+            subtitle: "₹39,999 / year",
+            description:
+              "Best for organizations managing multiple departments, locations, or larger asset inventories.",
+            icon: "BriefcaseBusiness",
+            buttonText: "Choose Business",
+            buttonLink: ROUTES.bookDemo,
+            extraData: {
+              features: [
+                "Up to 1,000 Assets",
+                "Billed annually",
+                "Taxes and setup charges are extra",
+              ],
+            },
+          },
+          {
+            itemType: "plan_card",
+            title: "Enterprise",
+            subtitle: "₹59,999 / year",
+            description:
+              "Best for larger organizations with extensive asset inventories and more complex operational requirements.",
+            icon: "ShieldCheck",
+            buttonText: "Contact Sales",
+            buttonLink: ROUTES.assetManagementContact,
+            extraData: {
+              features: [
+                "Up to 2,000 Assets",
+                "Billed annually",
+                "Taxes and setup charges are extra",
+              ],
+            },
+          },
         ],
       }),
-      createFaqSection({
-        heading: "Helpful pricing questions for operational buyers",
-        subheading: "Pricing FAQ",
-        description: "Use this section to explain pricing structure in plain business language.",
-        buttonText: "Contact Us",
-        buttonLink: ROUTES.contact,
+      createComparisonTableSection({
+        sectionKey: "asset-pricing-plan-comparison",
+        internalName: "Plan Comparison",
+        heading: "Compare plans by verified pricing information",
+        subheading: "Plan Comparison",
+        description:
+          "The table below compares only verified information. Feature availability by plan has not been officially confirmed at this time - please contact sales for exact implementation requirements.",
         settings: {
-          secondaryHeading: "Need a custom quote based on asset volume or branches?",
+          headers: ["Feature / Plan", "Starter", "Growth", "Business", "Enterprise"],
+        },
+        items: [
+          {
+            itemType: "comparison_row",
+            title: "Asset Capacity",
+            extraData: { values: ["200", "500", "1,000", "2,000"] },
+          },
+          {
+            itemType: "comparison_row",
+            title: "Billing Cycle",
+            extraData: { values: ["Annual", "Annual", "Annual", "Annual"] },
+          },
+          {
+            itemType: "comparison_row",
+            title: "Price",
+            extraData: {
+              values: ["₹9,999", "₹24,999", "₹39,999", "₹59,999"],
+            },
+          },
+          {
+            itemType: "comparison_row",
+            title: "Feature Set",
+            extraData: {
+              values: ["Contact Sales", "Contact Sales", "Contact Sales", "Contact Sales"],
+            },
+          },
+          {
+            itemType: "comparison_row",
+            title: "Implementation Support",
+            extraData: {
+              values: ["Contact Sales", "Contact Sales", "Contact Sales", "Contact Sales"],
+            },
+          },
+        ],
+      }),
+      createIconCardsSection({
+        sectionKey: "asset-pricing-plan-guide",
+        internalName: "Which Plan Is Right for You",
+        heading: "Which plan is right for you?",
+        subheading: "Plan Selection",
+        description:
+          "Start by estimating how many assets you need to manage. If you are unsure about your asset count or implementation requirements, talk to our team.",
+        buttonText: "Help Me Choose",
+        buttonLink: ROUTES.bookDemo,
+        items: [
+          {
+            itemType: "plan_guide_card",
+            title: "Up to 200 assets",
+            subtitle: "Starter",
+            description: "For small businesses and teams starting digital asset management.",
+            icon: "Package",
+          },
+          {
+            itemType: "plan_guide_card",
+            title: "Up to 500 assets",
+            subtitle: "Growth",
+            description: "For growing businesses managing a larger asset inventory.",
+            icon: "TrendingUp",
+          },
+          {
+            itemType: "plan_guide_card",
+            title: "Up to 1,000 assets",
+            subtitle: "Business",
+            description: "For multiple departments, locations, or larger asset inventories.",
+            icon: "BriefcaseBusiness",
+          },
+          {
+            itemType: "plan_guide_card",
+            title: "Up to 2,000 assets",
+            subtitle: "Enterprise",
+            description:
+              "For extensive asset inventories and more complex operational requirements.",
+            icon: "ShieldCheck",
+          },
+        ],
+      }),
+      createChecklistSection({
+        sectionKey: "asset-pricing-asset-examples",
+        internalName: "What Counts as an Asset",
+        heading: "What counts as an asset?",
+        subheading: "Asset Count",
+        description:
+          "An asset is any business-owned item that is registered and managed within the Altroz Asset Management system.",
+        items: [
+          "Laptop",
+          "Desktop",
+          "Mobile Phone",
+          "Printer",
+          "Scanner",
+          "Biometric Device",
+          "Networking Equipment",
+          "Office Equipment",
+          "Electrical Equipment",
+          "Machinery",
+          "Production Equipment",
+          "Tools",
+          "Other business-owned physical assets",
+        ].map((title, index) => ({ itemType: "checklist_item", title, displayOrder: index })),
+      }),
+      createIconCardsSection({
+        sectionKey: "asset-pricing-manage-features",
+        internalName: "What You Can Manage",
+        heading: "What you can manage with Altroz Asset Management",
+        subheading: "Feature Ecosystem",
+        description:
+          "Altroz Asset Management supports a full ecosystem of asset-related workflows, from registration and assignment to maintenance, warranty, reports and dashboard analytics.",
+        buttonText: "Explore Asset Management Features",
+        buttonLink: ROUTES.assetManagementHome,
+        items: [
+          {
+            title: "Asset Registration",
+            description:
+              "Add and register business assets within the system for centralized tracking.",
+            icon: "FileText",
+          },
+          {
+            title: "Asset Tracking",
+            description: "Track the location and status of assets across your organization.",
+            icon: "MapPin",
+          },
+          {
+            title: "Asset Assignment",
+            description: "Assign assets to employees, departments, or branches.",
+            icon: "Users",
+          },
+          {
+            title: "Employee Ownership",
+            description: "Maintain a record of which employee is responsible for which asset.",
+            icon: "Users",
+          },
+          {
+            title: "Department Assignment",
+            description: "Organize assets by department for easier accountability.",
+            icon: "Building2",
+          },
+          {
+            title: "Branch / Site Assignment",
+            description: "Manage assets across multiple branches or sites from one system.",
+            icon: "MapPin",
+          },
+          {
+            title: "QR Code Generation",
+            description: "Generate QR codes for individual assets for quick identification.",
+            icon: "QrCode",
+          },
+          {
+            title: "QR Code Printing",
+            description: "Print QR code labels for physical tagging of assets.",
+            icon: "Tag",
+          },
+          {
+            title: "Asset Maintenance",
+            description: "Record and track maintenance activities for registered assets.",
+            icon: "Wrench",
+          },
+          {
+            title: "Warranty Information",
+            description: "Store warranty details associated with each asset.",
+            icon: "ShieldCheck",
+          },
+          {
+            title: "Purchase Information",
+            description: "Maintain purchase records linked to each asset.",
+            icon: "Coins",
+          },
+          {
+            title: "Vendor Information",
+            description: "Keep vendor details associated with asset procurement.",
+            icon: "BriefcaseBusiness",
+          },
+          {
+            title: "Asset History",
+            description: "View a historical record of activity for each asset.",
+            icon: "Workflow",
+          },
+          {
+            title: "Asset Reports",
+            description: "Generate reports on asset inventory and status.",
+            icon: "BarChart3",
+          },
+          {
+            title: "Dashboard & Analytics",
+            description: "Get an overview of your asset inventory through a central dashboard.",
+            icon: "LayoutDashboard",
+          },
+        ].map((item, index) => ({ itemType: "feature_card", displayOrder: index, ...item })),
+      }),
+      createComparisonTableSection({
+        sectionKey: "asset-pricing-business-size",
+        internalName: "Pricing by Business Size",
+        heading: "Pricing by business size",
+        subheading: "Business Size Guide",
+        description:
+          "Pricing is based on asset capacity, not employee count. The table below gives a general guide to typical asset requirements by organization size.",
+        settings: {
+          headers: [
+            "Business Size",
+            "Small Business",
+            "Growing Business",
+            "Mid-Size Organization",
+            "Large Organization",
+          ],
+        },
+        items: [
+          {
+            itemType: "comparison_row",
+            title: "Typical requirement",
+            extraData: {
+              values: [
+                "Up to 200 assets",
+                "Up to 500 assets",
+                "Up to 1,000 assets",
+                "Up to 2,000 assets",
+              ],
+            },
+          },
+          {
+            itemType: "comparison_row",
+            title: "Recommended plan",
+            extraData: { values: ["Starter", "Growth", "Business", "Enterprise"] },
+          },
+        ],
+      }),
+      createChecklistSection({
+        sectionKey: "asset-pricing-inventory-benefits",
+        internalName: "Pricing Designed Around Asset Inventory",
+        heading: "Pricing designed around your asset inventory",
+        subheading: "Asset-Based Pricing",
+        description:
+          "Every business manages a different number of assets. Plans are structured around asset capacity so businesses of different sizes can find a plan that fits their inventory.",
+        items: [
+          "Easier plan selection",
+          "More predictable budgeting",
+          "Suitable for different business sizes",
+          "Scalable asset management",
+          "Clear asset capacity",
+        ].map((title, index) => ({ itemType: "checklist_item", title, displayOrder: index })),
+      }),
+      createChecklistSection({
+        sectionKey: "asset-pricing-before-subscribe",
+        internalName: "Before You Subscribe",
+        heading: "Before you subscribe",
+        subheading: "Important Notes",
+        description: "Review these pricing notes before choosing an Altroz Asset Management plan.",
+        items: [
+          "Prices shown are annual prices.",
+          "Taxes are extra.",
+          "Setup charges are extra.",
+          "Plan capacity is based on asset count.",
+          "Exact implementation requirements should be confirmed with Altroz.",
+          "Businesses can contact sales before purchasing.",
+          "Need clarification? Talk to our team before choosing a plan.",
+        ].map((title, index) => ({ itemType: "checklist_item", title, displayOrder: index })),
+      }),
+      createCtaSection({
+        sectionKey: "asset-pricing-scale-cta",
+        internalName: "Scale as Inventory Grows CTA",
+        heading: "Start small. Scale as your asset inventory grows.",
+        description:
+          "Businesses may begin with a smaller asset inventory and later require a higher-capacity plan as operations grow. If your asset inventory grows beyond your current plan, contact the Altroz team to discuss the appropriate plan.",
+        buttonText: "Talk to Sales",
+        buttonLink: ROUTES.assetManagementContact,
+      }),
+      createCtaSection({
+        sectionKey: "asset-pricing-help-cta",
+        internalName: "Not Sure Which Plan CTA",
+        heading: "Not sure which plan you need?",
+        description:
+          "Our team can understand your asset inventory and business requirements and help you identify the most suitable Altroz Asset Management plan.",
+        buttonText: "Book a Free Demo",
+        buttonLink: ROUTES.bookDemo,
+        settings: {
+          secondaryButtonText: "Talk to Sales",
+          secondaryButtonLink: ROUTES.assetManagementContact,
+        },
+      }),
+      createFaqSection({
+        sectionKey: "asset-pricing-faq",
+        internalName: "Pricing FAQ",
+        heading: "Frequently asked questions",
+        subheading: "Pricing FAQ",
+        description:
+          "Answers to common pricing questions about annual plans, asset capacity, taxes, setup charges and choosing the right plan.",
+        buttonText: "Contact Sales",
+        buttonLink: ROUTES.assetManagementContact,
+        settings: {
+          secondaryHeading: "Need help choosing a plan?",
           secondaryDescription:
-            "Use the contact path when your pricing depends on operational scale or rollout scope.",
-          secondaryButtonText: "Book Free Demo",
+            "Book a free demo or contact sales if you are unsure about asset count, implementation requirements or the right plan.",
+          secondaryButtonText: "Book a Free Demo",
           secondaryButtonLink: ROUTES.bookDemo,
         },
         items: [
-          { itemType: "faq", title: "Can I edit the plan cards from admin?", description: "Yes. Titles, subtitles, descriptions and bullet points can be edited from the page editor." },
-          { itemType: "faq", title: "Can I avoid fixed public pricing?", description: "Yes. You can present custom-quote or contact-sales language instead of fixed numerical rates." },
-          { itemType: "faq", title: "Can I explain onboarding or branch rollout separately?", description: "Yes. Use the hero cards, card descriptions and FAQ area to explain rollout and setup clearly." },
+          {
+            itemType: "faq",
+            title: "How much does Altroz Asset Management cost?",
+            description:
+              "Altroz Asset Management is available on four annual plans based on asset capacity: Starter (₹9,999/year, up to 200 assets), Growth (₹24,999/year, up to 500 assets), Business (₹39,999/year, up to 1,000 assets), and Enterprise (₹59,999/year, up to 2,000 assets). Taxes and setup charges are extra.",
+          },
+          {
+            itemType: "faq",
+            title: "What is the Starter plan price?",
+            description: "The Starter plan is priced at ₹9,999 per year.",
+          },
+          {
+            itemType: "faq",
+            title: "How many assets can I manage in the Starter plan?",
+            description: "The Starter plan allows you to manage up to 200 assets.",
+          },
+          {
+            itemType: "faq",
+            title: "What is the Growth plan price?",
+            description: "The Growth plan is priced at ₹24,999 per year.",
+          },
+          {
+            itemType: "faq",
+            title: "How many assets can I manage in the Growth plan?",
+            description: "The Growth plan allows you to manage up to 500 assets.",
+          },
+          {
+            itemType: "faq",
+            title: "What is the Business plan price?",
+            description: "The Business plan is priced at ₹39,999 per year.",
+          },
+          {
+            itemType: "faq",
+            title: "How many assets can I manage in the Business plan?",
+            description: "The Business plan allows you to manage up to 1,000 assets.",
+          },
+          {
+            itemType: "faq",
+            title: "What is the Enterprise plan price?",
+            description: "The Enterprise plan is priced at ₹59,999 per year.",
+          },
+          {
+            itemType: "faq",
+            title: "How many assets can I manage in the Enterprise plan?",
+            description: "The Enterprise plan allows you to manage up to 2,000 assets.",
+          },
+          {
+            itemType: "faq",
+            title: "Are these monthly or annual prices?",
+            description:
+              "All listed prices are annual prices. Altroz Asset Management does not currently publish monthly pricing.",
+          },
+          {
+            itemType: "faq",
+            title: "Are taxes included in the price?",
+            description: "No. Taxes are extra and are not included in the listed annual price.",
+          },
+          {
+            itemType: "faq",
+            title: "Are setup charges included?",
+            description:
+              "No. Setup charges are extra and are not included in the listed annual price.",
+          },
+          {
+            itemType: "faq",
+            title: "What happens if I have more than 2,000 assets?",
+            description:
+              "Please contact the Altroz team for the latest plan and implementation details.",
+          },
+          {
+            itemType: "faq",
+            title: "Which plan is suitable for a small business?",
+            description:
+              "Businesses managing up to 200 assets typically choose the Starter plan. Our team can help confirm the right fit for your organization.",
+          },
+          {
+            itemType: "faq",
+            title: "Which plan is suitable for a growing company?",
+            description:
+              "Businesses managing up to 500 assets typically choose the Growth plan. Our team can help confirm the right fit for your organization.",
+          },
+          {
+            itemType: "faq",
+            title: "Can I change my plan later?",
+            description:
+              "If your asset inventory grows beyond your current plan, contact the Altroz team to discuss the appropriate plan.",
+          },
+          {
+            itemType: "faq",
+            title: "How do I choose the right asset management plan?",
+            description:
+              "Start by estimating the number of assets your organization needs to manage, then match that number to the closest plan capacity. If you are unsure about your asset count or implementation requirements, talk to our team.",
+          },
+          {
+            itemType: "faq",
+            title: "What counts as an asset?",
+            description:
+              "An asset is any business-owned item - such as a laptop, printer, machinery, or equipment - that is registered and managed within the Altroz Asset Management system. Your exact asset counting and subscription requirements can be confirmed with our sales team.",
+          },
+          {
+            itemType: "faq",
+            title: "Can I book a demo before purchasing?",
+            description:
+              "Yes. You can book a free demo with the Altroz team before choosing a plan.",
+          },
+          {
+            itemType: "faq",
+            title: "How can I contact Altroz sales?",
+            description:
+              "You can contact Altroz sales directly through the Contact Sales button on this page or by booking a free demo.",
+          },
         ],
+      }),
+      createCtaSection({
+        sectionKey: "asset-pricing-final-cta",
+        internalName: "Final Pricing CTA",
+        heading: "Ready to take control of your business assets?",
+        description:
+          "Choose the plan that matches your asset inventory and discover how Altroz Asset Management can help you organize, track, maintain, and report on your business assets.",
+        buttonText: "Book a Free Demo",
+        buttonLink: ROUTES.bookDemo,
+        settings: {
+          secondaryButtonText: "Contact Sales",
+          secondaryButtonLink: ROUTES.assetManagementContact,
+        },
       }),
     ],
   }),
@@ -2299,11 +4882,7 @@ export const cmsSeedPages = [
           titleLineTwo: "Platform for Growing Teams",
           secondaryButtonText: "Explore Features",
           secondaryButtonLink: "/#features",
-          trustItems: [
-            "Free 7-day trial",
-            "No credit card",
-            "4.8 / 5 by Google Reviews",
-          ],
+          trustItems: ["Free 7-day trial", "No credit card", "4.8 / 5 by Google Reviews"],
           floatingBadge: "Payroll run complete",
         },
         items: [
@@ -2418,8 +4997,7 @@ export const cmsSeedPages = [
             itemType: "card",
             title: "Run your entire people operations",
             subtitle: "HRMS Platform",
-            description:
-              "From attendance to payroll, everything your HR team needs in one place.",
+            description: "From attendance to payroll, everything your HR team needs in one place.",
             icon: "Users",
             buttonText: "Learn more",
             buttonLink: ROUTES.coreHR,
@@ -2466,14 +5044,63 @@ export const cmsSeedPages = [
           "Explore each capability as a dedicated section, so the feature menu can jump straight to the right area.",
         isRequired: true,
         items: [
-          { itemType: "feature", title: "Core HR", description: "Keep employee records, roles and org structure in one place.", icon: "Building2", buttonLink: ROUTES.coreHR },
-          { itemType: "feature", title: "Attendance", description: "Track shifts, check-ins and time logs accurately in one dedicated module.", icon: "Clock3", buttonLink: ROUTES.attendanceManagement },
-          { itemType: "feature", title: "Payroll", description: "Run salaries, deductions and approvals without manual work.", icon: "Wallet", buttonLink: ROUTES.payroll },
-          { itemType: "feature", title: "Leave Management", description: "Handle leave rules, balances and approvals with ease.", icon: "CalendarDays", buttonLink: ROUTES.leaveManagement },
-          { itemType: "feature", title: "Recruitment (ATS)", description: "Track candidates from sourcing to offer acceptance.", icon: "BriefcaseBusiness", buttonLink: ROUTES.recruitment },
-          { itemType: "feature", title: "Performance Management", description: "Plan reviews, goals and feedback in one workflow.", icon: "Users", buttonLink: ROUTES.performance },
-          { itemType: "feature", title: "Asset Management", description: "Assign, track and recover company assets confidently.", icon: "Package", buttonLink: `${ROUTES.assetManagement}#asset-management` },
-          { itemType: "feature", title: "Expense Management", description: "Submit, review and reimburse business expenses smoothly.", icon: "ReceiptText", buttonLink: ROUTES.expenseManagement },
+          {
+            itemType: "feature",
+            title: "Core HR",
+            description: "Keep employee records, roles and org structure in one place.",
+            icon: "Building2",
+            buttonLink: ROUTES.coreHR,
+          },
+          {
+            itemType: "feature",
+            title: "Attendance",
+            description:
+              "Track shifts, check-ins and time logs accurately in one dedicated module.",
+            icon: "Clock3",
+            buttonLink: ROUTES.attendanceManagement,
+          },
+          {
+            itemType: "feature",
+            title: "Payroll",
+            description: "Run salaries, deductions and approvals without manual work.",
+            icon: "Wallet",
+            buttonLink: ROUTES.payroll,
+          },
+          {
+            itemType: "feature",
+            title: "Leave Management",
+            description: "Handle leave rules, balances and approvals with ease.",
+            icon: "CalendarDays",
+            buttonLink: ROUTES.leaveManagement,
+          },
+          {
+            itemType: "feature",
+            title: "Recruitment (ATS)",
+            description: "Track candidates from sourcing to offer acceptance.",
+            icon: "BriefcaseBusiness",
+            buttonLink: ROUTES.recruitment,
+          },
+          {
+            itemType: "feature",
+            title: "Performance Management",
+            description: "Plan reviews, goals and feedback in one workflow.",
+            icon: "Users",
+            buttonLink: ROUTES.performance,
+          },
+          {
+            itemType: "feature",
+            title: "Asset Management",
+            description: "Assign, track and recover company assets confidently.",
+            icon: "Package",
+            buttonLink: `${ROUTES.assetManagement}#asset-management`,
+          },
+          {
+            itemType: "feature",
+            title: "Expense Management",
+            description: "Submit, review and reimburse business expenses smoothly.",
+            icon: "ReceiptText",
+            buttonLink: ROUTES.expenseManagement,
+          },
         ],
       },
       {
@@ -2492,10 +5119,30 @@ export const cmsSeedPages = [
           chips: ["Instant results", "No signup required", "Indian Rupee estimates"],
         },
         items: [
-          { itemType: "stat_card", title: "Monthly hours saved", subtitle: "Live estimate", icon: "Clock3" },
-          { itemType: "stat_card", title: "Annual savings", subtitle: "Net Year 1 view", icon: "TrendingUp" },
-          { itemType: "stat_card", title: "Payback period", subtitle: "Months to recover", icon: "Calculator" },
-          { itemType: "stat_card", title: "FTE recovered", subtitle: "Capacity equivalent", icon: "Users" },
+          {
+            itemType: "stat_card",
+            title: "Monthly hours saved",
+            subtitle: "Live estimate",
+            icon: "Clock3",
+          },
+          {
+            itemType: "stat_card",
+            title: "Annual savings",
+            subtitle: "Net Year 1 view",
+            icon: "TrendingUp",
+          },
+          {
+            itemType: "stat_card",
+            title: "Payback period",
+            subtitle: "Months to recover",
+            icon: "Calculator",
+          },
+          {
+            itemType: "stat_card",
+            title: "FTE recovered",
+            subtitle: "Capacity equivalent",
+            icon: "Users",
+          },
         ],
       },
       {
@@ -2523,10 +5170,30 @@ export const cmsSeedPages = [
         heading: "Designed for outcomes, not just features",
         subheading: "Why teams switch to us",
         items: [
-          { itemType: "benefit", title: "Save HR time", description: "Automate repetitive tasks and free your team for what matters.", icon: "Timer" },
-          { itemType: "benefit", title: "Reduce payroll errors", description: "Pre-built compliance rules eliminate manual mistakes.", icon: "ShieldCheck" },
-          { itemType: "benefit", title: "Improve transparency", description: "Employees see attendance, leaves and payslips in real time.", icon: "Eye" },
-          { itemType: "benefit", title: "Track field staff easily", description: "Live GPS check-ins keep your distributed team accountable.", icon: "MapPin" },
+          {
+            itemType: "benefit",
+            title: "Save HR time",
+            description: "Automate repetitive tasks and free your team for what matters.",
+            icon: "Timer",
+          },
+          {
+            itemType: "benefit",
+            title: "Reduce payroll errors",
+            description: "Pre-built compliance rules eliminate manual mistakes.",
+            icon: "ShieldCheck",
+          },
+          {
+            itemType: "benefit",
+            title: "Improve transparency",
+            description: "Employees see attendance, leaves and payslips in real time.",
+            icon: "Eye",
+          },
+          {
+            itemType: "benefit",
+            title: "Track field staff easily",
+            description: "Live GPS check-ins keep your distributed team accountable.",
+            icon: "MapPin",
+          },
         ],
       },
       {
@@ -2578,10 +5245,34 @@ export const cmsSeedPages = [
           secondaryButtonLink: ROUTES.contact,
         },
         items: [
-          { itemType: "highlight", title: "Basic", subtitle: "₹21 / employee / month", description: "Entry pricing for core HR, attendance and leave.", icon: "BadgeCheck" },
-          { itemType: "highlight", title: "Professional", subtitle: "₹36 / employee / month", description: "Expanded coverage for recruiting, payroll and compliance.", icon: "ShieldCheck" },
-          { itemType: "highlight", title: "Premium", subtitle: "₹53 / employee / month", description: "Full-suite coverage for the broadest rollout.", icon: "Crown" },
-          { itemType: "highlight", title: "Optional add-ons", subtitle: "Geo tracking, integrations and custom work", description: "Extra capabilities can be layered on as needed.", icon: "Coins" },
+          {
+            itemType: "highlight",
+            title: "Basic",
+            subtitle: "₹21 / employee / month",
+            description: "Entry pricing for core HR, attendance and leave.",
+            icon: "BadgeCheck",
+          },
+          {
+            itemType: "highlight",
+            title: "Professional",
+            subtitle: "₹36 / employee / month",
+            description: "Expanded coverage for recruiting, payroll and compliance.",
+            icon: "ShieldCheck",
+          },
+          {
+            itemType: "highlight",
+            title: "Premium",
+            subtitle: "₹53 / employee / month",
+            description: "Full-suite coverage for the broadest rollout.",
+            icon: "Crown",
+          },
+          {
+            itemType: "highlight",
+            title: "Optional add-ons",
+            subtitle: "Geo tracking, integrations and custom work",
+            description: "Extra capabilities can be layered on as needed.",
+            icon: "Coins",
+          },
         ],
       },
       {
@@ -2659,9 +5350,27 @@ export const cmsSeedPages = [
             "Use the verified WhatsApp route or the enquiry form below. Our team will review your enquiry and contact you using the details provided.",
         },
         items: [
-          { itemType: "hero_path", title: "Product Enquiry", description: "Ask about product fit, pricing, or the right starting point.", icon: "messageSquare", buttonLink: "#contact-form" },
-          { itemType: "hero_path", title: "Book a Demo", description: "Open the demo workflow for a guided product walkthrough.", icon: "calendarDays", buttonLink: ROUTES.bookDemo },
-          { itemType: "hero_path", title: "Support", description: "Use the support route for customer help and product questions.", icon: "headphones", buttonLink: ROUTES.support },
+          {
+            itemType: "hero_path",
+            title: "Product Enquiry",
+            description: "Ask about product fit, pricing, or the right starting point.",
+            icon: "messageSquare",
+            buttonLink: "#contact-form",
+          },
+          {
+            itemType: "hero_path",
+            title: "Book a Demo",
+            description: "Open the demo workflow for a guided product walkthrough.",
+            icon: "calendarDays",
+            buttonLink: ROUTES.bookDemo,
+          },
+          {
+            itemType: "hero_path",
+            title: "Support",
+            description: "Use the support route for customer help and product questions.",
+            icon: "headphones",
+            buttonLink: ROUTES.support,
+          },
         ],
       },
       {
@@ -2672,9 +5381,27 @@ export const cmsSeedPages = [
         subheading: "Quick Contact",
         description: "Use one of the verified paths below to reach the Altroz HRMS team.",
         items: [
-          { itemType: "contact_card", title: "WhatsApp", description: "Start a chat with the verified WhatsApp channel.", icon: "messageSquare", buttonLink: "https://wa.me/918446337392" },
-          { itemType: "contact_card", title: "Book a Demo", description: "Open the product demo workflow for a guided walkthrough.", icon: "calendarDays", buttonLink: ROUTES.bookDemo },
-          { itemType: "contact_card", title: "Support", description: "Use the support page for customer help and product guidance.", icon: "headphones", buttonLink: ROUTES.support },
+          {
+            itemType: "contact_card",
+            title: "WhatsApp",
+            description: "Start a chat with the verified WhatsApp channel.",
+            icon: "messageSquare",
+            buttonLink: "https://wa.me/918446337392",
+          },
+          {
+            itemType: "contact_card",
+            title: "Book a Demo",
+            description: "Open the product demo workflow for a guided walkthrough.",
+            icon: "calendarDays",
+            buttonLink: ROUTES.bookDemo,
+          },
+          {
+            itemType: "contact_card",
+            title: "Support",
+            description: "Use the support page for customer help and product guidance.",
+            icon: "headphones",
+            buttonLink: ROUTES.support,
+          },
         ],
       },
       {
@@ -2712,7 +5439,12 @@ export const cmsSeedPages = [
       title: "Contact Altroz Bulk Email | Book a Demo or Sales Consultation",
       description:
         "Contact Altroz Bulk Email for product demonstrations, campaign consultation, broadcast setup, scheduling, SMTP, and customer enquiries.",
-      keywords: ["bulk email contact", "campaign consultation", "email platform enquiry", "book bulk email demo"],
+      keywords: [
+        "bulk email contact",
+        "campaign consultation",
+        "email platform enquiry",
+        "book bulk email demo",
+      ],
       canonicalUrl: ROUTES.bulkEmailContact,
       ogTitle: "Contact Altroz Bulk Email | Book a Demo or Sales Consultation",
       ogDescription:
@@ -2736,9 +5468,27 @@ export const cmsSeedPages = [
             "Use the verified WhatsApp route or the enquiry form below. Our team will review your enquiry and contact you using the details provided.",
         },
         items: [
-          { itemType: "hero_path", title: "Product Enquiry", description: "Ask about product fit, pricing, or the right starting point.", icon: "messageSquare", buttonLink: "#contact-form" },
-          { itemType: "hero_path", title: "Book a Demo", description: "Open the demo workflow for a guided product walkthrough.", icon: "calendarDays", buttonLink: ROUTES.bookDemo },
-          { itemType: "hero_path", title: "Support", description: "Use the support route for customer help and product questions.", icon: "headphones", buttonLink: ROUTES.support },
+          {
+            itemType: "hero_path",
+            title: "Product Enquiry",
+            description: "Ask about product fit, pricing, or the right starting point.",
+            icon: "messageSquare",
+            buttonLink: "#contact-form",
+          },
+          {
+            itemType: "hero_path",
+            title: "Book a Demo",
+            description: "Open the demo workflow for a guided product walkthrough.",
+            icon: "calendarDays",
+            buttonLink: ROUTES.bookDemo,
+          },
+          {
+            itemType: "hero_path",
+            title: "Support",
+            description: "Use the support route for customer help and product questions.",
+            icon: "headphones",
+            buttonLink: ROUTES.support,
+          },
         ],
       },
       {
@@ -2749,9 +5499,27 @@ export const cmsSeedPages = [
         subheading: "Quick Contact",
         description: "Use one of the verified paths below to reach the Altroz Bulk Email team.",
         items: [
-          { itemType: "contact_card", title: "WhatsApp", description: "Start a chat with the verified WhatsApp channel.", icon: "messageSquare", buttonLink: "https://wa.me/918446337392" },
-          { itemType: "contact_card", title: "Book a Demo", description: "Open the product demo workflow for a guided walkthrough.", icon: "calendarDays", buttonLink: ROUTES.bookDemo },
-          { itemType: "contact_card", title: "Support", description: "Use the support page for customer help and product guidance.", icon: "headphones", buttonLink: ROUTES.support },
+          {
+            itemType: "contact_card",
+            title: "WhatsApp",
+            description: "Start a chat with the verified WhatsApp channel.",
+            icon: "messageSquare",
+            buttonLink: "https://wa.me/918446337392",
+          },
+          {
+            itemType: "contact_card",
+            title: "Book a Demo",
+            description: "Open the product demo workflow for a guided walkthrough.",
+            icon: "calendarDays",
+            buttonLink: ROUTES.bookDemo,
+          },
+          {
+            itemType: "contact_card",
+            title: "Support",
+            description: "Use the support page for customer help and product guidance.",
+            icon: "headphones",
+            buttonLink: ROUTES.support,
+          },
         ],
       },
       {
@@ -2789,7 +5557,12 @@ export const cmsSeedPages = [
       title: "Contact Altroz Asset Management | Book a Demo or Sales Consultation",
       description:
         "Contact Altroz Asset Management for product demonstrations, asset tracking consultation, QR workflows, maintenance planning, reporting, and customer enquiries.",
-      keywords: ["asset management contact", "asset tracking consultation", "qr workflow enquiry", "asset demo"],
+      keywords: [
+        "asset management contact",
+        "asset tracking consultation",
+        "qr workflow enquiry",
+        "asset demo",
+      ],
       canonicalUrl: ROUTES.assetManagementContact,
       ogTitle: "Contact Altroz Asset Management | Book a Demo or Sales Consultation",
       ogDescription:
@@ -2813,9 +5586,27 @@ export const cmsSeedPages = [
             "Use the verified WhatsApp route or the enquiry form below. Our team will review your enquiry and contact you using the details provided.",
         },
         items: [
-          { itemType: "hero_path", title: "Product Enquiry", description: "Ask about product fit, pricing, or the right starting point.", icon: "messageSquare", buttonLink: "#contact-form" },
-          { itemType: "hero_path", title: "Book a Demo", description: "Open the demo workflow for a guided product walkthrough.", icon: "calendarDays", buttonLink: ROUTES.bookDemo },
-          { itemType: "hero_path", title: "Support", description: "Use the support route for customer help and product questions.", icon: "headphones", buttonLink: ROUTES.support },
+          {
+            itemType: "hero_path",
+            title: "Product Enquiry",
+            description: "Ask about product fit, pricing, or the right starting point.",
+            icon: "messageSquare",
+            buttonLink: "#contact-form",
+          },
+          {
+            itemType: "hero_path",
+            title: "Book a Demo",
+            description: "Open the demo workflow for a guided product walkthrough.",
+            icon: "calendarDays",
+            buttonLink: ROUTES.bookDemo,
+          },
+          {
+            itemType: "hero_path",
+            title: "Support",
+            description: "Use the support route for customer help and product questions.",
+            icon: "headphones",
+            buttonLink: ROUTES.support,
+          },
         ],
       },
       {
@@ -2824,11 +5615,30 @@ export const cmsSeedPages = [
         internalName: "Quick Contact",
         heading: "Choose the best way to reach the Altroz Asset Management team",
         subheading: "Quick Contact",
-        description: "Use one of the verified paths below to reach the Altroz Asset Management team.",
+        description:
+          "Use one of the verified paths below to reach the Altroz Asset Management team.",
         items: [
-          { itemType: "contact_card", title: "WhatsApp", description: "Start a chat with the verified WhatsApp channel.", icon: "messageSquare", buttonLink: "https://wa.me/918446337392" },
-          { itemType: "contact_card", title: "Book a Demo", description: "Open the product demo workflow for a guided walkthrough.", icon: "calendarDays", buttonLink: ROUTES.bookDemo },
-          { itemType: "contact_card", title: "Support", description: "Use the support page for customer help and product guidance.", icon: "headphones", buttonLink: ROUTES.support },
+          {
+            itemType: "contact_card",
+            title: "WhatsApp",
+            description: "Start a chat with the verified WhatsApp channel.",
+            icon: "messageSquare",
+            buttonLink: "https://wa.me/918446337392",
+          },
+          {
+            itemType: "contact_card",
+            title: "Book a Demo",
+            description: "Open the product demo workflow for a guided walkthrough.",
+            icon: "calendarDays",
+            buttonLink: ROUTES.bookDemo,
+          },
+          {
+            itemType: "contact_card",
+            title: "Support",
+            description: "Use the support page for customer help and product guidance.",
+            icon: "headphones",
+            buttonLink: ROUTES.support,
+          },
         ],
       },
       {
@@ -2902,9 +5712,27 @@ export const cmsSeedPages = [
           ],
         },
         items: [
-          { itemType: "hero_highlight", title: "Free Learning Hub", description: "Everything on this page is free to read and built for practical use.", icon: "Sparkles", buttonLink: "#featured-guides" },
-          { itemType: "hero_highlight", title: "Plain Language", description: "Email communication concepts are explained simply, without heavy jargon.", icon: "Lightbulb", buttonLink: "#why-learn" },
-          { itemType: "hero_highlight", title: "Built for Growth", description: "Start with the basics and move up to analytics, scheduling and SMTP.", icon: "Workflow", buttonLink: "#learning-path" },
+          {
+            itemType: "hero_highlight",
+            title: "Free Learning Hub",
+            description: "Everything on this page is free to read and built for practical use.",
+            icon: "Sparkles",
+            buttonLink: "#featured-guides",
+          },
+          {
+            itemType: "hero_highlight",
+            title: "Plain Language",
+            description: "Email communication concepts are explained simply, without heavy jargon.",
+            icon: "Lightbulb",
+            buttonLink: "#why-learn",
+          },
+          {
+            itemType: "hero_highlight",
+            title: "Built for Growth",
+            description: "Start with the basics and move up to analytics, scheduling and SMTP.",
+            icon: "Workflow",
+            buttonLink: "#learning-path",
+          },
         ],
       },
       {
@@ -2916,10 +5744,42 @@ export const cmsSeedPages = [
         description:
           "These are the easiest entry points for someone new to business email communication or bulk email workflows.",
         items: [
-          { itemType: "guide_card", title: "What is Bulk Email?", description: "Learn how bulk email works, why it matters and where it fits in a business communication strategy.", buttonLink: ROUTES.bulkEmail, extraData: { readingTime: "5 min", category: "Getting Started", difficulty: "Beginner" } },
-          { itemType: "guide_card", title: "Campaign Planning", description: "Understand how to define a goal, choose an audience and prepare a campaign before sending.", buttonLink: ROUTES.bulkEmailBroadcast, extraData: { readingTime: "6 min", category: "Campaigns", difficulty: "Beginner" } },
-          { itemType: "guide_card", title: "Email Templates", description: "See how reusable layouts help you maintain a professional look across every message.", buttonLink: ROUTES.bulkEmailTemplates, extraData: { readingTime: "7 min", category: "Templates", difficulty: "Beginner" } },
-          { itemType: "guide_card", title: "SMTP Configuration", description: "Get a simple grounding in SMTP, the delivery technology behind every outgoing email.", buttonLink: ROUTES.bulkEmailSmtp, extraData: { readingTime: "6 min", category: "Delivery", difficulty: "Intermediate" } },
+          {
+            itemType: "guide_card",
+            title: "What is Bulk Email?",
+            description:
+              "Learn how bulk email works, why it matters and where it fits in a business communication strategy.",
+            buttonLink: ROUTES.bulkEmail,
+            extraData: {
+              readingTime: "5 min",
+              category: "Getting Started",
+              difficulty: "Beginner",
+            },
+          },
+          {
+            itemType: "guide_card",
+            title: "Campaign Planning",
+            description:
+              "Understand how to define a goal, choose an audience and prepare a campaign before sending.",
+            buttonLink: ROUTES.bulkEmailBroadcast,
+            extraData: { readingTime: "6 min", category: "Campaigns", difficulty: "Beginner" },
+          },
+          {
+            itemType: "guide_card",
+            title: "Email Templates",
+            description:
+              "See how reusable layouts help you maintain a professional look across every message.",
+            buttonLink: ROUTES.bulkEmailTemplates,
+            extraData: { readingTime: "7 min", category: "Templates", difficulty: "Beginner" },
+          },
+          {
+            itemType: "guide_card",
+            title: "SMTP Configuration",
+            description:
+              "Get a simple grounding in SMTP, the delivery technology behind every outgoing email.",
+            buttonLink: ROUTES.bulkEmailSmtp,
+            extraData: { readingTime: "6 min", category: "Delivery", difficulty: "Intermediate" },
+          },
         ],
       },
       {
@@ -2977,9 +5837,24 @@ export const cmsSeedPages = [
           secondaryButtonLink: ROUTES.bookDemo,
         },
         items: [
-          { itemType: "hero_highlight", title: "PF & ESIC", description: "Understand the common statutory deductions and related record keeping.", icon: "ShieldCheck" },
-          { itemType: "hero_highlight", title: "Payroll Compliance", description: "See how attendance, deductions and payroll records stay aligned.", icon: "Wallet" },
-          { itemType: "hero_highlight", title: "Employee Documents", description: "Keep forms, letters and records organized across the employee lifecycle.", icon: "FileText" },
+          {
+            itemType: "hero_highlight",
+            title: "PF & ESIC",
+            description: "Understand the common statutory deductions and related record keeping.",
+            icon: "ShieldCheck",
+          },
+          {
+            itemType: "hero_highlight",
+            title: "Payroll Compliance",
+            description: "See how attendance, deductions and payroll records stay aligned.",
+            icon: "Wallet",
+          },
+          {
+            itemType: "hero_highlight",
+            title: "Employee Documents",
+            description: "Keep forms, letters and records organized across the employee lifecycle.",
+            icon: "FileText",
+          },
         ],
       },
       {
@@ -2991,10 +5866,41 @@ export const cmsSeedPages = [
         description:
           "Each card opens a related Altroz HR page so visitors can move from compliance concepts into the workflows that support them.",
         items: [
-          { itemType: "category_card", title: "PF & ESIC", description: "Learn the basics of employee contribution records and benefit-related tracking.", icon: "ShieldCheck", buttonLink: ROUTES.payroll, buttonText: "Open payroll guide" },
-          { itemType: "category_card", title: "Professional Tax", description: "See how state-linked tax records and deductions fit into payroll work.", icon: "Wallet", buttonLink: ROUTES.payroll, buttonText: "Open payroll guide" },
-          { itemType: "category_card", title: "Employee Records", description: "Store profiles, letters and job details in a central place that is easy to review.", icon: "Users", buttonLink: ROUTES.coreHR, buttonText: "Open employee guide" },
-          { itemType: "category_card", title: "Attendance & Leave", description: "Keep time tracking, leave policies and approvals aligned with payroll data.", icon: "CalendarDays", buttonLink: ROUTES.attendanceManagement, buttonText: "Open attendance guide" },
+          {
+            itemType: "category_card",
+            title: "PF & ESIC",
+            description:
+              "Learn the basics of employee contribution records and benefit-related tracking.",
+            icon: "ShieldCheck",
+            buttonLink: ROUTES.payroll,
+            buttonText: "Open payroll guide",
+          },
+          {
+            itemType: "category_card",
+            title: "Professional Tax",
+            description: "See how state-linked tax records and deductions fit into payroll work.",
+            icon: "Wallet",
+            buttonLink: ROUTES.payroll,
+            buttonText: "Open payroll guide",
+          },
+          {
+            itemType: "category_card",
+            title: "Employee Records",
+            description:
+              "Store profiles, letters and job details in a central place that is easy to review.",
+            icon: "Users",
+            buttonLink: ROUTES.coreHR,
+            buttonText: "Open employee guide",
+          },
+          {
+            itemType: "category_card",
+            title: "Attendance & Leave",
+            description:
+              "Keep time tracking, leave policies and approvals aligned with payroll data.",
+            icon: "CalendarDays",
+            buttonLink: ROUTES.attendanceManagement,
+            buttonText: "Open attendance guide",
+          },
         ],
       },
     ],
@@ -3077,9 +5983,24 @@ export const cmsSeedPages = [
         heading: "General HR Software",
         description: "Core questions about HR software and HRMS.",
         items: [
-          { itemType: "faq", title: "What is HR software?", description: "HR software is a digital system that helps businesses manage day-to-day human resource tasks like employee records, attendance, leave, payroll, and recruitment from one place." },
-          { itemType: "faq", title: "What is HRMS?", description: "HRMS stands for Human Resource Management System. It is a broader term used for software that manages the complete employee lifecycle, from onboarding to exit, including attendance, leave, payroll, performance, and employee records." },
-          { itemType: "faq", title: "Why do businesses need HR software?", description: "Businesses need HR software because manual HR processes are slow, error-prone, and hard to scale as the team grows." },
+          {
+            itemType: "faq",
+            title: "What is HR software?",
+            description:
+              "HR software is a digital system that helps businesses manage day-to-day human resource tasks like employee records, attendance, leave, payroll, and recruitment from one place.",
+          },
+          {
+            itemType: "faq",
+            title: "What is HRMS?",
+            description:
+              "HRMS stands for Human Resource Management System. It is a broader term used for software that manages the complete employee lifecycle, from onboarding to exit, including attendance, leave, payroll, performance, and employee records.",
+          },
+          {
+            itemType: "faq",
+            title: "Why do businesses need HR software?",
+            description:
+              "Businesses need HR software because manual HR processes are slow, error-prone, and hard to scale as the team grows.",
+          },
         ],
       },
       {
@@ -3093,7 +6014,11 @@ export const cmsSeedPages = [
         buttonLink: ROUTES.bookDemo,
         items: [
           { itemType: "quick_link", title: "Learn", buttonLink: ROUTES.learn },
-          { itemType: "quick_link", title: "Compliance Guides", buttonLink: ROUTES.complianceGuides },
+          {
+            itemType: "quick_link",
+            title: "Compliance Guides",
+            buttonLink: ROUTES.complianceGuides,
+          },
           { itemType: "quick_link", title: "Blog", buttonLink: ROUTES.blog },
           { itemType: "quick_link", title: "Support", buttonLink: ROUTES.support },
         ],
@@ -3194,10 +6119,8 @@ export const contactSettingsSeed = {
   formDescription:
     "Fill in the details below and the form will prepare a WhatsApp enquiry draft using the verified channel.",
   submitButtonText: "Send Enquiry",
-  successMessage:
-    "Your enquiry draft opened in WhatsApp. Send it there to complete submission.",
-  errorMessage:
-    "Your browser blocked the WhatsApp window. Please allow popups and try again.",
+  successMessage: "Your enquiry draft opened in WhatsApp. Send it there to complete submission.",
+  errorMessage: "Your browser blocked the WhatsApp window. Please allow popups and try again.",
   socialLinks: [],
   settings: {
     whatsappNumber: "918446337392",
