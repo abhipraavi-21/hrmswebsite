@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ExternalLink, FileText, FolderOpen } from "lucide-react";
+import { LivePageButton } from "../../components/LivePageButton";
 import { getBlogAdminRoute, getBlogGroupFromPageKey } from "../../data/blogGroups";
 import { isLiveFrontendCmsPage, mergeManagedPages } from "../../data/managedCmsPages";
 import { pageService } from "../../services/cmsService";
 import type { CmsPageSummary } from "../../types/cms";
+import { getPublicSitePageUrl } from "../../utils/publicSite";
 
 function getErrorMessage(error: unknown) {
   if (
@@ -190,6 +192,9 @@ export function PagesOverviewPage() {
 function PageCard({ page }: { page: CmsPageSummary }) {
   const isAvailable = page.id > 0;
   const blogGroup = getBlogGroupFromPageKey(page.pageKey);
+  const liveUrl = isLiveFrontendCmsPage(page.pageKey)
+    ? getPublicSitePageUrl(page.pageKey, page.slug)
+    : null;
 
   return (
     <article
@@ -235,6 +240,7 @@ function PageCard({ page }: { page: CmsPageSummary }) {
             Open Editor
             <ExternalLink className="h-4 w-4" />
           </Link>
+          <LivePageButton href={liveUrl} />
           {blogGroup ? (
             <Link to={getBlogAdminRoute(blogGroup)} className="btn-secondary">
               Manage Blog Posts

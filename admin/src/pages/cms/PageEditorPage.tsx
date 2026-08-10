@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PageEditor } from "../../components/editor/PageEditor";
+import { LivePageButton } from "../../components/LivePageButton";
 import { getBlogAdminRoute, getBlogGroupFromPageKey } from "../../data/blogGroups";
 import { getManagedPagePresentation, isLiveFrontendCmsPage } from "../../data/managedCmsPages";
 import { pageService } from "../../services/cmsService";
 import type { CmsPage, CmsPageSummary } from "../../types/cms";
+import { getPublicSitePageUrl } from "../../utils/publicSite";
 
 function getErrorMessage(error: unknown) {
   if (
@@ -122,6 +124,10 @@ export function PageEditorPage() {
     );
   }
 
+  const liveUrl = isLiveFrontendCmsPage(page.pageKey)
+    ? getPublicSitePageUrl(page.pageKey, page.slug)
+    : null;
+
   return (
     <div className="space-y-6">
       <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -131,13 +137,27 @@ export function PageEditorPage() {
             <h1 className="mt-2 text-3xl font-semibold">{page.pageName}</h1>
             <p className="mt-2 text-sm text-slate-500">{page.slug}</p>
           </div>
-          {blogGroup ? (
-            <Link to={getBlogAdminRoute(blogGroup)} className="btn-secondary">
-              Manage Blog Posts
-            </Link>
-          ) : null}
+          <div className="flex flex-wrap gap-3">
+            <LivePageButton href={liveUrl} />
+            {blogGroup ? (
+              <Link to={getBlogAdminRoute(blogGroup)} className="btn-secondary">
+                Manage Blog Posts
+              </Link>
+            ) : null}
+          </div>
         </div>
       </section>
+      {liveUrl ? (
+        <section className="rounded-3xl border border-sky-200 bg-sky-50/70 p-6 text-sm text-sky-900 shadow-sm">
+          <div className="text-xs font-semibold uppercase tracking-[0.26em] text-sky-700">
+            Frontend Link
+          </div>
+          <p className="mt-2">
+            This page is connected to the live frontend. Use the preview button above to compare
+            admin edits with the public page at <span className="font-semibold">{liveUrl}</span>.
+          </p>
+        </section>
+      ) : null}
       {!blogGroup && !isLiveFrontendCmsPage(page.pageKey) ? (
         <section className="rounded-3xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900 shadow-sm">
           <div className="text-xs font-semibold uppercase tracking-[0.26em] text-amber-700">
