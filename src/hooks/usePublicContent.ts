@@ -6,14 +6,26 @@ type State<T> = {
   loading: boolean;
 };
 
-export function usePublicContent<T>(loader: () => Promise<T>, deps: DependencyList = []) {
+export function usePublicContent<T>(
+  loader: () => Promise<T>,
+  deps: DependencyList = [],
+  initialData: T | null = null,
+) {
   const [state, setState] = useState<State<T>>({
-    data: null,
+    data: initialData,
     error: null,
-    loading: true,
+    loading: initialData === null,
   });
   const loaderRef = useRef(loader);
   loaderRef.current = loader;
+
+  useEffect(() => {
+    setState({
+      data: initialData,
+      error: null,
+      loading: initialData === null,
+    });
+  }, [initialData]);
 
   useEffect(() => {
     let cancelled = false;

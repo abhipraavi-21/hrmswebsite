@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { ArrowRight, Building2, ChevronRight, Clock3, Mail, Phone } from "lucide-react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import Footer from "@/components/site/Footer";
@@ -12,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { usePublicContent } from "@/hooks/usePublicContent";
 import { fetchPublicBlogPost } from "@/services/blogService";
+import { getSeedBlogPostFallback } from "@/services/seedFallback";
 import { isExternalHref, ROUTES } from "@/routes/routeConfig.js";
 import {
   BLOG_GROUP_PAGE_CONTENT,
@@ -280,9 +282,11 @@ export default function BlogArticlePage() {
   const fallbackGroup = resolveBlogGroupFromPath(location.pathname);
   const fallbackPageCopy = BLOG_GROUP_PAGE_CONTENT[fallbackGroup];
   const fallbackBlogPath = resolveBlogListingPath(fallbackGroup, location.pathname);
+  const seedPost = useMemo(() => (slug ? getSeedBlogPostFallback(slug) : null), [slug]);
   const { data: post, error, loading } = usePublicContent(
     () => (slug ? fetchPublicBlogPost(slug) : Promise.resolve(null)),
     [slug],
+    seedPost,
   );
 
   if (!slug) {

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -19,6 +19,7 @@ import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
 import { usePublicContent } from "@/hooks/usePublicContent";
 import { cn } from "@/lib/utils";
 import { fetchPageByKey } from "@/services/pageService";
+import { getSeedPageFallback } from "@/services/seedFallback";
 import { getSectionItems, getSetting } from "@/services/cmsHelpers";
 import type { PublicCmsItem, PublicCmsSection } from "@/services/cmsTypes";
 import {
@@ -866,11 +867,12 @@ export default function ManagedCmsShowcasePage({
   fallbackTitle,
   fallbackDescription,
 }: ManagedCmsShowcasePageProps) {
+  const seedContent = useMemo(() => getSeedPageFallback(pageKey), [pageKey]);
   const {
     data: remoteContent,
     error,
     loading,
-  } = usePublicContent(() => fetchPageByKey(pageKey), [pageKey]);
+  } = usePublicContent(() => fetchPageByKey(pageKey), [pageKey], seedContent);
   const heroSection =
     remoteContent?.sections.find((section) => section.sectionType === "hero") ?? null;
   const bodySections =

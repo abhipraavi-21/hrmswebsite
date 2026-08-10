@@ -42,6 +42,7 @@ import { ROUTES } from "@/routes/routeConfig.js";
 import { getSection } from "@/services/cmsHelpers";
 import { submitContactEnquiry } from "@/services/contactService";
 import { fetchPageByKey } from "@/services/pageService";
+import { getSeedPageFallback } from "@/services/seedFallback";
 
 type ProductServiceOption = {
   id: string;
@@ -252,7 +253,8 @@ export default function ProductContactPage({
 }: ProductContactPageProps) {
   const [status, setStatus] = useState<StatusState>({ type: "idle", message: "" });
   const Navbar = navbarVariant === "bulkEmail" ? BulkEmailNavbar : AssetManagementNavbar;
-  const { data: remoteContent } = usePublicContent(() => fetchPageByKey(pageKey), [pageKey]);
+  const seedPage = useMemo(() => getSeedPageFallback(pageKey), [pageKey]);
+  const { data: remoteContent } = usePublicContent(() => fetchPageByKey(pageKey), [pageKey], seedPage);
   const heroSection = getSection(remoteContent, "contact-hero");
   const quickContactSection = getSection(remoteContent, "quick-contact");
   const formSection = getSection(remoteContent, "contact-form");

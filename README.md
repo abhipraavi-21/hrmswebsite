@@ -55,7 +55,7 @@ Backend:
 NODE_ENV=development
 PORT=5000
 APP_URL=http://localhost:5000
-FRONTEND_URL=http://localhost:5173
+FRONTEND_URL=http://localhost:8080
 ADMIN_URL=http://localhost:5174
 
 DB_HOST=localhost
@@ -148,7 +148,7 @@ npm run dev
 
 Default local URLs:
 
-- Public site: `http://localhost:5173`
+- Public site: `http://localhost:8080`
 - Admin panel: `http://localhost:5174`
 - API: `http://localhost:5000`
 

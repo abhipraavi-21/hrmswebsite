@@ -1,4 +1,4 @@
-import { createElement } from "react";
+import { createElement, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calculator, Clock3, Sparkles, TrendingUp, Users } from "lucide-react";
 import TopNavbar from "@/components/site/TopNavbar";
@@ -16,6 +16,7 @@ import { usePublicContent } from "@/hooks/usePublicContent";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { getSection } from "@/services/cmsHelpers";
 import { fetchHrmsPage } from "@/services/pageService";
+import { getSeedPageFallback } from "@/services/seedFallback";
 
 const roiFallbackCards = [
   {
@@ -52,7 +53,8 @@ const roiIconMap = {
 };
 
 export default function HrmsHomePage() {
-  const { data: remoteContent } = usePublicContent(fetchHrmsPage);
+  const seedContent = useMemo(() => getSeedPageFallback("hrms"), []);
+  const { data: remoteContent } = usePublicContent(fetchHrmsPage, [], seedContent);
   const roiSection = getSection(remoteContent, "roi");
   const roiChips = (roiSection?.settings?.chips as string[] | undefined) ?? [
     "Instant results",

@@ -31,18 +31,12 @@ const heroImages = {
 };
 
 const capabilityImages = {
-  organization:
-    "https://images.pexels.com/photos/7693734/pexels-photo-7693734.jpeg?cs=srgb&dl=pexels-yankrukov-7693734.jpg&fm=jpg",
-  profiles:
-    "https://images.pexels.com/photos/7989139/pexels-photo-7989139.jpeg?cs=srgb&dl=pexels-mikhail-nilov-7989139.jpg&fm=jpg",
-  workflow:
-    "https://images.pexels.com/photos/7213548/pexels-photo-7213548.jpeg?cs=srgb&dl=pexels-ivan-s-7213548.jpg&fm=jpg",
-  compliance:
-    "https://images.pexels.com/photos/7640478/pexels-photo-7640478.jpeg?cs=srgb&dl=pexels-yankrukov-7640478.jpg&fm=jpg",
-  extensibility:
-    "https://images.pexels.com/photos/4623365/pexels-photo-4623365.jpeg?cs=srgb&dl=pexels-ketut-subiyanto-4623365.jpg&fm=jpg",
-  analytics:
-    "https://images.pexels.com/photos/8117466/pexels-photo-8117466.jpeg?cs=srgb&dl=pexels-ivan-s-8117466.jpg&fm=jpg",
+  organization: "/core-hr/organization-illustration.png",
+  profiles: "/core-hr/profiles-illustration.png",
+  workflow: "/core-hr/workflow-illustration.png",
+  compliance: "/core-hr/compliance-illustration.png",
+  extensibility: "/core-hr/extensibility-illustration.png",
+  analytics: "/core-hr/analytics-illustration.png",
 };
 
 const capabilityCards = [
@@ -192,11 +186,11 @@ export default function CoreHrPage() {
             <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {capabilityCards.map((item) => (
                 <article key={item.title} className="soft-card overflow-hidden p-0">
-                  <div className="aspect-[624/484] overflow-hidden bg-surface">
+                  <div className="aspect-[624/484] overflow-hidden bg-gradient-to-br from-surface via-white to-primary-soft/30">
                     <img
                       src={item.image}
                       alt={item.alt}
-                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
+                      className="h-full w-full object-contain p-5 transition-transform duration-500 hover:scale-[1.02]"
                       loading="lazy"
                       referrerPolicy="no-referrer"
                     />

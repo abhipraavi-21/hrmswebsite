@@ -11,6 +11,7 @@ import { usePublicContent } from "@/hooks/usePublicContent";
 import { getSection } from "@/services/cmsHelpers";
 import { fetchPublicBlogPosts } from "@/services/blogService";
 import { fetchPageByKey } from "@/services/pageService";
+import { getSeedBlogPostsFallback, getSeedPageFallback } from "@/services/seedFallback";
 import type { PublicBlogPost } from "@/services/cmsTypes";
 import {
   BLOG_GROUP_PAGE_CONTENT,
@@ -90,10 +91,17 @@ export default function BlogPage() {
   const location = useLocation();
   const blogGroup = resolveBlogGroupFromPath(location.pathname);
   const pageCopy = BLOG_GROUP_PAGE_CONTENT[blogGroup];
-  const { data: remotePage } = usePublicContent(() => fetchPageByKey(pageCopy.pageKey), [pageCopy.pageKey]);
+  const seedPage = useMemo(() => getSeedPageFallback(pageCopy.pageKey), [pageCopy.pageKey]);
+  const seedPosts = useMemo(() => getSeedBlogPostsFallback(blogGroup), [blogGroup]);
+  const { data: remotePage } = usePublicContent(
+    () => fetchPageByKey(pageCopy.pageKey),
+    [pageCopy.pageKey],
+    seedPage,
+  );
   const { data, error, loading } = usePublicContent(
     () => fetchPublicBlogPosts(blogGroup),
     [blogGroup],
+    seedPosts,
   );
 
   const posts = data ?? [];

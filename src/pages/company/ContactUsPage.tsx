@@ -46,6 +46,7 @@ import {
 import { usePublicContent } from "@/hooks/usePublicContent";
 import { getSection } from "@/services/cmsHelpers";
 import { fetchContactPage, submitContactEnquiry } from "@/services/contactService";
+import { getSeedContactPageFallback } from "@/services/seedFallback";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Please enter your full name."),
@@ -230,7 +231,8 @@ function HeroPathCard({
 
 export default function ContactUsPage() {
   const [status, setStatus] = useState<StatusState>({ type: "idle", message: "" });
-  const { data: remoteContent } = usePublicContent(fetchContactPage);
+  const seedContactPage = useMemo(() => getSeedContactPageFallback(), []);
+  const { data: remoteContent } = usePublicContent(fetchContactPage, [], seedContactPage);
   const heroSection = getSection(remoteContent, "contact-hero");
   const quickContactSection = getSection(remoteContent, "quick-contact");
   const formSection = getSection(remoteContent, "contact-form");

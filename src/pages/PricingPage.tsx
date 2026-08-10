@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { getSection } from "@/services/cmsHelpers";
 import { fetchPricingPage } from "@/services/pricingService";
+import { getSeedPricingPageFallback } from "@/services/seedFallback";
 
 type FeatureState = "included" | "notIncluded" | "limited" | "optional" | "addon";
 
@@ -797,7 +798,12 @@ export default function PricingPage() {
 
 function HrmsPricingPage() {
   const [employeeCount, setEmployeeCount] = useState(100);
-  const { data: remoteContent } = usePublicContent(fetchPricingPage);
+  const seedPricingPage = useMemo(() => getSeedPricingPageFallback(), []);
+  const { data: remoteContent } = usePublicContent(
+    fetchPricingPage,
+    [],
+    seedPricingPage,
+  );
   const heroSection = getSection(remoteContent, "pricing-hero");
   const activePlanCards = useMemo<PlanCard[]>(() => {
     if (!remoteContent?.plans?.length) {

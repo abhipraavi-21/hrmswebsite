@@ -40,6 +40,7 @@ import { ScrollReveal } from "@/components/site/ScrollReveal";
 import { faqPopularSearches, faqQuickLinks, faqSections } from "./faqData";
 import { getSection, getSectionItems } from "@/services/cmsHelpers";
 import { fetchPageByKey } from "@/services/pageService";
+import { getSeedPageFallback } from "@/services/seedFallback";
 import type { PublicCmsPage } from "@/services/cmsTypes";
 
 const DEFAULT_PAGE_TITLE = "Altroz HR FAQs | Knowledge Base and Frequently Asked Questions";
@@ -245,9 +246,11 @@ function ActionLink({
 export default function FaqPage() {
   const location = useLocation();
   const pageConfig = resolveFaqPageConfig(location.pathname);
+  const seedContent = useMemo(() => getSeedPageFallback(pageConfig.pageKey), [pageConfig.pageKey]);
   const { data: remoteContent } = usePublicContent(
     () => fetchPageByKey(pageConfig.pageKey),
     [pageConfig.pageKey],
+    seedContent,
   );
   const [query, setQuery] = useState("");
   const [activeSection, setActiveSection] = useState("");
