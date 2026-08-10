@@ -1,0 +1,148 @@
+﻿HR Document Generation Software
+HR Document Generation Software for Fast, Accurate and Standardised Employee Documentation
+Altroz HR Document Generation Software helps HR teams create offer letters, appointment letters, joining letters and other employee documents directly from ready-to-use templates. Instead of drafting each document manually in Word or Excel, HR teams can select a template, preview the document and generate it in a few clicks — for both applicants and employees. Every document is generated using standard templates and placeholders, so the format, language and structure remain consistent across the organisation.
+Request a Free Demo of Altroz HR Document Generation Software
+Explore HR Document Templates
+Generate Documents in Minutes
+Create employee and applicant documents from pre-built templates instead of drafting them manually every time.
+Preview Before You Generate
+Check the document layout and placeholder data before the final document is generated.
+Centralised Template Management
+Manage all HR document templates, versions and placeholders from a single template configuration screen.
+What is HR Document Generation Software?
+HR Document Generation Software is a module within Altroz HR that allows HR teams to generate standard employee and applicant documents using pre-configured templates, instead of creating each document manually. It replaces repetitive, manual document drafting with a structured, template-based document generation process.
+In most organisations, HR documents such as offer letters, appointment letters and joining letters are still created manually. This creates several recurring problems for HR teams:
+Problems with Manual Document Creation
+Every offer letter, appointment letter or joining letter is typed out separately, which takes up valuable HR time.
+Manual typing increases the chances of errors in names, designations, salary figures and joining dates.
+There is no single place to check which documents have already been generated and when.
+Problems with Editing Documents Repeatedly
+HR teams often copy an old document and edit it for a new employee, which can carry forward outdated details by mistake.
+Repeated manual edits make it difficult to maintain a uniform tone, structure and format across documents.
+Any change in company details, such as address or contact information, has to be manually updated across every document.
+Problems Maintaining Multiple Templates
+Different departments or teams may end up using different versions of the same letter format.
+Without version control, it becomes difficult to know which template is the current, approved one.
+Older, inactive templates can accidentally be reused instead of the latest version.
+Benefits of Centralised HR Document Generation
+HR teams work from a defined set of templates, so every document follows the same structure.
+Templates can be configured once with placeholders, and the correct details are filled in automatically for each applicant or employee.
+Generated documents can be searched and filtered later using details such as candidate name, document name, created date and sent date.
+Altroz HR Document Generation Software is built around this template-first approach, so HR teams spend less time drafting documents and more time on the people side of HR.
+Core Features of Altroz HR Document Generation Software
+Generate Documents
+What it is: The core screen where HR users generate a document for a selected applicant or employee.
+How it works: The user selects whether the document is for an applicant or an employee, chooses the relevant document template, and generates the document based on the details already available in the system.
+Business benefit: HR teams no longer need to open a blank document and type out every letter from scratch. Document creation becomes a quick, guided action instead of a manual writing task.
+Preview Document
+What it is: A preview option that shows how the document will look before it is actually generated.
+How it works: Before finalising, the user can preview the document with the applied template and placeholder details, allowing a quick visual check.
+Business benefit: Reduces the chances of sending out a document with incorrect formatting or missing details, since HR can review it beforehand.
+Generate for Applicant and Generate for Employee
+What it is: The system supports document generation for two entity types — Applicant and Employee.
+How it works: Based on the Entity Type selected, the relevant candidate or employee record is linked to the document, and the applicable template is used to generate it.
+Business benefit: The same document generation screen can be used across the employee lifecycle, from candidates who are yet to join to existing employees who need internal letters.
+Template Management (Template Configuration, Template Editor, HTML Template)
+What it is: A dedicated area to configure and manage the HR document templates used for generation.
+How it works: Templates are configured under Template Configuration, and the actual content and layout of a template is built or edited in the Template Editor, which supports HTML Template formatting.
+Business benefit: HR teams are not dependent on IT or external design help every time a template needs to be created or updated. Templates can be maintained directly within the system.
+Document Template Type and Document Template
+What it is: Templates are organised by Document Template Type, with each individual template listed under Document Template.
+How it works: When generating a document, the user first selects the relevant Document Template Type and then the specific Document Template to be used.
+Business benefit: Makes it easy to organise multiple templates — for example, different templates for offer letters, appointment letters and joining letters — without confusion.
+Document Layout and Output Format
+What it is: Settings that define how the generated document is structured and in what format it is produced.
+How it works: Each template has a defined Document Layout and Output Format, which is applied automatically whenever that template is used to generate a document.
+Business benefit: Ensures every document generated from a given template looks and reads the same way, without the user having to reformat it manually.
+Template Version and Default Template
+What it is: Version control for templates, along with the ability to mark a template as the Default Template.
+How it works: As templates are updated, the Template Version helps track changes, while the Default Template setting ensures the correct template is used when a document is generated.
+Business benefit: HR teams always generate documents from the correct, current version of a template, reducing the risk of using outdated content.
+Display Order and Active / Inactive Template
+What it is: Settings that control how templates are listed and whether a template is currently available for use.
+How it works: Display Order determines the sequence in which templates appear, while the Active / Inactive Template setting controls whether a template can be selected during document generation.
+Business benefit: Outdated templates can be marked inactive so they are not used by mistake, and frequently used templates can be arranged for quick access.
+Search Generated Documents and Document Filters
+What it is: A search and filter function for documents that have already been generated.
+How it works: Users can search and filter generated documents using Candidate Type, Candidate Name, Document Name, Created Date, Sent Date and Document Template Type.
+Business benefit: HR teams can quickly locate a specific document that was generated earlier, without having to search through folders or email records.
+Document Generation Workflow
+Altroz HR Document Generation Software follows a simple, step-by-step process, so HR teams always know what to expect when generating a document.
+Step 1: Select Applicant or Employee
+The user starts by choosing the Entity Type — whether the document is being generated for an Applicant or an Employee — and selects the relevant candidate or employee record.
+Step 2: Select Document Template
+The user selects the applicable Document Template Type and then the specific Document Template, such as an offer letter, appointment letter or joining letter template.
+Step 3: Preview Document
+Before generating, the user can preview the document to check that the layout, format and placeholder details, such as name, department, position, joining date and salary, are correctly applied.
+Step 4: Generate Document
+Once the preview looks correct, the user generates the document. The system applies the selected Document Layout and Output Format automatically.
+Step 5: Store Generated Record
+The generated document is stored as a record that can later be found using Search Generated Documents and Document Filters, based on details such as Candidate Name, Document Name, Created Date and Sent Date.
+Business Benefits of Altroz HR Document Generation Software
+Reduce Manual Document Creation
+HR teams generate documents from templates instead of typing each one from scratch, saving repetitive manual effort.
+Standardise HR Documents
+Every document generated from a template follows the same layout, format and structure across the organisation.
+Save HR Time
+Selecting a template and generating a document takes far less time than drafting and formatting a letter manually.
+Improve Accuracy
+Placeholders fill in employee, applicant, company and salary details automatically, reducing manual data entry errors.
+Easy Template Management
+Templates can be created, edited, versioned and marked active or inactive directly through Template Configuration.
+Centralised Document Generation
+All HR document generation, from templates to generated records, is managed within a single module.
+Industry Use Cases
+HR document generation is relevant to any organisation that regularly issues offer letters, appointment letters, joining letters and similar employee documents. Altroz HR Document Generation Software can be used across industries, including:
+Information Technology (IT)
+IT companies that hire frequently can use standard templates for offer, appointment and joining letters, so every new hire receives consistently formatted documents.
+Manufacturing
+Manufacturing units with distinct departments and roles can maintain separate templates using the Department and Position placeholders for accurate, role-specific documents.
+Healthcare
+Healthcare organisations that onboard clinical and non-clinical staff can use defined templates to keep documentation formats consistent across employee categories.
+Education
+Educational institutions hiring teaching and administrative staff across the year can rely on active templates to keep the joining process organised.
+Retail
+Retail businesses with multiple store locations can use the Company Address and Company Name placeholders to correctly reflect the relevant branch on each document.
+Hospitality
+Hospitality businesses with seasonal or high-volume hiring can generate applicant and employee documents quickly using pre-configured templates.
+Construction
+Construction firms managing project-based hiring can use Document Template Type and Entity Type settings to separate applicant and employee documentation.
+Professional Services
+Professional services firms that issue formal appointment and engagement documentation can maintain version-controlled templates through Template Version and Default Template settings.
+Frequently Asked Questions
+1. What is HR Document Generation Software?
+HR Document Generation Software is a module in Altroz HR that lets HR teams generate employee and applicant documents, such as offer letters, appointment letters and joining letters, using pre-configured templates instead of drafting them manually.
+2. Can Altroz HR generate documents for both applicants and employees?
+Yes. The system supports document generation for two entity types — Generate for Applicant and Generate for Employee — depending on the Entity Type configured for the template.
+3. Can I preview a document before it is generated?
+Yes. The Preview Document option lets HR users check the document layout and placeholder details before the final document is generated.
+4. How are HR document templates managed in Altroz HR?
+Templates are managed through Template Configuration and built or edited in the Template Editor, which supports HTML Template formatting for the document layout.
+5. Does Altroz HR support an Offer Letter Generator and Appointment Letter Software functionality?
+Yes. Offer letters, appointment letters and joining letters can be created as Document Templates and generated for applicants or employees through the Generate Documents screen.
+6. What are placeholders in Altroz HR document templates?
+Placeholders are template fields that are automatically filled with relevant data, such as the Employee Name Placeholder, Applicant Name Placeholder, Department Placeholder, Position Placeholder, Joining Date Placeholder, Offered Date Placeholder, Salary Placeholder and Basic Salary Placeholder.
+7. Can company details be added automatically to a document?
+Yes, using the Company Name Placeholder, Company Logo Placeholder, Company Address Placeholder, Company Email Placeholder and Company Phone Placeholder configured in the template.
+8. How do I find a document that was generated earlier?
+You can use Search Generated Documents along with Document Filters, such as Candidate Type, Candidate Name, Document Name, Created Date and Sent Date.
+9. Can old or unused templates be removed from selection?
+Templates can be marked as Active or Inactive. Inactive templates are not available for selection during document generation, which prevents outdated templates from being used by mistake.
+10. Does Altroz HR support multiple versions of the same template?
+Yes. Template Version allows HR teams to track changes to a template, while the Default Template setting ensures the correct version is used during generation.
+11. What output format is used for generated documents?
+Each Document Template has a defined Document Layout and Output Format, which is applied automatically whenever that template is used to generate a document.
+12. Is Altroz HR Document Generation Software suitable for large enterprises with multiple departments?
+Yes. Templates can be organised by Document Template Type and Entity Type, and can use Department and Position placeholders, making the module suitable for organisations with multiple departments and roles.
+Bring Structure and Speed to Your HR Documentation
+Stop recreating the same offer letters, appointment letters and joining letters from scratch. With Altroz HR Document Generation Software, your HR team can generate accurate, consistently formatted employee and applicant documents from ready-to-use templates — and find any generated document in seconds.
+Request a Free Demo of Altroz HR Document Generation Software
+Talk to Our HR Software Experts
+
+SEO Metadata
+SEO Title: HR Document Generation Software | Offer, Appointment & Joining Letter Generator - Altroz HR
+Meta Description: Generate offer letters, appointment letters and joining letters in minutes with Altroz HR Document Generation Software. Template-based, accurate and centralised HR documentation.
+Slug: /hr-document-generation-software
+Canonical URL: https://www.altrozhr.com/hr-document-generation-software
+OG Title: HR Document Generation Software - Altroz HR
+OG Description: Create standardised employee and applicant documents using ready-to-use templates with Altroz HR Document Generation Software.
