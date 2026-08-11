@@ -3,11 +3,14 @@
 import { useMemo } from "react";
 import { ArrowRight, Clock3, Sparkles } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import BulkEmailNavbar from "@/components/site/BulkEmailNavbar";
+import AssetManagementNavbar from "@/components/site/AssetManagementNavbar";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import { ScrollReveal } from "@/components/site/ScrollReveal";
+import { cn } from "@/lib/utils";
 import { usePublicContent } from "@/hooks/usePublicContent";
 import { getSection } from "@/services/cmsHelpers";
 import { fetchPublicBlogPosts } from "@/services/blogService";
@@ -88,6 +91,23 @@ function FeedCard({
   );
 }
 
+function BlogChrome({ pathname }: { pathname: string }) {
+  if (pathname.startsWith("/bulk-email/resources/blog")) {
+    return <BulkEmailNavbar />;
+  }
+
+  if (pathname.startsWith("/asset-management/resources/blog")) {
+    return <AssetManagementNavbar />;
+  }
+
+  return (
+    <>
+      <TopNavbar />
+      <MainNavbar />
+    </>
+  );
+}
+
 export default function BlogPage() {
   const location = useLocation();
   const blogGroup = resolveBlogGroupFromPath(location.pathname);
@@ -122,9 +142,19 @@ export default function BlogPage() {
   const seoImageAlt = remotePage?.ogImage
     ? (remotePage.ogImageAlt ?? storyTitle)
     : (featuredPost?.coverImageAlt ?? featuredPost?.title ?? undefined);
+  const isBulkEmailBlog = location.pathname.startsWith("/bulk-email/resources/blog");
+  const isAssetManagementBlog = location.pathname.startsWith("/asset-management/resources/blog");
+  const pageClassName = cn(
+    "min-h-screen",
+    isBulkEmailBlog
+      ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
+      : isAssetManagementBlog
+        ? "bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]"
+        : "bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.09),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f6fbff_100%)]",
+  );
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.09),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f6fbff_100%)]">
+    <div className={pageClassName}>
       <PageSEO
         title={seoTitle}
         description={seoDescription}
@@ -134,8 +164,7 @@ export default function BlogPage() {
         image={seoImage}
         imageAlt={seoImageAlt}
       />
-      <TopNavbar />
-      <MainNavbar />
+      <BlogChrome pathname={location.pathname} />
 
       <main className="overflow-x-hidden">
         <section className="section py-14 sm:py-16 lg:py-20">

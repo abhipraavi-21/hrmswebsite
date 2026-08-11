@@ -3,11 +3,14 @@
 import { useMemo } from "react";
 import { ArrowRight, Building2, ChevronRight, Clock3, Mail, Phone } from "lucide-react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import BulkEmailNavbar from "@/components/site/BulkEmailNavbar";
+import AssetManagementNavbar from "@/components/site/AssetManagementNavbar";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
 import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
+import { cn } from "@/lib/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -24,6 +27,23 @@ import {
   resolveBlogPostPath,
   stripHtmlToText,
 } from "./blogUtils";
+
+function BlogChrome({ blogGroup }: { blogGroup: ReturnType<typeof resolveBlogGroupFromPath> }) {
+  if (blogGroup === "bulk-email") {
+    return <BulkEmailNavbar />;
+  }
+
+  if (blogGroup === "asset-management") {
+    return <AssetManagementNavbar />;
+  }
+
+  return (
+    <>
+      <TopNavbar />
+      <MainNavbar />
+    </>
+  );
+}
 
 function SafeRichText({
   html,
@@ -240,15 +260,23 @@ function ArticleState({
   title,
   description,
   blogPath,
+  blogGroup,
 }: {
   title: string;
   description: string;
   blogPath: string;
+  blogGroup: ReturnType<typeof resolveBlogGroupFromPath>;
 }) {
+  const pageClassName = cn(
+    "min-h-screen",
+    blogGroup === "bulk-email"
+      ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
+      : "bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]",
+  );
+
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]">
-      <TopNavbar />
-      <MainNavbar />
+    <div className={pageClassName}>
+      <BlogChrome blogGroup={blogGroup} />
 
       <main className="overflow-x-hidden">
         <section className="py-16 sm:py-20 lg:py-24">
@@ -290,7 +318,14 @@ export default function BlogArticlePage() {
   );
 
   if (!slug) {
-    return <ArticleState title="Blog article not found" description="This article URL is incomplete." blogPath={fallbackBlogPath} />;
+    return (
+      <ArticleState
+        title="Blog article not found"
+        description="This article URL is incomplete."
+        blogPath={fallbackBlogPath}
+        blogGroup={fallbackGroup}
+      />
+    );
   }
 
   if (loading) {
@@ -299,6 +334,7 @@ export default function BlogArticlePage() {
         title="Loading blog article..."
         description="We&apos;re fetching the latest published version of this article from the live CMS feed."
         blogPath={fallbackBlogPath}
+        blogGroup={fallbackGroup}
       />
     );
   }
@@ -312,6 +348,7 @@ export default function BlogArticlePage() {
           "If you just created this article in the admin panel, switch its status to Published and save it before opening the public page."
         }
         blogPath={fallbackBlogPath}
+        blogGroup={fallbackGroup}
       />
     );
   }
@@ -373,7 +410,14 @@ export default function BlogArticlePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]">
+    <div
+      className={cn(
+        "min-h-screen",
+        post.blogGroup === "bulk-email"
+          ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
+          : "bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]",
+      )}
+    >
       <PageSEO
         title={post.metaTitle || `${post.title} | Altroz HR Blog`}
         description={post.metaDescription}
@@ -383,8 +427,7 @@ export default function BlogArticlePage() {
         ogTitle={post.metaTitle || post.title}
         ogDescription={post.metaDescription}
       />
-      <TopNavbar />
-      <MainNavbar />
+      <BlogChrome blogGroup={post.blogGroup} />
 
       <main className="overflow-x-hidden">
         <section className="py-10 sm:py-12 lg:py-14">
