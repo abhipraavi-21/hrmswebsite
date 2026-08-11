@@ -38,16 +38,20 @@ export default function ProductBrandLine({
       className={cn("inline-flex shrink-0 items-center gap-2.5 leading-none -ml-3", className)}
     >
       {brandSrc ? (
-        <img
-          src={brandSrc}
-          alt={brandAlt ?? "Altroz product logo"}
-          width={1322}
-          height={277}
-          loading="eager"
-          decoding="async"
-          fetchPriority="high"
-          className={compact ? "block h-8 w-auto select-none sm:h-10" : "block h-7 w-auto select-none sm:h-8"}
-        />
+      <img
+        src={brandSrc}
+        alt={brandAlt ?? "Altroz product logo"}
+        width={1322}
+        height={277}
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
+        className={
+          compact
+            ? "block h-8 w-auto max-w-full select-none object-contain sm:h-10"
+            : "block h-7 w-auto max-w-full select-none object-contain sm:h-8"
+        }
+      />
       ) : (
         <>
           <BrandMark

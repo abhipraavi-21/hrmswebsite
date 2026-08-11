@@ -529,7 +529,41 @@ function FeatureGroupCard({ group }: { group: FeatureGroup }) {
         </div>
       </div>
 
-      <div className="mt-5 overflow-x-auto">
+      <div className="mt-5 md:hidden">
+        <div className="space-y-3">
+          {group.rows.map((feature) => (
+            <div key={feature.label} className="rounded-[1.35rem] border border-border bg-white p-4">
+              <div className="text-sm font-semibold text-ink">{feature.label}</div>
+              {feature.note ? (
+                <div className="mt-1 text-xs leading-6 text-ink-soft">{feature.note}</div>
+              ) : null}
+
+              <div className="mt-4 grid gap-2">
+                <div className="flex items-center justify-between gap-3 rounded-2xl bg-surface/50 px-3 py-2">
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft">
+                    Basic
+                  </span>
+                  <StatusChip state={feature.basic} />
+                </div>
+                <div className="flex items-center justify-between gap-3 rounded-2xl bg-surface/50 px-3 py-2">
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft">
+                    Professional
+                  </span>
+                  <StatusChip state={feature.professional} />
+                </div>
+                <div className="flex items-center justify-between gap-3 rounded-2xl bg-surface/50 px-3 py-2">
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft">
+                    Premium
+                  </span>
+                  <StatusChip state={feature.premium} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-5 hidden overflow-x-auto md:block">
         <div className="min-w-[820px] overflow-hidden rounded-[1.35rem] border border-border bg-white">
           <div className="grid grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,1fr))] bg-surface/70">
             <div className="px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-ink-soft">

@@ -538,9 +538,9 @@ function ProcessCard({
   );
 }
 
-function PillRow() {
+function PillRow({ className = "" }: { className?: string }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className={cn("flex flex-wrap gap-2", className)}>
       {trustPills.map((pill) => {
         const Icon = pill.icon;
 
@@ -1351,26 +1351,26 @@ export default function AssetManagementPage() {
 
           <div className="site-container">
             <div className="grid gap-10 lg:grid-cols-[1.03fr_0.97fr] lg:items-center">
-              <ScrollReveal variant="fade-up">
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
+              <ScrollReveal variant="fade-up" className="flex flex-col items-center text-center lg:items-start lg:text-left">
+                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm lg:mx-0">
                   <Sparkles className="h-4 w-4" />
                   ASSET MANAGEMENT SOFTWARE
                 </div>
-                <h1 className="mt-4 max-w-4xl text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl">
+                <h1 className="mt-4 max-w-4xl text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl lg:mx-0">
                   Track, Manage and Maintain Every Business Asset in One Place
                 </h1>
-                <p className="mt-5 max-w-3xl text-base leading-8 text-ink-soft sm:text-lg">
+                <p className="mt-5 max-w-3xl text-base leading-8 text-ink-soft sm:text-lg lg:mx-0">
                   Altroz Asset Management gives your team one centralized place to see every asset
                   your business owns, who has it, where it is and what condition it is in. Track
                   ownership, location, maintenance and lifecycle status from purchase to
                   retirement, without digging through spreadsheets or asking around the office.
                 </p>
-                <p className="mt-4 max-w-3xl text-base leading-8 text-ink-soft sm:text-lg">
+                <p className="mt-4 max-w-3xl text-base leading-8 text-ink-soft sm:text-lg lg:mx-0">
                   Manage assets across employees, departments, branches and locations from one
                   centralized platform.
                 </p>
 
-                <div className="mt-6 flex flex-wrap gap-3">
+                <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
                   <ActionLink href={ROUTES.bookDemo} className="btn-primary">
                     Book a Free Demo
                     <ArrowRight className="h-4 w-4" />
@@ -1381,7 +1381,7 @@ export default function AssetManagementPage() {
                 </div>
 
                 <div className="mt-7">
-                  <PillRow />
+                  <PillRow className="justify-center lg:justify-start" />
                 </div>
               </ScrollReveal>
 
@@ -1755,12 +1755,6 @@ export default function AssetManagementPage() {
                     title="Built to bring clarity to your asset operations"
                     description="Altroz Asset Management is built around clear, structured asset records rather than loosely connected spreadsheets. The platform organizes information by category, status, owner and location so your team works from consistent data, with reporting and QR-based identification designed to scale as your asset count grows across departments and locations."
                   />
-                  <div className="mt-5 rounded-[1.5rem] border border-primary/10 bg-primary-soft/30 p-5 text-sm leading-7 text-ink">
-                    We keep this section honest: we do not list customer logos, certifications,
-                    awards or review scores here because none have been provided or verified. What
-                    we can show you is the product itself, including the dashboard, workflows and
-                    reports, during a free demo.
-                  </div>
                 </div>
               </ScrollReveal>
 

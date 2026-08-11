@@ -73,7 +73,7 @@ export default function BulkEmailNavbar() {
       <div className="site-container flex flex-col gap-2 py-3 lg:hidden">
         <div className="flex items-center justify-between gap-3">
           <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
-            <BrandMark mode="wordmark" />
+            <BrandMark mode="wordmark" src="/brand/altroz-hr-logo.png" alt="Altroz HR" />
           </Link>
           
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -101,8 +101,8 @@ export default function BulkEmailNavbar() {
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 popup-blue-band" />
 
                 <div className="flex-1 overflow-y-auto px-5 py-6 pt-10">
-                  <div className="flex items-center justify-between gap-3">
-                    <BrandMark mode="wordmark" />
+                <div className="flex items-center justify-between gap-3">
+                    <BrandMark mode="wordmark" src="/brand/altroz-hr-logo.png" alt="Altroz HR" />
                     <SheetClose asChild>
                       <button
                         type="button"
@@ -131,6 +131,15 @@ export default function BulkEmailNavbar() {
           </Sheet>
         </div>
 
+        <div className="flex items-center justify-start">
+          <ProductBrandLine
+            compact
+            brandSrc="/brand/bulk-email-logo-transparent.png"
+            brandAlt="Altroz Bulk Email"
+            className="max-w-full"
+          />
+        </div>
+
         <div className="flex max-w-full items-center gap-2 overflow-x-auto pb-1 pr-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Link to={ROUTES.hrmsHome} className={switcherButtonClass}>
             <Users className="h-4 w-4 text-ink" />
@@ -157,7 +166,7 @@ export default function BulkEmailNavbar() {
           <div className="site-container flex h-full items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
-                <BrandMark mode="wordmark" />
+                <BrandMark mode="wordmark" src="/brand/altroz-hr-logo.png" alt="Altroz HR" />
               </Link>
               <div className="flex items-center gap-2">
                 <Link to={ROUTES.hrmsHome} className={switcherButtonClass}>

@@ -21,15 +21,19 @@ export default function PageHeroIntro({
   className = "",
 }: PageHeroIntroProps) {
   return (
-    <div className={`mx-auto max-w-4xl px-6 py-6 text-center ${className}`.trim()}>
+    <div className={`mx-auto max-w-4xl px-4 py-5 text-center sm:px-6 sm:py-6 ${className}`.trim()}>
       <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
         {eyebrow}
       </span>
-      <h1 className="mt-2 text-4xl font-bold leading-tight text-ink sm:text-5xl">{title}</h1>
-      <p className="mx-auto mt-2 max-w-3xl text-base text-ink-soft">{description}</p>
+      <h1 className="mt-2 text-3xl font-bold leading-tight text-ink sm:text-4xl md:text-5xl">
+        {title}
+      </h1>
+      <p className="mx-auto mt-2 max-w-3xl text-sm leading-7 text-ink-soft sm:text-base">
+        {description}
+      </p>
 
       {actions.length > 0 ? (
-        <div className="button-group mt-4 justify-center">
+        <div className="button-group mt-5 justify-center">
           {actions.map((action, index) => (
             <Link
               key={`${action.label}-${action.href}`}
