@@ -90,7 +90,7 @@ export default function BulkEmailNavbar() {
             <SheetContent
               side="right"
               hideClose
-              className="w-[min(100vw,26rem)] max-w-none border-l border-border/70 bg-background p-0 text-ink shadow-[0_24px_80px_rgba(15,23,42,0.22)]"
+              className="bulk-email-theme w-[min(100vw,26rem)] max-w-none border-l border-border/70 bg-background p-0 text-ink shadow-[0_24px_80px_rgba(15,23,42,0.22)]"
             >
               <SheetHeader className="sr-only">
                 <SheetTitle>Main navigation</SheetTitle>
