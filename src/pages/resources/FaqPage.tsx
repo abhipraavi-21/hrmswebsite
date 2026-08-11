@@ -23,6 +23,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import BulkEmailNavbar from "@/components/site/BulkEmailNavbar";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
@@ -42,6 +43,7 @@ import { getSection, getSectionItems } from "@/services/cmsHelpers";
 import { fetchPageByKey } from "@/services/pageService";
 import { getSeedPageFallback } from "@/services/seedFallback";
 import type { PublicCmsPage } from "@/services/cmsTypes";
+import { cn } from "@/lib/utils";
 
 const DEFAULT_PAGE_TITLE = "Altroz HR FAQs | Knowledge Base and Frequently Asked Questions";
 const DEFAULT_PAGE_DESCRIPTION =
@@ -246,6 +248,7 @@ function ActionLink({
 export default function FaqPage() {
   const location = useLocation();
   const pageConfig = resolveFaqPageConfig(location.pathname);
+  const isBulkEmailFaq = location.pathname.startsWith(ROUTES.bulkEmailFaq);
   const seedContent = useMemo(() => getSeedPageFallback(pageConfig.pageKey), [pageConfig.pageKey]);
   const { data: remoteContent } = usePublicContent(
     () => fetchPageByKey(pageConfig.pageKey),
@@ -380,7 +383,14 @@ export default function FaqPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_36%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]">
+    <div
+      className={cn(
+        "min-h-screen",
+        isBulkEmailFaq
+          ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
+          : "bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_36%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]",
+      )}
+    >
       <PageSEO
         title={seoTitle}
         description={seoDescription}
@@ -390,8 +400,14 @@ export default function FaqPage() {
         image={remoteContent?.ogImage ?? undefined}
         imageAlt={remoteContent?.ogImageAlt ?? undefined}
       />
-      <TopNavbar />
-      <MainNavbar />
+      {isBulkEmailFaq ? (
+        <BulkEmailNavbar />
+      ) : (
+        <>
+          <TopNavbar />
+          <MainNavbar />
+        </>
+      )}
 
       <main className="overflow-x-hidden">
         <section className="py-14 sm:py-16 lg:py-20">
