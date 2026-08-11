@@ -4,7 +4,7 @@ import type { BulkEmailPageConfig } from "./bulkEmailData";
 
 export function BulkEmailLayout({ page }: { page: BulkEmailPageConfig }) {
   return (
-    <div className="bulk-email-theme min-h-screen bg-background">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title={page.pageTitle}
         description={page.description}

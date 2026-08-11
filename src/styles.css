@@ -106,6 +106,44 @@
   --ink-soft: #4b5563;
 }
 
+.bulk-email-theme {
+  --background: #ffffff;
+  --foreground: #111827;
+
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+
+  --primary: #f4c430;
+  --primary-foreground: #111827;
+  --primary-soft: #fff9e6;
+
+  --secondary: #fff9e6;
+  --secondary-foreground: #111827;
+
+  --muted: #fffcf5;
+  --muted-foreground: #5b6473;
+
+  --accent: #fff9e6;
+  --accent-foreground: #111827;
+
+  --success: #16a34a;
+  --success-foreground: #ffffff;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #d9a900;
+
+  --surface: #fffcf5;
+  --ink: #111827;
+  --ink-soft: #64748b;
+  --primary-rgb: 244, 196, 48;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -438,6 +476,24 @@
     linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(221, 235, 255, 0.98) 100%);
 }
 
+.bulk-email-theme .popup-blue-band {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(244, 196, 48, 0.45) 18%,
+    rgba(17, 24, 39, 0.9) 38%,
+    rgba(244, 196, 48, 0.9) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.bulk-email-theme .popup-blue-surface {
+  background-color: rgba(255, 252, 245, 0.98);
+  background-image:
+    radial-gradient(120% 90% at 50% 0%, rgba(244, 196, 48, 0.18), transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 249, 230, 0.98) 100%);
+}
+
 @keyframes float-slow {
   0%,
   100% {
@@ -507,12 +563,51 @@
 }
 
 @layer components {
+  .bulk-email-theme {
+    background:
+      radial-gradient(60% 50% at 85% 10%, rgba(244, 196, 48, 0.18), transparent 60%),
+      radial-gradient(50% 40% at 10% 20%, rgba(17, 24, 39, 0.05), transparent 60%),
+      linear-gradient(180deg, #ffffff 0%, #fff9e6 100%);
+  }
+
+  .bulk-email-theme [class*="text-[#1d4ed8]"] {
+    color: #d9a900 !important;
+  }
+
+  .bulk-email-theme [class*="border-[#1d4ed8]"] {
+    border-color: rgba(217, 169, 0, 0.35) !important;
+  }
+
+  .bulk-email-theme [class*="bg-[#1d4ed8]"] {
+    background-color: rgba(244, 196, 48, 0.14) !important;
+  }
+
+  .bulk-email-theme [class*="from-[#1d4ed8]"] {
+    --tw-gradient-from: rgb(244 196 48 / 0.18) !important;
+  }
+
+  .bulk-email-theme [class*="via-[#eff6ff]"] {
+    --tw-gradient-via: rgb(255 249 230 / 0.96) !important;
+  }
+
+  .bulk-email-theme [class*="to-[#fff7ef]"],
+  .bulk-email-theme [class*="to-[#fffbf4]"],
+  .bulk-email-theme [class*="to-[#fff9e6]"] {
+    --tw-gradient-to: rgb(255 249 230 / 0.96) !important;
+  }
+
+  .bulk-email-theme [class*="bg-[#fff7ef]"],
+  .bulk-email-theme [class*="bg-[#fffbf4]"],
+  .bulk-email-theme [class*="bg-[#fff9e6]"] {
+    background-color: #fff9e6 !important;
+  }
+
   .bulk-email-theme [class*="text-[#b45309]"] {
-    color: #ea580c !important;
+    color: #d9a900 !important;
   }
 
   .bulk-email-theme [class*="border-[#b45309]"] {
-    border-color: #ea580c !important;
+    border-color: #d9a900 !important;
   }
 
   .about-us-theme [class*="text-[#1d4ed8]"] {

@@ -661,7 +661,7 @@ function BulkEmailHeroVisual() {
       <div className="relative overflow-hidden rounded-[2.25rem] border border-border bg-white p-4 shadow-[0_36px_100px_rgba(15,23,42,0.12)]">
         <div className="pointer-events-none absolute inset-0 opacity-100">
           <div className="absolute -left-24 top-8 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
-          <div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-sky-200/40 blur-3xl" />
+          <div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-[#F4C430]/25 blur-3xl" />
           <div className="absolute bottom-0 left-24 h-56 w-56 rounded-full bg-primary-soft/70 blur-3xl" />
         </div>
 
@@ -726,8 +726,8 @@ function BulkEmailHeroVisual() {
                     Send immediately to the selected audience.
                   </p>
                 </div>
-                <div className="rounded-2xl border border-amber-200/40 bg-amber-50 p-4">
-                  <p className="text-xs uppercase tracking-[0.2em] text-amber-700">Schedule</p>
+                <div className="rounded-2xl border border-border bg-[#FFF9E6] p-4">
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#D9A900]">Schedule</p>
                   <p className="mt-2 text-sm text-ink">
                     Queue the message for later delivery.
                   </p>
@@ -799,12 +799,12 @@ function FloatingSummaryCard({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-sky-200/40 bg-white px-4 py-3 shadow-[0_18px_40px_rgba(15,23,42,0.16)]",
+        "rounded-2xl border border-border bg-white px-4 py-3 shadow-[0_18px_40px_rgba(15,23,42,0.16)]",
         className,
       )}
     >
       <div className="flex items-center gap-2">
-        <div className="grid h-9 w-9 place-items-center rounded-xl bg-sky-50 text-primary">
+        <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#FFF9E6] text-primary">
           <Icon className="h-4 w-4" />
         </div>
         <div>
@@ -820,7 +820,7 @@ function ProductPreviewCard({
   title,
   subtitle,
   lines,
-  accent = "bg-gradient-to-br from-sky-50 to-white",
+  accent = "bg-gradient-to-br from-[#FFF9E6] to-white",
 }: {
   title: string;
   subtitle: string;
@@ -859,7 +859,7 @@ export default function BulkEmailHomePage() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="Bulk Email Software for Business Campaigns | Altroz"
         description="Altroz Bulk Email is a bulk email software to broadcast, schedule, template and analyse business email campaigns from one dashboard. Book a demo."
@@ -868,11 +868,11 @@ export default function BulkEmailHomePage() {
       <BulkEmailNavbar />
 
       <main className="pb-32">
-        <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.14),_transparent_36%),linear-gradient(180deg,#f5f8ff_0%,#ffffff_72%)] pt-8">
+        <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(244,196,48,0.16),_transparent_36%),linear-gradient(180deg,#FFFCF5_0%,#FFFFFF_72%)] pt-8">
           <div className="site-container py-6 pb-14 lg:py-10 lg:pb-20">
             <div className="grid items-center gap-12 lg:grid-cols-[0.96fr_1.04fr]">
               <ScrollReveal>
-                <div className="max-w-2xl text-ink">
+                <div className="max-w-2xl text-center text-ink">
                   <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-primary-soft px-4 py-2 text-xs font-bold uppercase tracking-[0.26em] text-primary">
                     <Mail className="h-4 w-4" />
                     Business Email Communication Platform
@@ -880,17 +880,17 @@ export default function BulkEmailHomePage() {
                   <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight sm:text-5xl xl:text-6xl">
                     Business Email Broadcasting, Scheduling and Analytics from one platform
                   </h1>
-                  <p className="mt-5 max-w-xl text-base leading-8 text-ink-soft sm:text-lg">
+                  <p className="mx-auto mt-5 max-w-xl text-justify hyphens-auto text-base leading-8 text-ink-soft sm:text-lg">
                     Altroz Bulk Email helps businesses create, send, schedule, manage and analyse
                     email campaigns from a single centralised platform. Whether it is an HR
                     announcement, a customer update or a scheduled business communication, your
                     team can plan it, send it and track it without juggling multiple tools.
                   </p>
 
-                  <div className="mt-8 flex flex-wrap gap-3">
+                  <div className="mt-8 flex flex-wrap justify-center gap-3">
                     <ActionLink
                       href={ROUTES.bookDemo}
-                      className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
+                      className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-transform hover:-translate-y-0.5"
                     >
                       Book a Free Demo <ArrowRight className="h-4 w-4" />
                     </ActionLink>
@@ -997,7 +997,9 @@ export default function BulkEmailHomePage() {
                       <item.icon className="h-5 w-5" />
                     </div>
                     <h3 className="mt-4 whitespace-nowrap text-lg font-bold text-ink">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-ink-soft">{item.text}</p>
+                    <p className="mt-2 text-justify hyphens-auto text-sm leading-7 text-ink-soft">
+                      {item.text}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -1089,7 +1091,7 @@ export default function BulkEmailHomePage() {
                     </div>
 
                     <div className="space-y-4">
-                      <div className="rounded-[1.5rem] border border-border bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] p-4">
+                      <div className="rounded-[1.5rem] border border-border bg-[linear-gradient(180deg,#FFFCF5_0%,#FFFFFF_100%)] p-4">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
@@ -1184,7 +1186,7 @@ export default function BulkEmailHomePage() {
             <StaggerReveal step={40} className="mt-10 grid gap-5 lg:grid-cols-3">
               <ScreenshotMock
                 title="Broadcast screen"
-                accent="bg-gradient-to-br from-sky-50 via-white to-white"
+                accent="bg-gradient-to-br from-[#FFF9E6] via-white to-white"
               >
                 <div className="space-y-3">
                   <div className="rounded-2xl border border-border bg-white p-3">
@@ -1202,20 +1204,20 @@ export default function BulkEmailHomePage() {
 
               <ScreenshotMock
                 title="Scheduling screen"
-                accent="bg-gradient-to-br from-amber-50 via-white to-white"
+                accent="bg-gradient-to-br from-[#FFF9E6] via-white to-white"
               >
                 <div className="space-y-3">
                   <div className="rounded-2xl border border-border bg-white p-3">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-semibold text-ink">Campaign timeline</span>
-                      <span className="rounded-full bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-700">
+                      <span className="rounded-full bg-[#FFF9E6] px-2 py-1 text-[11px] font-semibold text-[#D9A900]">
                         Queue
                       </span>
                     </div>
                     <div className="mt-3 flex items-center gap-2">
-                      <div className="h-2 flex-1 rounded-full bg-slate-100" />
-                      <div className="h-2 flex-1 rounded-full bg-sky-200" />
-                      <div className="h-2 flex-1 rounded-full bg-slate-100" />
+                      <div className="h-2 flex-1 rounded-full bg-[#EEF1F4]" />
+                      <div className="h-2 flex-1 rounded-full bg-[#F4C430]" />
+                      <div className="h-2 flex-1 rounded-full bg-[#EEF1F4]" />
                     </div>
                   </div>
                   <div className="rounded-2xl bg-white p-4 text-sm text-ink-soft">
@@ -1236,7 +1238,7 @@ export default function BulkEmailHomePage() {
                           key={height}
                           className={cn(
                             "flex-1 rounded-t-xl",
-                            index === 3 ? "bg-primary" : "bg-sky-200",
+                            index === 3 ? "bg-primary" : "bg-[#EEF1F4]",
                           )}
                           style={{ height: `${height}px` }}
                         />
@@ -1451,7 +1453,7 @@ export default function BulkEmailHomePage() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-5 rounded-[1.5rem] border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-900">
+                <div className="mt-5 rounded-[1.5rem] border border-border bg-[#FFF9E6] p-4 text-sm leading-7 text-ink">
                   Note: Altroz Bulk Email does not promise specific open rates or delivery
                   percentages. Reporting reflects actual platform data for your campaigns.
                 </div>
@@ -1468,7 +1470,7 @@ export default function BulkEmailHomePage() {
                       {[28, 46, 34, 58, 42].map((height, index) => (
                         <div
                           key={height}
-                          className={cn("flex-1 rounded-t-xl", index === 3 ? "bg-primary" : "bg-sky-200")}
+                          className={cn("flex-1 rounded-t-xl", index === 3 ? "bg-primary" : "bg-[#EEF1F4]")}
                           style={{ height: `${height}px` }}
                         />
                       ))}
@@ -1737,17 +1739,18 @@ export default function BulkEmailHomePage() {
           </div>
         </section>
 
-        <section className="section bg-[linear-gradient(180deg,#f8fbff_0%,#eef4ff_100%)] text-ink">
+        <section className="section relative overflow-hidden bg-[#111827] text-white">
+          <div className="pointer-events-none absolute -top-28 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(244,196,48,0.3),transparent_70%)] blur-3xl" />
           <div className="site-container">
             <div className="mx-auto max-w-4xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.26em] text-primary">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.26em] text-primary">
                 <Sparkles className="h-4 w-4" />
                 Final CTA
               </div>
               <h2 className="mt-5 text-3xl font-black tracking-tight sm:text-4xl">
                 Manage business email communication from one platform
               </h2>
-              <p className="mt-4 text-base leading-8 text-ink-soft">
+              <p className="mt-4 text-base leading-8 text-white/70">
                 Broadcast, templates, scheduling, analytics and SMTP come together in Altroz Bulk
                 Email so your team can spend less time managing tools and more time communicating.
               </p>
@@ -1755,13 +1758,13 @@ export default function BulkEmailHomePage() {
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <ActionLink
                   href={ROUTES.bookDemo}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-primary transition-transform hover:-translate-y-0.5 hover:bg-white/90"
                 >
                   Book a Free Demo <ArrowRight className="h-4 w-4" />
                 </ActionLink>
                 <ActionLink
                   href={ROUTES.bulkEmailContact}
-                  className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-5 py-3 text-sm font-bold text-ink transition-transform hover:-translate-y-0.5 hover:bg-surface"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-transparent px-5 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 hover:bg-white/10"
                 >
                   Talk to Our Team <ArrowRight className="h-4 w-4" />
                 </ActionLink>
@@ -1773,7 +1776,7 @@ export default function BulkEmailHomePage() {
                 <ActionLink
                   key={item.label}
                   href={item.href}
-                  className="rounded-[1.25rem] border border-border bg-white px-4 py-3 text-sm font-medium text-ink transition-colors hover:bg-surface"
+                  className="rounded-[1.25rem] border border-white/15 bg-white/5 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
                 >
                   {item.label}
                 </ActionLink>
