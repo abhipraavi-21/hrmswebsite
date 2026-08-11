@@ -383,7 +383,14 @@ export default function ProductContactPage({
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div
+      className={cn(
+        "min-h-screen",
+        navbarVariant === "bulkEmail"
+          ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
+          : "bg-background",
+      )}
+    >
       <PageSEO
         title={remoteContent?.metaTitle ?? fallbackTitle}
         description={remoteContent?.metaDescription ?? fallbackDescription}

@@ -614,7 +614,7 @@ function SectionCard({ title, description, icon: Icon, benefit }: CardData) {
 
 export default function BulkEmailAssetManagementPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="Manufacturing Asset Management Software | Altroz Asset Management"
         description="Track machinery, factory tools and warehouse assets from one platform. QR code tracking, maintenance records and warranty management for manufacturing teams."

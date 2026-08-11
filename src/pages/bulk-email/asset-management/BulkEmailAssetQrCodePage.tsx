@@ -616,7 +616,7 @@ function QrAssetMock() {
 
 export default function BulkEmailAssetQrCodePage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="QR Code Asset Management Software | Altroz Asset Mgmt"
         description="Identify, assign and track every business asset using QR Codes. Generate, print and scan QR labels with Altroz Asset Management."

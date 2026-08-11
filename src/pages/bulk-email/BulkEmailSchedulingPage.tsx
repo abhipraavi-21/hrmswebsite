@@ -315,7 +315,7 @@ const faqs: Faq[] = [
 
 export default function BulkEmailSchedulingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="Email Scheduling Software | Altroz Bulk Email"
         description="Schedule email campaigns in advance with Altroz Bulk Email. Plan delivery time, manage the queue and track delivery from one dashboard."

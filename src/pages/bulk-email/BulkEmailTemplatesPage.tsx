@@ -260,7 +260,7 @@ const faqs: Faq[] = [
 
 export default function BulkEmailTemplatesPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fffbf4]">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="Bulk Email Templates | Altroz"
         description="Altroz Bulk Email templates help businesses create branded email campaigns faster with reusable layouts, HTML upload support and clean campaign structure."

@@ -647,7 +647,7 @@ function DashboardMock() {
 
 export default function BulkEmailAssetDashboardPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="IT Asset Management Dashboard | Altroz Asset Management"
         description="Track, assign, maintain and monitor IT equipment from one centralized dashboard with QR code tracking, warranty records and reports."

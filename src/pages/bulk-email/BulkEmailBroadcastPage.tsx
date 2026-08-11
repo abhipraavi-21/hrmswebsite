@@ -381,7 +381,7 @@ const faqs: Faq[] = [
 
 export default function BulkEmailBroadcastPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="Bulk Email Broadcast Software | Altroz Bulk Email"
         description="Altroz Bulk Email offers bulk email broadcast software to create, schedule and track business email campaigns. Book a free demo today."

@@ -561,7 +561,7 @@ const faqs: Faq[] = [
 
 export default function BulkEmailSmtpPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fffbf4]">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="SMTP Configuration Software for Secure Business Email Delivery | Altroz Bulk Email"
         description="Altroz Bulk Email lets businesses connect their own SMTP server, configure sender identity, secure delivery and monitor email activity from one dashboard."

@@ -437,7 +437,7 @@ const faqs: Faq[] = [
 
 export default function BulkEmailAnalyticsPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="Email Analytics Software | Altroz Bulk Email"
         description="Track email campaign performance with Altroz Bulk Email Analytics. Monitor delivery status, broadcast activity and reports on one dashboard."
