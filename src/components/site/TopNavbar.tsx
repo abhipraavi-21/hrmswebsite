@@ -1,21 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { ArrowRight, ChevronDown, Mail, Menu, Package, Users, X } from "lucide-react";
 import BrandMark from "./BrandMark";
-import {
-  featureMenuColumns,
-  companyMenuColumns,
-  emailLinks,
-  hrmsLinks,
-  resourcesMenuItems,
-  solutionMenuItems,
-} from "./nav-data";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { featureMenuColumns } from "./nav-data";
 import {
   Sheet,
   SheetClose,
@@ -29,64 +17,136 @@ import { cn } from "@/lib/utils";
 import { useScrolled } from "@/hooks/useScrolled";
 import { ROUTES } from "@/routes/routeConfig.js";
 
-const companyLinks = companyMenuColumns.flatMap((column) => column.links);
-const assetManagementLinks = [
-  { label: "Asset Dashboard", href: ROUTES.bulkEmailAssetDashboard },
-  { label: "Asset Management", href: ROUTES.assetManagementHome },
-  { label: "Asset Tracking", href: ROUTES.bulkEmailAssetTracking },
-  { label: "QR Code Asset Management", href: ROUTES.bulkEmailAssetQrCode },
-  { label: "Asset Maintenance", href: ROUTES.bulkEmailAssetMaintenance },
-  { label: "Asset Reports", href: ROUTES.bulkEmailAssetReports },
-  { label: "Learn", href: ROUTES.assetManagementLearn },
-  { label: "Guide", href: ROUTES.assetManagementGuide },
-  { label: "Blog", href: ROUTES.assetManagementBlog },
-  { label: "FAQ", href: ROUTES.assetManagementFaq },
-  { label: "Contact Us", href: ROUTES.assetManagementContact },
-  { label: "Pricing", href: ROUTES.assetManagementPricing },
+type MobileTab = "hrms" | "email" | "asset";
+
+type NavItem = {
+  label: string;
+  href: string;
+};
+
+type MobileSection = {
+  title: string;
+  href?: string;
+  links: NavItem[];
+};
+
+const hrmsSections: MobileSection[] = featureMenuColumns.map((column) => ({
+  title: column.title,
+  href: column.links[0]?.href,
+  links: column.links,
+}));
+
+const bulkEmailSections: MobileSection[] = [
+  {
+    title: "Campaign Center",
+    href: ROUTES.bulkEmailBroadcast,
+    links: [
+      { label: "Bulk Email Home", href: ROUTES.bulkEmail },
+      { label: "Email Broadcast", href: ROUTES.bulkEmailBroadcast },
+      { label: "Templates", href: ROUTES.bulkEmailTemplates },
+      { label: "Contacts", href: ROUTES.bulkEmailContact },
+      { label: "Analytics", href: ROUTES.bulkEmailAnalytics },
+      { label: "Automation", href: ROUTES.bulkEmailAutomation },
+      { label: "Scheduling", href: ROUTES.bulkEmailScheduling },
+      { label: "SMTP", href: ROUTES.bulkEmailSmtp },
+    ],
+  },
+  {
+    title: "Use Cases",
+    href: ROUTES.bulkEmailHrCommunication,
+    links: [
+      { label: "HR Communication", href: ROUTES.bulkEmailHrCommunication },
+      { label: "Marketing", href: ROUTES.bulkEmailMarketing },
+      { label: "Education", href: ROUTES.bulkEmailEducation },
+    ],
+  },
+  {
+    title: "Resources",
+    href: ROUTES.bulkEmailLearn,
+    links: [
+      { label: "Learn", href: ROUTES.bulkEmailLearn },
+      { label: "Blog", href: ROUTES.bulkEmailBlog },
+      { label: "FAQs", href: ROUTES.bulkEmailFaq },
+    ],
+  },
+  {
+    title: "More",
+    links: [
+      { label: "Pricing", href: ROUTES.bulkEmailPricing },
+      { label: "Contact Us", href: ROUTES.bulkEmailContact },
+    ],
+  },
 ];
+
+const assetManagementSections: MobileSection[] = [
+  {
+    title: "Asset Operations",
+    href: ROUTES.assetManagementHome,
+    links: [
+      { label: "Asset Management", href: ROUTES.assetManagementHome },
+      { label: "Asset Dashboard", href: ROUTES.bulkEmailAssetDashboard },
+      { label: "Asset Tracking", href: ROUTES.bulkEmailAssetTracking },
+      { label: "QR Code Asset Management", href: ROUTES.bulkEmailAssetQrCode },
+      { label: "Asset Maintenance", href: ROUTES.bulkEmailAssetMaintenance },
+      { label: "Asset Reports", href: ROUTES.bulkEmailAssetReports },
+    ],
+  },
+  {
+    title: "Solutions",
+    href: ROUTES.bulkEmailAssetDashboard,
+    links: [
+      { label: "IT Asset Management", href: ROUTES.bulkEmailAssetDashboard },
+      { label: "Manufacturing Assets", href: ROUTES.bulkEmailAssetTracking },
+      { label: "Healthcare Assets", href: ROUTES.bulkEmailAssetMaintenance },
+      { label: "Educational Institutions", href: ROUTES.bulkEmailAssetReports },
+      { label: "Corporate Offices", href: ROUTES.assetManagementHome },
+    ],
+  },
+  {
+    title: "Resources",
+    href: ROUTES.assetManagementLearn,
+    links: [
+      { label: "Learn", href: ROUTES.assetManagementLearn },
+      { label: "Asset Management Guide", href: ROUTES.assetManagementGuide },
+      { label: "Blog", href: ROUTES.assetManagementBlog },
+      { label: "FAQs", href: ROUTES.assetManagementFaq },
+    ],
+  },
+  {
+    title: "More",
+    links: [
+      { label: "Pricing", href: ROUTES.assetManagementPricing },
+      { label: "Contact Us", href: ROUTES.assetManagementContact },
+      { label: "Help Center", href: ROUTES.support },
+    ],
+  },
+];
+
+const mobileSectionMap: Record<MobileTab, MobileSection[]> = {
+  hrms: hrmsSections,
+  email: bulkEmailSections,
+  asset: assetManagementSections,
+};
 
 export default function TopNavbar() {
   return <TopNavbarShell />;
 }
 
-export function TopNavbarShell({
-  forceActiveTab = null,
-}: {
-  forceActiveTab?: "hrms" | "email" | "asset" | null;
-}) {
-  const [activeTab, setActiveTab] = useState<"hrms" | "email" | "asset">("hrms");
-  const [open, setOpen] = useState<null | "hrms" | "email" | "asset">(null);
+export function TopNavbarShell({ forceActiveTab = null }: { forceActiveTab?: MobileTab | null }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const scrolled = useScrolled(12);
-  const closeTimerRef = useRef<number | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isHomePage = location.pathname === ROUTES.home;
-  const isHrmsHomePage = location.pathname.startsWith(ROUTES.hrmsHome);
   const isBulkEmailPage = location.pathname.startsWith(ROUTES.bulkEmail);
   const isAssetManagementPage =
     location.pathname.startsWith(ROUTES.assetManagementHome) ||
     location.pathname.startsWith(ROUTES.assetManagement);
-  const currentTab =
-    forceActiveTab ??
-    (isAssetManagementPage ? "asset" : isBulkEmailPage ? "email" : isHrmsHomePage ? "hrms" : isHomePage ? null : activeTab);
-
-  const clearCloseTimer = () => {
-    if (closeTimerRef.current !== null) {
-      window.clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
-    }
-  };
-
-  const scheduleClose = () => {
-    clearCloseTimer();
-    closeTimerRef.current = window.setTimeout(() => {
-      setOpen(null);
-    }, 180);
-  };
-
-  useEffect(() => () => clearCloseTimer(), []);
+  const currentTab: MobileTab =
+    forceActiveTab ?? (isAssetManagementPage ? "asset" : isBulkEmailPage ? "email" : "hrms");
+  const currentSections = mobileSectionMap[currentTab];
+  const currentTabLabel =
+    currentTab === "hrms" ? "HRMS" : currentTab === "email" ? "Bulk Email" : "Asset Management";
 
   useEffect(() => {
     const { overflow } = document.body.style;
@@ -106,79 +166,129 @@ export function TopNavbarShell({
         scrolled && "shadow-[0_10px_28px_rgba(15,23,42,0.08)]",
       )}
     >
-      <div className="site-container flex items-center justify-between gap-3 py-3 lg:hidden">
-        <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
-          <BrandMark mode="wordmark" />
-        </Link>
+      <div className="site-container flex flex-col gap-2 py-3 lg:hidden">
+        <div className="flex items-center justify-between gap-3">
+          <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
+            <BrandMark mode="wordmark" />
+          </Link>
 
-        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-          <SheetTrigger asChild>
-            <button
-              type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-white text-ink shadow-sm transition-colors hover:bg-primary-soft hover:text-primary"
-              aria-label="Open menu"
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-white text-ink shadow-sm transition-colors hover:bg-primary-soft hover:text-primary"
+                aria-label="Open menu"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            </SheetTrigger>
+
+            <SheetContent
+              side="right"
+              hideClose
+              className="w-[min(100vw,26rem)] max-w-none border-l border-border/70 bg-background p-0 text-ink shadow-[0_24px_80px_rgba(15,23,42,0.22)]"
             >
-              <Menu className="h-5 w-5" />
-            </button>
-          </SheetTrigger>
+              <SheetHeader className="sr-only">
+                <SheetTitle>Main navigation</SheetTitle>
+                <SheetDescription>Mobile navigation menu.</SheetDescription>
+              </SheetHeader>
 
-          <SheetContent
-            side="right"
-            hideClose
-            className="w-[min(100vw,26rem)] max-w-none border-l border-border/70 bg-background p-0 text-ink shadow-[0_24px_80px_rgba(15,23,42,0.22)]"
-          >
-            <SheetHeader className="sr-only">
-              <SheetTitle>Main navigation</SheetTitle>
-              <SheetDescription>Mobile navigation menu.</SheetDescription>
-            </SheetHeader>
+              <div className="relative flex h-full min-h-[100dvh] flex-col overflow-hidden bg-background">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 popup-blue-band" />
 
-            <div className="relative flex h-full min-h-[100dvh] flex-col overflow-hidden bg-background">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-1.5 popup-blue-band" />
+                <div className="flex-1 overflow-y-auto px-5 py-6 pt-10">
+                  <div className="flex items-center justify-between gap-3">
+                    <BrandMark mode="wordmark" />
+                    <SheetClose asChild>
+                      <button
+                        type="button"
+                        aria-label="Close menu"
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white text-ink shadow-sm transition-colors hover:bg-surface hover:text-primary"
+                      >
+                        <X className="h-5 w-5" />
+                      </button>
+                    </SheetClose>
+                  </div>
 
-              <div className="flex-1 overflow-y-auto px-5 py-6 pt-10">
-                <div className="flex items-center justify-between gap-3">
-                  <BrandMark mode="wordmark" />
-                  <SheetClose asChild>
-                    <button
-                      type="button"
-                      aria-label="Close menu"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white text-ink shadow-sm transition-colors hover:bg-surface hover:text-primary"
-                    >
-                      <X className="h-5 w-5" />
-                    </button>
-                  </SheetClose>
-                </div>
+                  <div className="mt-6">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
+                          {currentTabLabel}
+                        </p>
+                        <h2 className="mt-1 text-lg font-semibold text-ink">Main pages</h2>
+                      </div>
+                      <div className="rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary">
+                        {currentSections.length} groups
+                      </div>
+                    </div>
 
-                <div className="mt-6">
-                  <Accordion
-                    type="multiple"
-                    defaultValue={["hrms", "bulk-email", "asset-management"]}
-                    className="space-y-2"
-                  >
-                    <MobileAccordionGroup
-                      value="hrms"
-                      title="HRMS"
-                      items={hrmsLinks}
-                      onNavigate={() => setMobileOpen(false)}
-                    />
-                    <MobileAccordionGroup
-                      value="bulk-email"
-                      title="Bulk Email"
-                      items={emailLinks}
-                      onNavigate={() => setMobileOpen(false)}
-                    />
-                    <MobileAccordionGroup
-                      value="asset-management"
-                      title="Asset Management"
-                      items={assetManagementLinks}
-                      onNavigate={() => setMobileOpen(false)}
-                    />
-                  </Accordion>
+                    <div className="mt-4 space-y-3">
+                      {currentSections.map((section) => (
+                        <MobileSectionCard
+                          key={section.title}
+                          section={section}
+                          onNavigate={() => setMobileOpen(false)}
+                        />
+                      ))}
+                    </div>
+
+                    <div className="mt-6 grid gap-3">
+                      <SheetClose asChild>
+                        <Link
+                          to={ROUTES.bookDemo}
+                          onClick={() => setMobileOpen(false)}
+                          className="btn-primary justify-center text-sm"
+                        >
+                          Book Free Demo
+                        </Link>
+                      </SheetClose>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </SheetContent>
-        </Sheet>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        <div className="flex w-full flex-wrap items-center justify-center gap-2 pb-1">
+          <Link
+            to={ROUTES.hrmsHome}
+            className={cn(
+              "inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl px-3 py-2 text-xs font-semibold transition-all duration-200 sm:px-4 sm:text-sm",
+              currentTab === "hrms"
+                ? "bg-primary-soft text-primary"
+                : "text-ink hover:bg-surface hover:text-primary",
+            )}
+          >
+            <Users className="h-4 w-4" />
+            HRMS
+          </Link>
+          <Link
+            to={ROUTES.bulkEmail}
+            className={cn(
+              "inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl px-3 py-2 text-xs font-semibold transition-all duration-200 sm:px-4 sm:text-sm",
+              currentTab === "email"
+                ? "bg-primary-soft text-primary"
+                : "text-ink hover:bg-surface hover:text-primary",
+            )}
+          >
+            <Mail className="h-4 w-4" />
+            Bulk Email
+          </Link>
+          <Link
+            to={ROUTES.assetManagementHome}
+            className={cn(
+              "inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl px-3 py-2 text-xs font-semibold transition-all duration-200 sm:px-4 sm:text-sm",
+              currentTab === "asset"
+                ? "bg-primary-soft text-primary"
+                : "text-ink hover:bg-surface hover:text-primary",
+            )}
+          >
+            <Package className="h-4 w-4" />
+            Asset Management
+          </Link>
+        </div>
       </div>
 
       <div
@@ -197,14 +307,7 @@ export function TopNavbarShell({
             icon={<Users className="h-4 w-4" />}
             active={currentTab === "hrms"}
             onClick={() => {
-              setActiveTab("hrms");
               navigate(ROUTES.hrmsHome);
-            }}
-            onHover={() => {
-              setOpen(null);
-            }}
-            onLeave={() => {
-              setOpen(null);
             }}
             isOpen={false}
           />
@@ -213,30 +316,16 @@ export function TopNavbarShell({
             icon={<Mail className="h-4 w-4" />}
             active={currentTab === "email"}
             onClick={() => {
-              setActiveTab("email");
               navigate(ROUTES.bulkEmail);
-            }}
-            onHover={() => {
-              setOpen(null);
-            }}
-            onLeave={() => {
-              setOpen(null);
             }}
             isOpen={false}
           />
-            <ProductTab
-              label="Asset Management"
-              icon={<Package className="h-4 w-4" />}
-              active={currentTab === "asset"}
-              onClick={() => {
-                setActiveTab("asset");
-                navigate(ROUTES.assetManagementHome);
-              }}
-            onHover={() => {
-              setOpen(null);
-            }}
-            onLeave={() => {
-              setOpen(null);
+          <ProductTab
+            label="Asset Management"
+            icon={<Package className="h-4 w-4" />}
+            active={currentTab === "asset"}
+            onClick={() => {
+              navigate(ROUTES.assetManagementHome);
             }}
             isOpen={false}
           />
@@ -279,7 +368,7 @@ function ProductTab({
   showChevron = Boolean(items?.length),
 }: {
   label: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   active: boolean;
   onClick: () => void;
   onHover?: () => void;
@@ -351,127 +440,80 @@ function ProductTab({
   );
 }
 
-function MobileAccordionGroup({
-  value,
-  title,
-  items,
+function MobileSectionCard({
+  section,
   onNavigate,
 }: {
-  value: string;
-  title: string;
-  items: { label: string; desc?: string; href?: string }[] | { label: string; href: string }[];
+  section: MobileSection;
   onNavigate: () => void;
 }) {
   return (
-    <AccordionItem value={value} className="border-0">
-      <AccordionTrigger className="rounded-2xl border border-border/70 px-4 py-3 text-left text-sm font-semibold text-ink no-underline hover:no-underline [&>svg]:text-primary">
-        <span className="text-sm font-semibold tracking-tight text-ink">{title}</span>
-      </AccordionTrigger>
-      <AccordionContent className="pb-1 pt-2">
-        <div className="rounded-2xl border border-border/70 bg-muted/30 p-2">
-          <div className="grid gap-0">
-            {(items as { label: string; desc?: string; href?: string }[]).map((item) => (
-              <MobileLink
-                key={item.label}
-                label={item.label}
-                href={item.href ?? "#"}
-                description={item.desc}
-                showDescription={Boolean(item.desc)}
-                onNavigate={onNavigate}
-              />
-            ))}
+    <section className="overflow-hidden rounded-2xl border border-border/70 bg-white shadow-sm">
+      <div className="border-b border-border/70 bg-muted/30 px-4 py-3">
+        <p className="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-primary">
+          Main page
+        </p>
+        <div className="mt-1 flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            {section.href ? (
+              <SheetClose asChild>
+                <Link
+                  to={section.href}
+                  onClick={onNavigate}
+                  className="block break-normal whitespace-normal text-base font-semibold text-ink [overflow-wrap:normal] transition-colors hover:text-primary"
+                >
+                  {section.title}
+                </Link>
+              </SheetClose>
+            ) : (
+              <h3 className="text-base font-semibold text-ink">{section.title}</h3>
+            )}
           </div>
-        </div>
-      </AccordionContent>
-    </AccordionItem>
-  );
-}
 
-function MobileFeaturesGroup({ onNavigate }: { onNavigate: () => void }) {
-  return (
-    <AccordionItem value="features" className="border-0">
-      <AccordionTrigger className="rounded-2xl border border-border/70 px-4 py-3 text-left text-sm font-semibold text-ink no-underline hover:no-underline [&>svg]:text-primary">
-        <span className="text-sm font-semibold tracking-tight text-ink">Features</span>
-      </AccordionTrigger>
-      <AccordionContent className="pb-1 pt-2">
-        <div className="space-y-3 rounded-2xl border border-border/70 bg-muted/30 p-2">
-          {featureMenuColumns.map((column) => (
-            <section key={column.title} className="rounded-xl bg-background/80 p-3">
-              <div className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
-                {column.title}
-              </div>
-              <div className="mt-2 grid gap-0">
-                {column.links.map((item) => (
-                  <MobileLink
-                    key={item.label}
-                    label={item.label}
-                    href={item.href}
-                    description={undefined}
-                    showDescription={false}
-                    onNavigate={onNavigate}
-                  />
-                ))}
-              </div>
-            </section>
+          {section.href ? (
+            <SheetClose asChild>
+              <Link
+                to={section.href}
+                onClick={onNavigate}
+                className="rounded-full border border-border bg-white px-3 py-1 text-xs font-semibold text-ink transition-colors hover:bg-surface hover:text-primary"
+              >
+                Open
+              </Link>
+            </SheetClose>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="px-2 py-2">
+        <p className="px-2 pb-1 pt-1 text-[0.65rem] font-bold uppercase tracking-[0.22em] text-ink-soft">
+          Sub pages
+        </p>
+        <div className="grid gap-1">
+          {section.links.map((item) => (
+            <MobileSubLink key={item.label} item={item} onNavigate={onNavigate} />
           ))}
         </div>
-      </AccordionContent>
-    </AccordionItem>
-  );
-}
-
-function MobileTopLevelLink({
-  label,
-  href,
-  onNavigate,
-}: {
-  label: string;
-  href: string;
-  onNavigate: () => void;
-}) {
-  return (
-    <Link
-      to={href}
-      onClick={onNavigate}
-      className="flex items-center justify-between rounded-2xl border border-border/70 px-4 py-3 text-left text-sm font-semibold text-ink transition-colors hover:bg-surface hover:text-primary"
-    >
-      <span className="text-sm font-semibold tracking-tight text-ink">{label}</span>
-      <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0 text-primary" />
-    </Link>
-  );
-}
-
-function MobileLink({
-  label,
-  href,
-  description,
-  showDescription = true,
-  onNavigate,
-}: {
-  label: string;
-  href: string;
-  description?: string;
-  showDescription?: boolean;
-  onNavigate: () => void;
-}) {
-  return (
-    <Link
-      to={href}
-      onClick={onNavigate}
-      className="group flex items-center justify-between gap-3 rounded-lg px-2 py-3 text-left transition-colors active:bg-white/60 active:text-primary sm:hover:bg-white/60 sm:hover:text-primary"
-    >
-      <div className="min-w-0">
-        <div className="text-sm font-semibold text-ink transition-colors group-active:text-primary sm:group-hover:text-primary">
-          {label}
-        </div>
-        {showDescription && description ? (
-          <div className="text-xs text-ink-soft">{description}</div>
-        ) : null}
       </div>
-      <ArrowRight
-        aria-hidden="true"
-        className="h-4 w-4 shrink-0 text-primary opacity-80 transition-[transform,opacity] duration-200 ease-out group-active:translate-x-1 sm:opacity-0 sm:-translate-x-0.5 sm:group-hover:translate-x-0 sm:group-hover:opacity-100"
-      />
-    </Link>
+    </section>
+  );
+}
+
+function MobileSubLink({ item, onNavigate }: { item: NavItem; onNavigate: () => void }) {
+  return (
+    <SheetClose asChild>
+      <Link
+        to={item.href}
+        onClick={onNavigate}
+        className="group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-surface hover:text-primary"
+      >
+        <span className="min-w-0 break-normal whitespace-normal text-sm font-medium text-ink [overflow-wrap:normal] transition-colors group-hover:text-primary">
+          {item.label}
+        </span>
+        <ArrowRight
+          aria-hidden="true"
+          className="h-4 w-4 shrink-0 text-primary opacity-70 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:opacity-100"
+        />
+      </Link>
+    </SheetClose>
   );
 }

@@ -390,9 +390,11 @@ function MobileGroup({
                 <Link
                   to={item.href}
                   onClick={onNavigate}
-                  className="flex items-center justify-between rounded-xl px-2 py-2 text-sm text-ink transition-colors hover:bg-surface hover:text-primary"
+                  className="flex w-full items-center justify-between rounded-xl px-2 py-2 text-sm text-ink transition-colors hover:bg-surface hover:text-primary"
                 >
-                  <span>{item.label}</span>
+                  <span className="min-w-0 break-normal whitespace-normal text-left [overflow-wrap:normal]">
+                    {item.label}
+                  </span>
                   <ArrowRight className="h-4 w-4 opacity-60" />
                 </Link>
               </SheetClose>
