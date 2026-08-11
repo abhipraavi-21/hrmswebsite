@@ -25,6 +25,11 @@ import PageSEO from "@/components/site/PageSEO";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { cn } from "@/lib/utils";
 
+const bulkEmailPrimaryCta =
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#f4c430] px-5 py-3 text-sm font-bold text-[#111827] transition-transform hover:-translate-y-0.5 hover:bg-[#e0b61f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9a900]/35";
+const bulkEmailSecondaryCta =
+  "inline-flex items-center justify-center gap-2 rounded-full border border-[#d9a900] bg-[#fff9e6] px-5 py-3 text-sm font-bold text-[#111827] transition-transform hover:-translate-y-0.5 hover:bg-[#fff4cc] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9a900]/25";
+
 type Stat = {
   label: string;
   value: string;
@@ -202,10 +207,10 @@ export default function BulkEmailSolutionPage({
                 </div>
 
                 <div className="button-group mt-6 justify-start">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.bookDemo} className={bulkEmailPrimaryCta}>
                     Book Free Demo
                   </Link>
-                  <a href="#features" className="btn-outline">
+                  <a href="#features" className={bulkEmailSecondaryCta}>
                     {heroCtaLabel}
                   </a>
                 </div>
@@ -347,7 +352,7 @@ export default function BulkEmailSolutionPage({
                   {ctaDescription}
                 </p>
                 <div className="button-group mt-5">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.bookDemo} className={bulkEmailPrimaryCta}>
                     Book Free Demo
                   </Link>
                   <Link to={ROUTES.bulkEmailContact} className="btn-ghost">
