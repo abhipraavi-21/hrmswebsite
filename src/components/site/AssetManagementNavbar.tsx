@@ -355,7 +355,7 @@ function MenuLink({ item, active }: { item: MenuItem; active: boolean }) {
   return (
     <Link to={item.href} tabIndex={active ? 0 : -1} className={baseClass}>
       <span className="inline-flex items-center gap-1.5 transition-transform duration-300 ease-out group-hover:translate-x-0.5">
-        <span>{item.label}</span>
+        <span className="whitespace-nowrap">{item.label}</span>
         <ArrowRight
           aria-hidden="true"
           className="h-4 w-4 -translate-x-0.5 opacity-0 transition-[transform,opacity] duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100"

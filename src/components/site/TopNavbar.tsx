@@ -504,9 +504,9 @@ function MobileSubLink({ item, onNavigate }: { item: NavItem; onNavigate: () => 
       <Link
         to={item.href}
         onClick={onNavigate}
-        className="group flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-surface hover:text-primary"
+        className="group flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-surface hover:text-primary"
       >
-        <span className="min-w-0 break-normal whitespace-normal text-sm font-medium text-ink [overflow-wrap:normal] transition-colors group-hover:text-primary">
+        <span className="min-w-0 whitespace-nowrap text-sm font-medium text-ink [overflow-wrap:normal] transition-colors group-hover:text-primary">
           {item.label}
         </span>
         <ArrowRight
