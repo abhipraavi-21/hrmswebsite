@@ -339,7 +339,9 @@ export default function BlogArticlePage() {
     );
   }
 
-  if (!post) {
+  const resolvedPost = post ?? seedPost;
+
+  if (!resolvedPost) {
     return (
       <ArticleState
         title="This blog post is not available yet"
@@ -353,27 +355,27 @@ export default function BlogArticlePage() {
     );
   }
 
-  const pageCopy = BLOG_GROUP_PAGE_CONTENT[post.blogGroup];
-  const canonicalPath = resolveBlogPostPath(post.blogGroup, post.slug, location.pathname);
-  const blogPath = resolveBlogListingPath(post.blogGroup, location.pathname);
-  const publishedDate = formatBlogDate(post.publishedAt);
-  const descriptionText = stripHtmlToText(post.descriptionHtml) || post.metaDescription;
-  const heroSummaryText = stripHtmlToText(post.heroSummaryHtml);
+  const pageCopy = BLOG_GROUP_PAGE_CONTENT[resolvedPost.blogGroup];
+  const canonicalPath = resolveBlogPostPath(resolvedPost.blogGroup, resolvedPost.slug, location.pathname);
+  const blogPath = resolveBlogListingPath(resolvedPost.blogGroup, location.pathname);
+  const publishedDate = formatBlogDate(resolvedPost.publishedAt);
+  const descriptionText = stripHtmlToText(resolvedPost.descriptionHtml) || resolvedPost.metaDescription;
+  const heroSummaryText = stripHtmlToText(resolvedPost.heroSummaryHtml);
   const breadcrumbUrl = [
     { label: "Home", href: ROUTES.home },
     { label: pageCopy.badge, href: blogPath },
-    { label: post.title, href: canonicalPath },
+    { label: resolvedPost.title, href: canonicalPath },
   ];
 
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: post.title,
-    description: descriptionText || post.metaDescription,
-    articleSection: post.category,
+    headline: resolvedPost.title,
+    description: descriptionText || resolvedPost.metaDescription,
+    articleSection: resolvedPost.category,
     mainEntityOfPage: resolveSiteUrl(canonicalPath),
-    datePublished: post.publishedAt ?? undefined,
-    dateModified: post.updatedAt ?? post.publishedAt ?? undefined,
+    datePublished: resolvedPost.publishedAt ?? undefined,
+    dateModified: resolvedPost.updatedAt ?? resolvedPost.publishedAt ?? undefined,
     author: {
       "@type": "Organization",
       name: "Altroz HR Editorial Team",
@@ -382,7 +384,7 @@ export default function BlogArticlePage() {
       "@type": "Organization",
       name: "Altroz HR",
     },
-    keywords: [post.category, ...post.heroPoints].join(", "),
+    keywords: [resolvedPost.category, ...resolvedPost.heroPoints].join(", "),
   };
 
   const breadcrumbSchema = {
@@ -413,21 +415,21 @@ export default function BlogArticlePage() {
     <div
       className={cn(
         "min-h-screen",
-        post.blogGroup === "bulk-email"
+        resolvedPost.blogGroup === "bulk-email"
           ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
           : "asset-management-theme asset-management-theme-shell",
       )}
     >
       <PageSEO
-        title={post.metaTitle || `${post.title} | Altroz HR Blog`}
-        description={post.metaDescription}
+        title={resolvedPost.metaTitle || `${resolvedPost.title} | Altroz HR Blog`}
+        description={resolvedPost.metaDescription}
         canonicalPath={canonicalPath}
-        image={post.coverImageUrl ?? undefined}
-        imageAlt={post.coverImageAlt ?? post.title}
-        ogTitle={post.metaTitle || post.title}
-        ogDescription={post.metaDescription}
+        image={resolvedPost.coverImageUrl ?? undefined}
+        imageAlt={resolvedPost.coverImageAlt ?? resolvedPost.title}
+        ogTitle={resolvedPost.metaTitle || resolvedPost.title}
+        ogDescription={resolvedPost.metaDescription}
       />
-      <BlogChrome blogGroup={post.blogGroup} />
+      <BlogChrome blogGroup={resolvedPost.blogGroup} />
 
       <main className="overflow-x-hidden">
         <section className="py-10 sm:py-12 lg:py-14">
@@ -439,16 +441,16 @@ export default function BlogArticlePage() {
                     <div className="flex flex-wrap items-center gap-3 text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-ink-soft">
                       <span>{publishedDate}</span>
                       <span className="text-border">-</span>
-                      <span>{post.category}</span>
+                      <span>{resolvedPost.category}</span>
                       <span className="text-border">-</span>
-                      <span>{post.readingTimeLabel ?? "Read now"}</span>
+                      <span>{resolvedPost.readingTimeLabel ?? "Read now"}</span>
                     </div>
                     <h1 className="mt-4 max-w-4xl text-3xl font-black tracking-tight text-ink sm:text-4xl lg:text-[2.7rem] lg:leading-tight">
-                      {post.title}
+                      {resolvedPost.title}
                     </h1>
 
                     <SafeRichText
-                      html={post.descriptionHtml}
+                      html={resolvedPost.descriptionHtml}
                       className="mt-4 max-w-4xl text-base leading-8 text-ink-soft sm:text-lg [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0"
                     />
                   </div>
@@ -456,8 +458,8 @@ export default function BlogArticlePage() {
                   <div className="px-6 sm:px-8">
                     <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface/30">
                       <img
-                        src={post.coverImageUrl ?? FALLBACK_BLOG_IMAGE}
-                        alt={post.coverImageAlt ?? post.title}
+                        src={resolvedPost.coverImageUrl ?? FALLBACK_BLOG_IMAGE}
+                        alt={resolvedPost.coverImageAlt ?? resolvedPost.title}
                         className="h-full w-full object-cover"
                       />
                     </div>
@@ -465,7 +467,7 @@ export default function BlogArticlePage() {
 
                   <div className="p-6 sm:p-8">
                     <SafeRichText
-                      html={post.heroSummaryHtml}
+                      html={resolvedPost.heroSummaryHtml}
                       className="max-w-4xl text-base leading-8 text-ink-soft sm:text-lg [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0"
                     />
 
@@ -475,7 +477,7 @@ export default function BlogArticlePage() {
                           Quick answer
                         </div>
                         <SafeRichText
-                          html={post.quickAnswerHtml}
+                          html={resolvedPost.quickAnswerHtml}
                           className="mt-3 text-sm leading-7 text-ink-soft [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0"
                         />
                       </div>
@@ -485,7 +487,7 @@ export default function BlogArticlePage() {
                           Key takeaways
                         </div>
                         <ul className="mt-3 space-y-3 text-sm leading-7 text-ink-soft">
-                          {post.keyTakeaways.slice(0, 4).map((takeaway) => (
+                          {resolvedPost.keyTakeaways.slice(0, 4).map((takeaway) => (
                             <li key={takeaway} className="flex gap-3">
                               <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary" />
                               <span>{takeaway}</span>
@@ -504,11 +506,11 @@ export default function BlogArticlePage() {
                       </Link>
                     </div>
 
-                    {post.sections.length > 0 ? (
+                    {resolvedPost.sections.length > 0 ? (
                       <div className="mt-6 rounded-[1.35rem] border border-border bg-surface/35 p-4">
                         <div className="text-sm font-bold text-ink">On this page</div>
                         <nav className="mt-3 flex flex-wrap gap-2">
-                          {post.sections.map((section) => (
+                          {resolvedPost.sections.map((section) => (
                             <a
                               key={section.id}
                               href={`#${section.id}`}
@@ -524,9 +526,9 @@ export default function BlogArticlePage() {
                   </div>
                 </article>
 
-                {post.sections.length > 0 ? (
+                {resolvedPost.sections.length > 0 ? (
                   <div className="space-y-6">
-                    {post.sections.map((section) => (
+                    {resolvedPost.sections.map((section) => (
                       <SectionCard
                         key={section.id}
                         id={section.id}
@@ -539,7 +541,7 @@ export default function BlogArticlePage() {
                   </div>
                 ) : null}
 
-                {post.faqs.length > 0 ? (
+                {resolvedPost.faqs.length > 0 ? (
                   <section className="rounded-[1.75rem] border border-border bg-white p-6 shadow-float sm:p-8">
                     <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                       Frequently Asked Questions
@@ -548,7 +550,7 @@ export default function BlogArticlePage() {
                       Common questions about this topic
                     </h2>
                     <Accordion type="single" collapsible className="mt-6 space-y-3">
-                      {post.faqs.map((item) => (
+                      {resolvedPost.faqs.map((item) => (
                         <AccordionItem
                           key={item.question}
                           value={item.question}
@@ -569,7 +571,7 @@ export default function BlogArticlePage() {
                   </section>
                 ) : null}
 
-                {post.relatedLinks.length > 0 ? (
+                {resolvedPost.relatedLinks.length > 0 ? (
                   <section className="rounded-[1.75rem] border border-border bg-white p-6 shadow-float sm:p-8">
                     <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                       <div className="max-w-2xl">
@@ -595,7 +597,7 @@ export default function BlogArticlePage() {
                     </div>
 
                     <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-                      {post.relatedLinks.map((link) => (
+                      {resolvedPost.relatedLinks.map((link) => (
                         <RelatedLinkCard
                           key={`${link.label}-${link.href}`}
                           href={link.href}
@@ -619,7 +621,7 @@ export default function BlogArticlePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      {post.faqs.length > 0 ? (
+      {resolvedPost.faqs.length > 0 ? (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       ) : null}
 

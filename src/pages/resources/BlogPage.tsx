@@ -125,7 +125,7 @@ export default function BlogPage() {
     seedPosts,
   );
 
-  const posts = data ?? [];
+  const posts = data && data.length > 0 ? data : seedPosts;
   const featuredPost = posts[0] ?? null;
   const storySection =
     pageCopy.storySectionKeys
@@ -183,17 +183,12 @@ export default function BlogPage() {
             </ScrollReveal>
 
             <div className="mt-10">
-              {loading ? (
+              {loading && posts.length === 0 ? (
                 <div className="soft-card p-8 text-center">
                   <div className="text-lg font-bold text-ink">Loading blog posts...</div>
                   <p className="mt-2 text-sm leading-7 text-ink-soft">
                     We&apos;re pulling the latest published articles from the live CMS feed.
                   </p>
-                </div>
-              ) : error ? (
-                <div className="soft-card p-8 text-center">
-                  <div className="text-lg font-bold text-ink">We couldn&apos;t load the live story feed</div>
-                  <p className="mt-2 text-sm leading-7 text-ink-soft">{error}</p>
                 </div>
               ) : posts.length > 0 ? (
                 <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -208,8 +203,10 @@ export default function BlogPage() {
                 </div>
               ) : (
                 <div className="soft-card p-8 text-center">
-                  <div className="text-lg font-bold text-ink">{pageCopy.emptyTitle}</div>
-                  <p className="mt-2 text-sm leading-7 text-ink-soft">{pageCopy.emptyDescription}</p>
+                  <div className="text-lg font-bold text-ink">{error ?? pageCopy.emptyTitle}</div>
+                  <p className="mt-2 text-sm leading-7 text-ink-soft">
+                    {error ?? pageCopy.emptyDescription}
+                  </p>
                 </div>
               )}
             </div>
