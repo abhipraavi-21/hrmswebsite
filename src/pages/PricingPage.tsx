@@ -170,6 +170,8 @@ const planCards: PlanCard[] = [
   },
 ];
 
+const purchaseNowHref = ROUTES.bookDemo;
+
 const pricingHighlights = [
   {
     title: "Basic",
@@ -789,6 +791,15 @@ function PricingCalculatorSection({
                             : "Larger rollouts"}
                       </span>
                     </div>
+                  </div>
+
+                  <div className="mt-5 flex justify-center">
+                    <Link
+                      to={purchaseNowHref}
+                      className="inline-flex min-w-40 items-center justify-center rounded-full border border-primary bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
+                    >
+                      Purchase Now
+                    </Link>
                   </div>
                 </article>
               );
