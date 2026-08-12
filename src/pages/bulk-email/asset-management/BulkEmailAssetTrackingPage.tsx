@@ -536,7 +536,7 @@ function BulletList({ items }: { items: string[] }) {
 
 export default function BulkEmailAssetTrackingPage() {
   return (
-    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
+    <div className="asset-management-theme asset-management-theme-shell min-h-screen">
       <PageSEO
         title="Asset Tracking Software | Altroz Asset Management"
         description="Track business assets in real time with Altroz Asset Management. Assign, transfer and monitor assets by employee, department and branch using QR codes."

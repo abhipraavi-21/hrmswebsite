@@ -69,8 +69,8 @@ export default function AssetManagementNavbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur-md transition-shadow duration-300 supports-[backdrop-filter]:bg-white/90",
-        scrolled && "shadow-[0_10px_28px_rgba(15,23,42,0.08)]",
+        "sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md transition-shadow duration-300 supports-[backdrop-filter]:bg-background/90",
+        scrolled && "shadow-[0_10px_28px_rgba(30,79,209,0.10)]",
       )}
     >
       <div className="site-container flex flex-col gap-2 py-3 lg:hidden">
@@ -93,7 +93,7 @@ export default function AssetManagementNavbar() {
             <SheetContent
               side="right"
               hideClose
-              className="w-[min(100vw,26rem)] max-w-none border-l border-border/70 bg-background p-0 text-ink shadow-[0_24px_80px_rgba(15,23,42,0.22)]"
+              className="w-[min(100vw,26rem)] max-w-none border-l border-border/70 bg-background p-0 text-ink shadow-[0_24px_80px_rgba(30,79,209,0.18)]"
             >
               <SheetHeader className="sr-only">
                 <SheetTitle>Asset management navigation</SheetTitle>
@@ -181,7 +181,7 @@ export default function AssetManagementNavbar() {
       <div className="hidden lg:block">
         <div
           className={cn(
-            "border-b border-border/70 bg-white/95 transition-[height,padding] duration-300",
+            "border-b border-border/70 bg-background/95 transition-[height,padding] duration-300",
             scrolled ? "lg:h-14" : "lg:h-16",
           )}
         >
@@ -216,7 +216,7 @@ export default function AssetManagementNavbar() {
               className="inline-flex shrink-0 items-center gap-2.5 leading-none -ml-3 justify-self-start"
             >
               <BrandMark mode="wordmark" className="scale-[0.95] origin-left" />
-              <span className="inline-flex items-center rounded-[0.6rem] bg-[#0b5cff] px-2.5 py-1 text-[0.72rem] font-extrabold uppercase leading-none tracking-[0.12em] text-white sm:text-[0.76rem]">
+              <span className="inline-flex items-center rounded-[0.6rem] bg-primary px-2.5 py-1 text-[0.72rem] font-extrabold uppercase leading-none tracking-[0.12em] text-white sm:text-[0.76rem]">
                 Asset Management
               </span>
             </Link>
@@ -264,7 +264,7 @@ export default function AssetManagementNavbar() {
                 className={({ isActive }) =>
                   cn(
                     "nav-link rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
-                    isActive ? "bg-white/70 text-primary" : "text-ink hover:bg-white/70 hover:text-primary",
+                    isActive ? "bg-surface/70 text-primary" : "text-ink hover:bg-surface/70 hover:text-primary",
                   )
                 }
               >
@@ -307,7 +307,7 @@ function DesktopMenu({
         onClick={active ? onClose : onOpen}
         className={cn(
           "nav-link flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",
-          active ? "bg-white/70 text-primary" : "text-ink hover:bg-white/70 hover:text-primary",
+          active ? "bg-surface/70 text-primary" : "text-ink hover:bg-surface/70 hover:text-primary",
         )}
         aria-expanded={active}
       >

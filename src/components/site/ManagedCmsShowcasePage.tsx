@@ -879,7 +879,12 @@ export default function ManagedCmsShowcasePage({
     remoteContent?.sections.filter((section) => section.sectionType !== "hero") ?? [];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div
+      className={cn(
+        "min-h-screen bg-background",
+        navbarVariant === "assetManagement" && "asset-management-theme asset-management-theme-shell",
+      )}
+    >
       <PageSEO
         title={remoteContent?.metaTitle ?? fallbackTitle}
         description={remoteContent?.metaDescription ?? fallbackDescription}

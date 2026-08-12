@@ -388,7 +388,7 @@ export default function FaqPage() {
         "min-h-screen",
         isBulkEmailFaq
           ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
-          : "bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_36%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]",
+          : "asset-management-theme asset-management-theme-shell",
       )}
     >
       <PageSEO
@@ -426,7 +426,7 @@ export default function FaqPage() {
               </p>
 
               <div className="mx-auto mt-8 flex max-w-3xl flex-col gap-3 sm:flex-row">
-                <label className="flex h-12 flex-1 items-center gap-3 rounded-full border border-border bg-white px-4 shadow-sm transition-shadow focus-within:shadow-[0_18px_40px_rgba(11,92,255,0.12)]">
+                <label className="flex h-12 flex-1 items-center gap-3 rounded-full border border-border bg-white px-4 shadow-sm transition-shadow focus-within:shadow-[0_18px_40px_rgba(30,79,209,0.12)]">
                   <Search className="h-4 w-4 shrink-0 text-primary" />
                   <input
                     type="search"
@@ -503,7 +503,7 @@ export default function FaqPage() {
                           onClick={() => setActiveSection(section.title)}
                           className={`flex w-full items-center justify-between gap-3 rounded-2xl border bg-white px-4 py-3 text-left text-sm transition-all hover:border-primary/25 hover:text-primary ${
                             isActive
-                              ? "border-primary/30 bg-primary-soft/50 shadow-[0_10px_24px_rgba(11,92,255,0.10)]"
+                              ? "border-primary/30 bg-primary-soft/50 shadow-[0_10px_24px_rgba(30,79,209,0.10)]"
                               : "border-border"
                           }`}
                         >
@@ -665,7 +665,7 @@ export default function FaqPage() {
                 </ScrollReveal>
 
                 {finalCtaSection ? (
-                  <ScrollReveal className="overflow-hidden rounded-[2.25rem] border border-primary/15 bg-[radial-gradient(circle_at_top_left,_rgba(20,184,166,0.18),_transparent_34%),linear-gradient(135deg,_#071a35_0%,_#0b5cff_100%)] p-8 text-white shadow-float sm:p-10">
+                  <ScrollReveal className="asset-management-cta-panel overflow-hidden rounded-[2.25rem] border border-primary/15 p-8 text-white shadow-float sm:p-10">
                     <div className="mx-auto max-w-4xl text-center">
                       {finalCtaSection.subheading ? (
                         <div className="text-xs font-bold uppercase tracking-[0.24em] text-white/75">

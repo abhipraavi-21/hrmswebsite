@@ -1332,7 +1332,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
 
 export default function AssetManagementPage() {
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.12),_transparent_36%),linear-gradient(180deg,_#ffffff_0%,_#f5faff_46%,_#edf5ff_100%)]">
+    <div className="asset-management-theme asset-management-theme-shell min-h-screen">
       <PageSEO
         title="Altroz Asset Management | Track, Manage and Maintain Every Business Asset"
         description="Altroz Asset Management helps your team manage assets across employees, departments, branches and locations with dashboards, QR codes, handovers, maintenance and reporting."
@@ -1833,7 +1833,7 @@ export default function AssetManagementPage() {
 
         <section className="section">
           <div className="site-container">
-            <div className="overflow-hidden rounded-[2.25rem] border border-primary/15 bg-[radial-gradient(circle_at_top_left,_rgba(20,184,166,0.18),_transparent_34%),linear-gradient(135deg,_#071a35_0%,_#0b5cff_100%)] p-8 text-white shadow-float sm:p-10">
+            <div className="asset-management-cta-panel overflow-hidden rounded-[2.25rem] border border-primary/15 p-8 text-white shadow-float sm:p-10">
               <div className="mx-auto max-w-4xl text-center">
                 <div className="text-xs font-bold uppercase tracking-[0.24em] text-white/75">
                   Final High-Conversion CTA

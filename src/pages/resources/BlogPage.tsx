@@ -52,7 +52,7 @@ function FeedCard({
       to={resolveBlogPostPath(post.blogGroup, post.slug, pathname)}
       className="group block h-full overflow-hidden rounded-[1.4rem] border border-border bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-float"
     >
-      <div className="relative aspect-[16/9] overflow-hidden bg-[linear-gradient(180deg,_rgba(11,92,255,0.08),_rgba(18,185,122,0.08))]">
+      <div className="relative aspect-[16/9] overflow-hidden bg-[linear-gradient(180deg,_rgba(30,79,209,0.08),_rgba(14,165,165,0.08))]">
         <img
           src={post.coverImageUrl ?? FALLBACK_BLOG_IMAGE}
           alt={post.coverImageAlt ?? post.title}
@@ -149,7 +149,7 @@ export default function BlogPage() {
     isBulkEmailBlog
       ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
       : isAssetManagementBlog
-        ? "bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]"
+        ? "asset-management-theme asset-management-theme-shell"
         : "bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.09),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f6fbff_100%)]",
   );
 

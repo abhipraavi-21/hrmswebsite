@@ -657,7 +657,7 @@ function VisualCard({
 
 export default function BulkEmailAssetReportsPage() {
   return (
-    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
+    <div className="asset-management-theme asset-management-theme-shell min-h-screen">
       <PageSEO
         title="Educational Institution Asset Management Software | Altroz Asset Management"
         description="Manage classroom equipment, laboratory devices, IT assets, furniture and campus infrastructure from one centralized platform. Explore Altroz Asset Management and book a free demo."

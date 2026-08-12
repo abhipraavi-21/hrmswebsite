@@ -169,7 +169,7 @@ function DemoSidebar() {
   return (
     <aside className="xl:sticky xl:top-24 self-start">
       <div className="overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
-        <div className="border-b border-border bg-[linear-gradient(180deg,_rgba(11,92,255,0.10),_rgba(18,185,122,0.06))] p-6">
+        <div className="border-b border-border bg-[linear-gradient(180deg,_rgba(30,79,209,0.10),_rgba(14,165,165,0.06))] p-6">
           <div className="text-xs font-bold uppercase tracking-[0.28em] text-primary">Book a demo</div>
           <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight text-ink">
             Schedule Your Free Demo Today
@@ -271,7 +271,7 @@ function ArticleState({
     "min-h-screen",
     blogGroup === "bulk-email"
       ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
-      : "bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]",
+      : "asset-management-theme asset-management-theme-shell",
   );
 
   return (
@@ -415,7 +415,7 @@ export default function BlogArticlePage() {
         "min-h-screen",
         post.blogGroup === "bulk-email"
           ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
-          : "bg-[radial-gradient(circle_at_top,_rgba(11,92,255,0.08),_transparent_34%),linear-gradient(180deg,_#ffffff_0%,_#f7fbff_100%)]",
+          : "asset-management-theme asset-management-theme-shell",
       )}
     >
       <PageSEO

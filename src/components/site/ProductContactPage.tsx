@@ -388,7 +388,7 @@ export default function ProductContactPage({
         "min-h-screen",
         navbarVariant === "bulkEmail"
           ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
-          : "bg-background",
+          : "asset-management-theme asset-management-theme-shell bg-background",
       )}
     >
       <PageSEO

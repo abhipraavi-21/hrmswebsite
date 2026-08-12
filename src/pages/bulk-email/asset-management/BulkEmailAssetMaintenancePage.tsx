@@ -605,7 +605,7 @@ function SectionCard({
 
 export default function BulkEmailAssetMaintenancePage() {
   return (
-    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
+    <div className="asset-management-theme asset-management-theme-shell min-h-screen">
       <PageSEO
         title="Healthcare Asset Management Software | Altroz Asset Management"
         description="Manage medical equipment, hospital assets and facility resources from one platform. QR Code tracking, maintenance and warranty management for healthcare teams."
