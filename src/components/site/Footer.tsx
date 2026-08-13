@@ -6,6 +6,19 @@ import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 import { ROUTES } from "@/routes/routeConfig.js";
 import { socialLinks } from "../../data/socialLinks.js";
 
+const storeBadges = [
+  {
+    label: "Download on the App Store",
+    href: "https://apps.apple.com/in/app/altroz-hrms/id6795452482",
+    src: "/brand/app-store-badge.png",
+  },
+  {
+    label: "Get it on Google Play",
+    href: "https://play.google.com/store/apps/details?id=com.altroz.hrm",
+    src: "/brand/google-play-badge.svg",
+  },
+];
+
 const hrFooterColumns = [
   {
     title: "Products",
@@ -190,6 +203,27 @@ export default function Footer() {
                 ? "The enterprise bulk email platform for campaigns, scheduling, analytics and reliable delivery."
                 : "The all-in-one HRMS platform for modern Indian businesses."}
             </p>
+            {!isAssetManagementPage && !isBulkEmailPage ? (
+              <div className="mt-4 flex flex-wrap gap-3">
+                {storeBadges.map((badge) => (
+                  <a
+                    key={badge.label}
+                    href={badge.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={badge.label}
+                    className="inline-flex transition-transform duration-200 hover:-translate-y-0.5"
+                  >
+                    <img
+                      src={badge.src}
+                      alt={badge.label}
+                      className="block h-12 w-auto sm:h-14"
+                      loading="lazy"
+                    />
+                  </a>
+                ))}
+              </div>
+            ) : null}
 
           </ScrollReveal>
 
