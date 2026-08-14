@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import {
   ArrowRight,
   BadgeCheck,
@@ -100,6 +100,11 @@ export default function HrmsPricingPurchasePage() {
     [],
   );
 
+  const handleRegisterSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setTab("login");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <PageSEO
@@ -186,49 +191,62 @@ export default function HrmsPricingPurchasePage() {
                     </TabsContent>
 
                     <TabsContent value="register" className="mt-6 space-y-4">
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div className="space-y-2 sm:col-span-2">
-                          <Label htmlFor="company-name">Company name</Label>
-                          <Input id="company-name" placeholder="Your company name" />
+                      <form className="space-y-4" onSubmit={handleRegisterSubmit}>
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          <div className="space-y-2 sm:col-span-2">
+                            <Label htmlFor="company-name">Company name</Label>
+                            <Input id="company-name" name="companyName" placeholder="Your company name" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="admin-name">Admin / HR name</Label>
+                            <Input id="admin-name" name="adminName" placeholder="Full name" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="mobile-number">Mobile number</Label>
+                            <Input id="mobile-number" name="mobileNumber" placeholder="+91 98765 43210" />
+                          </div>
+                          <div className="space-y-2 sm:col-span-2">
+                            <Label htmlFor="email-address">Email address</Label>
+                            <Input
+                              id="email-address"
+                              name="emailAddress"
+                              type="email"
+                              placeholder="you@company.com"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Input id="password" name="password" type="password" placeholder="Create password" />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="confirm-password">Confirm password</Label>
+                            <Input
+                              id="confirm-password"
+                              name="confirmPassword"
+                              type="password"
+                              placeholder="Re-enter password"
+                            />
+                          </div>
+                          <div className="space-y-2 sm:col-span-2">
+                            <Label htmlFor="company-note">Basic company information</Label>
+                            <Textarea
+                              id="company-note"
+                              name="companyNote"
+                              placeholder="Industry, employee count, or anything useful for onboarding"
+                            />
+                          </div>
                         </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="admin-name">Admin / HR name</Label>
-                          <Input id="admin-name" placeholder="Full name" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="mobile-number">Mobile number</Label>
-                          <Input id="mobile-number" placeholder="+91 98765 43210" />
-                        </div>
-                        <div className="space-y-2 sm:col-span-2">
-                          <Label htmlFor="email-address">Email address</Label>
-                          <Input id="email-address" type="email" placeholder="you@company.com" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="password">Password</Label>
-                          <Input id="password" type="password" placeholder="Create password" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="confirm-password">Confirm password</Label>
-                          <Input id="confirm-password" type="password" placeholder="Re-enter password" />
-                        </div>
-                        <div className="space-y-2 sm:col-span-2">
-                          <Label htmlFor="company-note">Basic company information</Label>
-                          <Textarea
-                            id="company-note"
-                            placeholder="Industry, employee count, or anything useful for onboarding"
-                          />
-                        </div>
-                      </div>
 
-                      <div className="flex flex-wrap items-center justify-between gap-3">
-                        <span className="text-sm text-ink-soft">
-                          By continuing, you agree to the purchase and onboarding flow.
-                        </span>
-                        <Button className="min-w-44">
-                          Create company account
-                          <ArrowRight className="h-4 w-4" />
-                        </Button>
-                      </div>
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <span className="text-sm text-ink-soft">
+                            By continuing, you agree to the purchase and onboarding flow.
+                          </span>
+                          <Button className="min-w-44" type="submit">
+                            Create company account
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </form>
                     </TabsContent>
                   </Tabs>
                 </CardHeader>
