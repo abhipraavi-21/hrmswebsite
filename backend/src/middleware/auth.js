@@ -2,11 +2,16 @@ import jwt from "jsonwebtoken";
 import env from "../config/env.js";
 import { models } from "../config/database.js";
 import { AppError } from "../utils/AppError.js";
+import { getCustomerAccountById } from "../services/customerAuth.service.js";
 
-export async function requireAdminAuth(request, _response, next) {
-  const bearerToken = request.headers.authorization?.startsWith("Bearer ")
+function getBearerToken(request) {
+  return request.headers.authorization?.startsWith("Bearer ")
     ? request.headers.authorization.slice(7)
     : null;
+}
+
+export async function requireAdminAuth(request, _response, next) {
+  const bearerToken = getBearerToken(request);
   const token = bearerToken ?? request.cookies.adminToken;
 
   if (!token) {
@@ -28,5 +33,49 @@ export async function requireAdminAuth(request, _response, next) {
     next();
   } catch (error) {
     next(new AppError("Invalid or expired session", 401));
+  }
+}
+
+export async function requireCustomerAuth(request, _response, next) {
+  const token = getBearerToken(request);
+
+  if (!token) {
+    return next(new AppError("Customer authentication required", 401));
+  }
+
+  try {
+    const payload = jwt.verify(token, env.JWT_SECRET);
+
+    if (payload.role !== "customer") {
+      throw new AppError("Invalid or expired customer session", 401);
+    }
+
+    request.customerAccount = await getCustomerAccountById(payload.sub);
+    request.customerToken = token;
+    next();
+  } catch (error) {
+    next(new AppError("Invalid or expired customer session", 401));
+  }
+}
+
+export async function resolveCustomerAuth(request, _response, next) {
+  const token = getBearerToken(request);
+
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const payload = jwt.verify(token, env.JWT_SECRET);
+
+    if (payload.role !== "customer") {
+      throw new AppError("Invalid or expired customer session", 401);
+    }
+
+    request.customerAccount = await getCustomerAccountById(payload.sub);
+    request.customerToken = token;
+    next();
+  } catch (error) {
+    next(new AppError("Invalid or expired customer session", 401));
   }
 }

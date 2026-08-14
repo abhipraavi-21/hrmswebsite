@@ -13,8 +13,8 @@ export function AdminLayout() {
           <header className="border-b border-slate-200 bg-white px-6 py-4 shadow-sm">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Content Admin</div>
-                <div className="mt-1 text-xl font-semibold">Manage page text, images and links</div>
+                <div className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Billing Admin</div>
+                <div className="mt-1 text-xl font-semibold">Manage shared subscriptions, catalog, payments and content</div>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm">
                 {admin?.name}

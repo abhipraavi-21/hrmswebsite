@@ -11,6 +11,7 @@ import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import BulkEmailNavbar from "@/components/site/BulkEmailNavbar";
 import AssetManagementNavbar from "@/components/site/AssetManagementNavbar";
+import PricingAccessSection from "@/components/site/PricingAccessSection";
 import {
   PricingFeatureComparisonSection,
   PRICING_FEATURE_SECTION_TYPE,
@@ -74,6 +75,15 @@ type ManagedCmsShowcasePageProps = {
   navbarVariant?: NavbarVariant;
   fallbackTitle: string;
   fallbackDescription: string;
+  pricingAccess?: {
+    productLabel: string;
+    loginHref: string;
+    registerHref: string;
+    eyebrow?: string;
+    title?: string;
+    description?: string;
+    note?: string;
+  };
 };
 
 const iconMap = {
@@ -866,6 +876,7 @@ export default function ManagedCmsShowcasePage({
   navbarVariant = "default",
   fallbackTitle,
   fallbackDescription,
+  pricingAccess,
 }: ManagedCmsShowcasePageProps) {
   const seedContent = useMemo(() => getSeedPageFallback(pageKey), [pageKey]);
   const {
@@ -929,6 +940,18 @@ export default function ManagedCmsShowcasePage({
               <SectionRenderer key={`${pageKey}-${section.id}`} section={section} />
             ))
           : null}
+
+        {!loading && !error && pricingAccess ? (
+          <PricingAccessSection
+            eyebrow={pricingAccess.eyebrow}
+            title={pricingAccess.title}
+            description={pricingAccess.description}
+            productLabel={pricingAccess.productLabel}
+            loginHref={pricingAccess.loginHref}
+            registerHref={pricingAccess.registerHref}
+            note={pricingAccess.note}
+          />
+        ) : null}
       </main>
 
       <Footer />

@@ -38,23 +38,45 @@ const DocumentGenerationPage = lazy(() => import("./pages/DocumentGenerationPage
 const ExitManagementPage = lazy(() => import("./pages/ExitManagementPage"));
 const EmployeeSelfServicePage = lazy(() => import("./pages/EmployeeSelfServicePage"));
 const RoiCalculatorPage = lazy(() => import("./pages/RoiCalculatorPage"));
-const PricingPage = lazy(() => import("./pages/PricingPage"));
+const HrmsPricingPage = lazy(() => import("./pages/HrmsPricingPage"));
 const HrmsPricingPurchasePage = lazy(() => import("./pages/HrmsPricingPurchasePage"));
+const BulkEmailPricingPage = lazy(() => import("./pages/BulkEmailPricingPage"));
+const AssetManagementPricingPage = lazy(() => import("./pages/AssetManagementPricingPage"));
+const UnifiedCheckoutPage = lazy(() => import("./pages/UnifiedCheckoutPage"));
+const CustomerAccessPage = lazy(() => import("./pages/CustomerAccessPage"));
+const CustomerDashboardPage = lazy(() => import("./pages/CustomerDashboardPage"));
+const CustomerProductDashboardPage = lazy(() => import("./pages/CustomerProductDashboardPage"));
+const CustomerBillingHistoryPage = lazy(() => import("./pages/CustomerBillingHistoryPage"));
+const PaymentStatusPage = lazy(() => import("./pages/PaymentStatusPage"));
 const BulkEmailPage = lazy(() => import("./pages/BulkEmailPage"));
 const BulkEmailBroadcastPage = lazy(() => import("./pages/bulk-email/BulkEmailBroadcastPage"));
-const BulkEmailAssetManagementPage = lazy(() => import("./pages/bulk-email/BulkEmailAssetManagementPage"));
-const BulkEmailAssetDashboardPage = lazy(() => import("./pages/bulk-email/asset-management/BulkEmailAssetDashboardPage"));
-const BulkEmailAssetTrackingPage = lazy(() => import("./pages/bulk-email/asset-management/BulkEmailAssetTrackingPage"));
-const BulkEmailAssetQrCodePage = lazy(() => import("./pages/bulk-email/asset-management/BulkEmailAssetQrCodePage"));
-const BulkEmailAssetMaintenancePage = lazy(() => import("./pages/bulk-email/asset-management/BulkEmailAssetMaintenancePage"));
-const BulkEmailAssetReportsPage = lazy(() => import("./pages/bulk-email/asset-management/BulkEmailAssetReportsPage"));
+const BulkEmailAssetManagementPage = lazy(
+  () => import("./pages/bulk-email/BulkEmailAssetManagementPage"),
+);
+const BulkEmailAssetDashboardPage = lazy(
+  () => import("./pages/bulk-email/asset-management/BulkEmailAssetDashboardPage"),
+);
+const BulkEmailAssetTrackingPage = lazy(
+  () => import("./pages/bulk-email/asset-management/BulkEmailAssetTrackingPage"),
+);
+const BulkEmailAssetQrCodePage = lazy(
+  () => import("./pages/bulk-email/asset-management/BulkEmailAssetQrCodePage"),
+);
+const BulkEmailAssetMaintenancePage = lazy(
+  () => import("./pages/bulk-email/asset-management/BulkEmailAssetMaintenancePage"),
+);
+const BulkEmailAssetReportsPage = lazy(
+  () => import("./pages/bulk-email/asset-management/BulkEmailAssetReportsPage"),
+);
 const BulkEmailTemplatesPage = lazy(() => import("./pages/bulk-email/BulkEmailTemplatesPage"));
 const BulkEmailContactsPage = lazy(() => import("./pages/bulk-email/BulkEmailContactsPage"));
 const BulkEmailAnalyticsPage = lazy(() => import("./pages/bulk-email/BulkEmailAnalyticsPage"));
 const BulkEmailAutomationPage = lazy(() => import("./pages/bulk-email/BulkEmailAutomationPage"));
 const BulkEmailSchedulingPage = lazy(() => import("./pages/bulk-email/BulkEmailSchedulingPage"));
 const BulkEmailSmtpPage = lazy(() => import("./pages/bulk-email/BulkEmailSmtpPage"));
-const BulkEmailHrCommunicationPage = lazy(() => import("./pages/bulk-email/BulkEmailHrCommunicationPage"));
+const BulkEmailHrCommunicationPage = lazy(
+  () => import("./pages/bulk-email/BulkEmailHrCommunicationPage"),
+);
 const BulkEmailMarketingPage = lazy(() => import("./pages/bulk-email/BulkEmailMarketingPage"));
 const BulkEmailEducationPage = lazy(() => import("./pages/bulk-email/BulkEmailEducationPage"));
 const AssetManagementContactPage = lazy(() => import("./pages/AssetManagementContactPage"));
@@ -185,14 +207,30 @@ function AppShell() {
           <Route path={ROUTES.exitManagement} element={<ExitManagementPage />} />
           <Route path={ROUTES.employeeSelfService} element={<EmployeeSelfServicePage />} />
           <Route path={ROUTES.roiCalculator} element={<RoiCalculatorPage />} />
-          <Route path={ROUTES.hrmsPricing} element={<PricingPage />} />
+          <Route path={ROUTES.hrmsPricing} element={<HrmsPricingPage />} />
           <Route path={ROUTES.hrmsPricingPurchase} element={<HrmsPricingPurchasePage />} />
+          <Route path={`${ROUTES.checkoutBase}/:productSlug`} element={<UnifiedCheckoutPage />} />
+          <Route path={ROUTES.customerAccess} element={<CustomerAccessPage />} />
+          <Route path={ROUTES.dashboard} element={<CustomerDashboardPage />} />
+          <Route path={ROUTES.dashboardBilling} element={<CustomerBillingHistoryPage />} />
+          <Route
+            path={`${ROUTES.dashboard}/:productSlug`}
+            element={<CustomerProductDashboardPage />}
+          />
+          <Route path={ROUTES.paymentSuccess} element={<PaymentStatusPage />} />
+          <Route path={ROUTES.paymentFailed} element={<PaymentStatusPage />} />
           <Route path={ROUTES.pricing} element={<Navigate to={ROUTES.hrmsPricing} replace />} />
           <Route path={ROUTES.bulkEmailBroadcast} element={<BulkEmailBroadcastPage />} />
           <Route path={ROUTES.bulkEmail} element={<BulkEmailPage />} />
-          <Route path={ROUTES.bulkEmailPricing} element={<PricingPage />} />
-          <Route path={ROUTES.bulkEmailCampaigns} element={<Navigate to={ROUTES.bulkEmail} replace />} />
-          <Route path={ROUTES.bulkEmailAssetManagement} element={<BulkEmailAssetManagementPage />} />
+          <Route path={ROUTES.bulkEmailPricing} element={<BulkEmailPricingPage />} />
+          <Route
+            path={ROUTES.bulkEmailCampaigns}
+            element={<Navigate to={ROUTES.bulkEmail} replace />}
+          />
+          <Route
+            path={ROUTES.bulkEmailAssetManagement}
+            element={<BulkEmailAssetManagementPage />}
+          />
           <Route path={ROUTES.bulkEmailAssetDashboard} element={<BulkEmailAssetDashboardPage />} />
           <Route path={ROUTES.bulkEmailAssetTracking} element={<BulkEmailAssetTrackingPage />} />
           <Route path={ROUTES.bulkEmailAssetQrCode} element={<BulkEmailAssetQrCodePage />} />
@@ -243,7 +281,7 @@ function AppShell() {
           <Route path={ROUTES.hrmsComplianceGuides} element={<ComplianceGuidesPage />} />
           <Route path={ROUTES.supportResources} element={<SupportPage />} />
           <Route path={ROUTES.assetManagementGuide} element={<AssetManagementGuidePage />} />
-          <Route path={ROUTES.assetManagementPricing} element={<PricingPage />} />
+          <Route path={ROUTES.assetManagementPricing} element={<AssetManagementPricingPage />} />
           <Route path={ROUTES.about} element={<AboutUsPage />} />
           <Route path={ROUTES.whyAltroz} element={<WhyAltrozPage />} />
           <Route path={ROUTES.customers} element={<CustomersPage />} />
@@ -251,15 +289,14 @@ function AppShell() {
           <Route path={ROUTES.partner} element={<PartnerWithUsPage />} />
           <Route path={ROUTES.careers} element={<CareersPage />} />
           <Route path={ROUTES.hrmsContact} element={<ContactUsPage />} />
-          <Route
-            path={ROUTES.assetManagementContact}
-            element={<AssetManagementContactPage />}
-          />
+          <Route path={ROUTES.assetManagementContact} element={<AssetManagementContactPage />} />
           <Route path={ROUTES.contact} element={<Navigate to={ROUTES.hrmsContact} replace />} />
           <Route path={ROUTES.support} element={<CompanySupportPage />} />
           <Route path={ROUTES.bookDemo} element={<BookDemoPage />} />
 
           <Route path="/about-us" element={<Navigate to={ROUTES.about} replace />} />
+          <Route path="/login" element={<Navigate to={ROUTES.customerAccess} replace />} />
+          <Route path="/register" element={<Navigate to={ROUTES.customerAccess} replace />} />
           <Route path="/hrms-home" element={<Navigate to={ROUTES.hrmsHome} replace />} />
           <Route
             path="/attendance-management"
@@ -284,7 +321,10 @@ function AppShell() {
             path="/products/mobile-app-landing"
             element={<Navigate to={ROUTES.mobileAppLanding} replace />}
           />
-          <Route path="/mobile-app-landing" element={<Navigate to={ROUTES.mobileAppLanding} replace />} />
+          <Route
+            path="/mobile-app-landing"
+            element={<Navigate to={ROUTES.mobileAppLanding} replace />}
+          />
           <Route path="/mobile-app" element={<Navigate to={ROUTES.mobileAppLanding} replace />} />
           <Route
             path="/products/visitor-management"
@@ -296,7 +336,10 @@ function AppShell() {
             element={<Navigate to={ROUTES.complianceGuides} replace />}
           />
           <Route path="/blog/:slug" element={<BlogArticlePage />} />
-          <Route path="/compliance-guides" element={<Navigate to={ROUTES.complianceGuides} replace />} />
+          <Route
+            path="/compliance-guides"
+            element={<Navigate to={ROUTES.complianceGuides} replace />}
+          />
           <Route
             path="/solutions/industry"
             element={<Navigate to={ROUTES.industrySolutions} replace />}

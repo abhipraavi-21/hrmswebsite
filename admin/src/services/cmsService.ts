@@ -7,11 +7,19 @@ import type {
   CmsPageSummary,
   CmsSection,
   BlogPost,
+  BillingAdminCustomer,
+  BillingAdminInvoice,
+  BillingAdminPayment,
+  BillingAdminProduct,
+  BillingAdminSubscription,
+  BillingOverview,
+  BillingTaxSetting,
   DashboardSummary,
   MediaItem,
   PricingFeature,
   PricingPlan,
   ResourceSummary,
+  SubscriptionPurchase,
 } from "../types/cms";
 
 const unwrap = async <T>(promise: Promise<{ data: ApiResponse<T> }>) => {
@@ -35,6 +43,11 @@ export const authService = {
 
 export const dashboardService = {
   getSummary: () => unwrap<DashboardSummary>(api.get("/admin/dashboard")),
+};
+
+export const subscriptionService = {
+  list: () => unwrap<SubscriptionPurchase[]>(api.get("/admin/subscriptions")),
+  get: (id: number | string) => unwrap<SubscriptionPurchase>(api.get(`/admin/subscriptions/${id}`)),
 };
 
 export const pageService = {
@@ -108,4 +121,23 @@ export const mediaService = {
   update: (id: number | string, payload: { altText: string }) =>
     unwrap<MediaItem>(api.put(`/admin/media/${id}`, payload)),
   remove: (id: number | string) => unwrap(api.delete(`/admin/media/${id}`)),
+};
+
+export const billingAdminService = {
+  getOverview: () => unwrap<BillingOverview>(api.get("/admin/billing/overview")),
+  listCustomers: () => unwrap<BillingAdminCustomer[]>(api.get("/admin/billing/customers")),
+  listProducts: () => unwrap<BillingAdminProduct[]>(api.get("/admin/billing/products")),
+  updateProduct: (id: number | string, payload: Partial<BillingAdminProduct>) =>
+    unwrap<BillingAdminProduct>(api.put(`/admin/billing/products/${id}`, payload)),
+  updatePlan: (id: number | string, payload: Partial<BillingAdminProduct["plans"][number]>) =>
+    unwrap<BillingAdminProduct["plans"][number]>(api.put(`/admin/billing/plans/${id}`, payload)),
+  updateAddon: (id: number | string, payload: Partial<BillingAdminProduct["addons"][number]>) =>
+    unwrap<BillingAdminProduct["addons"][number]>(api.put(`/admin/billing/addons/${id}`, payload)),
+  listSubscriptions: () =>
+    unwrap<BillingAdminSubscription[]>(api.get("/admin/billing/subscriptions")),
+  listPayments: () => unwrap<BillingAdminPayment[]>(api.get("/admin/billing/payments")),
+  listInvoices: () => unwrap<BillingAdminInvoice[]>(api.get("/admin/billing/invoices")),
+  listTaxes: () => unwrap<BillingTaxSetting[]>(api.get("/admin/billing/taxes")),
+  updateTax: (id: number | string, payload: Partial<BillingTaxSetting>) =>
+    unwrap<BillingTaxSetting>(api.put(`/admin/billing/taxes/${id}`, payload)),
 };

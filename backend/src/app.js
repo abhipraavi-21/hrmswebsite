@@ -1,4 +1,4 @@
-import express from "express";
+﻿import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
@@ -15,7 +15,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const allowedOrigins = buildAllowedOrigins([env.FRONTEND_URL, env.ADMIN_URL]);
+const allowedOrigins = buildAllowedOrigins([
+  env.FRONTEND_URL,
+  env.ADMIN_URL,
+  "http://localhost:8080",
+  "http://127.0.0.1:8080",
+  "http://localhost:8081",
+  "http://127.0.0.1:8081",
+  "http://localhost:5174",
+  "http://127.0.0.1:5174",
+  "http://localhost:5175",
+  "http://127.0.0.1:5175",
+]);
 
 function buildAllowedOrigins(origins) {
   const expandedOrigins = new Set();
@@ -57,6 +68,7 @@ app.use(generalLimiter);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/admin/auth", authLimiter);
+app.use("/api/public/customer-auth", authLimiter);
 app.use("/api", apiRouter);
 
 app.get("/health", (_request, response) => {

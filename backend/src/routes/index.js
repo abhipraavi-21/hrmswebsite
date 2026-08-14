@@ -7,6 +7,8 @@ import adminPricingRoutes from "./admin/pricing.routes.js";
 import adminMediaRoutes from "./admin/media.routes.js";
 import adminDashboardRoutes from "./admin/dashboard.routes.js";
 import adminBlogRoutes from "./admin/blog.routes.js";
+import adminSubscriptionsRoutes from "./admin/subscriptions.routes.js";
+import adminBillingRoutes from "./admin/billing.routes.js";
 import { requireAdminAuth } from "../middleware/auth.js";
 
 const router = Router();
@@ -19,5 +21,7 @@ router.use("/admin/resources", requireAdminAuth, adminResourcesRoutes);
 router.use("/admin/pricing-plans", requireAdminAuth, adminPricingRoutes);
 router.use("/admin/blog-posts", requireAdminAuth, adminBlogRoutes);
 router.use("/admin/media", requireAdminAuth, adminMediaRoutes);
+router.use("/admin/subscriptions", requireAdminAuth, adminSubscriptionsRoutes);
+router.use("/admin/billing", requireAdminAuth, adminBillingRoutes);
 
 export default router;
