@@ -4,6 +4,7 @@ import { AdminLayout } from "./layouts/AdminLayout";
 import { ChangePasswordPage } from "./pages/ChangePasswordPage";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { BillingCatalogPage } from "./pages/billing/BillingCatalogPage";
+import { BillingCouponsPage } from "./pages/billing/BillingCouponsPage";
 import { BillingCustomersPage } from "./pages/billing/BillingCustomersPage";
 import { BillingDashboardPage } from "./pages/billing/BillingDashboardPage";
 import { BillingInvoicesPage } from "./pages/billing/BillingInvoicesPage";
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/billing" element={<BillingDashboardPage />} />
           <Route path="/billing/customers" element={<BillingCustomersPage />} />
           <Route path="/billing/catalog" element={<BillingCatalogPage />} />
+          <Route path="/billing/coupons" element={<BillingCouponsPage />} />
           <Route path="/billing/subscriptions" element={<BillingSubscriptionsPage />} />
           <Route path="/billing/payments" element={<BillingPaymentsPage />} />
           <Route path="/billing/invoices" element={<BillingInvoicesPage />} />

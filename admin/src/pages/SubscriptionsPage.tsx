@@ -95,6 +95,20 @@ function getSelectedAddOns(purchase: SubscriptionPurchase) {
     }
   }
 
+  const coupon = purchase.extraData?.coupon;
+
+  if (coupon && typeof coupon === "object") {
+    const appliedCoupon = coupon as { code?: string; discountAmount?: number };
+
+    if (appliedCoupon.code && typeof appliedCoupon.discountAmount === "number") {
+      charges.push({
+        id: "coupon-discount",
+        name: `Coupon ${appliedCoupon.code}`,
+        total: -appliedCoupon.discountAmount,
+      });
+    }
+  }
+
   if (!Array.isArray(selectedAddOns)) {
     return charges;
   }
@@ -250,7 +264,9 @@ export function SubscriptionsPage() {
                               >
                                 <div className="font-semibold text-slate-900">{addon.name}</div>
                                 <div className="mt-1 text-slate-500">
-                                  {formatCurrency(addon.total)}
+                                  {addon.total < 0
+                                    ? `-${formatCurrency(Math.abs(addon.total))}`
+                                    : formatCurrency(addon.total)}
                                 </div>
                               </div>
                             ))}

@@ -43,7 +43,9 @@ import {
 import { loadCustomerSession, saveCustomerSession } from "@/services/customerSessionStorage";
 import {
   submitSubscriptionPurchase,
+  validateSubscriptionCoupon,
   type BillingCycle,
+  type SubscriptionCouponValidation,
   type SubscriptionPurchase,
 } from "@/services/subscriptionPurchaseService";
 
@@ -464,6 +466,10 @@ export default function HrmsPricingPurchasePage() {
   const [customerSession, setCustomerSession] = useState<CustomerAuthSession | null>(null);
   const [flowMessage, setFlowMessage] = useState<FlowMessage>(null);
   const [selectedAddonIds, setSelectedAddonIds] = useState<string[]>([]);
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<SubscriptionCouponValidation | null>(null);
+  const [couponMessage, setCouponMessage] = useState<FlowMessage>(null);
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [form, setForm] = useState<PurchaseFormState>({
     companyName: "",
     contactName: "",
@@ -496,14 +502,18 @@ export default function HrmsPricingPurchasePage() {
       selectedPlan.slug === "basic" ? employeeCount * BASIC_SETUP_CHARGE_PER_EMPLOYEE : 0;
     const subtotal = planSubtotal + addonSubtotal + setupCharge;
     const roundedSubtotal = Math.round(subtotal);
-    const gstAmount = Math.round(roundedSubtotal * GST_RATE);
-    const totalAmount = roundedSubtotal + gstAmount;
+    const discountAmount = Math.min(appliedCoupon?.discountAmount ?? 0, roundedSubtotal);
+    const taxableAmount = Math.max(0, roundedSubtotal - discountAmount);
+    const gstAmount = Math.round(taxableAmount * GST_RATE);
+    const totalAmount = taxableAmount + gstAmount;
 
     return {
       planSubtotal: Math.round(planSubtotal),
       addonSubtotal: Math.round(addonSubtotal),
       setupCharge: Math.round(setupCharge),
       subtotal: roundedSubtotal,
+      discountAmount: Math.round(discountAmount),
+      taxableAmount: Math.round(taxableAmount),
       gstAmount,
       totalAmount,
       renewalDate: addMonths(new Date(), cycleMeta.months),
@@ -516,6 +526,7 @@ export default function HrmsPricingPurchasePage() {
     selectedPlan.slug,
     selectedPlan.yearlyPrice,
     selectedAddonIds,
+    appliedCoupon?.discountAmount,
   ]);
   const selectedAddons = useMemo(
     () => checkoutAddons.filter((addon) => selectedAddonIds.includes(addon.id)),
@@ -595,6 +606,79 @@ export default function HrmsPricingPurchasePage() {
     addon.pricingType === "per-employee-month"
       ? addon.price * employeeCount * cycleMeta.months
       : addon.price;
+
+  const applyCoupon = async (codeOverride?: string, options?: { silent?: boolean }) => {
+    const nextCouponCode = (codeOverride ?? couponCode).trim().toUpperCase();
+
+    if (!nextCouponCode) {
+      setAppliedCoupon(null);
+      setCouponMessage({ tone: "info", text: "Enter a coupon code to apply a discount." });
+      return;
+    }
+
+    if (!customerSession?.token) {
+      setCouponMessage({ tone: "error", text: "Login or register before applying a coupon." });
+      return;
+    }
+
+    setIsApplyingCoupon(true);
+
+    try {
+      const coupon = await validateSubscriptionCoupon(
+        {
+          couponCode: nextCouponCode,
+          planSlug: selectedPlan.slug,
+          employeeCount,
+          billingCycle,
+          selectedAddOns: selectedAddons.map((addon) => ({ id: addon.id })),
+        },
+        customerSession.token,
+      );
+
+      setCouponCode(coupon.code);
+      setAppliedCoupon(coupon);
+      setCouponMessage({
+        tone: "success",
+        text: `Coupon ${coupon.code} applied. You saved ${formatCurrency(coupon.discountAmount)}.`,
+      });
+
+      if (!options?.silent) {
+        toast.success(`Coupon ${coupon.code} applied.`);
+      }
+    } catch (error) {
+      const message =
+        isAxiosError(error) &&
+        ((typeof error.response?.data?.message === "string" && error.response.data.message) ||
+          (typeof error.response?.data?.error === "string" && error.response.data.error))
+          ? (error.response.data.message ?? error.response.data.error)
+          : "Coupon could not be applied.";
+
+      setAppliedCoupon(null);
+      setCouponMessage({ tone: "error", text: message });
+
+      if (!options?.silent) {
+        toast.error(message);
+      }
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setCouponMessage({ tone: "info", text: "Coupon removed from the order summary." });
+  };
+
+  useEffect(() => {
+    if (!appliedCoupon) {
+      return;
+    }
+
+    void applyCoupon(appliedCoupon.code, { silent: true });
+    // Revalidate whenever the order composition changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [billingCycle, employeeCount, selectedPlan.slug, selectedAddonIds]);
 
   const syncAccountIntoForm = (session: CustomerAuthSession) => {
     setCustomerSession(session);
@@ -850,6 +934,7 @@ export default function HrmsPricingPurchasePage() {
           employeeCount,
           billingCycle,
           paymentMethod: form.paymentMethod,
+          couponCode: appliedCoupon?.code ?? null,
           notes: form.notes.trim() || null,
           sourcePage: ROUTES.hrmsPricingPurchase,
           extraData: {
@@ -1041,6 +1126,23 @@ export default function HrmsPricingPurchasePage() {
                             </span>
                             <span className="font-black text-ink">
                               {formatCurrency(purchaseSetupCharge.total)}
+                            </span>
+                          </div>
+                        ) : null}
+                        {purchase.extraData?.coupon &&
+                        typeof purchase.extraData.coupon === "object" &&
+                        "code" in purchase.extraData.coupon &&
+                        "discountAmount" in purchase.extraData.coupon ? (
+                          <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl bg-emerald-50 px-4 py-3 text-sm">
+                            <span className="font-semibold text-emerald-800">
+                              Coupon {(purchase.extraData.coupon as { code: string }).code}
+                            </span>
+                            <span className="font-black text-emerald-800">
+                              -
+                              {formatCurrency(
+                                (purchase.extraData.coupon as { discountAmount: number })
+                                  .discountAmount,
+                              )}
                             </span>
                           </div>
                         ) : null}
@@ -1482,6 +1584,63 @@ export default function HrmsPricingPurchasePage() {
                             </span>
                           </div>
 
+                          <div className="space-y-3 rounded-[1.25rem] border border-border bg-white p-4">
+                            <Label htmlFor="subscription-coupon">Coupon Code</Label>
+                            <div className="flex flex-col gap-3 sm:flex-row">
+                              <Input
+                                id="subscription-coupon"
+                                value={couponCode}
+                                onChange={(event) => {
+                                  setCouponCode(event.target.value.toUpperCase());
+                                  setCouponMessage(null);
+                                }}
+                                placeholder="Enter coupon code"
+                                disabled={Boolean(appliedCoupon)}
+                              />
+                              <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => void applyCoupon()}
+                                disabled={isApplyingCoupon || Boolean(appliedCoupon)}
+                              >
+                                {isApplyingCoupon ? "Applying..." : "Apply Coupon"}
+                              </Button>
+                            </div>
+
+                            {appliedCoupon ? (
+                              <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-7 text-emerald-800">
+                                <div className="flex flex-wrap items-center justify-between gap-3">
+                                  <div>
+                                    <div className="font-bold">
+                                      Coupon {appliedCoupon.code} applied
+                                    </div>
+                                    <div>
+                                      You saved {formatCurrency(appliedCoupon.discountAmount)}
+                                    </div>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    className="font-bold text-primary underline-offset-4 hover:underline"
+                                    onClick={removeCoupon}
+                                  >
+                                    Remove
+                                  </button>
+                                </div>
+                              </div>
+                            ) : couponMessage ? (
+                              <div
+                                className={cn(
+                                  "rounded-2xl border px-4 py-3 text-sm leading-6",
+                                  couponMessage.tone === "error"
+                                    ? "border-rose-200 bg-rose-50 text-rose-800"
+                                    : "border-primary/20 bg-primary-soft text-primary",
+                                )}
+                              >
+                                {couponMessage.text}
+                              </div>
+                            ) : null}
+                          </div>
+
                           <div className="border-t border-border pt-4">
                             <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                               Payment method
@@ -1733,6 +1892,20 @@ export default function HrmsPricingPurchasePage() {
                         </span>
                         <span className="font-semibold text-ink">
                           {formatCurrency(pricing.subtotal)}
+                        </span>
+                      </div>
+                      {appliedCoupon ? (
+                        <div className="flex items-center justify-between gap-3">
+                          <span>Coupon {appliedCoupon.code}</span>
+                          <span className="font-semibold text-emerald-700">
+                            -{formatCurrency(pricing.discountAmount)}
+                          </span>
+                        </div>
+                      ) : null}
+                      <div className="flex items-center justify-between gap-3">
+                        <span>Taxable amount</span>
+                        <span className="font-semibold text-ink">
+                          {formatCurrency(pricing.taxableAmount)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between gap-3">

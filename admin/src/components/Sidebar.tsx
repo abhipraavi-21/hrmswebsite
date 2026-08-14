@@ -1,6 +1,7 @@
 import {
   BarChart3,
   BookOpen,
+  BadgePercent,
   Files,
   KeyRound,
   LayoutDashboard,
@@ -20,6 +21,7 @@ const primaryLinks = [
   { to: "/", label: "Billing Dashboard", icon: LayoutDashboard },
   { to: "/billing/customers", label: "Customers", icon: Users },
   { to: "/billing/catalog", label: "Catalog", icon: PackageSearch },
+  { to: "/billing/coupons", label: "Coupons", icon: BadgePercent },
   { to: "/billing/subscriptions", label: "Subscriptions", icon: ReceiptText },
   { to: "/billing/purchase-orders", label: "Purchase Orders", icon: ShoppingCart },
   { to: "/billing/payments", label: "Payments", icon: Wallet },

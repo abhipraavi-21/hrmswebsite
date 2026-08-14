@@ -11,7 +11,22 @@ export const publicSubscriptionPurchaseSchema = z.object({
   employeeCount: z.coerce.number().int().min(1).max(10000),
   billingCycle: billingCycleSchema,
   paymentMethod: z.string().min(2).max(40).optional().nullable(),
+  couponCode: z.string().max(80).optional().nullable(),
   notes: z.string().max(4000).optional().nullable(),
   sourcePage: z.string().max(160).optional().nullable(),
   extraData: z.record(z.any()).optional(),
+});
+
+export const publicSubscriptionCouponValidationSchema = z.object({
+  couponCode: z.string().min(2).max(80),
+  planSlug: z.string().min(2).max(160),
+  employeeCount: z.coerce.number().int().min(1).max(10000),
+  billingCycle: billingCycleSchema,
+  selectedAddOns: z
+    .array(
+      z.object({
+        id: z.string().min(2).max(120),
+      }),
+    )
+    .optional(),
 });

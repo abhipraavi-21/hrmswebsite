@@ -15,8 +15,13 @@ export function initCoupon(sequelize) {
         allowNull: false,
         unique: true,
       },
+      name: {
+        type: DataTypes.STRING(160),
+        allowNull: false,
+        defaultValue: "",
+      },
       description: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       discount_type: {
@@ -26,6 +31,14 @@ export function initCoupon(sequelize) {
       discount_value: {
         type: DataTypes.DECIMAL(12, 2),
         allowNull: false,
+      },
+      maximum_discount: {
+        type: DataTypes.DECIMAL(12, 2),
+        allowNull: true,
+      },
+      minimum_order_amount: {
+        type: DataTypes.DECIMAL(12, 2),
+        allowNull: true,
       },
       applies_to_scope: {
         type: DataTypes.ENUM("all_products", "product", "plan"),
@@ -56,10 +69,58 @@ export function initCoupon(sequelize) {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,
       },
+      usage_limit_per_customer: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
+      },
       redeemed_count: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         defaultValue: 0,
+      },
+      new_customers_only: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      applies_to_amount: {
+        type: DataTypes.ENUM("plan_only", "addons_only", "plan_and_addons"),
+        allowNull: false,
+        defaultValue: "plan_and_addons",
+      },
+      monthly_allowed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
+      semiannual_allowed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
+      annual_allowed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
+      new_subscription_allowed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
+      renewal_allowed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
+      upgrade_allowed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
+      created_by: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
       },
     },
     {

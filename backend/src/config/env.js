@@ -19,6 +19,15 @@ const envSchema = z.object({
   ADMIN_NAME: z.string().min(1).default("Super Admin"),
   ADMIN_EMAIL: z.string().email().default("admin@example.com"),
   ADMIN_PASSWORD: z.string().min(12).default("ChangeThisPassword123!"),
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: z.coerce.number().int().positive().optional(),
+  SMTP_SECURE: z
+    .enum(["true", "false"])
+    .default("false")
+    .transform((value) => value === "true"),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
+  MAIL_FROM: z.string().default("Altroz HRMS <no-reply@altroz.com>"),
   UPLOAD_DIR: z.string().min(1).default("src/uploads"),
   MAX_FILE_SIZE_MB: z.coerce.number().positive().default(5),
 });

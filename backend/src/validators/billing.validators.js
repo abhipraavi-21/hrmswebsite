@@ -108,3 +108,44 @@ export const updateTaxSettingSchema = z.object({
   isEnabled: z.boolean().optional(),
   isInclusive: z.boolean().optional(),
 });
+
+const couponStatusSchema = z.enum(["active", "inactive"]);
+const couponDiscountTypeSchema = z.enum(["percent", "fixed"]);
+const couponAmountScopeSchema = z.enum(["plan_only", "addons_only", "plan_and_addons"]);
+const couponBillingCycleSchema = z.enum(["monthly", "semiannual", "annual"]);
+const couponLifecycleSchema = z.enum(["new", "renewal", "upgrade"]);
+
+const couponBaseSchema = z.object({
+  code: z.string().min(2).max(80).optional(),
+  name: z.string().min(2).max(160).optional(),
+  description: z.string().max(4000).optional().nullable(),
+  discountType: couponDiscountTypeSchema.optional(),
+  discountValue: z.coerce.number().positive().optional(),
+  maximumDiscount: z.coerce.number().nonnegative().optional().nullable(),
+  minimumOrderAmount: z.coerce.number().nonnegative().optional().nullable(),
+  startsAt: z.string().datetime().optional().nullable(),
+  endsAt: z.string().datetime().optional().nullable(),
+  totalUsageLimit: z.coerce.number().int().positive().optional().nullable(),
+  usageLimitPerCustomer: z.coerce.number().int().positive().optional().nullable(),
+  newCustomersOnly: z.boolean().optional(),
+  appliesToAmount: couponAmountScopeSchema.optional(),
+  billingCycles: z.array(couponBillingCycleSchema).min(1).optional(),
+  lifecycleTypes: z.array(couponLifecycleSchema).min(1).optional(),
+  productIds: z.array(z.coerce.number().int().positive()).optional(),
+  planIds: z.array(z.coerce.number().int().positive()).optional(),
+  status: couponStatusSchema.optional(),
+});
+
+export const createCouponSchema = couponBaseSchema.extend({
+  code: z.string().min(2).max(80),
+  name: z.string().min(2).max(160),
+  discountType: couponDiscountTypeSchema,
+  discountValue: z.coerce.number().positive(),
+});
+
+export const updateCouponSchema = couponBaseSchema;
+
+export const couponListQuerySchema = z.object({
+  search: z.string().max(120).optional(),
+  status: z.enum(["active", "inactive", "expired"]).optional(),
+});

@@ -19,6 +19,9 @@ import { initPlanFeature } from "./PlanFeature.js";
 import { initPlanLimit } from "./PlanLimit.js";
 import { initAddon } from "./Addon.js";
 import { initCoupon } from "./Coupon.js";
+import { initCouponPlan } from "./CouponPlan.js";
+import { initCouponProduct } from "./CouponProduct.js";
+import { initCouponUsage } from "./CouponUsage.js";
 import { initTaxSetting } from "./TaxSetting.js";
 import { initCheckoutIntent } from "./CheckoutIntent.js";
 import { initSubscription } from "./Subscription.js";
@@ -50,6 +53,9 @@ export default function initModels(sequelize) {
   const PlanLimit = initPlanLimit(sequelize);
   const Addon = initAddon(sequelize);
   const Coupon = initCoupon(sequelize);
+  const CouponProduct = initCouponProduct(sequelize);
+  const CouponPlan = initCouponPlan(sequelize);
+  const CouponUsage = initCouponUsage(sequelize);
   const TaxSetting = initTaxSetting(sequelize);
   const CheckoutIntent = initCheckoutIntent(sequelize);
   const Subscription = initSubscription(sequelize);
@@ -96,9 +102,56 @@ export default function initModels(sequelize) {
   Coupon.belongsTo(Product, { foreignKey: "product_id", as: "product" });
   Plan.hasMany(Coupon, { foreignKey: "plan_id", as: "coupons" });
   Coupon.belongsTo(Plan, { foreignKey: "plan_id", as: "plan" });
+  Coupon.belongsToMany(Product, {
+    through: CouponProduct,
+    foreignKey: "coupon_id",
+    otherKey: "product_id",
+    as: "applicableProducts",
+  });
+  Product.belongsToMany(Coupon, {
+    through: CouponProduct,
+    foreignKey: "product_id",
+    otherKey: "coupon_id",
+    as: "applicableCoupons",
+  });
+  Coupon.belongsToMany(Plan, {
+    through: CouponPlan,
+    foreignKey: "coupon_id",
+    otherKey: "plan_id",
+    as: "applicablePlans",
+  });
+  Plan.belongsToMany(Coupon, {
+    through: CouponPlan,
+    foreignKey: "plan_id",
+    otherKey: "coupon_id",
+    as: "restrictedCoupons",
+  });
+  Coupon.hasMany(CouponUsage, { foreignKey: "coupon_id", as: "usages" });
+  CouponUsage.belongsTo(Coupon, { foreignKey: "coupon_id", as: "coupon" });
+  CustomerAccount.hasMany(CouponUsage, { foreignKey: "customer_account_id", as: "couponUsages" });
+  CouponUsage.belongsTo(CustomerAccount, {
+    foreignKey: "customer_account_id",
+    as: "customerAccount",
+  });
+  Company.hasMany(CouponUsage, { foreignKey: "company_id", as: "couponUsages" });
+  CouponUsage.belongsTo(Company, { foreignKey: "company_id", as: "company" });
+  SubscriptionPurchase.hasMany(CouponUsage, {
+    foreignKey: "subscription_purchase_id",
+    as: "couponUsages",
+  });
+  CouponUsage.belongsTo(SubscriptionPurchase, {
+    foreignKey: "subscription_purchase_id",
+    as: "subscriptionPurchase",
+  });
 
-  CustomerAccount.hasMany(CheckoutIntent, { foreignKey: "customer_account_id", as: "checkoutIntents" });
-  CheckoutIntent.belongsTo(CustomerAccount, { foreignKey: "customer_account_id", as: "customerAccount" });
+  CustomerAccount.hasMany(CheckoutIntent, {
+    foreignKey: "customer_account_id",
+    as: "checkoutIntents",
+  });
+  CheckoutIntent.belongsTo(CustomerAccount, {
+    foreignKey: "customer_account_id",
+    as: "customerAccount",
+  });
   Company.hasMany(CheckoutIntent, { foreignKey: "company_id", as: "checkoutIntents" });
   CheckoutIntent.belongsTo(Company, { foreignKey: "company_id", as: "company" });
   Product.hasMany(CheckoutIntent, { foreignKey: "product_id", as: "checkoutIntents" });
@@ -109,7 +162,10 @@ export default function initModels(sequelize) {
   CheckoutIntent.belongsTo(Coupon, { foreignKey: "coupon_id", as: "coupon" });
 
   CustomerAccount.hasMany(Subscription, { foreignKey: "customer_account_id", as: "subscriptions" });
-  Subscription.belongsTo(CustomerAccount, { foreignKey: "customer_account_id", as: "customerAccount" });
+  Subscription.belongsTo(CustomerAccount, {
+    foreignKey: "customer_account_id",
+    as: "customerAccount",
+  });
   Company.hasMany(Subscription, { foreignKey: "company_id", as: "subscriptions" });
   Subscription.belongsTo(Company, { foreignKey: "company_id", as: "company" });
   Product.hasMany(Subscription, { foreignKey: "product_id", as: "subscriptions" });
@@ -182,6 +238,9 @@ export default function initModels(sequelize) {
     PlanLimit,
     Addon,
     Coupon,
+    CouponProduct,
+    CouponPlan,
+    CouponUsage,
     TaxSetting,
     CheckoutIntent,
     Subscription,

@@ -13,17 +13,30 @@ import {
   updateAdminProduct,
   updateAdminTaxSetting,
 } from "../../services/billing.service.js";
+import {
+  createAdminCoupon as createCouponRecord,
+  deleteAdminCoupon as deleteCouponRecord,
+  getAdminCoupon as getCouponRecord,
+  listAdminCoupons as listCouponRecords,
+  updateAdminCoupon as updateCouponRecord,
+} from "../../services/coupon.service.js";
 
 export const getOverview = asyncHandler(async (_request, response) => {
-  response.json(successResponse("Billing overview fetched successfully", await getAdminBillingOverview()));
+  response.json(
+    successResponse("Billing overview fetched successfully", await getAdminBillingOverview()),
+  );
 });
 
 export const listCustomers = asyncHandler(async (_request, response) => {
-  response.json(successResponse("Billing customers fetched successfully", await listAdminCustomers()));
+  response.json(
+    successResponse("Billing customers fetched successfully", await listAdminCustomers()),
+  );
 });
 
 export const listProducts = asyncHandler(async (_request, response) => {
-  response.json(successResponse("Billing products fetched successfully", await listAdminProducts()));
+  response.json(
+    successResponse("Billing products fetched successfully", await listAdminProducts()),
+  );
 });
 
 export const updateProduct = asyncHandler(async (request, response) => {
@@ -37,7 +50,10 @@ export const updateProduct = asyncHandler(async (request, response) => {
 
 export const updatePlan = asyncHandler(async (request, response) => {
   response.json(
-    successResponse("Plan updated successfully", await updateAdminPlan(request.params.planId, request.body)),
+    successResponse(
+      "Plan updated successfully",
+      await updateAdminPlan(request.params.planId, request.body),
+    ),
   );
 });
 
@@ -51,15 +67,21 @@ export const updateAddon = asyncHandler(async (request, response) => {
 });
 
 export const listSubscriptions = asyncHandler(async (_request, response) => {
-  response.json(successResponse("Billing subscriptions fetched successfully", await listAdminSubscriptions()));
+  response.json(
+    successResponse("Billing subscriptions fetched successfully", await listAdminSubscriptions()),
+  );
 });
 
 export const listPayments = asyncHandler(async (_request, response) => {
-  response.json(successResponse("Billing payments fetched successfully", await listAdminPayments()));
+  response.json(
+    successResponse("Billing payments fetched successfully", await listAdminPayments()),
+  );
 });
 
 export const listInvoices = asyncHandler(async (_request, response) => {
-  response.json(successResponse("Billing invoices fetched successfully", await listAdminInvoices()));
+  response.json(
+    successResponse("Billing invoices fetched successfully", await listAdminInvoices()),
+  );
 });
 
 export const listTaxSettings = asyncHandler(async (_request, response) => {
@@ -71,6 +93,47 @@ export const updateTaxSetting = asyncHandler(async (request, response) => {
     successResponse(
       "Tax setting updated successfully",
       await updateAdminTaxSetting(request.params.taxSettingId, request.body),
+    ),
+  );
+});
+
+export const listCoupons = asyncHandler(async (request, response) => {
+  response.json(
+    successResponse("Coupons fetched successfully", await listCouponRecords(request.query)),
+  );
+});
+
+export const getCoupon = asyncHandler(async (request, response) => {
+  response.json(
+    successResponse("Coupon fetched successfully", await getCouponRecord(request.params.couponId)),
+  );
+});
+
+export const createCoupon = asyncHandler(async (request, response) => {
+  response
+    .status(201)
+    .json(
+      successResponse(
+        "Coupon created successfully",
+        await createCouponRecord(request.body, request.admin),
+      ),
+    );
+});
+
+export const updateCoupon = asyncHandler(async (request, response) => {
+  response.json(
+    successResponse(
+      "Coupon updated successfully",
+      await updateCouponRecord(request.params.couponId, request.body),
+    ),
+  );
+});
+
+export const deleteCoupon = asyncHandler(async (request, response) => {
+  response.json(
+    successResponse(
+      "Coupon deleted successfully",
+      await deleteCouponRecord(request.params.couponId),
     ),
   );
 });

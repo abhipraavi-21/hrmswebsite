@@ -12,9 +12,32 @@ export type SubscriptionPurchaseRequest = {
   employeeCount: number;
   billingCycle: BillingCycle;
   paymentMethod?: string | null;
+  couponCode?: string | null;
   notes?: string | null;
   sourcePage?: string | null;
   extraData?: Record<string, unknown>;
+};
+
+export type SubscriptionCouponValidationRequest = {
+  couponCode: string;
+  planSlug: string;
+  employeeCount: number;
+  billingCycle: BillingCycle;
+  selectedAddOns?: Array<{ id: string }>;
+};
+
+export type SubscriptionCouponValidation = {
+  code: string;
+  name: string;
+  description?: string | null;
+  discountType: "percent" | "fixed";
+  discountValue: number;
+  maximumDiscount?: number | null;
+  appliesToAmount: "plan_only" | "addons_only" | "plan_and_addons";
+  discountAmount: number;
+  taxableAmount: number;
+  gstAmount: number;
+  totalAmount: number;
 };
 
 export type SubscriptionPurchase = {
@@ -53,6 +76,25 @@ export async function submitSubscriptionPurchase(
 ) {
   const response = await apiClient.post<PublicApiResponse<SubscriptionPurchase>>(
     "/public/subscription-purchases",
+    payload,
+    authToken
+      ? {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      : undefined,
+  );
+
+  return response.data.data;
+}
+
+export async function validateSubscriptionCoupon(
+  payload: SubscriptionCouponValidationRequest,
+  authToken?: string | null,
+) {
+  const response = await apiClient.post<PublicApiResponse<SubscriptionCouponValidation>>(
+    "/public/subscription-purchases/coupons/validate",
     payload,
     authToken
       ? {

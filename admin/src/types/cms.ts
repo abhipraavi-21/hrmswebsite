@@ -464,3 +464,51 @@ export type BillingTaxSetting = {
   isEnabled: boolean;
   isInclusive: boolean;
 };
+
+export type BillingCoupon = {
+  id: number;
+  code: string;
+  name: string;
+  description?: string | null;
+  discountType: "percent" | "fixed";
+  discountValue: number;
+  maximumDiscount?: number | null;
+  minimumOrderAmount?: number | null;
+  appliesToAmount: "plan_only" | "addons_only" | "plan_and_addons";
+  status: "active" | "inactive";
+  computedStatus: "active" | "inactive" | "expired";
+  startsAt?: string | null;
+  endsAt?: string | null;
+  totalUsageLimit?: number | null;
+  usageLimitPerCustomer?: number | null;
+  usageCount: number;
+  newCustomersOnly: boolean;
+  monthlyAllowed: boolean;
+  semiannualAllowed: boolean;
+  annualAllowed: boolean;
+  newSubscriptionAllowed: boolean;
+  renewalAllowed: boolean;
+  upgradeAllowed: boolean;
+  products: Array<{ id: number; name: string; slug: string }>;
+  plans: Array<{ id: number; name: string; slug: string; productId: number }>;
+  analytics: {
+    totalUses: number;
+    totalDiscountGiven: number;
+    successfulRedemptions: number;
+    remainingUses?: number | null;
+  };
+  recentUsage: Array<{
+    id: number;
+    customerAccountId?: number | null;
+    companyId?: number | null;
+    subscriptionPurchaseId?: number | null;
+    orderId?: number | null;
+    paymentId?: number | null;
+    productSlug?: string | null;
+    planSlug?: string | null;
+    discountAmount: number;
+    finalAmount: number;
+    status: string;
+    usedAt: string;
+  }>;
+};

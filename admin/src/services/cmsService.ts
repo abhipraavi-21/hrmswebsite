@@ -12,6 +12,7 @@ import type {
   BillingAdminPayment,
   BillingAdminProduct,
   BillingAdminSubscription,
+  BillingCoupon,
   BillingOverview,
   BillingTaxSetting,
   DashboardSummary,
@@ -60,14 +61,16 @@ export const pageService = {
     unwrap<CmsSection>(api.post(`/admin/pages/${pageId}/sections`, payload)),
   updateSection: (sectionId: number | string, payload: Partial<CmsSection>) =>
     unwrap<CmsSection>(api.put(`/admin/pages/sections/${sectionId}`, payload)),
-  deleteSection: (sectionId: number | string) => unwrap(api.delete(`/admin/pages/sections/${sectionId}`)),
+  deleteSection: (sectionId: number | string) =>
+    unwrap(api.delete(`/admin/pages/sections/${sectionId}`)),
   reorderSections: (items: Array<{ id: number; displayOrder: number }>) =>
     unwrap(api.patch("/admin/pages/sections/reorder", { items })),
   createItem: (sectionId: number | string, payload: Partial<CmsSection["items"][number]>) =>
     unwrap(api.post(`/admin/pages/sections/${sectionId}/items`, payload)),
   updateItem: (itemId: number | string, payload: Partial<CmsSection["items"][number]>) =>
     unwrap(api.put(`/admin/pages/section-items/${itemId}`, payload)),
-  deleteItem: (itemId: number | string) => unwrap(api.delete(`/admin/pages/section-items/${itemId}`)),
+  deleteItem: (itemId: number | string) =>
+    unwrap(api.delete(`/admin/pages/section-items/${itemId}`)),
   reorderItems: (items: Array<{ id: number; displayOrder: number }>) =>
     unwrap(api.patch("/admin/pages/section-items/reorder", { items })),
 };
@@ -83,7 +86,8 @@ export const pricingService = {
   update: (id: number | string, payload: Partial<PricingPlan>) =>
     unwrap<PricingPlan>(api.put(`/admin/pricing-plans/${id}`, payload)),
   remove: (id: number | string) => unwrap(api.delete(`/admin/pricing-plans/${id}`)),
-  duplicate: (id: number | string) => unwrap<PricingPlan>(api.post(`/admin/pricing-plans/${id}/duplicate`)),
+  duplicate: (id: number | string) =>
+    unwrap<PricingPlan>(api.post(`/admin/pricing-plans/${id}/duplicate`)),
   createFeature: (planId: number | string, payload: Partial<PricingFeature>) =>
     unwrap<PricingFeature>(api.post(`/admin/pricing-plans/${planId}/features`, payload)),
   updateFeature: (id: number | string, payload: Partial<PricingFeature>) =>
@@ -140,4 +144,13 @@ export const billingAdminService = {
   listTaxes: () => unwrap<BillingTaxSetting[]>(api.get("/admin/billing/taxes")),
   updateTax: (id: number | string, payload: Partial<BillingTaxSetting>) =>
     unwrap<BillingTaxSetting>(api.put(`/admin/billing/taxes/${id}`, payload)),
+  listCoupons: (params?: { search?: string; status?: string }) =>
+    unwrap<BillingCoupon[]>(api.get("/admin/billing/coupons", { params })),
+  getCoupon: (id: number | string) =>
+    unwrap<BillingCoupon>(api.get(`/admin/billing/coupons/${id}`)),
+  createCoupon: (payload: Partial<BillingCoupon> & Record<string, unknown>) =>
+    unwrap<BillingCoupon>(api.post("/admin/billing/coupons", payload)),
+  updateCoupon: (id: number | string, payload: Partial<BillingCoupon> & Record<string, unknown>) =>
+    unwrap<BillingCoupon>(api.put(`/admin/billing/coupons/${id}`, payload)),
+  deleteCoupon: (id: number | string) => unwrap(api.delete(`/admin/billing/coupons/${id}`)),
 };

@@ -1,7 +1,9 @@
 import crypto from "crypto";
 import { Op } from "sequelize";
 import { pricingPlansSeed } from "../../../shared/cms/index.js";
-import { models } from "../config/database.js";
+import { models, sequelize } from "../config/database.js";
+import { recordCouponRedemption, validateCouponForCheckout } from "./coupon.service.js";
+import { sendSubscriptionPaymentEmail } from "./mail.service.js";
 import { AppError } from "../utils/AppError.js";
 
 export const GST_RATE_PERCENT = 18;
@@ -167,12 +169,13 @@ function serializeFallbackPlan(plan) {
   };
 }
 
-async function resolvePlan(planSlug) {
+async function resolvePlan(planSlug, transaction = null) {
   const dbPlan = await models.PricingPlan.findOne({
     where: {
       slug: planSlug,
       is_active: true,
     },
+    transaction,
   });
 
   if (dbPlan) {
@@ -201,6 +204,8 @@ export function calculateSubscriptionAmounts({
   billingCycle,
   selectedAddOns = [],
   planSlug,
+  couponDiscountAmount = 0,
+  coupon = null,
 }) {
   const cycle = resolveBillingCycle(billingCycle);
   const planSubtotal =
@@ -213,8 +218,10 @@ export function calculateSubscriptionAmounts({
   );
   const setupCharge = calculateSetupCharge(planSlug, employeeCount);
   const subtotal = roundCurrency(planSubtotal + addonSubtotal + setupCharge.total);
-  const gstAmount = roundCurrency(subtotal * (GST_RATE_PERCENT / 100));
-  const totalAmount = roundCurrency(subtotal + gstAmount);
+  const discountAmount = roundCurrency(Math.min(Math.max(0, couponDiscountAmount), subtotal));
+  const taxableAmount = roundCurrency(Math.max(0, subtotal - discountAmount));
+  const gstAmount = roundCurrency(taxableAmount * (GST_RATE_PERCENT / 100));
+  const totalAmount = roundCurrency(taxableAmount + gstAmount);
 
   return {
     billingCycleLabel: cycle.label,
@@ -224,10 +231,86 @@ export function calculateSubscriptionAmounts({
     addOnSubtotalAmount: addonSubtotal,
     setupCharge,
     subtotalAmount: subtotal,
+    discountAmount,
+    taxableAmount,
     gstRate: GST_RATE_PERCENT,
     gstAmount,
     totalAmount,
     selectedAddOns: selectedAddonDetails,
+    coupon,
+  };
+}
+
+async function buildSubscriptionPurchasePricing(
+  payload,
+  customerAccount = null,
+  transaction = null,
+  lockCoupon = false,
+) {
+  const plan = await resolvePlan(payload.planSlug, transaction);
+  const baseAmounts = calculateSubscriptionAmounts({
+    monthlyPrice: plan.monthlyPrice,
+    yearlyPrice: plan.yearlyPrice,
+    employeeCount: payload.employeeCount,
+    billingCycle: payload.billingCycle,
+    selectedAddOns: payload.extraData?.selectedAddOns ?? payload.selectedAddOns,
+    planSlug: plan.slug,
+  });
+  const coupon = await validateCouponForCheckout(
+    {
+      couponCode: payload.couponCode,
+      productSlug: "hrms",
+      planSlug: plan.slug,
+      billingCycle: payload.billingCycle,
+      lifecycleType: "new",
+      planAmount: baseAmounts.planSubtotalAmount + baseAmounts.setupCharge.total,
+      addonAmount: baseAmounts.addOnSubtotalAmount,
+      subtotalAmount: baseAmounts.subtotalAmount,
+      customerAccount,
+    },
+    { transaction, lock: lockCoupon },
+  );
+  const amounts = calculateSubscriptionAmounts({
+    monthlyPrice: plan.monthlyPrice,
+    yearlyPrice: plan.yearlyPrice,
+    employeeCount: payload.employeeCount,
+    billingCycle: payload.billingCycle,
+    selectedAddOns: payload.extraData?.selectedAddOns ?? payload.selectedAddOns,
+    planSlug: plan.slug,
+    couponDiscountAmount: coupon?.discountAmount ?? 0,
+    coupon,
+  });
+
+  return { plan, amounts };
+}
+
+export async function previewSubscriptionPurchaseCoupon(payload, customerAccount = null) {
+  const { amounts } = await buildSubscriptionPurchasePricing(
+    {
+      ...payload,
+      extraData: {
+        selectedAddOns: payload.selectedAddOns ?? [],
+      },
+    },
+    customerAccount,
+  );
+
+  if (!amounts.coupon) {
+    throw new AppError("Coupon code not found.", 404);
+  }
+
+  return {
+    code: amounts.coupon.code,
+    name: amounts.coupon.name,
+    description: amounts.coupon.description,
+    discountType: amounts.coupon.discountType,
+    discountValue: amounts.coupon.discountValue,
+    maximumDiscount: amounts.coupon.maximumDiscount,
+    appliesToAmount: amounts.coupon.appliesToAmount,
+    discountAmount: amounts.discountAmount,
+    taxableAmount: amounts.taxableAmount,
+    gstAmount: amounts.gstAmount,
+    totalAmount: amounts.totalAmount,
   };
 }
 
@@ -267,59 +350,109 @@ export function serializeSubscriptionPurchase(record) {
 }
 
 export async function createSubscriptionPurchase(payload, customerAccount = null) {
-  const plan = await resolvePlan(payload.planSlug);
-  const amounts = calculateSubscriptionAmounts({
-    monthlyPrice: plan.monthlyPrice,
-    yearlyPrice: plan.yearlyPrice,
-    employeeCount: payload.employeeCount,
-    billingCycle: payload.billingCycle,
-    selectedAddOns: payload.extraData?.selectedAddOns,
-    planSlug: plan.slug,
-  });
-  const purchasedAt = new Date();
-  const renewalDueAt = addMonths(purchasedAt, amounts.billingCycleMonths);
-  const extraData = {
-    ...(payload.extraData ?? {}),
-    selectedAddOns: amounts.selectedAddOns,
-    planSubtotal: amounts.planSubtotalAmount,
-    addOnSubtotal: amounts.addOnSubtotalAmount,
-    setupCharge: amounts.setupCharge,
-    ...(customerAccount
-      ? {
-          customerAccountId: customerAccount.id,
-          customerUsername: customerAccount.username,
-        }
-      : {}),
-  };
+  return sequelize.transaction(async (transaction) => {
+    const { plan, amounts } = await buildSubscriptionPurchasePricing(
+      payload,
+      customerAccount,
+      transaction,
+      true,
+    );
+    const purchasedAt = new Date();
+    const renewalDueAt = addMonths(purchasedAt, amounts.billingCycleMonths);
+    const extraData = {
+      ...(payload.extraData ?? {}),
+      selectedAddOns: amounts.selectedAddOns,
+      planSubtotal: amounts.planSubtotalAmount,
+      addOnSubtotal: amounts.addOnSubtotalAmount,
+      setupCharge: amounts.setupCharge,
+      coupon: amounts.coupon
+        ? {
+            code: amounts.coupon.code,
+            name: amounts.coupon.name,
+            discountType: amounts.coupon.discountType,
+            discountValue: amounts.coupon.discountValue,
+            discountAmount: amounts.discountAmount,
+            taxableAmount: amounts.taxableAmount,
+          }
+        : null,
+      originalSubtotal: amounts.subtotalAmount,
+      discountAmount: amounts.discountAmount,
+      taxableAmount: amounts.taxableAmount,
+      ...(customerAccount
+        ? {
+            customerAccountId: customerAccount.id,
+            customerUsername: customerAccount.username,
+          }
+        : {}),
+    };
 
-  const purchase = await models.SubscriptionPurchase.create({
-    reference_code: buildReferenceCode(),
-    company_name: payload.companyName ?? customerAccount?.company_name,
-    contact_name: payload.contactName ?? customerAccount?.contact_name,
-    email: payload.email ?? customerAccount?.email,
-    phone: payload.phone ?? customerAccount?.phone ?? null,
-    plan_slug: plan.slug,
-    plan_name: plan.name,
-    employee_count: payload.employeeCount,
-    billing_cycle: payload.billingCycle,
-    billing_cycle_months: amounts.billingCycleMonths,
-    payment_method: payload.paymentMethod ?? "manual",
-    price_per_employee: amounts.pricePerEmployee,
-    subtotal_amount: amounts.subtotalAmount,
-    gst_rate: amounts.gstRate,
-    gst_amount: amounts.gstAmount,
-    total_amount: amounts.totalAmount,
-    currency: plan.currency ?? "INR",
-    payment_status: "paid",
-    subscription_status: "active",
-    source_page: payload.sourcePage ?? null,
-    notes: payload.notes ?? null,
-    purchased_at: purchasedAt,
-    renewal_due_at: renewalDueAt,
-    extra_data_json: extraData,
-  });
+    const purchase = await models.SubscriptionPurchase.create(
+      {
+        reference_code: buildReferenceCode(),
+        company_name: payload.companyName ?? customerAccount?.company_name,
+        contact_name: payload.contactName ?? customerAccount?.contact_name,
+        email: payload.email ?? customerAccount?.email,
+        phone: payload.phone ?? customerAccount?.phone ?? null,
+        plan_slug: plan.slug,
+        plan_name: plan.name,
+        employee_count: payload.employeeCount,
+        billing_cycle: payload.billingCycle,
+        billing_cycle_months: amounts.billingCycleMonths,
+        payment_method: payload.paymentMethod ?? "manual",
+        price_per_employee: amounts.pricePerEmployee,
+        subtotal_amount: amounts.subtotalAmount,
+        gst_rate: amounts.gstRate,
+        gst_amount: amounts.gstAmount,
+        total_amount: amounts.totalAmount,
+        currency: plan.currency ?? "INR",
+        payment_status: "paid",
+        subscription_status: "active",
+        source_page: payload.sourcePage ?? null,
+        notes: payload.notes ?? null,
+        purchased_at: purchasedAt,
+        renewal_due_at: renewalDueAt,
+        extra_data_json: extraData,
+      },
+      { transaction },
+    );
 
-  return serializeSubscriptionPurchase(purchase);
+    if (amounts.coupon) {
+      await recordCouponRedemption({
+        coupon: amounts.coupon.coupon,
+        customerAccount,
+        subscriptionPurchaseId: purchase.id,
+        productSlug: "hrms",
+        planSlug: plan.slug,
+        originalAmount: amounts.subtotalAmount,
+        discountAmount: amounts.discountAmount,
+        finalAmount: amounts.totalAmount,
+        transaction,
+      });
+    }
+
+    const serializedPurchase = serializeSubscriptionPurchase(purchase);
+
+    void sendSubscriptionPaymentEmail({
+      email: serializedPurchase.email,
+      contactName: serializedPurchase.contactName,
+      companyName: serializedPurchase.companyName,
+      productName: "HRMS",
+      referenceCode: serializedPurchase.referenceCode,
+      planName: serializedPurchase.planName,
+      billingCycleLabel: serializedPurchase.billingCycleLabel,
+      employeeCount: serializedPurchase.employeeCount,
+      subtotalAmount: serializedPurchase.subtotalAmount,
+      discountAmount: serializedPurchase.extraData?.discountAmount ?? 0,
+      couponCode: serializedPurchase.extraData?.coupon?.code ?? null,
+      taxAmount: serializedPurchase.gstAmount,
+      totalAmount: serializedPurchase.totalAmount,
+      renewalDate: serializedPurchase.renewalDueAt,
+    }).catch((error) => {
+      console.error("Failed to send subscription email", error);
+    });
+
+    return serializedPurchase;
+  });
 }
 
 export async function listSubscriptionPurchases() {

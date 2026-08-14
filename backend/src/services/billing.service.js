@@ -1,6 +1,8 @@
 import crypto from "crypto";
 import { Op } from "sequelize";
 import { models, sequelize } from "../config/database.js";
+import { recordCouponRedemption } from "./coupon.service.js";
+import { sendSubscriptionPaymentEmail } from "./mail.service.js";
 import { AppError } from "../utils/AppError.js";
 
 export const BILLING_CYCLE_META = {
@@ -351,7 +353,9 @@ function buildEntitlements(plan, subscriptionAddons) {
         source: "addon",
       };
       const limitMultiplier = toNumber(metadata.limitMultiplier ?? 1);
-      const nextValue = current.isUnlimited ? current.value : current.value + quantity * limitMultiplier;
+      const nextValue = current.isUnlimited
+        ? current.value
+        : current.value + quantity * limitMultiplier;
 
       limitMap.set(metadata.limitCode, {
         ...current,
@@ -675,7 +679,9 @@ function calculateAddonLine(addon, quantity, billingCycle) {
     totalPrice = roundCurrency(unitPrice * normalizedQuantity);
   } else {
     unitPrice = toNumber(addon.unit_price);
-    totalPrice = roundCurrency(unitPrice * normalizedQuantity * getQuantityMultiplier(addon, billingCycleMeta));
+    totalPrice = roundCurrency(
+      unitPrice * normalizedQuantity * getQuantityMultiplier(addon, billingCycleMeta),
+    );
   }
 
   return {
@@ -725,7 +731,9 @@ async function calculateCheckoutPreviewInternal(payload, transaction) {
   });
 
   const baseAmount = getCyclePrice(plan.monthly_price, plan.annual_price, payload.billingCycle);
-  const addonAmount = roundCurrency(addonLines.reduce((sum, addonLine) => sum + addonLine.totalPrice, 0));
+  const addonAmount = roundCurrency(
+    addonLines.reduce((sum, addonLine) => sum + addonLine.totalPrice, 0),
+  );
   const subtotalAmount = roundCurrency(baseAmount + addonAmount);
   const discountAmount = applyCouponAmount(subtotalAmount, coupon);
   const taxableAmount = roundCurrency(Math.max(0, subtotalAmount - discountAmount));
@@ -1111,7 +1119,11 @@ export async function createCheckoutOrder(payload, customerAccount) {
 
     const lifecycleType =
       payload.lifecycleType ??
-      (existingSubscription ? (existingSubscription.plan_id === preview.plan.id ? "renewal" : "upgrade") : "new");
+      (existingSubscription
+        ? existingSubscription.plan_id === preview.plan.id
+          ? "renewal"
+          : "upgrade"
+        : "new");
 
     const order = await models.Order.create(
       {
@@ -1188,7 +1200,10 @@ export async function completeOrderPayment(payload, customerAccount) {
         amount: order.total_amount,
         currency: order.currency,
         status: paymentStatus,
-        failure_reason: paymentStatus === "failed" ? payload.failureReason ?? "Payment was not completed." : null,
+        failure_reason:
+          paymentStatus === "failed"
+            ? (payload.failureReason ?? "Payment was not completed.")
+            : null,
         paid_at: paymentStatus === "success" ? new Date() : null,
         raw_response_json: {
           paymentMethod: payload.paymentMethod ?? null,
@@ -1237,18 +1252,54 @@ export async function completeOrderPayment(payload, customerAccount) {
       }
 
       if (order.coupon_code) {
-        await models.Coupon.increment(
-          {
-            redeemed_count: 1,
-          },
-          {
-            where: {
-              code: order.coupon_code,
-            },
+        const [coupon, product, plan] = await Promise.all([
+          models.Coupon.findOne({
+            where: { code: order.coupon_code },
             transaction,
-          },
-        );
+            lock: transaction.LOCK.UPDATE,
+          }),
+          models.Product.findByPk(order.product_id, { transaction }),
+          models.Plan.findByPk(order.plan_id, { transaction }),
+        ]);
+
+        await recordCouponRedemption({
+          coupon,
+          customerAccount,
+          orderId: order.id,
+          paymentId: payment.id,
+          subscriptionId: subscription.id,
+          productSlug: product?.slug,
+          planSlug: plan?.slug,
+          originalAmount: roundCurrency(toNumber(order.base_amount) + toNumber(order.addon_amount)),
+          discountAmount: toNumber(order.discount_amount),
+          finalAmount: toNumber(order.total_amount),
+          transaction,
+        });
       }
+
+      const [emailProduct, emailPlan] = await Promise.all([
+        models.Product.findByPk(order.product_id, { transaction }),
+        models.Plan.findByPk(order.plan_id, { transaction }),
+      ]);
+
+      void sendSubscriptionPaymentEmail({
+        email: customerAccount.email,
+        contactName: customerAccount.contact_name,
+        companyName: customerAccount.company_name,
+        productName: emailProduct?.name ?? "Altroz",
+        referenceCode: order.order_number,
+        planName: emailPlan?.name ?? "Subscription",
+        billingCycleLabel: resolveBillingCycle(order.billing_cycle).label,
+        employeeCount: customerAccount.company?.employee_count ?? "-",
+        subtotalAmount: roundCurrency(toNumber(order.base_amount) + toNumber(order.addon_amount)),
+        discountAmount: toNumber(order.discount_amount),
+        couponCode: order.coupon_code,
+        taxAmount: toNumber(order.tax_amount),
+        totalAmount: toNumber(order.total_amount),
+        renewalDate: subscription.renewal_date,
+      }).catch((error) => {
+        console.error("Failed to send subscription email", error);
+      });
     } else {
       await order.update(
         {
@@ -1309,7 +1360,10 @@ export async function getCustomerBillingDashboard(customerAccount) {
     where: {
       customer_account_id: customerAccount.id,
     },
-    include: [{ model: models.Product, as: "product" }, { model: models.Plan, as: "plan" }],
+    include: [
+      { model: models.Product, as: "product" },
+      { model: models.Plan, as: "plan" },
+    ],
     order: [["issued_at", "DESC"]],
   });
 
@@ -1338,7 +1392,9 @@ export async function getCustomerBillingDashboard(customerAccount) {
       phone: customerAccount.phone,
     },
     summary: {
-      activeSubscriptions: serializedSubscriptions.filter((subscription) => subscription.status === ACTIVE_STATUS).length,
+      activeSubscriptions: serializedSubscriptions.filter(
+        (subscription) => subscription.status === ACTIVE_STATUS,
+      ).length,
       totalSpent: roundCurrency(totalSpent),
       renewalsDueSoon,
       invoiceCount: invoices.length,
@@ -1448,7 +1504,10 @@ export async function getAdminBillingOverview() {
       include: [{ model: models.Company, as: "company", required: false }],
     }),
     models.Subscription.findAll({
-      include: [{ model: models.Product, as: "product" }, { model: models.Plan, as: "plan" }],
+      include: [
+        { model: models.Product, as: "product" },
+        { model: models.Plan, as: "plan" },
+      ],
     }),
     models.Payment.findAll({
       include: [{ model: models.Product, as: "product" }],
@@ -1456,7 +1515,9 @@ export async function getAdminBillingOverview() {
     models.Product.findAll(),
   ]);
 
-  const activeSubscriptions = subscriptions.filter((subscription) => subscription.status === ACTIVE_STATUS);
+  const activeSubscriptions = subscriptions.filter(
+    (subscription) => subscription.status === ACTIVE_STATUS,
+  );
   const successfulPayments = payments.filter((payment) => payment.status === "success");
   const todayStart = startOfDay();
   const todayEnd = endOfDay();
@@ -1464,14 +1525,25 @@ export async function getAdminBillingOverview() {
   const monthEnd = endOfMonth();
 
   const mrr = activeSubscriptions.reduce(
-    (sum, subscription) => sum + calculateMonthlyEquivalent(subscription.total_amount, subscription.billing_cycle),
+    (sum, subscription) =>
+      sum + calculateMonthlyEquivalent(subscription.total_amount, subscription.billing_cycle),
     0,
   );
   const revenueToday = successfulPayments
-    .filter((payment) => payment.paid_at && new Date(payment.paid_at) >= todayStart && new Date(payment.paid_at) <= todayEnd)
+    .filter(
+      (payment) =>
+        payment.paid_at &&
+        new Date(payment.paid_at) >= todayStart &&
+        new Date(payment.paid_at) <= todayEnd,
+    )
     .reduce((sum, payment) => sum + toNumber(payment.amount), 0);
   const revenueThisMonth = successfulPayments
-    .filter((payment) => payment.paid_at && new Date(payment.paid_at) >= monthStart && new Date(payment.paid_at) <= monthEnd)
+    .filter(
+      (payment) =>
+        payment.paid_at &&
+        new Date(payment.paid_at) >= monthStart &&
+        new Date(payment.paid_at) <= monthEnd,
+    )
     .reduce((sum, payment) => sum + toNumber(payment.amount), 0);
 
   return {
@@ -1510,7 +1582,10 @@ export async function listAdminCustomers() {
         model: models.Subscription,
         as: "subscriptions",
         required: false,
-        include: [{ model: models.Product, as: "product" }, { model: models.Plan, as: "plan" }],
+        include: [
+          { model: models.Product, as: "product" },
+          { model: models.Plan, as: "plan" },
+        ],
       },
       {
         model: models.Payment,
@@ -1526,7 +1601,10 @@ export async function listAdminCustomers() {
     );
     const successfulPayments = (customer.payments ?? [])
       .filter((payment) => payment.status === "success")
-      .sort((left, right) => new Date(right.paid_at ?? right.createdAt) - new Date(left.paid_at ?? left.createdAt));
+      .sort(
+        (left, right) =>
+          new Date(right.paid_at ?? right.createdAt) - new Date(left.paid_at ?? left.createdAt),
+      );
 
     return {
       id: customer.id,
@@ -1717,7 +1795,12 @@ export async function listAdminPayments() {
     include: [
       { model: models.CustomerAccount, as: "customerAccount" },
       { model: models.Product, as: "product" },
-      { model: models.Subscription, as: "subscription", required: false, include: [{ model: models.Plan, as: "plan" }] },
+      {
+        model: models.Subscription,
+        as: "subscription",
+        required: false,
+        include: [{ model: models.Plan, as: "plan" }],
+      },
       { model: models.Order, as: "order", required: false },
     ],
     order: [["createdAt", "DESC"]],
