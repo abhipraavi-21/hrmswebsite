@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /account/
+Disallow: /dashboard/
+Disallow: /checkout/
+Disallow: /payment/
+Disallow: /hrms/pricing/purchase
+
+Sitemap: https://www.altrozhr.com/sitemap.xml

@@ -4,6 +4,7 @@ import ScrollRevealManager from "./components/site/ScrollRevealManager";
 import ScrollToTop from "./components/site/ScrollToTop";
 import WhatsAppFloatingButton from "./components/site/WhatsAppFloatingButton";
 import AdminAppRedirect from "./components/site/AdminAppRedirect";
+import GoogleAnalyticsTracker from "./components/site/GoogleAnalyticsTracker";
 import {
   companyMenuColumns,
   emailLinks,
@@ -176,6 +177,7 @@ function AppShell() {
 
   return (
     <>
+      <GoogleAnalyticsTracker />
       <WhatsAppFloatingButton />
       <ScrollRevealManager />
       <ScrollToTop />
