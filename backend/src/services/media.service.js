@@ -25,6 +25,18 @@ export function serializeMedia(record) {
   };
 }
 
+function getFileType(mimeType = "") {
+  if (mimeType.startsWith("image/")) {
+    return "image";
+  }
+
+  if (mimeType.startsWith("video/")) {
+    return "video";
+  }
+
+  return "file";
+}
+
 export async function listMedia() {
   const items = await models.Media.findAll({
     order: [["createdAt", "DESC"]],
@@ -44,7 +56,7 @@ export async function createMedia(file, adminId, appUrl) {
     original_name: file.originalname,
     file_path: relativeFilePath,
     file_url: fileUrl,
-    file_type: file.mimetype.startsWith("image/") ? "image" : "file",
+    file_type: getFileType(file.mimetype),
     mime_type: file.mimetype,
     file_size: file.size,
     alt_text: "",

@@ -3,6 +3,7 @@ import { initPage } from "./Page.js";
 import { initPageSection } from "./PageSection.js";
 import { initSectionItem } from "./SectionItem.js";
 import { initResourcePage } from "./ResourcePage.js";
+import { initResourceVideo } from "./ResourceVideo.js";
 import { initPricingPlan } from "./PricingPlan.js";
 import { initPricingFeature } from "./PricingFeature.js";
 import { initBlogPost } from "./BlogPost.js";
@@ -34,6 +35,7 @@ export default function initModels(sequelize) {
   const PageSection = initPageSection(sequelize);
   const SectionItem = initSectionItem(sequelize);
   const ResourcePage = initResourcePage(sequelize);
+  const ResourceVideo = initResourceVideo(sequelize);
   const PricingPlan = initPricingPlan(sequelize);
   const PricingFeature = initPricingFeature(sequelize);
   const BlogPost = initBlogPost(sequelize);
@@ -166,6 +168,7 @@ export default function initModels(sequelize) {
     PageSection,
     SectionItem,
     ResourcePage,
+    ResourceVideo,
     PricingPlan,
     PricingFeature,
     BlogPost,

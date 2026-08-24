@@ -1,4 +1,4 @@
-import { Upload } from "lucide-react";
+import { FileText, Upload } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { mediaService } from "../../services/cmsService";
@@ -16,7 +16,7 @@ export function MediaPage() {
   const upload = async (file: File | undefined) => {
     if (!file) return;
     await mediaService.upload(file);
-    toast.success("Image uploaded successfully");
+    toast.success("Media uploaded successfully");
     await reload();
   };
 
@@ -31,7 +31,12 @@ export function MediaPage() {
           <label className="btn-primary cursor-pointer">
             <Upload className="h-4 w-4" />
             Upload
-            <input type="file" className="hidden" onChange={(event) => void upload(event.target.files?.[0])} />
+            <input
+              type="file"
+              accept="image/*,video/mp4,video/webm,video/ogg,video/quicktime"
+              className="hidden"
+              onChange={(event) => void upload(event.target.files?.[0])}
+            />
           </label>
         </div>
       </section>
@@ -39,7 +44,15 @@ export function MediaPage() {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {items.map((item) => (
           <article key={item.id} className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
-            <img src={item.fileUrl} alt={item.altText ?? item.originalName} className="h-48 w-full rounded-2xl object-cover" />
+            {item.fileType === "video" ? (
+              <video src={item.fileUrl} className="h-48 w-full rounded-2xl object-cover" controls />
+            ) : item.fileType === "image" ? (
+              <img src={item.fileUrl} alt={item.altText ?? item.originalName} className="h-48 w-full rounded-2xl object-cover" />
+            ) : (
+              <div className="grid h-48 w-full place-items-center rounded-2xl bg-slate-100 text-slate-400">
+                <FileText className="h-8 w-8" />
+              </div>
+            )}
             <div className="mt-4 text-sm font-semibold">{item.originalName}</div>
             <div className="mt-1 text-xs text-slate-500">{item.mimeType}</div>
           </article>

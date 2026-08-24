@@ -25,6 +25,10 @@ const allowedMimeTypes = new Set([
   "image/png",
   "image/webp",
   "image/svg+xml",
+  "video/mp4",
+  "video/webm",
+  "video/ogg",
+  "video/quicktime",
 ]);
 
 export const upload = multer({
@@ -34,7 +38,7 @@ export const upload = multer({
   },
   fileFilter: (_request, file, callback) => {
     if (!allowedMimeTypes.has(file.mimetype)) {
-      callback(new AppError("Only JPEG, PNG, WebP, and SVG files are allowed", 400));
+      callback(new AppError("Only JPEG, PNG, WebP, SVG, MP4, WebM, OGG, and MOV files are allowed", 400));
       return;
     }
 

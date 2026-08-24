@@ -20,7 +20,7 @@ const envSchema = z.object({
   ADMIN_EMAIL: z.string().email().default("admin@example.com"),
   ADMIN_PASSWORD: z.string().min(12).default("ChangeThisPassword123!"),
   UPLOAD_DIR: z.string().min(1).default("src/uploads"),
-  MAX_FILE_SIZE_MB: z.coerce.number().positive().default(5),
+  MAX_FILE_SIZE_MB: z.coerce.number().positive().default(100),
   RAZORPAY_KEY_ID: z.string().optional(),
   RAZORPAY_KEY_SECRET: z.string().optional(),
 });

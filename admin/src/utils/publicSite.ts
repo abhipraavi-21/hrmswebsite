@@ -18,6 +18,10 @@ export const PUBLIC_SITE_URL = trimTrailingSlash(
   import.meta.env.VITE_PUBLIC_SITE_URL ?? DEFAULT_PUBLIC_SITE_URL,
 );
 
+export function getPublicSiteUrl() {
+  return PUBLIC_SITE_URL;
+}
+
 export function getPublicSitePageUrl(pageKey?: string | null, fallbackSlug?: string | null) {
   const managedPage = pageKey ? getManagedPagePresentation(pageKey) : null;
   const path = managedPage?.slug ?? fallbackSlug ?? "";

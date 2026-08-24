@@ -12,6 +12,7 @@ import { BillingSubscriptionsPage } from "./pages/billing/BillingSubscriptionsPa
 import { BlogPostsManagerPage } from "./pages/cms/BlogPostsManagerPage";
 import { PageEditorPage } from "./pages/cms/PageEditorPage";
 import { PagesOverviewPage } from "./pages/cms/PagesOverviewPage";
+import { VideosManagerPage } from "./pages/cms/VideosManagerPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { SubscriptionsPage } from "./pages/SubscriptionsPage";
 
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/subscriptions" element={<SubscriptionsPage />} />
           <Route path="/blog-posts" element={<BlogPostsManagerPage />} />
           <Route path="/blog-posts/:blogGroup" element={<BlogPostsManagerPage />} />
+          <Route path="/videos" element={<VideosManagerPage />} />
           <Route path="/resources" element={<Navigate to="/pages" replace />} />
           <Route path="/pricing" element={<Navigate to="/pages/pricing" replace />} />
           <Route path="/media" element={<Navigate to="/pages" replace />} />

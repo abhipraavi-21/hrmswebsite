@@ -10,7 +10,7 @@ export const getMedia = asyncHandler(async (_request, response) => {
 export const uploadMedia = asyncHandler(async (request, response) => {
   response.status(201).json(
     successResponse(
-      "Image uploaded successfully",
+      "Media uploaded successfully",
       await createMedia(request.file, request.admin.id, env.APP_URL),
     ),
   );

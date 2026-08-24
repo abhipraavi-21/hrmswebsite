@@ -66,7 +66,14 @@ app.use(express.urlencoded({ extended: true, limit: "2mb" }));
 app.use(sanitizeRequest);
 app.use(generalLimiter);
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(
+  "/uploads",
+  (_request, response, next) => {
+    response.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    next();
+  },
+  express.static(path.join(__dirname, "uploads")),
+);
 app.use("/api/admin/auth", authLimiter);
 app.use("/api/public/customer-auth", authLimiter);
 app.use("/api", apiRouter);

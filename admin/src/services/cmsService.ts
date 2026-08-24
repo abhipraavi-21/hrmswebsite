@@ -19,6 +19,7 @@ import type {
   PricingFeature,
   PricingPlan,
   ResourceSummary,
+  ResourceVideo,
   SubscriptionPurchase,
 } from "../types/cms";
 
@@ -121,6 +122,16 @@ export const mediaService = {
   update: (id: number | string, payload: { altText: string }) =>
     unwrap<MediaItem>(api.put(`/admin/media/${id}`, payload)),
   remove: (id: number | string) => unwrap(api.delete(`/admin/media/${id}`)),
+};
+
+export const videoService = {
+  list: () => unwrap<ResourceVideo[]>(api.get("/admin/videos")),
+  get: (id: number | string) => unwrap<ResourceVideo>(api.get(`/admin/videos/${id}`)),
+  create: (payload: Partial<ResourceVideo>) =>
+    unwrap<ResourceVideo>(api.post("/admin/videos", payload)),
+  update: (id: number | string, payload: Partial<ResourceVideo>) =>
+    unwrap<ResourceVideo>(api.put(`/admin/videos/${id}`, payload)),
+  remove: (id: number | string) => unwrap(api.delete(`/admin/videos/${id}`)),
 };
 
 export const billingAdminService = {

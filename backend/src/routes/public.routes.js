@@ -15,6 +15,7 @@ import {
   submitContactEnquiry,
 } from "../controllers/public/content.controller.js";
 import { getPublicPost, listPublicPosts } from "../controllers/public/blog.controller.js";
+import { listPublicVideos } from "../controllers/public/videos.controller.js";
 import { submitSubscriptionPurchase } from "../controllers/public/subscription.controller.js";
 
 const router = Router();
@@ -24,6 +25,7 @@ router.use("/billing", billingRoutes);
 router.get("/pages/:pageKey", getPage);
 router.get("/blog-posts", listPublicPosts);
 router.get("/blog-posts/:slug", getPublicPost);
+router.get("/videos", listPublicVideos);
 router.get("/hrms", getHrms);
 router.get("/resources", getResources);
 router.get("/resources/:slug", getResource);

@@ -27,14 +27,23 @@ export default function BrandMark({
   const shouldUseWordmark = mode === "wordmark" || (mode === "auto" && isAltrozHome);
   const src =
     customSrc ??
-    (isHrmsBrand
-      ? "/brand/altroz-hr-logo.png"
-      : shouldUseWordmark
-        ? "/brand/altroz-logo-wordmark.png"
-        : "/brand/altroz-logo-small.png");
+    (isAltrozHome
+      ? "/brand/altroz-blue-wordmark.png"
+      : isHrmsBrand
+        ? "/brand/altroz-hr-logo.png"
+        : shouldUseWordmark
+          ? "/brand/altroz-logo-wordmark.png"
+          : "/brand/altroz-logo-small.png");
   const sizeClass = shouldUseWordmark ? "h-10 sm:h-11" : "h-8 sm:h-9";
   const altText =
-    alt ?? (isHrmsBrand && !customSrc ? "Altroz HR" : shouldUseWordmark ? "Altroz" : label);
+    alt ??
+    (isAltrozHome
+      ? "Altroz"
+      : isHrmsBrand && !customSrc
+        ? "Altroz HR"
+        : shouldUseWordmark
+          ? "Altroz"
+          : label);
 
   return (
     <span className={`inline-flex items-center ${className}`.trim()}>

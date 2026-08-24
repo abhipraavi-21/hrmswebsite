@@ -2,6 +2,7 @@ import {
   BarChart3,
   BookOpen,
   Files,
+  Film,
   KeyRound,
   LayoutDashboard,
   LogOut,
@@ -68,6 +69,20 @@ export function Sidebar() {
         <div className="px-4 pt-4 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
           Content & Blogs
         </div>
+
+        <NavLink
+          to="/videos"
+          className={({ isActive }) =>
+            `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition ${
+              isActive
+                ? "bg-sky-500 text-white"
+                : "text-slate-300 hover:bg-slate-900 hover:text-white"
+            }`
+          }
+        >
+          <Film className="h-4 w-4" />
+          Videos
+        </NavLink>
 
         <div className="px-4 pt-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
           Blog Pages

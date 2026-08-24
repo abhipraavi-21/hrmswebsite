@@ -160,6 +160,23 @@ export type MediaItem = {
   createdAt: string;
 };
 
+export type ResourceVideo = {
+  id: number;
+  title: string;
+  label?: string | null;
+  description?: string | null;
+  videoSource: "youtube" | "upload" | "external";
+  videoUrl: string;
+  videoId?: string | null;
+  thumbnailUrl?: string | null;
+  thumbnailAlt?: string | null;
+  status: "draft" | "published";
+  displayOrder: number;
+  publishedAt?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 export type BlogTable = {
   headers: string[];
   rows: string[][];
