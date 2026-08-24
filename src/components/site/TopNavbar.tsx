@@ -296,8 +296,8 @@ export function TopNavbarShell({ forceActiveTab = null }: { forceActiveTab?: Mob
 
       <div
         className={cn(
-          "site-container hidden grid-cols-1 gap-2 py-2 transition-[height,padding] duration-300 lg:grid lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0",
-          scrolled ? "lg:h-14" : "lg:h-16",
+          "site-container hidden grid-cols-1 gap-2 py-2 transition-[height,padding] duration-300 lg:grid lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-2 lg:py-0",
+          scrolled ? "lg:h-12" : "lg:h-14",
         )}
       >
         <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
@@ -349,7 +349,7 @@ export function TopNavbarShell({ forceActiveTab = null }: { forceActiveTab?: Mob
           </Link>
           <Link
             to={HRMS_LOGIN_SIGNUP_HREF}
-            className="btn-success justify-center px-3 py-2 text-xs sm:px-5 sm:text-sm"
+            className="btn-success justify-center px-3 py-1.5 text-xs sm:px-5 sm:text-sm"
           >
             Login / Signup
           </Link>
@@ -385,7 +385,7 @@ function ProductTab({
       <button
         onClick={onClick}
         className={cn(
-          "nav-link flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors lg:w-auto sm:text-sm",
+          "nav-link flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors lg:w-auto sm:text-sm",
           active ? "bg-primary-soft text-primary" : "text-ink hover:bg-surface",
         )}
         data-active={active || isOpen ? "true" : "false"}

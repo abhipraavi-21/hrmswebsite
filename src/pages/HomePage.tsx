@@ -263,7 +263,7 @@ const faqItems = [
   {
     question: "Which software products does Altroz offer?",
     answer:
-      "Altroz Technologies offers three core products: Altroz HR for human resource management, Altroz Asset Management for tracking and managing business assets, and Altroz Bulk Email for enterprise email broadcasting.",
+      "Altroz Technologies offers multiple core products: Altroz HR for human resource management, Altroz Asset Management for tracking and managing business assets, and Altroz Bulk Email for enterprise email broadcasting.",
   },
   {
     question: "Can I use only one Altroz product?",
@@ -328,7 +328,7 @@ const faqItems = [
   {
     question: "How is Altroz different from using separate tools for HR, assets, and email?",
     answer:
-      "Instead of managing separate, disconnected tools, Altroz Technologies offers HR, asset management, and bulk email as part of one trusted ecosystem, making it easier for businesses to adopt one, two, or all three products with a consistent experience.",
+      "Instead of managing separate, disconnected tools, Altroz Technologies offers HR, asset management, and bulk email as part of one trusted ecosystem, making it easier for businesses to adopt one, two, or multiple products with a consistent experience.",
   },
 ];
 
@@ -347,7 +347,7 @@ export default function HomePage() {
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
 
-          <div className="container-x py-10 sm:py-12 lg:py-16">
+          <div className="container-x pt-5 pb-10 sm:pt-6 sm:pb-12 lg:pt-8 lg:pb-16">
             <div className="mx-auto max-w-7xl">
               <div className="mx-auto max-w-6xl px-0 text-center">
                 <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
@@ -360,7 +360,7 @@ export default function HomePage() {
                 </h1>
 
                 <h2 className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
-                  One Platform. Three Enterprise Solutions. A Single Trusted Brand.
+                  One Platform. Multiple Enterprise Solutions. A Single Trusted Brand.
                 </h2>
 
                 <p className="mx-auto mt-4 max-w-5xl text-justify leading-8 hyphens-auto text-ink-soft sm:text-xl">
@@ -389,7 +389,7 @@ export default function HomePage() {
                       Business at a glance
                     </div>
                     <h3 className="mt-2 text-2xl font-black tracking-tight text-ink">
-                      One brand. Three product experiences.
+                      One brand. Multiple product experiences.
                     </h3>
                     <p className="mt-2 text-sm leading-6 text-ink-soft">
                       Choose HR, Asset Management, or Bulk Email as a standalone product or use them
@@ -422,7 +422,7 @@ export default function HomePage() {
                 Our Products
               </span>
               <h2 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                One Company. Three Powerful Business Solutions.
+                One Company. Multiple Powerful Business Solutions.
               </h2>
               <p className="mt-3 text-justify leading-7 hyphens-auto text-ink-soft">
                 Altroz Technologies brings together enterprise-grade software products that solve
@@ -531,7 +531,7 @@ export default function HomePage() {
                   Altroz Ecosystem
                 </span>
                 <h2 className="mt-2 text-3xl font-black tracking-tight text-ink sm:text-4xl">
-                  One brand at the top, three connected product nodes underneath
+                  One brand at the top, multiple connected product nodes underneath
                 </h2>
                 <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
                   Altroz Technologies is the parent brand, and each product can work on its own or
