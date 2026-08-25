@@ -317,7 +317,7 @@ export default function MobileAppLandingPage() {
       <TopNavbar />
       <MainNavbar />
 
-      <main className="overflow-x-hidden pb-28 md:pb-32">
+      <main className="overflow-x-hidden pb-10 md:pb-24">
         <section className="py-14 sm:py-16 lg:py-20">
           <div className="site-container">
             <div className="grid gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
@@ -804,26 +804,26 @@ export default function MobileAppLandingPage() {
           </div>
         </section>
 
-        <section className="py-14 sm:py-16 lg:py-20 scroll-mt-24">
-          <div className="fixed bottom-6 left-1/2 z-50 w-fit max-w-[calc(100%-12px)] -translate-x-1/2 md:bottom-8">
-            <div className="relative overflow-hidden rounded-[1.25rem] border border-border bg-gradient-to-r from-[#eff6ff] via-white to-[#eefdf3] px-2.5 py-2 shadow-float backdrop-blur-md md:px-3 md:py-2.5">
+        <div className="scroll-mt-24">
+          <div className="mx-auto mt-6 w-full max-w-sm px-3 md:fixed md:bottom-8 md:left-1/2 md:z-50 md:mt-0 md:w-fit md:max-w-[calc(100%-24px)] md:-translate-x-1/2 md:px-0">
+            <div className="relative w-full overflow-hidden rounded-[1.25rem] border border-border bg-gradient-to-r from-[#eff6ff] via-white to-[#eefdf3] px-3 py-3 shadow-float backdrop-blur-md md:w-auto md:px-3 md:py-2.5">
               <div className="pointer-events-none absolute -left-6 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl" />
               <div className="pointer-events-none absolute -right-6 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-success/15 blur-3xl" />
-              <div className="relative flex flex-wrap items-center gap-x-1.5 gap-y-1 md:gap-x-2">
-                <h2 className="text-base font-bold tracking-tight text-ink sm:text-lg">
+              <div className="relative flex flex-col items-stretch gap-2 text-center sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:text-left md:gap-x-2">
+                <h2 className="text-sm font-bold leading-snug tracking-tight text-ink sm:text-base md:text-lg">
                   HR in Your Pocket, Anytime.
                 </h2>
-                <ArrowRight className="h-3.5 w-3.5 shrink-0 text-primary md:h-4 md:w-4" />
+                <ArrowRight className="hidden h-3.5 w-3.5 shrink-0 text-primary sm:block md:h-4 md:w-4" />
                 <Link
                   to={ROUTES.bookDemo}
-                  className="btn-primary whitespace-nowrap px-3 py-1 text-xs md:px-3.5 md:py-1.5"
+                  className="btn-primary w-full whitespace-nowrap px-3 py-2 text-xs sm:w-auto md:px-3.5 md:py-1.5"
                 >
                   Book Free Demo
                 </Link>
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </main>
 
       {schema.map((item, index) => (

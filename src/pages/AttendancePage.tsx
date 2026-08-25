@@ -91,7 +91,7 @@ const heroStats = [
   {
     label: "Automation",
     value: "100%",
-    note: "Real-time attendance tracking",
+    note: "Real-time Attendance tracking",
   },
 ];
 
@@ -110,50 +110,50 @@ const overviewManualItems = [
 ];
 
 const overviewDigitalItems = [
-  "Automated attendance tracking",
-  "Real-time attendance dashboard",
+  "Automated Attendance tracking",
+  "Real-time Attendance dashboard",
   "Digital approval workflow",
-  "Payroll-ready attendance records",
+  "Payroll-ready Attendance records",
 ];
 
 const methods: Method[] = [
   {
     value: "biometric",
     label: "Biometric Attendance",
-    title: "Secure attendance with biometric verification",
+    title: "Secure Attendance with biometric verification",
     description:
-      "Record employee attendance using fingerprint or face recognition devices for fast, secure and accurate check-ins. Attendance data stays synchronized so HR teams can maintain reliable records without manual entry.",
+      "Record employee Attendance using fingerprint or face recognition devices for fast, secure and accurate check-ins. Attendance data stays synchronized so HR teams can maintain reliable records without manual entry.",
     bullets: [
-      "Record attendance using fingerprint or face recognition devices.",
-      "Automatically sync attendance data from biometric devices.",
+      "Record Attendance using fingerprint or face recognition devices.",
+      "Automatically sync Attendance data from biometric devices.",
       "Prevent buddy punching and unauthorized check-ins.",
-      "Generate accurate attendance records for payroll and reporting.",
+      "Generate accurate Attendance records for payroll and reporting.",
     ],
   },
   {
     value: "web",
     label: "Web Attendance",
-    title: "Mark attendance securely through the web portal",
+    title: "Mark Attendance securely through the web portal",
     description:
-      "Allow employees to mark attendance from the browser without requiring a biometric device. This is ideal for office employees, hybrid teams and organizations that need a simple and secure portal-based workflow.",
+      "Allow employees to mark Attendance from the browser without requiring a biometric device. This is ideal for office employees, hybrid teams and organizations that need a simple and secure portal-based workflow.",
     bullets: [
-      "Mark attendance securely through the web portal.",
-      "Access attendance from approved office or work locations.",
-      "View attendance history and daily records instantly.",
-      "Submit attendance regularization requests online.",
+      "Mark Attendance securely through the web portal.",
+      "Access Attendance from approved office or work locations.",
+      "View Attendance history and daily records instantly.",
+      "Submit Attendance regularization requests online.",
     ],
   },
   {
     value: "gps",
     label: "GPS Attendance",
-    title: "Track attendance with GPS location verification",
+    title: "Track Attendance with GPS location verification",
     description:
-      "Allow employees to check in and check out using GPS-enabled mobile devices. The system records the employee location during attendance to improve transparency and support field workforce management.",
+      "Allow employees to check in and check out using GPS-enabled mobile devices. The system records the employee location during Attendance to improve transparency and support field workforce management.",
     bullets: [
-      "Verify employee location during attendance.",
+      "Verify employee location during Attendance.",
       "Ideal for sales, service and field employees.",
       "Record GPS coordinates for every check-in and check-out.",
-      "Monitor attendance across multiple work locations.",
+      "Monitor Attendance across multiple work locations.",
     ],
   },
   {
@@ -161,37 +161,37 @@ const methods: Method[] = [
     label: "Geo-Location Attendance",
     title: "Verify employee location during every check-in",
     description:
-      "Record the employee GPS location at the time of check-in and check-out to ensure accurate attendance records. Geo-location attendance improves transparency for office, remote and field teams.",
+      "Record the employee GPS location at the time of check-in and check-out to ensure accurate Attendance records. Geo-location Attendance improves transparency for office, remote and field teams.",
     bullets: [
-      "Verify the employee location during every attendance entry.",
-      "Maintain accurate and location-verified attendance records.",
+      "Verify the employee location during every Attendance entry.",
+      "Maintain accurate and location-verified Attendance records.",
       "Improve accountability for remote and field employees.",
-      "Review attendance records with complete location details.",
+      "Review Attendance records with complete location details.",
     ],
   },
   {
     value: "geofence",
     label: "Geo-Fenced Attendance",
-    title: "Allow attendance only from approved work locations",
+    title: "Allow Attendance only from approved work locations",
     description:
-      "Create secure attendance zones around offices, branches, factories or project sites. Employees can mark attendance only when they are inside the approved geo-fenced area.",
+      "Create secure Attendance zones around offices, branches, factories or project sites. Employees can mark Attendance only when they are inside the approved geo-fenced area.",
     bullets: [
-      "Allow attendance only within approved work locations.",
+      "Allow Attendance only within approved work locations.",
       "Create geo-fenced zones for offices, branches and project sites.",
       "Verify presence at assigned project or client locations.",
-      "Prevent attendance from unauthorized or out-of-range locations.",
+      "Prevent Attendance from unauthorized or out-of-range locations.",
     ],
   },
   {
     value: "selfie",
     label: "Selfie Attendance",
-    title: "Verify attendance with selfie check-in",
+    title: "Verify Attendance with selfie check-in",
     description:
-      "Allow employees to mark attendance by capturing a selfie during check-in and check-out. Selfie attendance helps verify identity, reduce proxy attendance and improve accuracy for remote and field teams.",
+      "Allow employees to mark Attendance by capturing a selfie during check-in and check-out. Selfie Attendance helps verify identity, reduce proxy Attendance and improve accuracy for remote and field teams.",
     bullets: [
-      "Mark attendance with a secure selfie check-in.",
-      "Verify employee identity during every attendance entry.",
-      "Reduce proxy attendance and unauthorized check-ins.",
+      "Mark Attendance with a secure selfie check-in.",
+      "Verify employee identity during every Attendance entry.",
+      "Reduce proxy Attendance and unauthorized check-ins.",
       "Ideal for remote employees, field teams and on-site staff.",
     ],
   },
@@ -206,12 +206,12 @@ const workflowSteps: WorkflowStep[] = [
   {
     title: "Attendance Verification",
     description:
-      "The system verifies the employee through the selected attendance method and validates the attendance record.",
+      "The system verifies the employee through the selected Attendance method and validates the Attendance record.",
   },
   {
     title: "Shift & Policy Validation",
     description:
-      "Attendance is processed based on assigned shifts, working hours, grace periods and company attendance policies.",
+      "Attendance is processed based on assigned shifts, working hours, grace periods and company Attendance policies.",
   },
   {
     title: "Attendance Calculation",
@@ -221,22 +221,22 @@ const workflowSteps: WorkflowStep[] = [
   {
     title: "Attendance Regularization",
     description:
-      "Employees can submit attendance correction requests for missed or incorrect attendance entries.",
+      "Employees can submit Attendance correction requests for missed or incorrect Attendance entries.",
   },
   {
     title: "Manager Approval",
     description:
-      "Managers review and approve or reject attendance regularization requests through a simple workflow.",
+      "Managers review and approve or reject Attendance regularization requests through a simple workflow.",
   },
   {
     title: "Attendance Finalization",
     description:
-      "Approved attendance records are finalized and prepared for reporting and payroll.",
+      "Approved Attendance records are finalized and prepared for reporting and payroll.",
   },
   {
     title: "Payroll Processing",
     description:
-      "Final attendance data is shared with the payroll module for accurate salary calculations.",
+      "Final Attendance data is shared with the payroll module for accurate salary calculations.",
   },
 ];
 
@@ -252,7 +252,7 @@ const exceptionCards: FeatureCard[] = [
   {
     title: "Attendance Regularization",
     description:
-      "Allow employees to request corrections for missed punches, incorrect attendance or other attendance-related issues.",
+      "Allow employees to request corrections for missed punches, incorrect Attendance or other Attendance-related issues.",
     icon: <CheckCircle2 className="h-5 w-5" />,
   },
   {
@@ -264,13 +264,13 @@ const exceptionCards: FeatureCard[] = [
   {
     title: "Late Arrival Management",
     description:
-      "Automatically track late arrivals based on company attendance policies and generate reports for HR review.",
+      "Automatically track late arrivals based on company Attendance policies and generate reports for HR review.",
     icon: <Clock3 className="h-5 w-5" />,
   },
   {
     title: "Overtime Management",
     description:
-      "Automatically calculate employee overtime based on attendance records, approved working hours and company overtime policies.",
+      "Automatically calculate employee overtime based on Attendance records, approved working hours and company overtime policies.",
     icon: <BarChart3 className="h-5 w-5" />,
   },
 ];
@@ -283,43 +283,43 @@ const workingHoursBullets = [
 ];
 
 const dashboardBullets = [
-  "Real-time attendance dashboard.",
-  "Daily attendance overview.",
-  "Weekly attendance reports.",
-  "Monthly attendance reports.",
-  "Branch-wise attendance tracking.",
-  "Department-wise attendance insights.",
+  "Real-time Attendance dashboard.",
+  "Daily Attendance overview.",
+  "Weekly Attendance reports.",
+  "Monthly Attendance reports.",
+  "Branch-wise Attendance tracking.",
+  "Department-wise Attendance insights.",
 ];
 
 const benefits: BenefitCard[] = [
   {
     title: "Improve Attendance Accuracy",
-    description: "Automate attendance tracking and eliminate manual errors with secure attendance capture.",
+    description: "Automate Attendance tracking and eliminate manual errors with secure Attendance capture.",
     icon: <BadgeCheck className="h-5 w-5" />,
   },
   {
     title: "Save HR Time",
-    description: "Reduce manual effort with automated attendance calculations, approvals and reporting.",
+    description: "Reduce manual effort with automated Attendance calculations, approvals and reporting.",
     icon: <Clock3 className="h-5 w-5" />,
   },
   {
     title: "Payroll-Ready Attendance",
-    description: "Automatically prepare attendance records for accurate salary and payroll processing.",
+    description: "Automatically prepare Attendance records for accurate salary and payroll processing.",
     icon: <BarChart3 className="h-5 w-5" />,
   },
   {
     title: "Better Employee Experience",
-    description: "Give employees access to attendance records, regularization requests and approval status.",
+    description: "Give employees access to Attendance records, regularization requests and approval status.",
     icon: <Users className="h-5 w-5" />,
   },
   {
     title: "Support Multiple Work Locations",
-    description: "Manage attendance across offices, branches, factories, warehouses and project locations.",
+    description: "Manage Attendance across offices, branches, factories, warehouses and project locations.",
     icon: <MapPin className="h-5 w-5" />,
   },
   {
     title: "Workforce Insights",
-    description: "Monitor attendance trends, absenteeism, late arrivals, overtime and workforce performance with real-time reports.",
+    description: "Monitor Attendance trends, absenteeism, late arrivals, overtime and workforce performance with real-time reports.",
     icon: <ShieldCheck className="h-5 w-5" />,
   },
 ];
@@ -328,27 +328,27 @@ const faqItems: FaqItem[] = [
   {
     question: "What is Attendance Management Software?",
     answer:
-      "Attendance Management Software helps businesses record, track and manage employee attendance, working hours, shifts, overtime, leave and attendance reports from a centralized platform.",
+      "Attendance Management Software helps businesses record, track and manage employee Attendance, working hours, shifts, overtime, leave and Attendance reports from a centralized platform.",
   },
   {
-    question: "Which attendance methods does Altroz HR support?",
+    question: "Which Attendance methods does Altroz HR support?",
     answer:
       "Altroz HR supports Biometric Attendance, Web Attendance, GPS Attendance, Geo-Fenced Attendance, Geo-Location Attendance and Selfie Attendance, so businesses can choose the best option for their workforce.",
   },
   {
-    question: "Can employees mark attendance from remote or field locations?",
+    question: "Can employees mark Attendance from remote or field locations?",
     answer:
-      "Yes. Employees can mark attendance using GPS, Geo-Fenced, Geo-Location and Selfie Attendance, which makes the system suitable for field teams, remote employees, sales staff and on-site workers.",
+      "Yes. Employees can mark Attendance using GPS, Geo-Fenced, Geo-Location and Selfie Attendance, which makes the system suitable for field teams, remote employees, sales staff and on-site workers.",
   },
   {
     question: "What is Geo-Fenced Attendance?",
     answer:
-      "Geo-Fenced Attendance allows employees to mark attendance only when they are inside an approved office, branch, factory or project site, helping prevent unauthorized attendance.",
+      "Geo-Fenced Attendance allows employees to mark Attendance only when they are inside an approved office, branch, factory or project site, helping prevent unauthorized Attendance.",
   },
   {
-    question: "Can employees request attendance corrections?",
+    question: "Can employees request Attendance corrections?",
     answer:
-      "Yes. Employees can submit attendance regularization requests for missing punches or incorrect attendance records, and managers can approve or reject them through the workflow.",
+      "Yes. Employees can submit Attendance regularization requests for missing punches or incorrect Attendance records, and managers can approve or reject them through the workflow.",
   },
   {
     question: "Can Altroz HR manage multiple shifts?",
@@ -358,12 +358,12 @@ const faqItems: FaqItem[] = [
   {
     question: "Does Attendance Management integrate with Payroll?",
     answer:
-      "Yes. Approved attendance records, working hours, overtime, late arrivals and leave data are automatically prepared for payroll processing so salary calculations stay accurate.",
+      "Yes. Approved Attendance records, working hours, overtime, late arrivals and leave data are automatically prepared for payroll processing so salary calculations stay accurate.",
   },
   {
-    question: "Can attendance be monitored across multiple branches and locations?",
+    question: "Can Attendance be monitored across multiple branches and locations?",
     answer:
-      "Yes. HR teams can monitor attendance across branches, offices, factories, warehouses and project sites from a centralized attendance dashboard with real-time reports.",
+      "Yes. HR teams can monitor Attendance across branches, offices, factories, warehouses and project sites from a centralized Attendance dashboard with real-time reports.",
   },
 ];
 
@@ -400,7 +400,7 @@ function renderMethodVisual(method: Method) {
           <div className="mt-5 rounded-2xl border border-border bg-white p-4">
             <div className="flex items-center gap-2 text-sm font-semibold text-ink">
               <BadgeCheck className="h-4 w-4 text-success" />
-              Secure and reliable attendance capture
+              Secure and reliable Attendance capture
             </div>
             <div className="mt-4 h-2 rounded-full bg-surface">
               <div className="h-2 w-[82%] rounded-full bg-gradient-to-r from-primary to-sky-500" />
@@ -417,7 +417,7 @@ function renderMethodVisual(method: Method) {
               <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
                 Portal workflow
               </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">Web attendance portal</h3>
+              <h3 className="mt-2 text-2xl font-bold text-ink">Web Attendance portal</h3>
             </div>
             <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft text-primary">
               <Globe className="h-7 w-7" />
@@ -507,7 +507,7 @@ function renderMethodVisual(method: Method) {
               <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
                 Location proof
               </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">Geo-location attendance</h3>
+              <h3 className="mt-2 text-2xl font-bold text-ink">Geo-location Attendance</h3>
             </div>
             <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft text-primary">
               <ScanText className="h-7 w-7" />
@@ -531,7 +531,7 @@ function renderMethodVisual(method: Method) {
           <div className="mt-5 rounded-2xl border border-border bg-white p-4">
             <div className="flex items-center gap-2 text-sm font-semibold text-ink">
               <CheckCircle2 className="h-4 w-4 text-success" />
-              Accurate location-verified attendance records
+              Accurate location-verified Attendance records
             </div>
           </div>
         </div>
@@ -545,7 +545,7 @@ function renderMethodVisual(method: Method) {
               <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
                 Approved zone
               </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">Geo-fenced attendance</h3>
+              <h3 className="mt-2 text-2xl font-bold text-ink">Geo-fenced Attendance</h3>
             </div>
             <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft text-primary">
               <Building2 className="h-7 w-7" />
@@ -565,7 +565,7 @@ function renderMethodVisual(method: Method) {
             <div className="mt-4 rounded-2xl bg-surface p-4">
               <div className="flex items-center gap-2 text-sm font-semibold text-ink">
                 <ShieldCheck className="h-4 w-4 text-success" />
-                Employee is inside the approved attendance zone
+                Employee is inside the approved Attendance zone
               </div>
             </div>
           </div>
@@ -580,7 +580,7 @@ function renderMethodVisual(method: Method) {
               <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
                 Mobile verification
               </div>
-              <h3 className="mt-2 text-2xl font-bold text-ink">Selfie attendance</h3>
+              <h3 className="mt-2 text-2xl font-bold text-ink">Selfie Attendance</h3>
             </div>
             <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft text-primary">
               <Smartphone className="h-7 w-7" />
@@ -593,7 +593,7 @@ function renderMethodVisual(method: Method) {
                 <div className="text-xs uppercase tracking-[0.18em] text-ink-soft">Today</div>
                 <div className="mt-2 text-xl font-bold text-ink">Selfie Check-In</div>
                 <div className="mt-1 text-sm text-ink-soft">
-                  Capture a selfie to verify identity and complete attendance securely.
+                  Capture a selfie to verify identity and complete Attendance securely.
                 </div>
                 <div className="mt-4 grid place-items-center rounded-[1.5rem] bg-primary-soft p-6 text-primary">
                   <Smartphone className="h-12 w-12" />
@@ -628,7 +628,7 @@ export default function AttendancePage() {
       <TopNavbar />
       <MainNavbar />
 
-      <main className="pb-28 md:pb-32">
+      <main className="pb-10 md:pb-24">
         <section className="attendance-hero hero-gradient relative overflow-hidden">
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/12 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/12 blur-3xl" />
@@ -645,10 +645,10 @@ export default function AttendancePage() {
               </h1>
 
               <p className="mx-auto mt-3 max-w-5xl text-base leading-7 text-ink-soft sm:text-lg">
-                Track employee attendance with biometric devices, web attendance, GPS,
+                Track employee Attendance with biometric devices, web Attendance, GPS,
                 geo-fencing, geo-location and selfie verification from one centralized platform.
-                Altroz HR helps businesses automate attendance, manage shifts, calculate working
-                hours, monitor overtime and generate accurate attendance reports with ease.
+                Altroz HR helps businesses automate Attendance, manage shifts, calculate working
+                hours, monitor overtime and generate accurate Attendance reports with ease.
               </p>
 
               <div className="mt-5 flex flex-wrap justify-center gap-3">
@@ -689,7 +689,7 @@ export default function AttendancePage() {
             <SectionHeader
               badge="Overview"
               title="What is Attendance Management Software?"
-              description="Attendance Management Software helps businesses record, monitor and manage employee attendance accurately from a single platform. It automates attendance tracking, working hour calculations, shift management, overtime and attendance reports, reducing manual work and improving workforce efficiency."
+              description="Attendance Management Software helps businesses record, monitor and manage employee Attendance accurately from a single platform. It automates Attendance tracking, working hour calculations, shift management, overtime and Attendance reports, reducing manual work and improving workforce efficiency."
             />
 
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
@@ -731,7 +731,7 @@ export default function AttendancePage() {
                 <div className="mt-6 rounded-2xl border border-border bg-surface p-4">
                   <div className="flex items-center gap-2 text-sm font-semibold text-ink">
                     <Building2 className="h-4 w-4 text-primary" />
-                    Centralized attendance, payroll-ready records and real-time visibility
+                    Centralized Attendance, payroll-ready records and real-time visibility
                   </div>
                 </div>
               </article>
@@ -743,8 +743,8 @@ export default function AttendancePage() {
           <div className="container-x">
             <SectionHeader
               badge="Attendance Methods"
-              title="Choose the attendance method that fits your workforce"
-              description="Every business has different attendance requirements. Altroz HR offers multiple attendance methods for office employees, remote teams, field staff and project-based workforces."
+              title="Choose the Attendance method that fits your workforce"
+              description="Every business has different Attendance requirements. Altroz HR offers multiple Attendance methods for office employees, remote teams, field staff and project-based workforces."
             />
 
             <Tabs defaultValue="biometric" className="mt-10">
@@ -801,8 +801,8 @@ export default function AttendancePage() {
           <div className="container-x">
             <SectionHeader
               badge="Workflow"
-              title="From attendance capture to payroll processing"
-              description="Every attendance entry follows a structured workflow from employee check-in to validation, approval and payroll processing."
+              title="From Attendance capture to payroll processing"
+              description="Every Attendance entry follows a structured workflow from employee check-in to validation, approval and payroll processing."
               centered
             />
 
@@ -827,8 +827,8 @@ export default function AttendancePage() {
           <div className="container-x">
             <SectionHeader
               badge="Attendance Management Features"
-              title="Powerful features for smarter attendance management"
-              description="Manage employee attendance with powerful features that automate shift planning, attendance calculations, regularization, overtime and reporting."
+              title="Powerful features for smarter Attendance management"
+              description="Manage employee Attendance with powerful features that automate shift planning, Attendance calculations, regularization, overtime and reporting."
             />
 
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
@@ -864,7 +864,7 @@ export default function AttendancePage() {
                     <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
                       Attendance Exceptions
                     </div>
-                    <h3 className="text-2xl font-bold text-ink">Handle attendance exceptions cleanly</h3>
+                    <h3 className="text-2xl font-bold text-ink">Handle Attendance exceptions cleanly</h3>
                   </div>
                 </div>
 
@@ -899,7 +899,7 @@ export default function AttendancePage() {
                 </div>
 
                 <p className="mt-4 text-sm leading-6 text-ink-soft">
-                  Automatically calculate employee working hours, break time and overtime based on attendance records. Get accurate time tracking without manual calculations.
+                  Automatically calculate employee working hours, break time and overtime based on Attendance records. Get accurate time tracking without manual calculations.
                 </p>
 
                 <ul className="mt-6 space-y-3">
@@ -937,12 +937,12 @@ export default function AttendancePage() {
                     <div className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
                       Attendance Dashboard
                     </div>
-                    <h3 className="text-2xl font-bold text-ink">Monitor attendance from one dashboard</h3>
+                    <h3 className="text-2xl font-bold text-ink">Monitor Attendance from one dashboard</h3>
                   </div>
                 </div>
 
                 <p className="mt-4 text-sm leading-6 text-ink-soft">
-                  Access attendance insights across employees, departments, branches and locations through a centralized dashboard with real-time reports and summaries.
+                  Access Attendance insights across employees, departments, branches and locations through a centralized dashboard with real-time reports and summaries.
                 </p>
 
                 <ul className="mt-6 space-y-3">
@@ -970,8 +970,8 @@ export default function AttendancePage() {
           <div className="container-x">
             <SectionHeader
               badge="Business Benefits"
-              title="Why businesses choose Altroz HR attendance management"
-              description="Simplify attendance management with automated tracking, accurate working hour calculations, real-time visibility and payroll-ready records."
+              title="Why businesses choose Altroz HR Attendance management"
+              description="Simplify Attendance management with automated tracking, accurate working hour calculations, real-time visibility and payroll-ready records."
             />
 
             <div className="mt-10 grid gap-6 lg:grid-cols-12">
@@ -980,14 +980,14 @@ export default function AttendancePage() {
                   <BadgeCheck className="h-3.5 w-3.5" />
                   Featured Benefit
                 </div>
-                <h3 className="mt-4 text-2xl font-bold text-ink">Accurate attendance for every employee</h3>
+                <h3 className="mt-4 text-2xl font-bold text-ink">Accurate Attendance for every employee</h3>
                 <p className="mt-3 text-sm leading-6 text-ink-soft">
-                  Record attendance using biometric, web, GPS, geo-fenced, geo-location and selfie attendance methods while maintaining accurate and reliable attendance records.
+                  Record Attendance using biometric, web, GPS, geo-fenced, geo-location and selfie Attendance methods while maintaining accurate and reliable Attendance records.
                 </p>
 
                 <div className="mt-6 space-y-3">
                   {[
-                    "Improve attendance accuracy at scale",
+                    "Improve Attendance accuracy at scale",
                     "Save HR time",
                     "Simplify payroll processing",
                     "Better employee transparency",
@@ -1022,7 +1022,7 @@ export default function AttendancePage() {
             <SectionHeader
               badge="Questions"
               title="Frequently Asked Questions"
-              description="Find answers to the most common questions about Attendance Management Software, attendance tracking methods, shift management, payroll integration and employee attendance."
+              description="Find answers to the most common questions about Attendance Management Software, Attendance tracking methods, shift management, payroll integration and employee Attendance."
               centered
             />
 
@@ -1043,26 +1043,26 @@ export default function AttendancePage() {
           </div>
         </section>
 
-        <section className="py-20 scroll-mt-24">
-          <div className="fixed bottom-6 left-1/2 z-50 w-fit max-w-[calc(100%-12px)] -translate-x-1/2 md:bottom-8">
-            <div className="relative overflow-hidden rounded-[1.25rem] border border-border bg-gradient-to-r from-[#eff6ff] via-white to-[#eefdf3] px-2.5 py-2 shadow-float backdrop-blur-md md:px-3 md:py-2.5">
+        <div className="scroll-mt-24">
+          <div className="mx-auto mt-6 w-full max-w-sm px-3 md:fixed md:bottom-8 md:left-1/2 md:z-50 md:mt-0 md:w-fit md:max-w-[calc(100%-24px)] md:-translate-x-1/2 md:px-0">
+            <div className="relative w-full overflow-hidden rounded-[1.25rem] border border-border bg-gradient-to-r from-[#eff6ff] via-white to-[#eefdf3] px-3 py-3 shadow-float backdrop-blur-md md:w-auto md:px-3 md:py-2.5">
               <div className="pointer-events-none absolute -left-6 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl" />
               <div className="pointer-events-none absolute -right-6 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-success/15 blur-3xl" />
-              <div className="relative flex flex-wrap items-center gap-x-1.5 gap-y-1 md:gap-x-2">
-                <h2 className="text-base font-bold tracking-tight text-ink sm:text-lg">
+              <div className="relative flex flex-col items-stretch gap-2 text-center sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:text-left md:gap-x-2">
+                <h2 className="text-sm font-bold leading-snug tracking-tight text-ink sm:text-base md:text-lg">
                   Track Every Punch with Precision.
                 </h2>
-                <ArrowRight className="h-3.5 w-3.5 shrink-0 text-primary md:h-4 md:w-4" />
+                <ArrowRight className="hidden h-3.5 w-3.5 shrink-0 text-primary sm:block md:h-4 md:w-4" />
                 <Link
                   to={ROUTES.bookDemo}
-                  className="btn-primary whitespace-nowrap px-3 py-1 text-xs md:px-3.5 md:py-1.5"
+                  className="btn-primary w-full whitespace-nowrap px-3 py-2 text-xs sm:w-auto md:px-3.5 md:py-1.5"
                 >
                   Book Free Demo
                 </Link>
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </main>
 
       <Footer />

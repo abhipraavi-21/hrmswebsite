@@ -573,7 +573,7 @@ function ScreenshotCard({
     <figure className="overflow-hidden rounded-[1.75rem] border border-border bg-white shadow-float">
       <div className="aspect-[16/10] overflow-hidden bg-surface">
         {children ? children : src ? (
-          <img src={src} alt={title} className="h-full w-full object-cover" loading="lazy" />
+          <img src={src} alt={title} className="h-full w-full object-cover object-top" loading="lazy" />
         ) : null}
       </div>
       <figcaption className="p-5">
@@ -1502,8 +1502,13 @@ export default function AssetManagementPage() {
                     Total assets, assets in use, under maintenance, category distribution, branch
                     distribution, recent activity and alerts all appear on one screen.
                   </p>
-                  <div className="mt-4 overflow-hidden rounded-[1.5rem] border border-border bg-surface/25">
-                    <AssetDashboardDigitalPreview compact />
+                  <div className="mt-4 overflow-hidden rounded-[1.5rem] border border-border bg-white">
+                    <img
+                      src={assetDashboardImage}
+                      alt="Altroz Asset Management dashboard overview"
+                      className="aspect-[16/10] h-full w-full object-cover object-top"
+                      loading="lazy"
+                    />
                   </div>
                   <div className="mt-4 grid gap-3 sm:grid-cols-2">
                     {[
@@ -1726,11 +1731,10 @@ export default function AssetManagementPage() {
               className="mt-8 grid gap-5 lg:grid-cols-3"
             >
               <ScreenshotCard
+                src={assetDashboardImage}
                 title="Asset dashboard view"
                 description="A centralized dashboard showing status, activity and summary information."
-              >
-                <AssetDashboardDigitalPreview compact />
-              </ScreenshotCard>
+              />
               <ScreenshotCard
                 src={showcaseImageOne}
                 title="Organization management"

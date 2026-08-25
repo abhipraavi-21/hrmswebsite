@@ -66,9 +66,9 @@
   --space-18: 72px;
   --space-22: 88px;
   --container-width: 1180px;
-  --section-padding-desktop: 64px;
-  --section-padding-tablet: 48px;
-  --section-padding-mobile: 36px;
+  --section-padding-desktop: 52px;
+  --section-padding-tablet: 40px;
+  --section-padding-mobile: 28px;
 
   --background: #ffffff;
   --foreground: #111827;
@@ -282,11 +282,11 @@
 }
 
 @utility section-compact {
-  padding-block: var(--space-14);
+  padding-block: var(--space-12);
 }
 
 @utility section-large {
-  padding-block: var(--space-22);
+  padding-block: var(--space-18);
 }
 
 @utility section-heading {
@@ -748,7 +748,7 @@
     }
 
     .section-compact {
-      padding-block: var(--space-12);
+      padding-block: var(--space-10);
     }
   }
 
@@ -759,11 +759,11 @@
     }
 
     .section-compact {
-      padding-block: var(--space-10);
+      padding-block: var(--space-8);
     }
 
     .cta-section {
-      padding-block: 48px;
+      padding-block: 36px;
     }
 
     .cta-box {
@@ -802,11 +802,11 @@
   }
 
   main > section.section-compact {
-    padding-block: var(--space-14) !important;
+    padding-block: var(--space-12) !important;
   }
 
   main > section.section-large {
-    padding-block: var(--space-22) !important;
+    padding-block: var(--space-18) !important;
   }
 
   main > section.page-banner {
@@ -822,7 +822,7 @@
   }
 
   main > section.cta-section {
-    padding-block: 56px !important;
+    padding-block: 48px !important;
   }
 
   main > section.home-hero {
