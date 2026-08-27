@@ -661,7 +661,7 @@ function BulkEmailHeroVisual() {
       <div className="relative overflow-hidden rounded-[2.25rem] border border-border bg-white p-4 shadow-[0_36px_100px_rgba(15,23,42,0.12)]">
         <div className="pointer-events-none absolute inset-0 opacity-100">
           <div className="absolute -left-24 top-8 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
-          <div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-[#F4C430]/25 blur-3xl" />
+          <div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-[#EE6801]/25 blur-3xl" />
           <div className="absolute bottom-0 left-24 h-56 w-56 rounded-full bg-primary-soft/70 blur-3xl" />
         </div>
 
@@ -726,8 +726,8 @@ function BulkEmailHeroVisual() {
                     Send immediately to the selected audience.
                   </p>
                 </div>
-                <div className="rounded-2xl border border-border bg-[#FFF9E6] p-4">
-                  <p className="text-xs uppercase tracking-[0.2em] text-[#D9A900]">Schedule</p>
+                <div className="rounded-2xl border border-border bg-[#FFF1E6] p-4">
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#C95100]">Schedule</p>
                   <p className="mt-2 text-sm text-ink">
                     Queue the message for later delivery.
                   </p>
@@ -804,7 +804,7 @@ function FloatingSummaryCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#FFF9E6] text-primary">
+        <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#FFF1E8] text-primary">
           <Icon className="h-4 w-4" />
         </div>
         <div>
@@ -820,7 +820,7 @@ function ProductPreviewCard({
   title,
   subtitle,
   lines,
-  accent = "bg-gradient-to-br from-[#FFF9E6] to-white",
+        accent = "bg-gradient-to-br from-[#FFF1E8] to-white",
 }: {
   title: string;
   subtitle: string;
@@ -859,7 +859,7 @@ export default function BulkEmailHomePage() {
   const location = useLocation();
 
   return (
-    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
+    <div className="bulk-email-home-theme min-h-screen">
       <PageSEO
         title="Bulk Email Software for Business Campaigns | Altroz"
         description="Altroz Bulk Email is a bulk email software to broadcast, schedule, template and analyse business email campaigns from one dashboard. Book a demo."
@@ -868,7 +868,7 @@ export default function BulkEmailHomePage() {
       <BulkEmailNavbar />
 
       <main className="pb-32">
-        <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(244,196,48,0.16),_transparent_36%),linear-gradient(180deg,#FFFCF5_0%,#FFFFFF_72%)] pt-8">
+        <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(238,104,1,0.16),_transparent_36%),radial-gradient(circle_at_top_right,_rgba(238,104,1,0.14),_transparent_30%),linear-gradient(180deg,#0247A5_0%,#0247A5_72%)] pt-8">
           <div className="site-container py-6 pb-14 lg:py-10 lg:pb-20">
             <div className="grid items-center gap-12 lg:grid-cols-[0.96fr_1.04fr]">
               <ScrollReveal>
@@ -896,7 +896,7 @@ export default function BulkEmailHomePage() {
                     </ActionLink>
                     <ActionLink
                       href="#features"
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-5 py-3 text-sm font-bold text-ink transition-transform hover:-translate-y-0.5 hover:bg-surface"
+                    className="inline-flex items-center gap-2 rounded-full border border-[#EE6801] bg-white px-5 py-3 text-sm font-bold text-[#EE6801] transition-transform hover:-translate-y-0.5 hover:bg-[#FFF1E6]"
                     >
                       Explore Features
                     </ActionLink>
@@ -1091,7 +1091,7 @@ export default function BulkEmailHomePage() {
                     </div>
 
                     <div className="space-y-4">
-                      <div className="rounded-[1.5rem] border border-border bg-[linear-gradient(180deg,#FFFCF5_0%,#FFFFFF_100%)] p-4">
+                      <div className="rounded-[1.5rem] border border-border bg-[linear-gradient(180deg,#FFF1E8_0%,#FFFFFF_100%)] p-4">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
@@ -1186,7 +1186,7 @@ export default function BulkEmailHomePage() {
             <StaggerReveal step={40} className="mt-10 grid gap-5 lg:grid-cols-3">
               <ScreenshotMock
                 title="Broadcast screen"
-                accent="bg-gradient-to-br from-[#FFF9E6] via-white to-white"
+                accent="bg-gradient-to-br from-[#FFF1E8] via-white to-white"
               >
                 <div className="space-y-3">
                   <div className="rounded-2xl border border-border bg-white p-3">
@@ -1204,19 +1204,19 @@ export default function BulkEmailHomePage() {
 
               <ScreenshotMock
                 title="Scheduling screen"
-                accent="bg-gradient-to-br from-[#FFF9E6] via-white to-white"
+                accent="bg-gradient-to-br from-[#FFF1E6] via-white to-white"
               >
                 <div className="space-y-3">
                   <div className="rounded-2xl border border-border bg-white p-3">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-semibold text-ink">Campaign timeline</span>
-                      <span className="rounded-full bg-[#FFF9E6] px-2 py-1 text-[11px] font-semibold text-[#D9A900]">
+                      <span className="rounded-full bg-[#FFF1E6] px-2 py-1 text-[11px] font-semibold text-[#C95100]">
                         Queue
                       </span>
                     </div>
                     <div className="mt-3 flex items-center gap-2">
                       <div className="h-2 flex-1 rounded-full bg-[#EEF1F4]" />
-                      <div className="h-2 flex-1 rounded-full bg-[#F4C430]" />
+                      <div className="h-2 flex-1 rounded-full bg-primary" />
                       <div className="h-2 flex-1 rounded-full bg-[#EEF1F4]" />
                     </div>
                   </div>
@@ -1228,7 +1228,7 @@ export default function BulkEmailHomePage() {
 
               <ScreenshotMock
                 title="Analytics screen"
-                accent="bg-gradient-to-br from-emerald-50 via-white to-white"
+                accent="bg-gradient-to-br from-[#FFF1E8] via-white to-white"
               >
                 <div className="grid gap-3">
                   <div className="rounded-2xl border border-border bg-white p-3">
@@ -1453,7 +1453,7 @@ export default function BulkEmailHomePage() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-5 rounded-[1.5rem] border border-border bg-[#FFF9E6] p-4 text-sm leading-7 text-ink">
+                <div className="mt-5 rounded-[1.5rem] border border-border bg-[#FFF1E6] p-4 text-sm leading-7 text-ink">
                   Note: Altroz Bulk Email does not promise specific open rates or delivery
                   percentages. Reporting reflects actual platform data for your campaigns.
                 </div>
@@ -1739,8 +1739,8 @@ export default function BulkEmailHomePage() {
           </div>
         </section>
 
-        <section className="section relative overflow-hidden bg-[#111827] text-white">
-          <div className="pointer-events-none absolute -top-28 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(244,196,48,0.3),transparent_70%)] blur-3xl" />
+        <section className="section relative overflow-hidden bg-[#0247A5] text-white">
+          <div className="pointer-events-none absolute -top-28 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(238,104,1,0.28),transparent_70%)] blur-3xl" />
           <div className="site-container">
             <div className="mx-auto max-w-4xl text-center">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.26em] text-primary">
@@ -1764,7 +1764,7 @@ export default function BulkEmailHomePage() {
                 </ActionLink>
                 <ActionLink
                   href={ROUTES.bulkEmailContact}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-transparent px-5 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 hover:bg-white/10"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#EE6801] px-5 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 hover:bg-[#C95100]"
                 >
                   Talk to Our Team <ArrowRight className="h-4 w-4" />
                 </ActionLink>
@@ -1790,4 +1790,3 @@ export default function BulkEmailHomePage() {
     </div>
   );
 }
-

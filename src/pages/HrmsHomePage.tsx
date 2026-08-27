@@ -64,7 +64,7 @@ export default function HrmsHomePage() {
   const roiCards = roiSection?.items?.length ? roiSection.items : roiFallbackCards;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="hrms-page-theme min-h-screen bg-background">
       <PageSEO
         title={remoteContent?.metaTitle ?? "Altroz HRMS | HR, Payroll and Attendance Platform"}
         description={

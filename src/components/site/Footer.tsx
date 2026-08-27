@@ -183,18 +183,18 @@ export default function Footer() {
               <ProductBrandLine
                 compact
                 badgeLabel="Asset Management"
-                badgeClassName="bg-[#0b5cff] text-white"
+                badgeClassName="bg-primary text-white"
                 className="scale-[0.88] origin-left"
               />
             ) : isBulkEmailPage ? (
               <ProductBrandLine
                 compact
                 badgeLabel="Bulk Email"
-                badgeClassName="bg-[#0b5cff] text-white"
+                badgeClassName="bg-primary text-white"
                 className="scale-[0.88] origin-left"
               />
             ) : (
-              <BrandMark mode="compact" className="scale-[0.8] origin-left" />
+              <BrandMark mode="wordmark" className="scale-[0.9] origin-left" />
             )}
             <p className="mt-2 max-w-xs text-xs leading-5 text-white/70">
               {isAssetManagementPage

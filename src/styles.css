@@ -117,18 +117,18 @@
 
   --primary: #0b7a7a;
   --primary-foreground: #ffffff;
-  --primary-soft: rgba(11, 122, 122, 0.12);
+  --primary-soft: #eaf7f7;
 
-  --secondary: #1e4fd1;
-  --secondary-foreground: #ffffff;
+  --secondary: #eaf7f7;
+  --secondary-foreground: #0b7a7a;
 
-  --muted: rgba(11, 122, 122, 0.08);
+  --muted: #f2fbfb;
   --muted-foreground: #57717c;
 
-  --accent: rgba(30, 79, 209, 0.12);
-  --accent-foreground: #0a1f2b;
+  --accent: #eaf7f7;
+  --accent-foreground: #0b7a7a;
 
-  --success: #0ea5a5;
+  --success: #075f5f;
   --success-foreground: #ffffff;
 
   --destructive: #dc2626;
@@ -138,7 +138,7 @@
   --input: #dce7ea;
   --ring: #0b7a7a;
 
-  --surface: #ffffff;
+  --surface: #f7fcfc;
   --ink: #0a1f2b;
   --ink-soft: #57717c;
   --primary-rgb: 11, 122, 122;
@@ -148,16 +148,16 @@
 
 .asset-management-theme-shell {
   background:
-    radial-gradient(circle at top, rgba(11, 122, 122, 0.18), transparent 38%),
-    radial-gradient(circle at 14% 18%, rgba(30, 79, 209, 0.05), transparent 26%),
-    linear-gradient(180deg, #ffffff 0%, #f6fafb 44%, #eff6f7 100%);
+    radial-gradient(circle at top, rgba(11, 122, 122, 0.16), transparent 38%),
+    radial-gradient(circle at 14% 18%, rgba(11, 122, 122, 0.04), transparent 26%),
+    linear-gradient(180deg, #ffffff 0%, #f7fcfc 44%, #eef8f8 100%);
 }
 
 .asset-management-theme .hero-gradient {
   background:
-    radial-gradient(60% 50% at 85% 10%, rgba(11, 122, 122, 0.24), transparent 60%),
-    radial-gradient(50% 40% at 10% 20%, rgba(30, 79, 209, 0.06), transparent 60%),
-    linear-gradient(180deg, #ffffff 0%, #f6fafb 100%);
+    radial-gradient(60% 50% at 85% 10%, rgba(11, 122, 122, 0.22), transparent 60%),
+    radial-gradient(50% 40% at 10% 20%, rgba(11, 122, 122, 0.05), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f7fcfc 100%);
 }
 
 .asset-management-theme .popup-blue-band {
@@ -165,23 +165,49 @@
     90deg,
     rgba(255, 255, 255, 0) 0%,
     rgba(11, 122, 122, 0.72) 18%,
-    rgba(30, 79, 209, 0.86) 38%,
+    rgba(11, 122, 122, 0.88) 38%,
     rgba(11, 122, 122, 0.92) 60%,
     rgba(255, 255, 255, 0) 100%
   );
 }
 
 .asset-management-theme .popup-blue-surface {
-  background-color: rgba(246, 250, 251, 0.98);
+  background-color: rgba(247, 252, 252, 0.98);
   background-image:
     radial-gradient(120% 90% at 50% 0%, rgba(11, 122, 122, 0.18), transparent 58%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(233, 239, 253, 0.98) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(234, 247, 247, 0.98) 100%);
 }
 
 .asset-management-cta-panel {
   background:
-    radial-gradient(circle at top left, rgba(11, 122, 122, 0.22), transparent 34%),
-    linear-gradient(135deg, #0a1f2b 0%, #0b7a7a 80%, #1e4fd1 100%);
+    radial-gradient(circle at top left, rgba(11, 122, 122, 0.18), transparent 34%),
+    linear-gradient(135deg, #075f5f 0%, #0b7a7a 100%);
+}
+
+.asset-management-theme .btn-primary {
+  background: #0b7a7a;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(11, 122, 122, 0.22);
+}
+
+.asset-management-theme .btn-primary:hover {
+  background: #075f5f;
+}
+
+.asset-management-theme .btn-primary:focus-visible {
+  box-shadow:
+    0 12px 26px rgba(11, 122, 122, 0.3),
+    0 0 0 3px rgba(11, 122, 122, 0.18);
+}
+
+.asset-management-theme .btn-outline {
+  background: #ffffff;
+  color: #0b7a7a;
+  border-color: #0b7a7a;
+}
+
+.asset-management-theme .btn-outline:hover {
+  background: #eaf7f7;
 }
 
 .bulk-email-theme {
@@ -193,20 +219,20 @@
   --popover: #ffffff;
   --popover-foreground: #111827;
 
-  --primary: #f4c430;
-  --primary-foreground: #111827;
-  --primary-soft: #fff9e6;
+  --primary: #ee6801;
+  --primary-foreground: #ffffff;
+  --primary-soft: #fff1e8;
 
-  --secondary: #fff9e6;
-  --secondary-foreground: #111827;
+  --secondary: #fff1e8;
+  --secondary-foreground: #ee6801;
 
-  --muted: #fffcf5;
+  --muted: #fff8f1;
   --muted-foreground: #5b6473;
 
-  --accent: #fff9e6;
-  --accent-foreground: #111827;
+  --accent: #fff1e8;
+  --accent-foreground: #ee6801;
 
-  --success: #16a34a;
+  --success: #ee6801;
   --success-foreground: #ffffff;
 
   --destructive: #dc2626;
@@ -214,12 +240,318 @@
 
   --border: #e5e7eb;
   --input: #e5e7eb;
-  --ring: #d9a900;
+  --ring: #ee6801;
 
-  --surface: #fffcf5;
+  --surface: #fff8f1;
   --ink: #111827;
   --ink-soft: #64748b;
-  --primary-rgb: 244, 196, 48;
+  --primary-rgb: 238, 104, 1;
+}
+
+.bulk-email-home-theme {
+  --background: #ffffff;
+  --foreground: #111827;
+
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+
+  --primary: #ee6801;
+  --primary-foreground: #ffffff;
+  --primary-soft: #fff1e8;
+
+  --secondary: #fff1e8;
+  --secondary-foreground: #ee6801;
+
+  --muted: #fff8f1;
+  --muted-foreground: #4b5563;
+
+  --accent: #fff1e8;
+  --accent-foreground: #ee6801;
+
+  --success: #ee6801;
+  --success-foreground: #ffffff;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border: #f0e2d6;
+  --input: #f0e2d6;
+  --ring: #ee6801;
+
+  --surface: #fff8f1;
+  --ink: #111827;
+  --ink-soft: #64748b;
+  --primary-rgb: 238, 104, 1;
+  --shadow-card: 0 1px 2px rgba(17, 24, 39, 0.04), 0 8px 24px rgba(238, 104, 1, 0.06);
+  --shadow-pop: 0 12px 40px rgba(238, 104, 1, 0.12);
+  --shadow-float: 0 30px 60px -20px rgba(238, 104, 1, 0.22);
+
+  background:
+    radial-gradient(circle at top right, rgba(238, 104, 1, 0.1), transparent 34%),
+    radial-gradient(circle at 14% 18%, rgba(238, 104, 1, 0.08), transparent 26%),
+    linear-gradient(180deg, #0247a5 0%, #0247a5 100%);
+}
+
+.bulk-email-home-theme .popup-blue-band {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(238, 104, 1, 0.72) 18%,
+    rgba(238, 104, 1, 0.92) 38%,
+    rgba(238, 104, 1, 0.78) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.bulk-email-home-theme .popup-blue-surface {
+  background-color: rgba(255, 248, 241, 0.98);
+  background-image:
+    radial-gradient(120% 90% at 50% 0%, rgba(238, 104, 1, 0.16), transparent 58%),
+    radial-gradient(90% 70% at 86% 12%, rgba(238, 104, 1, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 241, 232, 0.98) 100%);
+}
+
+.bulk-email-home-theme .btn-primary:hover {
+  background: #c95100;
+}
+
+.bulk-email-home-theme .btn-primary:focus-visible {
+  box-shadow:
+    0 12px 26px rgba(238, 104, 1, 0.3),
+    0 0 0 3px rgba(238, 104, 1, 0.18);
+}
+
+.bulk-email-home-theme .btn-success:hover {
+  background: #c95100;
+}
+
+.bulk-email-home-theme .btn-success:focus-visible {
+  box-shadow:
+    0 12px 26px rgba(238, 104, 1, 0.3),
+    0 0 0 3px rgba(238, 104, 1, 0.18);
+}
+
+.hrms-page-theme {
+  --background: #ffffff;
+  --foreground: #111827;
+
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+
+  --primary: #013c9a;
+  --primary-foreground: #ffffff;
+  --primary-soft: #eaf1ff;
+
+  --secondary: #eef7e9;
+  --secondary-foreground: #4a8b25;
+
+  --muted: #f6f9ff;
+  --muted-foreground: #4b5563;
+
+  --accent: #eaf1ff;
+  --accent-foreground: #013c9a;
+
+  --success: #4a8b25;
+  --success-foreground: #ffffff;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border: #d9e3f2;
+  --input: #d9e3f2;
+  --ring: #013c9a;
+
+  --surface: #f6f9ff;
+  --ink: #111827;
+  --ink-soft: #4b5563;
+  --primary-rgb: 1, 60, 154;
+  --shadow-card: 0 1px 2px rgba(17, 24, 39, 0.04), 0 8px 24px rgba(1, 60, 154, 0.06);
+  --shadow-pop: 0 12px 40px rgba(1, 60, 154, 0.12);
+  --shadow-float: 0 30px 60px -20px rgba(1, 60, 154, 0.22);
+}
+
+.hrms-page-theme .hero-gradient {
+  background:
+    radial-gradient(60% 50% at 85% 10%, rgba(1, 60, 154, 0.14), transparent 60%),
+    radial-gradient(50% 40% at 10% 20%, rgba(74, 139, 37, 0.12), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f6f9ff 100%);
+}
+
+.hrms-page-theme .popup-blue-band {
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(74, 139, 37, 0.62) 18%,
+    rgba(1, 60, 154, 0.92) 38%,
+    rgba(74, 139, 37, 0.84) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.hrms-page-theme .popup-blue-surface {
+  background-color: rgba(246, 249, 255, 0.98);
+  background-image:
+    radial-gradient(120% 90% at 50% 0%, rgba(1, 60, 154, 0.16), transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(234, 241, 255, 0.98) 100%);
+}
+
+.hrms-page-theme .btn-primary {
+  background: #013c9a;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(1, 60, 154, 0.22);
+}
+
+.hrms-page-theme .btn-primary:hover {
+  background: #002e78;
+}
+
+.hrms-page-theme .btn-primary:focus-visible {
+  box-shadow:
+    0 12px 26px rgba(1, 60, 154, 0.3),
+    0 0 0 3px rgba(1, 60, 154, 0.18);
+}
+
+.hrms-page-theme .btn-success {
+  background: #4a8b25;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(74, 139, 37, 0.22);
+}
+
+.hrms-page-theme .btn-success:hover {
+  background: #3d7220;
+}
+
+.hrms-page-theme .btn-success:focus-visible {
+  box-shadow:
+    0 12px 26px rgba(74, 139, 37, 0.3),
+    0 0 0 3px rgba(74, 139, 37, 0.18);
+}
+
+.hrms-page-theme #demo .btn-success {
+  background: #013c9a;
+  box-shadow: 0 8px 18px rgba(1, 60, 154, 0.22);
+}
+
+.hrms-page-theme #demo .btn-success:hover {
+  background: #002e78;
+}
+
+.hrms-page-theme #demo .btn-outline {
+  background: #4a8b25;
+  border-color: #4a8b25;
+  color: #ffffff;
+}
+
+.hrms-page-theme #demo .btn-outline:hover {
+  background: #3d7220;
+}
+
+.hrms-page-theme #trial .button-group > a:first-child {
+  background: #013c9a;
+  border: 1px solid #013c9a;
+  color: #ffffff;
+}
+
+.hrms-page-theme #trial .button-group > a:first-child:hover {
+  background: #002e78;
+  border-color: #002e78;
+}
+
+.hrms-page-theme #trial .cta-box {
+  background: linear-gradient(180deg, #013c9a 0%, #002e78 100%);
+}
+
+.hrms-page-theme #trial .btn-success {
+  background: #eaf1ff;
+  border: 1px solid #013c9a;
+  color: #013c9a;
+}
+
+.hrms-page-theme #trial .btn-success:hover {
+  background: #d9e6ff;
+}
+
+.home-page-theme {
+  --background: #f6f9ff;
+  --foreground: #111827;
+
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+
+  --primary: #003c99;
+  --primary-foreground: #ffffff;
+  --primary-soft: #eef4ff;
+
+  --secondary: #eef4ff;
+  --secondary-foreground: #003c99;
+
+  --muted: #f6f9ff;
+  --muted-foreground: #4b5563;
+
+  --accent: #eef4ff;
+  --accent-foreground: #003c99;
+
+  --success: #1a56b3;
+  --success-foreground: #ffffff;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border: #d9e3f2;
+  --input: #d9e3f2;
+  --ring: #003c99;
+
+  --surface: #eef4ff;
+  --ink: #111827;
+  --ink-soft: #4b5563;
+  --primary-rgb: 0, 60, 153;
+  --shadow-card: 0 1px 2px rgba(17, 24, 39, 0.04), 0 8px 24px rgba(0, 60, 153, 0.06);
+  --shadow-pop: 0 12px 40px rgba(0, 60, 153, 0.12);
+  --shadow-float: 0 30px 60px -20px rgba(0, 60, 153, 0.22);
+
+  background:
+    radial-gradient(circle at top right, rgba(0, 60, 153, 0.1), transparent 34%),
+    radial-gradient(circle at 14% 18%, rgba(26, 86, 179, 0.08), transparent 26%),
+    linear-gradient(180deg, #f6f9ff 0%, #ffffff 42%, #eef4ff 100%);
+}
+
+.home-page-theme .hero-gradient {
+  background:
+    radial-gradient(60% 50% at 85% 10%, rgba(0, 60, 153, 0.16), transparent 60%),
+    radial-gradient(50% 40% at 10% 20%, rgba(26, 86, 179, 0.08), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f6f9ff 100%);
+}
+
+.home-page-theme .btn-primary:hover {
+  background: #002b70;
+}
+
+.home-page-theme .btn-primary {
+  background: #003c99;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(0, 60, 153, 0.22);
+}
+
+.home-page-theme .btn-primary:focus-visible {
+  box-shadow:
+    0 12px 26px rgba(0, 60, 153, 0.3),
+    0 0 0 3px rgba(0, 60, 153, 0.18);
+}
+
+.home-page-theme .btn-outline {
+  background: #ffffff;
+  color: #003c99;
+  border-color: #003c99;
+}
+
+.home-page-theme .btn-outline:hover {
+  background: #eef4ff;
 }
 
 @layer base {
@@ -643,60 +975,119 @@
 @layer components {
   .bulk-email-theme {
     background:
-      radial-gradient(60% 50% at 85% 10%, rgba(244, 196, 48, 0.18), transparent 60%),
-      radial-gradient(50% 40% at 10% 20%, rgba(17, 24, 39, 0.05), transparent 60%),
-      linear-gradient(180deg, #ffffff 0%, #fff9e6 100%);
+      radial-gradient(60% 50% at 85% 10%, rgba(238, 104, 1, 0.18), transparent 60%),
+      radial-gradient(50% 40% at 10% 20%, rgba(238, 104, 1, 0.08), transparent 60%),
+      linear-gradient(180deg, #0247a5 0%, #0247a5 100%);
   }
 
   .bulk-email-theme .hero-gradient {
     background:
-      radial-gradient(circle at top left, rgba(244, 196, 48, 0.16), transparent 36%),
-      radial-gradient(60% 50% at 85% 10%, rgba(244, 196, 48, 0.14), transparent 60%),
-      linear-gradient(180deg, #fffcf5 0%, #ffffff 72%);
+      radial-gradient(circle at top left, rgba(238, 104, 1, 0.16), transparent 36%),
+      radial-gradient(60% 50% at 85% 10%, rgba(238, 104, 1, 0.14), transparent 60%),
+      linear-gradient(180deg, #0247a5 0%, #0247a5 72%);
   }
 
   .bulk-email-theme .btn-primary:hover {
-    background: #d9a900;
+    background: #c95100;
   }
 
   .bulk-email-theme [class*="text-[#1d4ed8]"] {
-    color: #d9a900 !important;
+    color: #ee6801 !important;
+  }
+
+  .bulk-email-theme [class*="text-[#0f3fd1]"] {
+    color: #c95100 !important;
   }
 
   .bulk-email-theme [class*="border-[#1d4ed8]"] {
-    border-color: rgba(217, 169, 0, 0.35) !important;
+    border-color: rgba(238, 104, 1, 0.35) !important;
   }
 
   .bulk-email-theme [class*="bg-[#1d4ed8]"] {
-    background-color: rgba(244, 196, 48, 0.14) !important;
+    background-color: rgba(238, 104, 1, 0.14) !important;
+  }
+
+  .bulk-email-theme [class*="bg-[#f4c430]"] {
+    background-color: #ee6801 !important;
   }
 
   .bulk-email-theme [class*="from-[#1d4ed8]"] {
-    --tw-gradient-from: rgb(244 196 48 / 0.18) !important;
+    --tw-gradient-from: rgb(238 104 1 / 0.18) !important;
+  }
+
+  .bulk-email-theme [class*="from-[#d97706]"] {
+    --tw-gradient-from: rgb(238 104 1 / 0.18) !important;
   }
 
   .bulk-email-theme [class*="via-[#eff6ff]"] {
-    --tw-gradient-via: rgb(255 249 230 / 0.96) !important;
+    --tw-gradient-via: rgb(255 241 232 / 0.96) !important;
+  }
+
+  .bulk-email-theme [class*="via-[#f6faff]"] {
+    --tw-gradient-via: rgb(255 241 232 / 0.96) !important;
+  }
+
+  .bulk-email-theme [class*="via-[#fffbf4]"],
+  .bulk-email-theme [class*="via-[#fff7ef]"],
+  .bulk-email-theme [class*="via-[#fff9e6]"] {
+    --tw-gradient-via: rgb(255 241 232 / 0.96) !important;
   }
 
   .bulk-email-theme [class*="to-[#fff7ef]"],
   .bulk-email-theme [class*="to-[#fffbf4]"],
   .bulk-email-theme [class*="to-[#fff9e6]"] {
-    --tw-gradient-to: rgb(255 249 230 / 0.96) !important;
+    --tw-gradient-to: rgb(255 241 232 / 0.96) !important;
+  }
+
+  .bulk-email-theme [class*="to-[#d97706]"] {
+    --tw-gradient-to: rgb(238 104 1 / 0.96) !important;
   }
 
   .bulk-email-theme [class*="bg-[#fff7ef]"],
   .bulk-email-theme [class*="bg-[#fffbf4]"],
   .bulk-email-theme [class*="bg-[#fff9e6]"] {
-    background-color: #fff9e6 !important;
+    background-color: #fff1e8 !important;
+  }
+
+  .bulk-email-theme [class*="bg-[#d97706]"] {
+    background-color: rgba(238, 104, 1, 0.14) !important;
   }
 
   .bulk-email-theme [class*="text-[#b45309]"] {
-    color: #d9a900 !important;
+    color: #ee6801 !important;
+  }
+
+  .bulk-email-theme [class*="text-[#d97706]"] {
+    color: #ee6801 !important;
+  }
+
+  .bulk-email-theme [class*="text-[#d9a900]"] {
+    color: #c95100 !important;
   }
 
   .bulk-email-theme [class*="border-[#b45309]"] {
-    border-color: #d9a900 !important;
+    border-color: #ee6801 !important;
+  }
+
+  .bulk-email-theme [class*="border-[#d97706]"] {
+    border-color: #ee6801 !important;
+  }
+
+  .bulk-email-theme [class*="border-[#d9a900]"] {
+    border-color: #c95100 !important;
+  }
+
+  .bulk-email-theme [class*="hover:bg-[#e0b61f]"]:hover {
+    background-color: #c95100 !important;
+  }
+
+  .bulk-email-theme [class*="hover:bg-[#fff4cc]"]:hover,
+  .bulk-email-theme [class*="hover:bg-[#fffbf4]"]:hover {
+    background-color: #fff1e8 !important;
+  }
+
+  .bulk-email-theme [class*="hover:text-[#0f3fd1]"]:hover {
+    color: #c95100 !important;
   }
 
   .about-us-theme [class*="text-[#1d4ed8]"] {

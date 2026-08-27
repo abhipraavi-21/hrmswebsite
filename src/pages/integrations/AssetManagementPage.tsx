@@ -632,13 +632,13 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
   const categoryData = [
     { label: "IT equipment", value: 64, color: "bg-primary" },
     { label: "Office equipment", value: 22, color: "bg-success" },
-    { label: "Communication", value: 14, color: "bg-amber-500" },
+    { label: "Communication", value: 14, color: "bg-[#bfe8e8]" },
   ] as const;
 
   const branchData = [
     { label: "Head office", value: 58, color: "bg-primary" },
     { label: "Warehouse", value: 27, color: "bg-success" },
-    { label: "Field teams", value: 15, color: "bg-violet-500" },
+    { label: "Field teams", value: 15, color: "bg-[#d8f1f1]" },
   ] as const;
 
   const summaryItems = [
@@ -682,11 +682,11 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
       case "primary":
         return "bg-primary-soft text-primary";
       case "success":
-        return "bg-[#ecfdf3] text-success";
+        return "bg-[#eaf7f7] text-success";
       case "amber":
-        return "bg-amber-100 text-amber-700";
+        return "bg-[#eaf7f7] text-[#075f5f]";
       case "violet":
-        return "bg-violet-100 text-violet-700";
+        return "bg-[#f7fcfc] text-[#0b7a7a]";
       default:
         return "bg-surface text-ink-soft";
     }
@@ -695,7 +695,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
   return (
     <div
       className={cn(
-        "h-full w-full overflow-hidden bg-[radial-gradient(circle_at_top_right,_rgba(59,130,246,0.08),_transparent_32%),linear-gradient(180deg,#f8fbff_0%,#ffffff_34%,#ffffff_100%)] text-ink",
+        "h-full w-full overflow-hidden bg-[radial-gradient(circle_at_top_right,_rgba(11,122,122,0.08),_transparent_32%),linear-gradient(180deg,#f7fcfc_0%,#ffffff_34%,#ffffff_100%)] text-ink",
         compact ? "min-h-full" : "grid min-h-[640px] lg:grid-cols-[220px_1fr]",
       )}
     >
@@ -774,7 +774,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
                     <div className="mt-1 text-2xl font-black tracking-tight text-ink">92%</div>
                     <div className="text-xs text-ink-soft">Coverage across tracked assets</div>
                   </div>
-                  <div className="h-12 w-12 rounded-full bg-[conic-gradient(#3b82f6_0deg_332deg,#dbeafe_332deg_360deg)] p-1.5">
+                  <div className="h-12 w-12 rounded-full bg-[conic-gradient(#0b7a7a_0deg_332deg,#eaf7f7_332deg_360deg)] p-1.5">
                     <div className="h-full w-full rounded-full bg-white" />
                   </div>
                 </div>
@@ -844,7 +844,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
                   </div>
                   <div className="mt-2.5 flex items-center gap-2.5">
                     <div className="relative h-16 w-16 shrink-0">
-                      <div className="absolute inset-0 rounded-full bg-[conic-gradient(#3b82f6_0deg_230deg,#22c55e_230deg_310deg,#f59e0b_310deg_360deg)]" />
+                      <div className="absolute inset-0 rounded-full bg-[conic-gradient(#0b7a7a_0deg_230deg,#d8f1f1_230deg_310deg,#f7fcfc_310deg_360deg)]" />
                       <div className="absolute inset-[9px] rounded-full bg-white" />
                       <div className="absolute inset-0 grid place-items-center">
                         <div className="text-center">
@@ -930,8 +930,8 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
                     <svg viewBox="0 0 320 120" className="h-28 w-full">
                       <defs>
                         <linearGradient id="assetTrendFillCompact" x1="0" x2="0" y1="0" y2="1">
-                          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.28" />
-                          <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.02" />
+                          <stop offset="0%" stopColor="#0b7a7a" stopOpacity="0.28" />
+                          <stop offset="100%" stopColor="#0b7a7a" stopOpacity="0.02" />
                         </linearGradient>
                       </defs>
                       <path
@@ -941,7 +941,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
                       <polyline
                         points={trendDots.map((point) => `${point.x},${point.y}`).join(" ")}
                         fill="none"
-                        stroke="#3b82f6"
+                        stroke="#0b7a7a"
                         strokeWidth="4"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -955,7 +955,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
         </div>
       ) : (
         <>
-      <aside className="border-b border-border bg-[#f8fbff] p-3 lg:border-b-0 lg:border-r">
+      <aside className="border-b border-border bg-[#f7fcfc] p-3 lg:border-b-0 lg:border-r">
         <div className="rounded-full border border-border bg-white px-3 py-2 text-xs text-ink-soft shadow-sm">
           Search...
         </div>
@@ -994,7 +994,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
               <div className="text-3xl font-black tracking-tight text-ink">92%</div>
               <div className="text-xs text-ink-soft">Coverage across tracked assets</div>
             </div>
-            <div className="h-16 w-16 rounded-full bg-[conic-gradient(#3b82f6_0deg_332deg,#dbeafe_332deg_360deg)] p-2">
+            <div className="h-16 w-16 rounded-full bg-[conic-gradient(#0b7a7a_0deg_332deg,#eaf7f7_332deg_360deg)] p-2">
               <div className="h-full w-full rounded-full bg-white" />
             </div>
           </div>
@@ -1094,7 +1094,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
 
             <div className="mt-5 flex items-center gap-5">
               <div className="relative h-28 w-28 shrink-0">
-                <div className="absolute inset-0 rounded-full bg-[conic-gradient(#3b82f6_0deg_230deg,#22c55e_230deg_310deg,#f59e0b_310deg_360deg)]" />
+                <div className="absolute inset-0 rounded-full bg-[conic-gradient(#0b7a7a_0deg_230deg,#d8f1f1_230deg_310deg,#f7fcfc_310deg_360deg)]" />
                 <div className="absolute inset-[18px] rounded-full bg-white shadow-inner" />
                 <div className="absolute inset-0 grid place-items-center">
                   <div className="text-center">
@@ -1135,7 +1135,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
 
             <div className="mt-5 flex items-center gap-5">
               <div className="relative h-28 w-28 shrink-0">
-                <div className="absolute inset-0 rounded-full bg-[conic-gradient(#3b82f6_0deg_208deg,#22c55e_208deg_305deg,#8b5cf6_305deg_360deg)]" />
+                <div className="absolute inset-0 rounded-full bg-[conic-gradient(#0b7a7a_0deg_208deg,#d8f1f1_208deg_305deg,#eaf7f7_305deg_360deg)]" />
                 <div className="absolute inset-[18px] rounded-full bg-white shadow-inner" />
                 <div className="absolute inset-0 grid place-items-center">
                   <div className="text-center">
@@ -1178,8 +1178,8 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
               <svg viewBox="0 0 320 120" className="h-32 w-full">
                 <defs>
                   <linearGradient id="assetTrendFill" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.28" />
-                    <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.02" />
+                    <stop offset="0%" stopColor="#0b7a7a" stopOpacity="0.28" />
+                    <stop offset="100%" stopColor="#0b7a7a" stopOpacity="0.02" />
                   </linearGradient>
                 </defs>
                 <path
@@ -1189,7 +1189,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
                 <polyline
                   points={trendDots.map((point) => `${point.x},${point.y}`).join(" ")}
                   fill="none"
-                  stroke="#3b82f6"
+                  stroke="#0b7a7a"
                   strokeWidth="4"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -1201,7 +1201,7 @@ function AssetDashboardDigitalPreview({ compact = false }: { compact?: boolean }
                     cy={point.y}
                     r="4.5"
                     fill="#ffffff"
-                    stroke="#3b82f6"
+                    stroke="#0b7a7a"
                     strokeWidth="3"
                   />
                 ))}
@@ -1350,27 +1350,27 @@ export default function AssetManagementPage() {
           <div className="pointer-events-none absolute -right-16 top-16 h-72 w-72 rounded-full bg-success/10 blur-3xl" />
 
           <div className="site-container">
-            <div className="grid gap-10 lg:grid-cols-[1.03fr_0.97fr] lg:items-center">
-              <ScrollReveal variant="fade-up" className="flex flex-col items-center text-center lg:items-start lg:text-left">
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm lg:mx-0">
+            <div className="grid gap-10 lg:grid-cols-1 lg:items-center">
+              <ScrollReveal variant="fade-up" className="flex flex-col items-center text-center">
+                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-extrabold tracking-normal text-primary shadow-sm">
                   <Sparkles className="h-4 w-4" />
                   ASSET MANAGEMENT SOFTWARE
                 </div>
-                <h1 className="mt-4 max-w-4xl text-4xl font-black tracking-tight text-ink sm:text-5xl lg:text-6xl lg:mx-0">
+                <h1 className="mt-4 max-w-6xl text-4xl font-black leading-[0.95] tracking-tight text-ink sm:text-5xl lg:text-6xl">
                   Track, Manage and Maintain Every Business Asset in One Place
                 </h1>
-                <p className="mt-5 max-w-3xl text-base leading-8 text-ink-soft sm:text-lg lg:mx-0">
+                <p className="mt-5 max-w-3xl text-base leading-8 text-ink-soft sm:text-lg">
                   Altroz Asset Management gives your team one centralized place to see every asset
                   your business owns, who has it, where it is and what condition it is in. Track
                   ownership, location, maintenance and lifecycle status from purchase to
                   retirement, without digging through spreadsheets or asking around the office.
                 </p>
-                <p className="mt-4 max-w-3xl text-base leading-8 text-ink-soft sm:text-lg lg:mx-0">
+                <p className="mt-4 max-w-3xl text-base leading-8 text-ink-soft sm:text-lg">
                   Manage assets across employees, departments, branches and locations from one
                   centralized platform.
                 </p>
 
-                <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+                <div className="mt-6 flex flex-wrap justify-center gap-3">
                   <ActionLink href={ROUTES.bookDemo} className="btn-primary">
                     Book a Free Demo
                     <ArrowRight className="h-4 w-4" />
@@ -1381,15 +1381,7 @@ export default function AssetManagementPage() {
                 </div>
 
                 <div className="mt-7">
-                  <PillRow className="justify-center lg:justify-start" />
-                </div>
-              </ScrollReveal>
-
-              <ScrollReveal variant="fade-left" delay={120}>
-                <div className="overflow-hidden rounded-[2rem] border border-border bg-white p-5 shadow-float">
-                  <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface/25">
-                    <AssetDashboardDigitalPreview />
-                  </div>
+                  <PillRow className="justify-center" />
                 </div>
               </ScrollReveal>
             </div>
@@ -1632,12 +1624,12 @@ export default function AssetManagementPage() {
 
               <StaggerReveal
                 step={35}
-                className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+                className="grid items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-3"
               >
                 {howItWorks.map((step, index) => (
                   <div
                     key={step.title}
-                    className="rounded-[1.5rem] border border-border bg-white p-5 shadow-card"
+                    className="flex h-full min-h-[220px] flex-col rounded-[1.5rem] border border-border bg-white p-5 shadow-card"
                   >
                     <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-soft text-sm font-black text-primary">
                       {index + 1}
@@ -1662,12 +1654,12 @@ export default function AssetManagementPage() {
 
             <StaggerReveal
               step={30}
-              className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4"
+              className="mt-8 grid items-stretch gap-4 md:grid-cols-2 xl:grid-cols-4"
             >
               {audiences.map((item) => (
                 <div
                   key={item.title}
-                  className="rounded-[1.5rem] border border-border bg-surface/35 p-5 shadow-sm"
+                  className="flex h-full min-h-[220px] flex-col rounded-[1.5rem] border border-border bg-surface/35 p-5 shadow-sm"
                 >
                   <div className="grid h-11 w-11 place-items-center rounded-2xl bg-primary-soft text-primary">
                     <Users className="h-5 w-5" />

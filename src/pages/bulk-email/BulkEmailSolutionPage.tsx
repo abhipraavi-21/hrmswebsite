@@ -26,9 +26,9 @@ import { ROUTES } from "@/routes/routeConfig.js";
 import { cn } from "@/lib/utils";
 
 const bulkEmailPrimaryCta =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-[#f4c430] px-5 py-3 text-sm font-bold text-[#111827] transition-transform hover:-translate-y-0.5 hover:bg-[#e0b61f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9a900]/35";
+  "inline-flex items-center justify-center gap-2 rounded-full bg-[#EE6801] px-5 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 hover:bg-[#C95100] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#EE6801]/35";
 const bulkEmailSecondaryCta =
-  "inline-flex items-center justify-center gap-2 rounded-full border border-[#d9a900] bg-[#fff9e6] px-5 py-3 text-sm font-bold text-[#111827] transition-transform hover:-translate-y-0.5 hover:bg-[#fff4cc] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9a900]/25";
+  "inline-flex items-center justify-center gap-2 rounded-full border border-[#EE6801] bg-[#EE6801] px-5 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 hover:bg-[#C95100] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#EE6801]/25";
 
 type Stat = {
   label: string;

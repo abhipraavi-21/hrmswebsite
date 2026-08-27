@@ -37,7 +37,7 @@ const productCards = [
       "Manage attendance, payroll, leave, recruitment, performance, and workforce management in one connected platform.",
     href: ROUTES.hrmsHome,
     icon: <Users className="h-5 w-5" />,
-    accent: "from-blue-600/10 via-white to-sky-500/10",
+    accent: "from-[#003C99]/10 via-white to-[#1A56B3]/10",
     features: ["Attendance", "Payroll", "Recruitment", "Leave", "Performance", "HR Analytics"],
     snippet: ["92% attendance", "Payroll ready", "Realtime approvals"],
     snippetLabel: "Attendance graph",
@@ -49,7 +49,7 @@ const productCards = [
       "Manage, track, assign, maintain, and monitor business assets from one central platform.",
     href: ROUTES.assetManagement,
     icon: <Package className="h-5 w-5" />,
-    accent: "from-emerald-500/10 via-white to-cyan-500/10",
+    accent: "from-[#EEF4FF] via-white to-[#D9E3F2]",
     features: ["Asset Dashboard", "Asset Tracking", "QR Code", "Maintenance", "Reports", "Warranty Tracking"],
     snippet: ["QR assets", "Maintenance due", "Ownership visible"],
     snippetLabel: "Asset QR tag",
@@ -61,7 +61,7 @@ const productCards = [
       "Enterprise bulk email broadcasting platform for business communication and campaign management.",
     href: ROUTES.bulkEmail,
     icon: <Mail className="h-5 w-5" />,
-    accent: "from-orange-500/10 via-white to-blue-500/10",
+    accent: "from-[#003C99]/10 via-white to-[#EEF4FF]",
     features: ["Broadcast", "Scheduling", "Templates", "Analytics", "SMTP", "Reports"],
     snippet: ["Open rate", "Campaigns", "Delivery insights"],
     snippetLabel: "Open-rate chart",
@@ -334,7 +334,7 @@ const faqItems = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="home-page-theme min-h-screen bg-background">
       <PageSEO
         title="Altroz Technologies | Enterprise Business Software"
         description="Altroz Technologies offers enterprise business management software — Altroz HR, Altroz Asset Management, and Altroz Bulk Email. Explore products and book a free demo."
@@ -345,7 +345,7 @@ export default function HomePage() {
       <main>
         <section className="hero-gradient relative overflow-hidden">
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-primary-soft/80 blur-3xl" />
 
           <div className="container-x pt-5 pb-10 sm:pt-6 sm:pb-12 lg:pt-8 lg:pb-16">
             <div className="mx-auto max-w-7xl">
@@ -555,7 +555,7 @@ export default function HomePage() {
               </div>
 
               <div className="relative">
-                <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-tr from-primary/10 via-transparent to-success/10 blur-2xl" />
+          <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-tr from-primary/10 via-transparent to-primary-soft/70 blur-2xl" />
                 <div className="relative overflow-hidden rounded-[2rem] border border-border bg-white p-6 shadow-float">
                   <div className="mx-auto max-w-md rounded-[1.5rem] border border-border bg-surface/50 p-5 text-center">
                     <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-primary">
@@ -764,9 +764,9 @@ export default function HomePage() {
 function HeroIllustration() {
   return (
     <div className="relative">
-      <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-tr from-primary/10 via-transparent to-success/10 blur-2xl" />
+      <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-tr from-primary/10 via-transparent to-primary-soft/70 blur-2xl" />
       <div className="relative rounded-[2rem] border border-border bg-white p-5 shadow-float">
-        <div className="rounded-[1.5rem] border border-border bg-gradient-to-br from-primary/10 via-white to-success/10 p-5">
+        <div className="rounded-[1.5rem] border border-border bg-gradient-to-br from-primary/10 via-white to-primary-soft/80 p-5">
           <div className="mx-auto max-w-md rounded-[1.25rem] border border-white/80 bg-white/95 p-4 text-center shadow-sm">
             <div className="text-xs font-bold uppercase tracking-[0.28em] text-primary">
               Business Dashboard

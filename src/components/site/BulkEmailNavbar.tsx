@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { ArrowRight, ChevronDown, Mail, Menu, Package, Users, X } from "lucide-react";
 import BrandMark from "./BrandMark";
 import ProductBrandLine from "./ProductBrandLine";
@@ -60,6 +60,9 @@ export default function BulkEmailNavbar() {
   const [activeMenu, setActiveMenu] = useState<MenuKey | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const scrolled = useScrolled(12);
+  const { pathname } = useLocation();
+  const isBulkEmailHomePage = pathname === ROUTES.bulkEmail;
+  const drawerThemeClass = isBulkEmailHomePage ? "bulk-email-home-theme" : "bulk-email-theme";
   const switcherButtonClass =
     "inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-2xl px-3 py-2 text-xs font-semibold text-ink transition-all duration-200 sm:px-4 sm:text-sm hover:bg-surface hover:text-primary";
 
@@ -90,7 +93,10 @@ export default function BulkEmailNavbar() {
             <SheetContent
               side="right"
               hideClose
-              className="bulk-email-theme w-[min(100vw,26rem)] max-w-none border-l border-border/70 bg-background p-0 text-ink shadow-[0_24px_80px_rgba(15,23,42,0.22)]"
+              className={cn(
+                drawerThemeClass,
+                "w-[min(100vw,26rem)] max-w-none border-l border-border/70 bg-background p-0 text-ink shadow-[0_24px_80px_rgba(15,23,42,0.22)]",
+              )}
             >
               <SheetHeader className="sr-only">
                 <SheetTitle>Main navigation</SheetTitle>
