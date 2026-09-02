@@ -193,7 +193,7 @@ export default function BulkEmailNavbar() {
           </div>
         </div>
 
-        <div className="border-b border-border/60 bg-primary-soft/60">
+        <div className="bulk-email-nav-strip border-b border-border/60 bg-primary-soft/60">
           <div className="site-container grid min-h-16 grid-cols-[auto_1fr_auto] items-center gap-4 py-2">
             <ProductBrandLine
               compact

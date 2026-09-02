@@ -356,11 +356,11 @@ export default function HomePage() {
                 </span>
 
                 <h1 className="mx-auto mt-4 max-w-6xl text-balance text-4xl font-black leading-[1.03] tracking-[-0.04em] text-ink sm:text-5xl lg:text-[4.35rem]">
-                  Business Management Software That Brings HR, Assets, and Communication Together
+                  Engineering Intelligent Systems for Business Automation.
                 </h1>
 
                 <h2 className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
-                  One Platform. Multiple Enterprise Solutions. A Single Trusted Brand.
+                  One Platform. One Brand. Multiple solutions
                 </h2>
 
                 <p className="mx-auto mt-4 max-w-5xl text-justify leading-8 hyphens-auto text-ink-soft sm:text-xl">
@@ -389,7 +389,7 @@ export default function HomePage() {
                       Business at a glance
                     </div>
                     <h3 className="mt-2 text-2xl font-black tracking-tight text-ink">
-                      One brand. Multiple product experiences.
+                      One brand. multiple solutions.
                     </h3>
                     <p className="mt-2 text-sm leading-6 text-ink-soft">
                       Choose HR, Asset Management, or Bulk Email as a standalone product or use them

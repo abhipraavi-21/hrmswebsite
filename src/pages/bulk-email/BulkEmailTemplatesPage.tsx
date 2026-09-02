@@ -65,7 +65,7 @@ function AnimatedTitle({ as = "h2", className, children }: AnimatedTitleProps) {
       {words.map((word, index) => (
         <span
           key={`${word}-${index}`}
-          className={cn("inline-block", index % 2 === 0 ? "text-[#1d4ed8]" : "text-[#b45309]")}
+          className="inline-block text-ink"
           style={{
             animation: "bulkEmailTemplateWordRise 0.55s ease-out both",
             animationDelay: `${index * 60}ms`,
@@ -260,7 +260,7 @@ const faqs: Faq[] = [
 
 export default function BulkEmailTemplatesPage() {
   return (
-    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
+    <div className="bulk-email-theme bulk-email-templates-page min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="Bulk Email Templates | Altroz"
         description="Altroz Bulk Email templates help businesses create branded email campaigns faster with reusable layouts, HTML upload support and clean campaign structure."
@@ -296,7 +296,7 @@ export default function BulkEmailTemplatesPage() {
 
           <div className="site-container">
             <ScrollReveal variant="fade-up" className="mx-auto max-w-4xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#1d4ed8]/20 bg-gradient-to-r from-white via-[#eff6ff] to-[#fffbf4] px-4 py-2 text-xs font-extrabold tracking-normal text-[#1d4ed8] shadow-sm">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#b45309]/20 bg-gradient-to-r from-white via-[#eff6ff] to-[#fffbf4] px-4 py-2 text-xs font-extrabold tracking-normal text-[#b45309] shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Trusted Business Email Template Library
               </div>
