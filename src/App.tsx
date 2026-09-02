@@ -231,6 +231,7 @@ function AppShell() {
           <Route path={ROUTES.bulkEmail} element={<BulkEmailPage />} />
           <Route path={ROUTES.bulkEmailAbout} element={<BulkEmailAboutUsPage />} />
           <Route path={ROUTES.bulkEmailPricing} element={<BulkEmailPricingPage />} />
+          <Route path={ROUTES.bulkEmailPartner} element={<PartnerWithUsPage />} />
           <Route
             path={ROUTES.bulkEmailCampaigns}
             element={<Navigate to={ROUTES.bulkEmail} replace />}

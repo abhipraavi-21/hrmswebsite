@@ -127,11 +127,12 @@ function AnimatedTitle({
       {words.map((word, index) => (
         <span
           key={`${word}-${index}`}
-          className={cn("inline-block", index % 2 === 0 ? "text-[#1d4ed8]" : "text-[#b45309]")}
+          className="inline-block"
           style={{
             animation: "educationWordRise 0.55s ease-out both",
             animationDelay: `${index * 55}ms`,
             marginRight: index < words.length - 1 ? "0.3em" : 0,
+            color: "#111827",
           }}
         >
           {word}

@@ -6,6 +6,7 @@ export default function BulkEmailPricingPage() {
     <ManagedCmsShowcasePage
       pageKey="bulk-email-pricing"
       canonicalPath={ROUTES.bulkEmailPricing}
+      navbarVariant="bulkEmail"
       fallbackTitle="Bulk Email Pricing | Altroz"
       fallbackDescription="Compare Altroz Bulk Email pricing plans, campaign coverage and onboarding options."
     />

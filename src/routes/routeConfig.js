@@ -51,6 +51,7 @@ export const ROUTES = {
   bulkEmailEducation: "/bulk-email/education",
   bulkEmailContact: "/bulk-email/contact-us",
   bulkEmailPricing: "/bulk-email/pricing",
+  bulkEmailPartner: "/bulk-email/partner-with-us",
   bulkEmailLearn: "/bulk-email/resources/learn",
   bulkEmailBlog: "/bulk-email/resources/blog",
   bulkEmailFaq: "/bulk-email/resources/faq",

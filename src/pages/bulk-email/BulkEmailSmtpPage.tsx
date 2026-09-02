@@ -251,7 +251,7 @@ const smtpFeatures: FeatureCard[] = [
     title: "Authentication",
     description: "Require valid username and password before sending is allowed.",
     benefit: "Prevents unauthorised sending through your setup.",
-    href: ROUTES.support,
+    href: ROUTES.bulkEmailFaq,
     linkLabel: "Help Center",
     icon: ShieldCheck,
   },
@@ -259,7 +259,7 @@ const smtpFeatures: FeatureCard[] = [
     title: "TLS / SSL Support",
     description: "Protect mail traffic with secure TLS or SSL connection settings.",
     benefit: "Encrypted connection to your SMTP server.",
-    href: ROUTES.support,
+    href: ROUTES.bulkEmailFaq,
     linkLabel: "Help Center",
     icon: Workflow,
   },
@@ -1126,7 +1126,7 @@ export default function BulkEmailSmtpPage() {
                   <Link to={ROUTES.bookDemo} className="btn-primary">
                     Book Free Demo
                   </Link>
-                  <Link to={ROUTES.support} className="btn-ghost">
+                    <Link to={ROUTES.bulkEmailFaq} className="btn-ghost">
                     Help Center
                   </Link>
                 </div>

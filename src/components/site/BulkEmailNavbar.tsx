@@ -53,7 +53,7 @@ const resourceItems: MenuItem[] = [
 const companyItems: MenuItem[] = [
   { label: "About", href: ROUTES.bulkEmailAbout },
   { label: "Contact", href: ROUTES.bulkEmailContact },
-  { label: "Help Center", href: ROUTES.support },
+  { label: "Help Center", href: ROUTES.bulkEmailFaq },
 ];
 
 export default function BulkEmailNavbar() {
@@ -253,7 +253,7 @@ export default function BulkEmailNavbar() {
               </NavLink>
 
               <NavLink
-                to={ROUTES.partner}
+                to={ROUTES.bulkEmailPartner}
                 className={({ isActive }) =>
                   cn(
                     "nav-link whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors sm:text-sm",

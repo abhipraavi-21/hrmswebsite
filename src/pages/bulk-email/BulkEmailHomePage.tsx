@@ -518,7 +518,7 @@ const routeLinks = [
   { label: "View Pricing Plans", href: ROUTES.bulkEmailPricing },
   { label: "Learn About Altroz", href: ROUTES.bulkEmailAbout },
   { label: "Contact Our Team", href: ROUTES.bulkEmailContact },
-  { label: "Visit the Help Center", href: ROUTES.support },
+  { label: "Visit the Help Center", href: ROUTES.bulkEmailFaq },
   { label: "Read the Altroz Blog", href: ROUTES.bulkEmailBlog },
   { label: "Read Frequently Asked Questions", href: ROUTES.bulkEmailFaq },
   { label: "Book a Free Demo", href: ROUTES.bookDemo },
