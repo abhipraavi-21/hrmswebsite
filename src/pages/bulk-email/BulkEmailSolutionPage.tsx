@@ -223,7 +223,7 @@ export default function BulkEmailSolutionPage({
                       delay={80 + index * 50}
                       className="soft-card h-full bg-gradient-to-br from-white via-white to-[#fff7ef] p-4"
                     >
-                      <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#1d4ed8]/10 via-white to-[#d97706]/14 text-[#EE6801] shadow-sm">
+                      <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#1d4ed8]/10 via-white to-[#d97706]/14 text-[#1d4ed8] shadow-sm">
                         <card.icon className="h-5 w-5" />
                       </span>
                       <div className="mt-4 text-sm font-semibold text-ink">{card.title}</div>
@@ -259,7 +259,7 @@ export default function BulkEmailSolutionPage({
               {featureCards.map((card, index) => (
                 <ScrollReveal key={card.title} variant="fade-up" delay={index * 30}>
                   <article className="soft-card group h-full bg-gradient-to-br from-white via-white to-[#fff7ef] p-5 transition-transform duration-300 hover:-translate-y-1">
-                    <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#1d4ed8]/10 via-white to-[#d97706]/14 text-[#EE6801] transition-transform duration-300 group-hover:scale-105">
+                    <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#1d4ed8]/10 via-white to-[#d97706]/14 text-[#1d4ed8] transition-transform duration-300 group-hover:scale-105">
                       <card.icon className="h-5 w-5" />
                     </span>
                     <div className="mt-4 text-base font-semibold text-ink">{card.title}</div>
@@ -317,7 +317,7 @@ export default function BulkEmailSolutionPage({
                 <ScrollReveal key={card.title} variant="fade-up" delay={index * 30}>
                   <article className="soft-card group h-full bg-gradient-to-br from-white via-white to-[#fff7ef] p-5 transition-transform duration-300 hover:-translate-y-1 hover:shadow-float">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#1d4ed8]/10 via-white to-[#d97706]/14 text-[#EE6801] transition-transform duration-300 group-hover:scale-105">
+                      <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#1d4ed8]/10 via-white to-[#d97706]/14 text-[#1d4ed8] transition-transform duration-300 group-hover:scale-105">
                         <card.icon className="h-5 w-5" />
                       </span>
                       <span className="rounded-full bg-gradient-to-r from-white via-[#eff6ff] to-[#fffbf4] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#b45309] shadow-sm">
@@ -465,12 +465,14 @@ function AnimatedTitle({
       {words.map((word, index) => (
         <span
           key={`${word}-${index}`}
-          className="inline-block"
+          className={cn(
+            "inline-block",
+            index % 2 === 0 ? "text-[#1d4ed8]" : "text-[#b45309]",
+          )}
           style={{
             animation: "bulkEmailWordRise 0.55s ease-out both",
             animationDelay: `${index * 70}ms`,
             marginRight: index < words.length - 1 ? "0.35em" : 0,
-            color: "#111827",
           }}
         >
           {word}

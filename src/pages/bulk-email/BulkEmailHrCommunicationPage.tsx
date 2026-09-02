@@ -86,12 +86,11 @@ function AnimatedTitle({
       {words.map((word, index) => (
         <span
           key={`${word}-${index}`}
-          className="inline-block"
+          className={cn("inline-block", index % 2 === 0 ? "text-[#1d4ed8]" : "text-[#b45309]")}
           style={{
             animation: "bulkEmailHrWordRise 0.55s ease-out both",
             animationDelay: `${index * 55}ms`,
             marginRight: index < words.length - 1 ? "0.3em" : 0,
-            color: "#111827",
           }}
         >
           {word}
@@ -587,7 +586,7 @@ const faqs: Faq[] = [
 
 export default function BulkEmailHrCommunicationPage() {
   return (
-    <div className="bulk-email-theme bulk-email-hr-communication min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
+    <div className="bulk-email-theme min-h-screen bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]">
       <PageSEO
         title="HR Communication Software for Centralised Employee Communication | Altroz Bulk Email"
         description="Altroz Bulk Email helps HR teams send company announcements, policy updates, onboarding emails and internal circulars from one centralised dashboard."
@@ -636,10 +635,7 @@ export default function BulkEmailHrCommunicationPage() {
                   HR Communication Software for Centralised Employee Communication
                 </AnimatedTitle>
 
-                <h2
-                  className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-[#1d4ed8] sm:text-3xl"
-                  style={{ color: "#0247A5" }}
-                >
+                <h2 className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-[#1d4ed8] sm:text-3xl">
                   Simplify HR Communication. Keep Every Employee Informed.
                 </h2>
 
@@ -1173,3 +1169,4 @@ export default function BulkEmailHrCommunicationPage() {
     </div>
   );
 }
+

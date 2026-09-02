@@ -199,15 +199,8 @@ function ArticleState({
   blogPath: string;
   blogGroup: ReturnType<typeof resolveBlogGroupFromPath>;
 }) {
-  const themeClassName =
-    blogGroup === "bulk-email"
-      ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
-      : blogGroup === "asset-management"
-        ? "asset-management-theme asset-management-theme-shell"
-        : "bg-[linear-gradient(180deg,_#f8fbff_0%,_#ffffff_100%)]";
-
   return (
-    <div className={cn("min-h-screen", themeClassName)}>
+    <div className="min-h-screen bg-[linear-gradient(180deg,_#f8fbff_0%,_#ffffff_100%)]">
       <BlogChrome blogGroup={blogGroup} />
 
       <main className="overflow-x-hidden">
@@ -298,12 +291,6 @@ export default function BlogArticlePage() {
     location.pathname,
   );
   const blogPath = resolveBlogListingPath(resolvedPost.blogGroup, location.pathname);
-  const themeClassName =
-    resolvedPost.blogGroup === "bulk-email"
-      ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
-      : resolvedPost.blogGroup === "asset-management"
-        ? "asset-management-theme asset-management-theme-shell"
-        : "bg-[linear-gradient(180deg,_#f8fbff_0%,_#ffffff_100%)]";
   const publishedDate = formatBlogDate(resolvedPost.publishedAt);
   const descriptionText = stripHtmlToText(resolvedPost.descriptionHtml) || resolvedPost.metaDescription;
   const breadcrumbItems = [
@@ -357,7 +344,7 @@ export default function BlogArticlePage() {
   };
 
   return (
-    <div className={cn("min-h-screen", themeClassName)}>
+    <div className="min-h-screen bg-[linear-gradient(180deg,_#f8fbff_0%,_#ffffff_100%)]">
       <PageSEO
         title={resolvedPost.metaTitle || `${resolvedPost.title} | Altroz HR Blog`}
         description={resolvedPost.metaDescription}

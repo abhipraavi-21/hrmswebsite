@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { z } from "zod";
 import {
   ArrowRight,
@@ -40,7 +40,6 @@ import {
 } from "lucide-react";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
-import BulkEmailNavbar from "@/components/site/BulkEmailNavbar";
 import PageSEO from "@/components/site/PageSEO";
 import TopNavbar from "@/components/site/TopNavbar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -476,8 +475,6 @@ function SmartLink({
 }
 
 export default function PartnerWithUsPage() {
-  const { pathname } = useLocation();
-  const isBulkEmailPartner = pathname === ROUTES.bulkEmailPartner;
   const canonicalPath = typeof window !== "undefined" ? window.location.pathname : ROUTES.partner;
   const [status, setStatus] = useState<StatusState>({ type: "idle", message: "" });
 
@@ -532,9 +529,10 @@ export default function PartnerWithUsPage() {
   };
 
   return (
-    <div className={isBulkEmailPartner ? "bulk-email-theme min-h-screen bg-background" : "min-h-screen bg-background"}>
+    <div className="min-h-screen bg-background">
       <PageSEO title={pageTitle} description={pageDescription} canonicalPath={canonicalPath} />
-      {isBulkEmailPartner ? <BulkEmailNavbar /> : <><TopNavbar /><MainNavbar /></>}
+      <TopNavbar />
+      <MainNavbar />
 
       <main>
         <section className="page-banner hero-gradient relative overflow-hidden">
