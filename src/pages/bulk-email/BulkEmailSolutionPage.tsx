@@ -467,7 +467,7 @@ function AnimatedTitle({
           key={`${word}-${index}`}
           className={cn(
             "inline-block",
-            index % 2 === 0 ? "text-[#1d4ed8]" : "text-[#b45309]",
+            "text-ink",
           )}
           style={{
             animation: "bulkEmailWordRise 0.55s ease-out both",
