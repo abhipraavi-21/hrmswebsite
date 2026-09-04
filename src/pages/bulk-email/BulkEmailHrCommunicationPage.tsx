@@ -79,14 +79,14 @@ function AnimatedTitle({
   return (
     <Component
       className={cn(
-        "bulk-email-animated-title mx-auto font-black leading-[1.03] tracking-[-0.04em]",
+        "bulk-email-animated-title mx-auto font-black leading-[1.03] tracking-[-0.04em] text-ink",
         className,
       )}
     >
       {words.map((word, index) => (
         <span
           key={`${word}-${index}`}
-          className={cn("inline-block", index % 2 === 0 ? "text-[#1d4ed8]" : "text-[#b45309]")}
+          className="inline-block text-ink"
           style={{
             animation: "bulkEmailHrWordRise 0.55s ease-out both",
             animationDelay: `${index * 55}ms`,
@@ -635,7 +635,7 @@ export default function BulkEmailHrCommunicationPage() {
                   HR Communication Software for Centralised Employee Communication
                 </AnimatedTitle>
 
-                <h2 className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-[#1d4ed8] sm:text-3xl">
+                <h2 className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
                   Simplify HR Communication. Keep Every Employee Informed.
                 </h2>
 
