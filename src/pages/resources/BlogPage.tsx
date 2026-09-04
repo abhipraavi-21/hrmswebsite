@@ -115,8 +115,8 @@ export default function BlogPage() {
   const seedPage = useMemo(() => getSeedPageFallback(pageCopy.pageKey), [pageCopy.pageKey]);
   const seedPosts = useMemo(() => getSeedBlogPostsFallback(blogGroup), [blogGroup]);
   const { data: remotePage } = usePublicContent(
-    () => fetchPageByKey(pageCopy.pageKey),
-    [pageCopy.pageKey],
+    () => fetchPageByKey(pageCopy.pageKey, blogGroup),
+    [pageCopy.pageKey, blogGroup],
     seedPage,
   );
   const { data, error, loading } = usePublicContent(

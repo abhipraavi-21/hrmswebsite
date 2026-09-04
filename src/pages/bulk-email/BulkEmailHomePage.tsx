@@ -521,7 +521,7 @@ const routeLinks = [
   { label: "Visit the Help Center", href: ROUTES.support },
   { label: "Read the Altroz Blog", href: ROUTES.bulkEmailBlog },
   { label: "Read Frequently Asked Questions", href: ROUTES.bulkEmailFaq },
-  { label: "Book a Free Demo", href: ROUTES.bookDemo },
+  { label: "Book a Free Demo", href: ROUTES.bulkEmailBookDemo },
 ];
 
 function TrendingUpIcon({ className }: { className?: string }) {
@@ -889,7 +889,7 @@ export default function BulkEmailHomePage() {
 
                   <div className="mt-8 flex flex-wrap justify-center gap-3">
                     <ActionLink
-                      href={ROUTES.bookDemo}
+                      href={ROUTES.bulkEmailBookDemo}
                       className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-transform hover:-translate-y-0.5"
                     >
                       Book a Free Demo <ArrowRight className="h-4 w-4" />
@@ -1757,7 +1757,7 @@ export default function BulkEmailHomePage() {
 
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <ActionLink
-                  href={ROUTES.bookDemo}
+                  href={ROUTES.bulkEmailBookDemo}
                   className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-primary transition-transform hover:-translate-y-0.5 hover:bg-white/90"
                 >
                   Book a Free Demo <ArrowRight className="h-4 w-4" />

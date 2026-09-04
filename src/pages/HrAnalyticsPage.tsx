@@ -29,6 +29,7 @@ import TopNavbar from "@/components/site/TopNavbar";
 import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { modelScreenshots } from "@/lib/modelScreenshots";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 type StatCard = {
   label: string;
@@ -430,7 +431,7 @@ export default function HrAnalyticsPage() {
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <a href="/company/book-demo" className="btn-primary">
+                  <a href={ROUTES.bookDemo} className="btn-primary">
                     Book Free Demo
                   </a>
                   <a href="#reports-dashboard" className="btn-outline">
@@ -763,10 +764,10 @@ export default function HrAnalyticsPage() {
                 </div>
 
                 <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
-                  <a href="/company/book-demo" className="btn-primary">
+                  <a href={ROUTES.bookDemo} className="btn-primary">
                     Book Free Demo
                   </a>
-                  <a href="/company/contact-us" className="btn-outline">
+                  <a href={ROUTES.contact} className="btn-outline">
                     Request Demo
                   </a>
                 </div>

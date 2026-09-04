@@ -468,7 +468,7 @@ export default function BulkEmailAnalyticsPage() {
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
                     Book Free Demo
                   </Link>
                   <a href="#dashboard" className="btn-outline">
@@ -881,7 +881,7 @@ export default function BulkEmailAnalyticsPage() {
                   delivery tracking and campaign review flow.
                 </p>
                 <div className="button-group mt-5">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
                     Book Free Demo
                   </Link>
                   <Link to={ROUTES.bulkEmailContact} className="btn-ghost">
@@ -930,7 +930,7 @@ export default function BulkEmailAnalyticsPage() {
                 </p>
                 <div className="button-group mt-7 justify-center">
                   <Link
-                    to={ROUTES.bookDemo}
+                    to={ROUTES.bulkEmailBookDemo}
                     className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-semibold text-primary transition-colors hover:bg-primary-soft"
                   >
                     Book Free Demo

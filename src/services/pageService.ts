@@ -2,10 +2,15 @@ import { apiClient } from "./apiClient";
 import type { PublicApiResponse, PublicCmsPage } from "./cmsTypes";
 import { getSeedPageFallback, withSeedFallback } from "./seedFallback";
 
-export async function fetchPageByKey(pageKey: string) {
+export type ProductNamespace = "hrms" | "bulk-email" | "asset-management";
+
+export async function fetchPageByKey(
+  pageKey: string,
+  product: ProductNamespace = "hrms",
+) {
   return withSeedFallback(async () => {
     const response = await apiClient.get<PublicApiResponse<PublicCmsPage>>(
-      `/public/pages/${pageKey}`,
+      `/public/${product}/pages/${pageKey}`,
     );
     return response.data.data;
   }, () => getSeedPageFallback(pageKey));

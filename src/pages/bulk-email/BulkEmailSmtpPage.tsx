@@ -619,7 +619,7 @@ export default function BulkEmailSmtpPage() {
                   </p>
 
                   <div className="button-group mt-7 justify-center lg:justify-start">
-                    <Link to={ROUTES.bookDemo} className="btn-primary">
+                    <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
                       Book Free Demo
                       <ArrowRight className="h-4 w-4" />
                     </Link>
@@ -1123,7 +1123,7 @@ export default function BulkEmailSmtpPage() {
                 </div>
 
                 <div className="button-group mt-6">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
                     Book Free Demo
                   </Link>
                   <Link to={ROUTES.support} className="btn-ghost">
@@ -1153,7 +1153,7 @@ export default function BulkEmailSmtpPage() {
                 </p>
                 <div className="button-group mt-7 justify-center">
                   <Link
-                    to={ROUTES.bookDemo}
+                    to={ROUTES.bulkEmailBookDemo}
                     className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-semibold text-[#1d4ed8] transition-colors hover:bg-[#fffbf4]"
                   >
                     Book Free Demo

@@ -63,7 +63,7 @@ export const BLOG_GROUP_PAGE_CONTENT: Record<PublicBlogGroup, BlogGroupPageConte
     primaryCtaLabel: "Explore Bulk Email",
     primaryCtaHref: ROUTES.bulkEmail,
     secondaryCtaLabel: "View pricing",
-    secondaryCtaHref: ROUTES.pricing,
+    secondaryCtaHref: ROUTES.bulkEmailPricing,
     emptyTitle: "No published bulk email articles yet",
     emptyDescription:
       "Create a post in the admin panel, switch its status to Published, save it, and it will appear here.",
@@ -86,7 +86,7 @@ export const BLOG_GROUP_PAGE_CONTENT: Record<PublicBlogGroup, BlogGroupPageConte
     primaryCtaLabel: "Explore Asset Management",
     primaryCtaHref: ROUTES.assetManagement,
     secondaryCtaLabel: "Book a demo",
-    secondaryCtaHref: ROUTES.bookDemo,
+    secondaryCtaHref: ROUTES.assetManagementBookDemo,
     emptyTitle: "No published asset management articles yet",
     emptyDescription:
       "Create a post in the admin panel, switch its status to Published, save it, and it will appear here.",
@@ -115,10 +115,6 @@ export function resolveBlogListingPath(blogGroup: PublicBlogGroup, pathname = ""
 
   if (blogGroup === "asset-management") {
     return ROUTES.assetManagementBlog;
-  }
-
-  if (pathname.startsWith(ROUTES.blog) || pathname.startsWith("/blog")) {
-    return ROUTES.blog;
   }
 
   return ROUTES.hrmsBlog;

@@ -9,6 +9,32 @@ import {
   cmsSeedPages,
 } from "../../../shared/cms/index.js";
 
+const PRODUCT_NAMESPACES = new Set(["hrms", "bulk-email", "asset-management"]);
+
+function normalizeProductNamespace(product) {
+  return PRODUCT_NAMESPACES.has(product) ? product : null;
+}
+
+export function pageKeyBelongsToProduct(pageKey, product) {
+  const namespace = normalizeProductNamespace(product);
+
+  if (!namespace) {
+    return true;
+  }
+
+  const normalizedPageKey = String(pageKey ?? "");
+
+  if (namespace === "bulk-email") {
+    return normalizedPageKey.startsWith("bulk-email");
+  }
+
+  if (namespace === "asset-management") {
+    return normalizedPageKey.startsWith("asset-management");
+  }
+
+  return !normalizedPageKey.startsWith("bulk-email") && !normalizedPageKey.startsWith("asset-management");
+}
+
 const pageInclude = [
   {
     model: models.PageSection,
@@ -217,7 +243,7 @@ export async function getPageByKey(pageKey, { publishedOnly = false } = {}) {
   return ensureSeedSections(page);
 }
 
-export async function getPageBySlug(slug, { publishedOnly = false } = {}) {
+export async function getPageBySlug(slug, { publishedOnly = false, product = null } = {}) {
   const resource = await models.ResourcePage.findOne({
     where: {
       slug,
@@ -232,14 +258,14 @@ export async function getPageBySlug(slug, { publishedOnly = false } = {}) {
     ],
   });
 
-  if (!resource?.page) {
+  if (!resource?.page || !pageKeyBelongsToProduct(resource.page.page_key, product)) {
     throw new AppError("Resource page not found", 404);
   }
 
   return ensureSeedSections(resource.page);
 }
 
-export async function listResources({ publishedOnly = false } = {}) {
+export async function listResources({ publishedOnly = false, product = null } = {}) {
   const resources = await models.ResourcePage.findAll({
     where: publishedOnly ? { status: "published" } : {},
     include: [
@@ -251,7 +277,9 @@ export async function listResources({ publishedOnly = false } = {}) {
     order: [["display_order", "ASC"]],
   });
 
-  return resources.map((resource) => ({
+  return resources
+    .filter((resource) => pageKeyBelongsToProduct(resource.page?.page_key, product))
+    .map((resource) => ({
     id: resource.id,
     resourceName: resource.resource_name,
     slug: resource.slug,
@@ -268,7 +296,7 @@ export async function listResources({ publishedOnly = false } = {}) {
           metaTitle: resource.page.meta_title,
         }
       : null,
-  }));
+    }));
 }
 
 export async function updatePage(id, payload) {

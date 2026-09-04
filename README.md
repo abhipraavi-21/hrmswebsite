@@ -186,6 +186,15 @@ Run `npm run seed` in `backend/` after setting these values.
 
 ## Public API
 
+- Product namespaces are `hrms`, `bulk-email`, and `asset-management`.
+- `GET /api/public/:product`
+- `GET /api/public/:product/pages/:pageKey`
+- `GET /api/public/:product/resources`
+- `GET /api/public/:product/resources/:slug`
+- `GET /api/public/:product/blog-posts`
+- `GET /api/public/:product/blog-posts/:slug`
+- `GET /api/public/:product/pricing`
+- `GET /api/public/:product/contact`
 - `GET /api/public/pages/:pageKey`
 - `GET /api/public/hrms`
 - `GET /api/public/resources`

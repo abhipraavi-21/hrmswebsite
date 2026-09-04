@@ -91,7 +91,7 @@ const quickLinks = [
   { label: "Marketing", href: ROUTES.bulkEmailMarketing },
   { label: "Education", href: ROUTES.bulkEmailEducation },
   { label: "Pricing", href: ROUTES.bulkEmailPricing },
-  { label: "Book Free Demo", href: ROUTES.bookDemo },
+  { label: "Book Free Demo", href: ROUTES.bulkEmailBookDemo },
   { label: "Contact Sales", href: ROUTES.bulkEmailContact },
   { label: "Learn", href: ROUTES.bulkEmailLearn },
 ];
@@ -753,7 +753,7 @@ function AboutUsPage() {
               </p>
 
               <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-                <Link to={ROUTES.bookDemo} className="btn-primary">
+                <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
                   Book Free Demo
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -1190,7 +1190,7 @@ function AboutUsPage() {
 
                 <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                   <Link
-                    to={ROUTES.bookDemo}
+                    to={ROUTES.bulkEmailBookDemo}
                     className="btn-primary justify-center bg-white text-primary hover:bg-white/90"
                   >
                     Book Free Demo
@@ -1216,7 +1216,7 @@ function AboutUsPage() {
       </main>
 
       <Link
-        to={ROUTES.bookDemo}
+        to={ROUTES.bulkEmailBookDemo}
         className="fixed bottom-5 right-5 z-40 hidden rounded-full bg-primary px-5 py-3 text-sm font-black text-white shadow-[0_18px_45px_rgba(11,92,255,0.28)] transition-transform hover:-translate-y-0.5 sm:inline-flex"
       >
         Book Demo

@@ -29,6 +29,7 @@ import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
+import { ROUTES } from "@/routes/routeConfig.js";
 import {
   Accordion,
   AccordionContent,
@@ -1853,7 +1854,7 @@ function StorySectionBlock({ section }: { section: StorySection }) {
 }
 
 export default function CustomersPage() {
-  usePageMeta(pageTitle, pageDescription, "/customers");
+  usePageMeta(pageTitle, pageDescription, ROUTES.customers);
 
   const [selectedBusinessType, setSelectedBusinessType] = useState(businessTypes[0].id);
   const [selectedChallenge, setSelectedChallenge] = useState(customerChallenges[0].id);
@@ -1902,10 +1903,10 @@ export default function CustomersPage() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <a href="/company/book-demo" className="btn-primary">
+                <a href={ROUTES.bookDemo} className="btn-primary">
                   Book Free Demo
                 </a>
-                <a href="/company/contact-us" className="btn-outline">
+                <a href={ROUTES.contact} className="btn-outline">
                   Talk to Our Team
                 </a>
               </div>
@@ -2720,10 +2721,10 @@ export default function CustomersPage() {
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-3">
-                    <a href="/company/book-demo" className="btn-primary">
+                    <a href={ROUTES.bookDemo} className="btn-primary">
                       Book Your Free Demo Today
                     </a>
-                    <a href="/company/contact-us" className="btn-outline">
+                    <a href={ROUTES.contact} className="btn-outline">
                       Talk to Our Team
                     </a>
                   </div>

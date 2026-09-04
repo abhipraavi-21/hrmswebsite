@@ -330,7 +330,7 @@ const quickLinks = [
   { label: "Why Altroz HR", href: ROUTES.whyAltroz },
   { label: "Book a Free Demo", href: ROUTES.bookDemo },
   { label: "Contact Us", href: ROUTES.contact },
-  { label: "Pricing", href: ROUTES.pricing },
+  { label: "Pricing", href: ROUTES.hrmsPricing },
   { label: "Employee Management", href: ROUTES.coreHR },
   { label: "Attendance Management", href: ROUTES.attendanceManagement },
   { label: "Payroll Management", href: ROUTES.payroll },
@@ -340,7 +340,7 @@ const quickLinks = [
   { label: "HR Automation", href: ROUTES.automation },
   { label: "HR Analytics", href: ROUTES.analytics },
   { label: "Workforce Management", href: ROUTES.workforce },
-  { label: "Learn", href: ROUTES.learn },
+  { label: "Learn", href: ROUTES.hrmsLearn },
 ];
 
 const partnerFormSchema = z.object({

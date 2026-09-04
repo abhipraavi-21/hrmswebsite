@@ -76,7 +76,7 @@ export default function AssetManagementNavbar() {
       <div className="site-container flex flex-col gap-2 py-3 lg:hidden">
         <div className="flex items-center justify-between gap-3">
           <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
-            <BrandMark mode="wordmark" />
+            <BrandMark mode="wordmark" src="/brand/altroz-blue-wordmark.png" alt="Altroz" />
           </Link>
 
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -105,7 +105,7 @@ export default function AssetManagementNavbar() {
 
                 <div className="flex-1 overflow-y-auto px-5 py-6 pt-10">
                   <div className="flex items-center justify-between gap-3">
-                    <BrandMark mode="wordmark" />
+                    <BrandMark mode="wordmark" src="/brand/altroz-blue-wordmark.png" alt="Altroz" />
                     <SheetClose asChild>
                       <button
                         type="button"
@@ -149,7 +149,7 @@ export default function AssetManagementNavbar() {
 
                   <div className="mt-8 grid gap-3">
                     <Link
-                      to={ROUTES.bookDemo}
+                      to={ROUTES.assetManagementBookDemo}
                       onClick={() => setMobileOpen(false)}
                       className="btn-primary justify-center text-sm"
                     >
@@ -188,7 +188,7 @@ export default function AssetManagementNavbar() {
           <div className="site-container relative flex h-full items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
-                <BrandMark mode="wordmark" />
+                <BrandMark mode="wordmark" src="/brand/altroz-blue-wordmark.png" alt="Altroz" />
               </Link>
               <div className="flex items-center gap-2">
                 <Link to={ROUTES.hrmsHome} className={switcherButtonClass}>
@@ -215,7 +215,12 @@ export default function AssetManagementNavbar() {
               aria-label="Altroz home"
               className="inline-flex shrink-0 items-center gap-2.5 leading-none -ml-3 justify-self-start"
             >
-              <BrandMark mode="wordmark" className="scale-[0.95] origin-left" />
+              <BrandMark
+                mode="wordmark"
+                src="/brand/altroz-logo-wordmark.png"
+                alt="Altroz Asset Management"
+                className="scale-[0.95] origin-left"
+              />
               <span className="inline-flex items-center rounded-[0.6rem] bg-primary px-2.5 py-1 text-[0.72rem] font-extrabold uppercase leading-none tracking-[0.12em] text-white sm:text-[0.76rem]">
                 Asset Management
               </span>
@@ -273,7 +278,7 @@ export default function AssetManagementNavbar() {
             </nav>
 
             <Link
-              to={ROUTES.bookDemo}
+              to={ROUTES.assetManagementBookDemo}
               className="btn-primary justify-self-end inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"
             >
               Book Demo

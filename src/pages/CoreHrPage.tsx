@@ -140,7 +140,7 @@ export default function CoreHrPage() {
               </p>
 
               <div className="mt-3 flex flex-wrap justify-center gap-3">
-                <a href="/company/book-demo" className="btn-primary">
+                <a href={ROUTES.bookDemo} className="btn-primary">
                   Book Free Demo
                 </a>
                 <a href="#capabilities" className="btn-outline">
@@ -757,7 +757,7 @@ function CoreHrDigitalDashboardPreview() {
 
           <div className="mt-4 grid gap-3 lg:grid-cols-3">
             <Link
-              to="/products/workforce-management"
+              to={ROUTES.workforce}
               className="group rounded-[1.5rem] border border-border bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
               <div className="flex items-center justify-between">
@@ -783,7 +783,7 @@ function CoreHrDigitalDashboardPreview() {
             </Link>
 
             <Link
-              to="/products/core-hr#capabilities"
+              to={`${ROUTES.coreHR}#capabilities`}
               className="group rounded-[1.5rem] border border-border bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
               <div className="flex items-center justify-between">
@@ -807,7 +807,7 @@ function CoreHrDigitalDashboardPreview() {
             </Link>
 
             <Link
-              to="/products/core-hr#guiding-principles"
+              to={`${ROUTES.coreHR}#guiding-principles`}
               className="group rounded-[1.5rem] border border-border bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
             >
               <div className="flex items-center justify-between">

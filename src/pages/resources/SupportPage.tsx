@@ -28,7 +28,7 @@ export default function SupportPage() {
           desc: "Keep support requests easy to explain, route, and resolve.",
         },
       ]}
-      primaryAction={{ label: "Start learning", href: ROUTES.learn }}
+      primaryAction={{ label: "Start learning", href: ROUTES.hrmsLearn }}
       secondaryAction={{ label: "Back to home", href: ROUTES.home }}
     />
   );

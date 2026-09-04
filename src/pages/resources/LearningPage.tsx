@@ -1,5 +1,6 @@
 import { GraduationCap } from "lucide-react";
 import ResourceDetailPage from "@/components/site/ResourceDetailPage";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 export default function LearningPage() {
   return (
@@ -27,7 +28,7 @@ export default function LearningPage() {
           desc: "Resources that help new users understand the platform faster.",
         },
       ]}
-      primaryAction={{ label: "Contact support", href: "/resources/support" }}
+      primaryAction={{ label: "Contact support", href: ROUTES.supportResources }}
       secondaryAction={{ label: "Back to home", href: "/" }}
     />
   );

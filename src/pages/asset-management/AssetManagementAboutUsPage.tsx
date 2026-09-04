@@ -88,7 +88,7 @@ const quickLinks = [
   { label: "Asset Maintenance", href: `${ROUTES.assetManagement}#asset-maintenance` },
   { label: "Asset Reports", href: `${ROUTES.assetManagement}#asset-reports` },
   { label: "Pricing", href: ROUTES.assetManagementPricing },
-  { label: "Book a Demo", href: ROUTES.bookDemo },
+  { label: "Book a Demo", href: ROUTES.assetManagementBookDemo },
   { label: "Contact Us", href: ROUTES.assetManagementContact },
   { label: "Learn", href: ROUTES.assetManagementLearn },
   { label: "Blog", href: ROUTES.assetManagementBlog },
@@ -600,7 +600,7 @@ function AssetManagementAboutUsPage() {
               </p>
 
               <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-                <Link to={ROUTES.bookDemo} className="btn-primary">
+                <Link to={ROUTES.assetManagementBookDemo} className="btn-primary">
                   Book Free Demo
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -1011,7 +1011,7 @@ function AssetManagementAboutUsPage() {
 
                 <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                   <Link
-                    to={ROUTES.bookDemo}
+                    to={ROUTES.assetManagementBookDemo}
                     className="btn-primary justify-center bg-white text-primary hover:bg-white/90"
                   >
                     Book Free Demo
@@ -1037,7 +1037,7 @@ function AssetManagementAboutUsPage() {
       </main>
 
       <Link
-        to={ROUTES.bookDemo}
+        to={ROUTES.assetManagementBookDemo}
         className="fixed bottom-5 right-5 z-40 hidden rounded-full bg-primary px-5 py-3 text-sm font-black text-white shadow-[0_18px_45px_rgba(30,79,209,0.28)] transition-transform hover:-translate-y-0.5 sm:inline-flex"
       >
         Book Demo

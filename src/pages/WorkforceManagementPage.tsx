@@ -28,6 +28,7 @@ import {
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import { resolveSiteUrl } from "@/lib/siteUrl";
+import { ROUTES } from "@/routes/routeConfig.js";
 import TopNavbar from "@/components/site/TopNavbar";
 import {
   Accordion,
@@ -462,7 +463,7 @@ function usePageMeta(title: string, description: string) {
       canonical.rel = "canonical";
       head.appendChild(canonical);
     }
-    canonical.href = resolveSiteUrl("/products/workforce-management");
+    canonical.href = resolveSiteUrl(ROUTES.workforce);
 
     return () => {
       document.title = previousTitle;
@@ -576,10 +577,10 @@ export default function WorkforceManagementPage() {
 
             <div className="mt-10 max-w-5xl">
               <div className="flex flex-wrap gap-3">
-                <a href="/company/book-demo" className="btn-primary">
+                <a href={ROUTES.bookDemo} className="btn-primary">
                   Book Free Demo
                 </a>
-                <a href="/company/contact-us" className="btn-outline">
+                <a href={ROUTES.contact} className="btn-outline">
                   Request Demo
                 </a>
               </div>
@@ -919,10 +920,10 @@ export default function WorkforceManagementPage() {
                 </div>
 
                 <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
-                  <a href="/company/book-demo" className="btn-primary">
+                  <a href={ROUTES.bookDemo} className="btn-primary">
                     Book Free Demo
                   </a>
-                  <a href="/company/contact-us" className="btn-outline">
+                  <a href={ROUTES.contact} className="btn-outline">
                     Request Demo
                   </a>
                 </div>

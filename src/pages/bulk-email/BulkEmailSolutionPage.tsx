@@ -207,7 +207,7 @@ export default function BulkEmailSolutionPage({
                 </div>
 
                 <div className="button-group mt-6 justify-start">
-                  <Link to={ROUTES.bookDemo} className={bulkEmailPrimaryCta}>
+                  <Link to={ROUTES.bulkEmailBookDemo} className={bulkEmailPrimaryCta}>
                     Book Free Demo
                   </Link>
                   <a href="#features" className={bulkEmailSecondaryCta}>
@@ -352,7 +352,7 @@ export default function BulkEmailSolutionPage({
                   {ctaDescription}
                 </p>
                 <div className="button-group mt-5">
-                  <Link to={ROUTES.bookDemo} className={bulkEmailPrimaryCta}>
+                  <Link to={ROUTES.bulkEmailBookDemo} className={bulkEmailPrimaryCta}>
                     Book Free Demo
                   </Link>
                   <Link to={ROUTES.bulkEmailContact} className="btn-ghost">
@@ -398,7 +398,7 @@ export default function BulkEmailSolutionPage({
                 <p className="mx-auto mt-4 max-w-2xl text-white/80">{ctaDescription}</p>
                 <div className="button-group mt-7 justify-center">
                   <Link
-                    to={ROUTES.bookDemo}
+                    to={ROUTES.bulkEmailBookDemo}
                     className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-semibold text-primary transition-colors hover:bg-primary-soft"
                   >
                     Book Free Demo

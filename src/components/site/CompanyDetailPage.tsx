@@ -5,6 +5,7 @@ import PageSEO from "@/components/site/PageSEO";
 import PageHeroIntro from "@/components/site/PageHeroIntro";
 import TopNavbar from "@/components/site/TopNavbar";
 import MainNavbar from "@/components/site/MainNavbar";
+import { ROUTES } from "@/routes/routeConfig.js";
 import { ScrollReveal, StaggerReveal } from "./ScrollReveal";
 
 type CompanyDetailPageProps = {
@@ -32,7 +33,7 @@ export default function CompanyDetailPage({
   highlights,
   sections,
   visual,
-  primaryAction = { label: "Book demo", href: "/company/book-demo" },
+  primaryAction = { label: "Book demo", href: ROUTES.bookDemo },
 }: CompanyDetailPageProps) {
   const canonicalPath = typeof window !== "undefined" ? window.location.pathname : "/";
 
@@ -155,7 +156,7 @@ export default function CompanyDetailPage({
 
             <ScrollReveal variant="fade-up" delay={120}>
               <a
-                href="/company/contact-us"
+                href={ROUTES.contact}
                 className="card-action mt-8 inline-flex items-center gap-1 text-sm font-semibold text-primary transition-all hover:gap-2"
               >
                 Contact us <ArrowRight className="h-4 w-4" />

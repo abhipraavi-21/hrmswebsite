@@ -393,7 +393,8 @@ function DemoDashboardMock() {
 }
 
 export default function BookDemoPage() {
-  const canonicalPath = typeof window !== "undefined" ? window.location.pathname : ROUTES.bookDemo;
+  const canonicalPath =
+    typeof window !== "undefined" ? window.location.pathname : ROUTES.assetManagementBookDemo;
   const [status, setStatus] = useState<StatusState>({ type: "idle", message: "" });
 
   const form = useForm<FormValues>({
@@ -454,7 +455,7 @@ export default function BookDemoPage() {
         "@type": "ListItem",
         position: 2,
         name: "Book a Demo",
-        item: resolveSiteUrl(ROUTES.bookDemo),
+        item: resolveSiteUrl(ROUTES.assetManagementBookDemo),
       },
     ],
   };
@@ -463,7 +464,7 @@ export default function BookDemoPage() {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "Book a Demo | Altroz Asset Management",
-    url: resolveSiteUrl(ROUTES.bookDemo),
+    url: resolveSiteUrl(ROUTES.assetManagementBookDemo),
     description: seoDescription,
     publisher: {
       "@type": "Organization",
@@ -1005,7 +1006,7 @@ export default function BookDemoPage() {
       </main>
 
       <Link
-        to={ROUTES.bookDemo}
+        to={ROUTES.assetManagementBookDemo}
         className="fixed bottom-5 right-5 z-40 hidden rounded-full bg-primary px-5 py-3 text-sm font-black text-white shadow-[0_18px_45px_rgba(11,92,255,0.28)] transition-transform hover:-translate-y-0.5 sm:inline-flex"
       >
         Book Demo

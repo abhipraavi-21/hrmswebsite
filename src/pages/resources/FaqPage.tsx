@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import BulkEmailNavbar from "@/components/site/BulkEmailNavbar";
+import AssetManagementNavbar from "@/components/site/AssetManagementNavbar";
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import PageSEO from "@/components/site/PageSEO";
@@ -41,6 +42,7 @@ import { ScrollReveal } from "@/components/site/ScrollReveal";
 import { faqPopularSearches, faqQuickLinks, faqSections } from "./faqData";
 import { getSection, getSectionItems } from "@/services/cmsHelpers";
 import { fetchPageByKey } from "@/services/pageService";
+import type { ProductNamespace } from "@/services/pageService";
 import { getSeedPageFallback } from "@/services/seedFallback";
 import type { PublicCmsPage } from "@/services/cmsTypes";
 import { cn } from "@/lib/utils";
@@ -108,6 +110,7 @@ type QuickLink = {
 
 type FaqPageConfig = {
   pageKey: string;
+  productNamespace: ProductNamespace;
   canonicalPath: string;
   fallbackPopularSearches: string[];
   fallbackQuickLinks: QuickLink[];
@@ -124,18 +127,21 @@ const FAQ_PAGE_CONFIGS: Record<
 > = {
   default: {
     pageKey: "hrms-resource-faq",
+    productNamespace: "hrms",
     canonicalPath: ROUTES.hrmsFaq,
     fallbackPopularSearches: faqPopularSearches,
     fallbackQuickLinks: faqQuickLinks,
   },
   hrms: {
     pageKey: "hrms-resource-faq",
+    productNamespace: "hrms",
     canonicalPath: ROUTES.hrmsFaq,
     fallbackPopularSearches: faqPopularSearches,
     fallbackQuickLinks: faqQuickLinks,
   },
   bulkEmail: {
     pageKey: "bulk-email-resource-faq",
+    productNamespace: "bulk-email",
     canonicalPath: ROUTES.bulkEmailFaq,
     fallbackPopularSearches: [
       "What is bulk email?",
@@ -151,6 +157,7 @@ const FAQ_PAGE_CONFIGS: Record<
   },
   assetManagement: {
     pageKey: "asset-management-resource-faq",
+    productNamespace: "asset-management",
     canonicalPath: ROUTES.assetManagementFaq,
     fallbackPopularSearches: [
       "What is an asset register?",
@@ -249,10 +256,26 @@ export default function FaqPage() {
   const location = useLocation();
   const pageConfig = resolveFaqPageConfig(location.pathname);
   const isBulkEmailFaq = location.pathname.startsWith(ROUTES.bulkEmailFaq);
+  const isAssetManagementFaq = location.pathname.startsWith(ROUTES.assetManagementFaq);
+  const defaultDemoLink = isBulkEmailFaq
+    ? ROUTES.bulkEmailBookDemo
+    : isAssetManagementFaq
+      ? ROUTES.assetManagementBookDemo
+      : ROUTES.bookDemo;
+  const defaultProductHomeLink = isBulkEmailFaq
+    ? ROUTES.bulkEmail
+    : isAssetManagementFaq
+      ? ROUTES.assetManagementHome
+      : ROUTES.hrmsHome;
+  const defaultContactLink = isBulkEmailFaq
+    ? ROUTES.bulkEmailContact
+    : isAssetManagementFaq
+      ? ROUTES.assetManagementContact
+      : ROUTES.hrmsContact;
   const seedContent = useMemo(() => getSeedPageFallback(pageConfig.pageKey), [pageConfig.pageKey]);
   const { data: remoteContent } = usePublicContent(
-    () => fetchPageByKey(pageConfig.pageKey),
-    [pageConfig.pageKey],
+    () => fetchPageByKey(pageConfig.pageKey, pageConfig.productNamespace),
+    [pageConfig.pageKey, pageConfig.productNamespace],
     seedContent,
   );
   const [query, setQuery] = useState("");
@@ -314,13 +337,13 @@ export default function FaqPage() {
   const heroSecondaryButtonLink =
     typeof heroSection?.settings?.secondaryButtonLink === "string"
       ? heroSection.settings.secondaryButtonLink
-      : ROUTES.assetManagementHome;
+      : defaultProductHomeLink;
   const ctaHeading = quickLinksSection?.heading ?? DEFAULT_CTA_HEADING;
   const ctaDescription = quickLinksSection?.description ?? DEFAULT_CTA_DESCRIPTION;
   const ctaButtonText =
     quickLinksSection?.buttonText ?? activeSectionData?.ctaText ?? "Book a Free Demo";
   const ctaButtonLink =
-    quickLinksSection?.buttonLink ?? activeSectionData?.ctaLink ?? ROUTES.bookDemo;
+    quickLinksSection?.buttonLink ?? activeSectionData?.ctaLink ?? defaultDemoLink;
   const finalCtaSecondaryButtonText =
     typeof finalCtaSection?.settings?.secondaryButtonText === "string"
       ? finalCtaSection.settings.secondaryButtonText
@@ -328,7 +351,7 @@ export default function FaqPage() {
   const finalCtaSecondaryButtonLink =
     typeof finalCtaSection?.settings?.secondaryButtonLink === "string"
       ? finalCtaSection.settings.secondaryButtonLink
-      : ROUTES.assetManagementContact;
+      : defaultContactLink;
   const seoTitle = remoteContent?.metaTitle ?? DEFAULT_PAGE_TITLE;
   const seoDescription = remoteContent?.metaDescription ?? DEFAULT_PAGE_DESCRIPTION;
   const seoOgTitle = remoteContent?.ogTitle ?? seoTitle;
@@ -388,7 +411,9 @@ export default function FaqPage() {
         "min-h-screen",
         isBulkEmailFaq
           ? "bulk-email-theme bg-gradient-to-b from-white via-[#f6faff] to-[#fff7ef]"
-          : "asset-management-theme asset-management-theme-shell",
+          : isAssetManagementFaq
+            ? "asset-management-theme asset-management-theme-shell"
+            : "min-h-screen bg-background",
       )}
     >
       <PageSEO
@@ -402,6 +427,8 @@ export default function FaqPage() {
       />
       {isBulkEmailFaq ? (
         <BulkEmailNavbar />
+      ) : isAssetManagementFaq ? (
+        <AssetManagementNavbar />
       ) : (
         <>
           <TopNavbar />
@@ -683,7 +710,7 @@ export default function FaqPage() {
 
                       <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                         <ActionLink
-                          href={finalCtaSection.buttonLink ?? ROUTES.bookDemo}
+                          href={finalCtaSection.buttonLink ?? defaultDemoLink}
                           className="btn-primary justify-center bg-white text-primary hover:bg-white/90"
                         >
                           {finalCtaSection.buttonText ?? "Book a Demo"}

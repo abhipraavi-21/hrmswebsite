@@ -1,3 +1,5 @@
+import { ROUTES } from "@/routes/routeConfig.js";
+
 export type NavLink = {
   label: string;
   href: string;
@@ -18,7 +20,7 @@ export const productDropdownColumns: ProductColumn[] = [
     groups: [
       {
         title: "Global Core HR",
-        href: "/products/core-hr",
+        href: ROUTES.coreHR,
         links: [
           { label: "Compensation Planning", href: "#compensation-planning" },
           { label: "Localization", href: "#localization" },
@@ -26,9 +28,9 @@ export const productDropdownColumns: ProductColumn[] = [
       },
       {
         title: "Workforce Management",
-        href: "/products/attendance-management",
+        href: ROUTES.attendanceManagement,
         links: [
-          { label: "Attendance", href: "/products/attendance-management" },
+          { label: "Attendance", href: ROUTES.attendanceManagement },
           { label: "Scheduling", href: "#scheduling" },
         ],
       },
@@ -43,7 +45,7 @@ export const productDropdownColumns: ProductColumn[] = [
       {
         title: "Talent Management",
         links: [
-          { label: "Performance Management", href: "/products/performance-management" },
+          { label: "Performance Management", href: ROUTES.performance },
           { label: "Talent Development", href: "#talent-development" },
           { label: "Skills Management", href: "#skills-management" },
           { label: "Succession Planning", href: "#succession-planning" },
@@ -57,7 +59,7 @@ export const productDropdownColumns: ProductColumn[] = [
     groups: [
       {
         title: "Payroll",
-        href: "/products/payroll",
+        href: ROUTES.payroll,
         links: [
           { label: "GCC", href: "#gcc" },
           { label: "India", href: "#india" },
@@ -66,7 +68,7 @@ export const productDropdownColumns: ProductColumn[] = [
           { label: "Philippines", href: "#philippines" },
           { label: "Singapore", href: "#singapore" },
           { label: "Thailand", href: "#thailand" },
-          { label: "Unified Payroll", href: "/products/payroll" },
+          { label: "Unified Payroll", href: ROUTES.payroll },
         ],
       },
     ],

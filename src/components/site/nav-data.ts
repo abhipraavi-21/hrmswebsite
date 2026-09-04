@@ -42,9 +42,9 @@ export const solutionMenuItems = [
 ];
 
 export const resourcesMenuItems = [
-  { label: "Learn", href: ROUTES.learn },
-  { label: "Video", href: ROUTES.video },
-  { label: "Compliance Guides", href: ROUTES.complianceGuides },
+  { label: "Learn", href: ROUTES.hrmsLearn },
+  { label: "Video", href: ROUTES.hrmsVideo },
+  { label: "Compliance Guides", href: ROUTES.hrmsComplianceGuides },
   { label: "Blog", href: ROUTES.hrmsBlog },
   { label: "FAQ", href: ROUTES.hrmsFaq },
 ];

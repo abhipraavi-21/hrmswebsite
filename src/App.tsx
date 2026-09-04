@@ -1,5 +1,13 @@
 import { lazy, Suspense, useEffect } from "react";
-import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import ScrollRevealManager from "./components/site/ScrollRevealManager";
 import ScrollToTop from "./components/site/ScrollToTop";
 import WhatsAppFloatingButton from "./components/site/WhatsAppFloatingButton";
@@ -14,7 +22,7 @@ import {
   resourcesMenuItems,
   solutionMenuItems,
 } from "./components/site/nav-data";
-import { ROUTES } from "@/routes/routeConfig.js";
+import { ROUTE_ALIASES, ROUTES } from "@/routes/routeConfig.js";
 import { logRouteValidation, validateRouteReferences } from "@/utils/routeValidator.js";
 import BlogPage from "./pages/resources/BlogPage";
 import BlogArticlePage from "./pages/resources/BlogArticlePage";
@@ -106,7 +114,17 @@ const CareersPage = lazy(() => import("./pages/company/CareersPage"));
 const ContactUsPage = lazy(() => import("./pages/company/ContactUsPage"));
 const CompanySupportPage = lazy(() => import("./pages/company/CompanySupportPage"));
 const BookDemoPage = lazy(() => import("./pages/company/BookDemoPage"));
+const HrmsBookDemoPage = lazy(() => import("./pages/company/HrmsBookDemoPage"));
+const BulkEmailBookDemoPage = lazy(
+  () => import("./pages/bulk-email/BulkEmailBookDemoPage"),
+);
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage.jsx"));
+
+function LegacyHrmsBlogPostRedirect() {
+  const { slug } = useParams();
+
+  return <Navigate to={`${ROUTES.hrmsBlog}/${slug ?? ""}`} replace />;
+}
 
 const routeReferences = [
   ...featureMenuColumns.flatMap((column) =>
@@ -261,34 +279,40 @@ function AppShell() {
             path={ROUTES.bulkEmailHrCommunication}
             element={<BulkEmailHrCommunicationPage />}
           />
+          <Route path={ROUTES.bulkEmailBookDemo} element={<BulkEmailBookDemoPage />} />
           <Route path={ROUTES.bulkEmailMarketing} element={<BulkEmailMarketingPage />} />
           <Route path={ROUTES.bulkEmailEducation} element={<BulkEmailEducationPage />} />
           <Route path={ROUTES.integrations} element={<IntegrationsPage />} />
           <Route path={ROUTES.businessApps} element={<BusinessAppsPage />} />
           <Route path={ROUTES.accounting} element={<AccountingPage />} />
-          <Route path={ROUTES.assetManagement} element={<AssetManagementPage />} />
           <Route path={ROUTES.assetManagementHome} element={<AssetManagementPage />} />
           <Route path={ROUTES.assetManagementAbout} element={<AssetManagementAboutUsPage />} />
           <Route path={ROUTES.devicesApi} element={<DevicesApiPage />} />
-          <Route path={ROUTES.learn} element={<LearnPage />} />
+          <Route path={ROUTES.learn} element={<Navigate to={ROUTES.hrmsLearn} replace />} />
           <Route path={ROUTES.hrmsLearn} element={<LearnPage />} />
-          <Route path={ROUTES.video} element={<VideoPage />} />
-          <Route path={ROUTES.hrmsVideo} element={<Navigate to={ROUTES.video} replace />} />
+          <Route path={ROUTES.video} element={<Navigate to={ROUTES.hrmsVideo} replace />} />
+          <Route path={ROUTES.hrmsVideo} element={<VideoPage />} />
           <Route path={ROUTES.bulkEmailLearn} element={<LearnPage />} />
           <Route path={ROUTES.assetManagementLearn} element={<LearnPage />} />
-          <Route path={ROUTES.blog} element={<BlogPage />} />
-          <Route path={`${ROUTES.blog}/:slug`} element={<BlogArticlePage />} />
+          <Route path={ROUTES.blog} element={<Navigate to={ROUTES.hrmsBlog} replace />} />
+          <Route
+            path={`${ROUTES.blog}/:slug`}
+            element={<LegacyHrmsBlogPostRedirect />}
+          />
           <Route path={ROUTES.hrmsBlog} element={<BlogPage />} />
           <Route path={ROUTES.bulkEmailBlog} element={<BlogPage />} />
           <Route path={ROUTES.assetManagementBlog} element={<BlogPage />} />
           <Route path={ROUTES.hrmsBlogPost} element={<BlogArticlePage />} />
           <Route path={ROUTES.bulkEmailBlogPost} element={<BlogArticlePage />} />
           <Route path={ROUTES.assetManagementBlogPost} element={<BlogArticlePage />} />
-          <Route path={ROUTES.faq} element={<FaqPage />} />
+          <Route path={ROUTES.faq} element={<Navigate to={ROUTES.hrmsFaq} replace />} />
           <Route path={ROUTES.hrmsFaq} element={<FaqPage />} />
           <Route path={ROUTES.bulkEmailFaq} element={<FaqPage />} />
           <Route path={ROUTES.assetManagementFaq} element={<FaqPage />} />
-          <Route path={ROUTES.complianceGuides} element={<ComplianceGuidesPage />} />
+          <Route
+            path={ROUTES.complianceGuides}
+            element={<Navigate to={ROUTES.hrmsComplianceGuides} replace />}
+          />
           <Route path={ROUTES.hrmsComplianceGuides} element={<ComplianceGuidesPage />} />
           <Route path={ROUTES.supportResources} element={<SupportPage />} />
           <Route path={ROUTES.assetManagementGuide} element={<AssetManagementGuidePage />} />
@@ -301,65 +325,21 @@ function AppShell() {
           <Route path={ROUTES.careers} element={<CareersPage />} />
           <Route path={ROUTES.hrmsContact} element={<ContactUsPage />} />
           <Route path={ROUTES.assetManagementContact} element={<AssetManagementContactPage />} />
-          <Route path={ROUTES.contact} element={<Navigate to={ROUTES.hrmsContact} replace />} />
           <Route path={ROUTES.support} element={<CompanySupportPage />} />
-          <Route path={ROUTES.bookDemo} element={<BookDemoPage />} />
+          <Route path={ROUTES.assetManagementBookDemo} element={<BookDemoPage />} />
+          <Route path={ROUTES.bookDemo} element={<HrmsBookDemoPage />} />
 
-          <Route path="/about-us" element={<Navigate to={ROUTES.about} replace />} />
-          <Route path="/login" element={<Navigate to={ROUTES.customerAccess} replace />} />
-          <Route path="/register" element={<Navigate to={ROUTES.customerAccess} replace />} />
-          <Route path="/hrms-home" element={<Navigate to={ROUTES.hrmsHome} replace />} />
-          <Route
-            path="/attendance-management"
-            element={<Navigate to={ROUTES.attendanceManagement} replace />}
-          />
-          <Route path="/careers" element={<Navigate to={ROUTES.careers} replace />} />
-          <Route path="/company/why-altoz" element={<Navigate to={ROUTES.whyAltroz} replace />} />
-          <Route path="/customers" element={<Navigate to={ROUTES.customers} replace />} />
-          <Route
-            path="/integrations/asset-management"
-            element={<Navigate to={ROUTES.assetManagement} replace />}
-          />
-          <Route path="/learn" element={<Navigate to={ROUTES.learn} replace />} />
-          <Route path="/blog" element={<Navigate to={ROUTES.blog} replace />} />
-          <Route path="/faq" element={<Navigate to={ROUTES.faq} replace />} />
-          <Route path="/partner-with-us" element={<Navigate to={ROUTES.partner} replace />} />
-          <Route
-            path="/products/recruitment"
-            element={<Navigate to={ROUTES.recruitment} replace />}
-          />
-          <Route
-            path="/products/mobile-app-landing"
-            element={<Navigate to={ROUTES.mobileAppLanding} replace />}
-          />
-          <Route
-            path="/mobile-app-landing"
-            element={<Navigate to={ROUTES.mobileAppLanding} replace />}
-          />
-          <Route path="/mobile-app" element={<Navigate to={ROUTES.mobileAppLanding} replace />} />
-          <Route
-            path="/products/visitor-management"
-            element={<Navigate to={ROUTES.documentGeneration} replace />}
-          />
-          <Route path="/resources/learning" element={<Navigate to={ROUTES.learn} replace />} />
-          <Route
-            path="/resources/compliance-guides"
-            element={<Navigate to={ROUTES.complianceGuides} replace />}
-          />
-          <Route path="/blog/:slug" element={<BlogArticlePage />} />
-          <Route
-            path="/compliance-guides"
-            element={<Navigate to={ROUTES.complianceGuides} replace />}
-          />
-          <Route
-            path="/solutions/industry"
-            element={<Navigate to={ROUTES.industrySolutions} replace />}
-          />
-          <Route
-            path="/solutions/workforce-management"
-            element={<Navigate to={ROUTES.workforce} replace />}
-          />
-          <Route path="/why-altroz" element={<Navigate to={ROUTES.whyAltroz} replace />} />
+          {Object.entries(ROUTE_ALIASES)
+            .filter(([legacyPath, targetPath]) => legacyPath !== targetPath && !legacyPath.includes(":"))
+            .map(([legacyPath, targetPath]) => (
+              <Route
+                key={`legacy-${legacyPath}`}
+                path={legacyPath}
+                element={<Navigate to={targetPath} replace />}
+              />
+            ))}
+          <Route path={`${ROUTES.blog}/:slug`} element={<LegacyHrmsBlogPostRedirect />} />
+          <Route path="/blog/:slug" element={<LegacyHrmsBlogPostRedirect />} />
           <Route path="/admin/*" element={<AdminAppRedirect />} />
 
           <Route path="*" element={<NotFoundPage />} />

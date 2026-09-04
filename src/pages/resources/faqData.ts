@@ -364,18 +364,18 @@ export const faqPopularSearches = [
 export const faqQuickLinks = [
     {
         "label":  "Learn",
-        "href":  "/resources/learn"
+        "href":  "/hrms/resources/learn"
     },
     {
         "label":  "Compliance Guides",
-        "href":  "/resources/compliance-guides"
+        "href":  "/hrms/resources/compliance-guides"
     },
     {
         "label":  "Blog",
-        "href":  "/resources/blog"
+        "href":  "/hrms/resources/blog"
     },
     {
         "label":  "Support",
-        "href":  "/company/help-center"
+        "href":  "/hrms/company/help-center"
     }
 ];

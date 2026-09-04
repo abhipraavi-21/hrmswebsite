@@ -58,7 +58,7 @@ const hrFooterColumns = [
   {
     title: "Resources",
     links: [
-      { label: "Learn", href: ROUTES.learn },
+      { label: "Learn", href: ROUTES.hrmsLearn },
       { label: "Pricing", href: ROUTES.hrmsPricing },
       { label: "Industry Solutions", href: ROUTES.industrySolutions },
       { label: "HR Business Applications", href: ROUTES.businessApps },
@@ -105,7 +105,7 @@ const bulkEmailFooterColumns = [
     title: "Support",
     links: [
       { label: "Contact Us", href: ROUTES.bulkEmailContact },
-      { label: "Book Demo", href: ROUTES.bookDemo },
+      { label: "Book Demo", href: ROUTES.bulkEmailBookDemo },
     ],
   },
 ];
@@ -144,7 +144,7 @@ const assetManagementFooterColumns = [
     title: "Support",
     links: [
       { label: "Contact Us", href: ROUTES.assetManagementContact },
-      { label: "Book Demo", href: ROUTES.bookDemo },
+      { label: "Book Demo", href: ROUTES.assetManagementBookDemo },
     ],
   },
 ];

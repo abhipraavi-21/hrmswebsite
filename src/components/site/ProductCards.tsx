@@ -12,7 +12,7 @@ const products = [
     eyebrow: "HRMS Platform",
     title: "Run your entire people operations",
     desc: "From attendance to payroll, everything your HR team needs in one place.",
-    href: "/products/core-hr",
+    href: ROUTES.coreHR,
     features: [
       "Attendance tracking with GPS & biometric",
       "Payroll automation (PF, ESI, TDS ready)",
@@ -73,7 +73,7 @@ const solutionTracks = [
     eyebrow: "Workforce",
     title: "Designed for distributed teams",
     desc: "Keep attendance, approvals and employee access consistent across field, office and hybrid teams.",
-    href: "/products/workforce-management",
+    href: ROUTES.workforce,
     features: [
       "Shift-aware attendance and scheduling",
       "Self-service requests for employees and managers",
@@ -95,7 +95,7 @@ export default function ProductCards({ section }: { section?: PublicCmsSection |
           eyebrow: item.subtitle ?? "HRMS Platform",
           title: item.title ?? "",
           desc: item.description ?? "",
-          href: item.buttonLink ?? ROUTES.learn,
+          href: item.buttonLink ?? ROUTES.hrmsLearn,
           features: (item.extraData?.features as string[] | undefined) ?? [],
           color: (item.extraData?.accent as string | undefined) ?? "primary",
         }))
@@ -158,7 +158,7 @@ export default function ProductCards({ section }: { section?: PublicCmsSection |
                   </ul>
 
                   <Link
-                    to={p.href ?? ROUTES.learn}
+                    to={p.href ?? ROUTES.hrmsLearn}
                     className={`card-action mt-auto inline-flex items-center gap-1 text-sm font-semibold ${
                       isPrimary ? "text-primary" : "text-success"
                     } transition-all hover:gap-2`}

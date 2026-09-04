@@ -355,7 +355,7 @@ export default function BulkEmailSchedulingPage() {
 
                 <ScrollReveal variant="fade-up" delay={180}>
                   <div className="mt-6 flex flex-wrap gap-3">
-                    <Link to={ROUTES.bookDemo} className="btn-primary">
+                    <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
                       Book Free Demo
                     </Link>
                     <a href="#features" className="btn-outline">
@@ -707,7 +707,7 @@ export default function BulkEmailSchedulingPage() {
                   management, campaign timing and delivery tracking together.
                 </p>
                 <div className="button-group mt-5">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
                     Book Free Demo
                   </Link>
                   <Link to={ROUTES.bulkEmailContact} className="btn-ghost">
@@ -756,7 +756,7 @@ export default function BulkEmailSchedulingPage() {
                 </p>
                 <div className="button-group mt-7 justify-center">
                   <Link
-                    to={ROUTES.bookDemo}
+                    to={ROUTES.bulkEmailBookDemo}
                     className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-semibold text-primary transition-colors hover:bg-primary-soft"
                   >
                     Book Free Demo

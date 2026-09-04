@@ -95,8 +95,25 @@ function RelatedLinkItem({
   );
 }
 
-function DemoSidebar() {
+function getBlogDemoRoute(blogGroup: ReturnType<typeof resolveBlogGroupFromPath>) {
+  if (blogGroup === "bulk-email") {
+    return ROUTES.bulkEmailBookDemo;
+  }
+
+  if (blogGroup === "asset-management") {
+    return ROUTES.assetManagementBookDemo;
+  }
+
+  return ROUTES.bookDemo;
+}
+
+function DemoSidebar({
+  blogGroup,
+}: {
+  blogGroup: ReturnType<typeof resolveBlogGroupFromPath>;
+}) {
   const employeeOptions = ["1-10", "11-25", "26-50", "51-100", "101-250", "251-500", "500+"];
+  const demoRoute = getBlogDemoRoute(blogGroup);
 
   return (
     <aside className="xl:sticky xl:top-24 self-start">
@@ -173,7 +190,7 @@ function DemoSidebar() {
             </div>
 
             <div className="pt-2">
-              <Link to={ROUTES.bookDemo} className="btn-primary w-full justify-center">
+              <Link to={demoRoute} className="btn-primary w-full justify-center">
                 Get My Free Demo!
               </Link>
             </div>
@@ -199,6 +216,8 @@ function ArticleState({
   blogPath: string;
   blogGroup: ReturnType<typeof resolveBlogGroupFromPath>;
 }) {
+  const demoRoute = getBlogDemoRoute(blogGroup);
+
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,_#f8fbff_0%,_#ffffff_100%)]">
       <BlogChrome blogGroup={blogGroup} />
@@ -220,7 +239,7 @@ function ArticleState({
                   <ArrowLeft className="h-4 w-4" />
                   Back to blog
                 </Link>
-                <Link to={ROUTES.bookDemo} className="btn-primary">
+                <Link to={demoRoute} className="btn-primary">
                   Book a demo
                 </Link>
               </div>
@@ -241,8 +260,8 @@ export default function BlogArticlePage() {
   const fallbackBlogPath = resolveBlogListingPath(fallbackGroup, location.pathname);
   const seedPost = useMemo(() => (slug ? getSeedBlogPostFallback(slug) : null), [slug]);
   const { data: post, error, loading } = usePublicContent(
-    () => (slug ? fetchPublicBlogPost(slug) : Promise.resolve(null)),
-    [slug],
+    () => (slug ? fetchPublicBlogPost(slug, fallbackGroup) : Promise.resolve(null)),
+    [slug, fallbackGroup],
     seedPost,
   );
 
@@ -580,7 +599,7 @@ export default function BlogArticlePage() {
                           <Link to={pageCopy.primaryCtaHref} className="btn-primary">
                             {pageCopy.primaryCtaLabel}
                           </Link>
-                          <Link to={ROUTES.bookDemo} className="btn-outline">
+                          <Link to={getBlogDemoRoute(resolvedPost.blogGroup)} className="btn-outline">
                             Book a demo
                           </Link>
                           <Link to={blogPath} className="btn-outline">
@@ -594,7 +613,7 @@ export default function BlogArticlePage() {
                 </article>
               </div>
 
-              <DemoSidebar />
+              <DemoSidebar blogGroup={resolvedPost.blogGroup} />
             </div>
           </div>
         </section>

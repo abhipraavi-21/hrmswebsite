@@ -270,7 +270,7 @@ const relatedModules = [
   { label: "Employee Lifecycle", href: `${ROUTES.businessApps}#employee-lifecycle` },
   { label: "Workforce Management", href: ROUTES.workforce },
   { label: "Exit Management", href: ROUTES.exitManagement },
-  { label: "Pricing", href: ROUTES.pricing },
+  { label: "Pricing", href: ROUTES.hrmsPricing },
   { label: "Book Free Demo", href: ROUTES.bookDemo },
   { label: "About Us", href: ROUTES.about },
 ];
@@ -691,7 +691,7 @@ export default function WhyAltozPage() {
                     <Link to={ROUTES.bookDemo} className="btn-primary">
                       Book Free Demo
                     </Link>
-                    <Link to={ROUTES.pricing} className="btn-outline">
+                    <Link to={ROUTES.hrmsPricing} className="btn-outline">
                       Explore Pricing
                     </Link>
                   </div>

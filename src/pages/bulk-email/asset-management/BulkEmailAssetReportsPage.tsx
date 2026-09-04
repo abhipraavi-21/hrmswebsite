@@ -703,7 +703,7 @@ export default function BulkEmailAssetReportsPage() {
               <div className="mt-10 grid gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
                 <ScrollReveal variant="fade-up" className="text-center lg:text-left">
                   <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
-                    <Link to={ROUTES.bookDemo} className="btn-primary">
+                    <Link to={ROUTES.assetManagementBookDemo} className="btn-primary">
                       Book Free Demo
                       <ArrowRight className="h-4 w-4" />
                     </Link>
@@ -1010,7 +1010,7 @@ export default function BulkEmailAssetReportsPage() {
                 </div>
 
                 <div className="flex flex-wrap gap-3 lg:justify-end">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.assetManagementBookDemo} className="btn-primary">
                     Book Free Demo
                     <ArrowRight className="h-4 w-4" />
                   </Link>

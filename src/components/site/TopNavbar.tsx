@@ -145,11 +145,19 @@ export function TopNavbarShell({ forceActiveTab = null }: { forceActiveTab?: Mob
   const isAssetManagementPage =
     location.pathname.startsWith(ROUTES.assetManagementHome) ||
     location.pathname.startsWith(ROUTES.assetManagement);
-  const currentTab: MobileTab =
-    forceActiveTab ?? (isAssetManagementPage ? "asset" : isBulkEmailPage ? "email" : "hrms");
-  const currentSections = mobileSectionMap[currentTab];
+  const isHrmsPage = location.pathname.startsWith(ROUTES.hrmsHome);
+  const currentTab: MobileTab | null =
+    forceActiveTab ??
+    (isAssetManagementPage ? "asset" : isBulkEmailPage ? "email" : isHrmsPage ? "hrms" : null);
+  const currentSections = mobileSectionMap[currentTab ?? "hrms"];
   const currentTabLabel =
-    currentTab === "hrms" ? "HRMS" : currentTab === "email" ? "Bulk Email" : "Asset Management";
+    currentTab === "hrms"
+      ? "HRMS"
+      : currentTab === "email"
+        ? "Bulk Email"
+        : currentTab === "asset"
+          ? "Asset Management"
+          : "Altroz";
 
   useEffect(() => {
     const { overflow } = document.body.style;
@@ -172,7 +180,7 @@ export function TopNavbarShell({ forceActiveTab = null }: { forceActiveTab?: Mob
       <div className="site-container flex flex-col gap-2 py-3 lg:hidden">
         <div className="flex items-center justify-between gap-3">
           <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
-            <BrandMark mode="wordmark" />
+            <BrandMark mode="wordmark" src="/brand/altroz-blue-wordmark.png" alt="Altroz" />
           </Link>
 
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -201,7 +209,7 @@ export function TopNavbarShell({ forceActiveTab = null }: { forceActiveTab?: Mob
 
                 <div className="flex-1 overflow-y-auto px-5 py-6 pt-10">
                   <div className="flex items-center justify-between gap-3">
-                    <BrandMark mode="wordmark" />
+                    <BrandMark mode="wordmark" src="/brand/altroz-blue-wordmark.png" alt="Altroz" />
                     <SheetClose asChild>
                       <button
                         type="button"
@@ -301,7 +309,7 @@ export function TopNavbarShell({ forceActiveTab = null }: { forceActiveTab?: Mob
         )}
       >
         <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
-          <BrandMark mode="wordmark" />
+          <BrandMark mode="wordmark" src="/brand/altroz-blue-wordmark.png" alt="Altroz" />
         </Link>
 
         <nav className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-row lg:items-center lg:gap-1">

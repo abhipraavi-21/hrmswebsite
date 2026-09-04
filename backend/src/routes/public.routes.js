@@ -7,8 +7,13 @@ import { publicEnquirySchema } from "../validators/contact.validators.js";
 import { publicSubscriptionPurchaseSchema } from "../validators/subscription.validators.js";
 import {
   getContact,
+  getProductContact,
+  getProductHome,
+  getProductPage,
+  getProductPricing,
+  getProductResource,
+  getProductResources,
   getPage,
-  getHrms,
   getPricing,
   getResource,
   getResources,
@@ -26,7 +31,6 @@ router.get("/pages/:pageKey", getPage);
 router.get("/blog-posts", listPublicPosts);
 router.get("/blog-posts/:slug", getPublicPost);
 router.get("/videos", listPublicVideos);
-router.get("/hrms", getHrms);
 router.get("/resources", getResources);
 router.get("/resources/:slug", getResource);
 router.get("/pricing", getPricing);
@@ -38,5 +42,14 @@ router.post(
   validateRequest(publicSubscriptionPurchaseSchema),
   submitSubscriptionPurchase,
 );
+
+router.get("/:product", getProductHome);
+router.get("/:product/pages/:pageKey", getProductPage);
+router.get("/:product/blog-posts", listPublicPosts);
+router.get("/:product/blog-posts/:slug", getPublicPost);
+router.get("/:product/resources", getProductResources);
+router.get("/:product/resources/:slug", getProductResource);
+router.get("/:product/pricing", getProductPricing);
+router.get("/:product/contact", getProductContact);
 
 export default router;

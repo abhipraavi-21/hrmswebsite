@@ -694,7 +694,7 @@ export default function BulkEmailAssetDashboardPage() {
                 </div>
 
                 <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.assetManagementBookDemo} className="btn-primary">
                     Book Free Demo
                     <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -983,7 +983,7 @@ export default function BulkEmailAssetDashboardPage() {
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-3">
-                    <Link to={ROUTES.bookDemo} className="btn-primary">
+                    <Link to={ROUTES.assetManagementBookDemo} className="btn-primary">
                       Book Free Demo
                       <ArrowRight className="h-4 w-4" />
                     </Link>

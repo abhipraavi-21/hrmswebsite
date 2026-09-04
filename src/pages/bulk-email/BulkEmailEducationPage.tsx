@@ -677,7 +677,7 @@ export default function BulkEmailEducationPage() {
                   </p>
 
                   <div className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
-                    <Link to={ROUTES.bookDemo} className="btn-primary">
+                    <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
                       Book Free Demo
                       <ArrowRight className="h-4 w-4" />
                     </Link>
@@ -994,7 +994,7 @@ export default function BulkEmailEducationPage() {
                   Bring notices, reminders, staff circulars and parent updates into one simple bulk email workflow.
                 </p>
                 <div className="button-group mt-5">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
                     Book Free Demo
                   </Link>
                   <Link to={ROUTES.bulkEmailContact} className="btn-ghost">
@@ -1042,7 +1042,7 @@ export default function BulkEmailEducationPage() {
                 </p>
                 <div className="button-group mt-7 justify-center">
                   <Link
-                    to={ROUTES.bookDemo}
+                    to={ROUTES.bulkEmailBookDemo}
                     className="inline-flex items-center rounded-lg bg-white px-6 py-3 font-semibold text-[#1d4ed8] transition-colors hover:bg-[#fffbf4]"
                   >
                     Book Free Demo

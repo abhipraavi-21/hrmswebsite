@@ -76,7 +76,7 @@ export default function BulkEmailNavbar() {
       <div className="site-container flex flex-col gap-2 py-3 lg:hidden">
         <div className="flex items-center justify-between gap-3">
           <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
-            <BrandMark mode="wordmark" src="/brand/altroz-logo-wordmark.png" alt="Altroz" />
+            <BrandMark mode="wordmark" src="/brand/altroz-blue-wordmark.png" alt="Altroz" />
           </Link>
           
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -108,7 +108,7 @@ export default function BulkEmailNavbar() {
 
                 <div className="flex-1 overflow-y-auto px-5 py-6 pt-10">
                 <div className="flex items-center justify-between gap-3">
-                    <BrandMark mode="wordmark" src="/brand/altroz-logo-wordmark.png" alt="Altroz" />
+                    <BrandMark mode="wordmark" src="/brand/altroz-blue-wordmark.png" alt="Altroz" />
                     <SheetClose asChild>
                       <button
                         type="button"
@@ -172,7 +172,7 @@ export default function BulkEmailNavbar() {
           <div className="site-container flex h-full items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
-                <BrandMark mode="wordmark" src="/brand/altroz-logo-wordmark.png" alt="Altroz" />
+                <BrandMark mode="wordmark" src="/brand/altroz-blue-wordmark.png" alt="Altroz" />
               </Link>
               <div className="flex items-center gap-2">
                 <Link to={ROUTES.hrmsHome} className={switcherButtonClass}>
@@ -266,7 +266,7 @@ export default function BulkEmailNavbar() {
             </nav>
 
             <Link
-              to={ROUTES.bookDemo}
+              to={ROUTES.bulkEmailBookDemo}
               className="btn-primary inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold sm:px-4 sm:text-sm"
             >
               Book Free Demo

@@ -1371,7 +1371,7 @@ export default function AssetManagementPage() {
                 </p>
 
                 <div className="mt-6 flex flex-wrap justify-center gap-3">
-                  <ActionLink href={ROUTES.bookDemo} className="btn-primary">
+                  <ActionLink href={ROUTES.assetManagementBookDemo} className="btn-primary">
                     Book a Free Demo
                     <ArrowRight className="h-4 w-4" />
                   </ActionLink>
@@ -1787,7 +1787,7 @@ export default function AssetManagementPage() {
                       View Pricing
                       <ArrowRight className="h-4 w-4" />
                     </ActionLink>
-                    <ActionLink href={ROUTES.bookDemo} className="btn-outline">
+                    <ActionLink href={ROUTES.assetManagementBookDemo} className="btn-outline">
                       Talk to Sales
                     </ActionLink>
                   </div>
@@ -1844,7 +1844,7 @@ export default function AssetManagementPage() {
 
                 <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                   <ActionLink
-                    href={ROUTES.bookDemo}
+                    href={ROUTES.assetManagementBookDemo}
                     className="btn-primary justify-center bg-white text-primary hover:bg-white/90"
                   >
                     Book a Free Demo

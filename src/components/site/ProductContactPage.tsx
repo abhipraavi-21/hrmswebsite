@@ -42,6 +42,7 @@ import { ROUTES } from "@/routes/routeConfig.js";
 import { getSection } from "@/services/cmsHelpers";
 import { submitContactEnquiry } from "@/services/contactService";
 import { fetchPageByKey } from "@/services/pageService";
+import type { ProductNamespace } from "@/services/pageService";
 import { getSeedPageFallback } from "@/services/seedFallback";
 
 type ProductServiceOption = {
@@ -253,8 +254,18 @@ export default function ProductContactPage({
 }: ProductContactPageProps) {
   const [status, setStatus] = useState<StatusState>({ type: "idle", message: "" });
   const Navbar = navbarVariant === "bulkEmail" ? BulkEmailNavbar : AssetManagementNavbar;
+  const productNamespace: ProductNamespace =
+    navbarVariant === "bulkEmail" ? "bulk-email" : "asset-management";
+  const productDemoRoute =
+    navbarVariant === "bulkEmail"
+      ? ROUTES.bulkEmailBookDemo
+      : ROUTES.assetManagementBookDemo;
   const seedPage = useMemo(() => getSeedPageFallback(pageKey), [pageKey]);
-  const { data: remoteContent } = usePublicContent(() => fetchPageByKey(pageKey), [pageKey], seedPage);
+  const { data: remoteContent } = usePublicContent(
+    () => fetchPageByKey(pageKey, productNamespace),
+    [pageKey, productNamespace],
+    seedPage,
+  );
   const heroSection = getSection(remoteContent, "contact-hero");
   const quickContactSection = getSection(remoteContent, "quick-contact");
   const formSection = getSection(remoteContent, "contact-form");
@@ -296,7 +307,7 @@ export default function ProductContactPage({
           iconKey: "calendarDays" as const,
           title: "Book a Demo",
           text: "Open the demo workflow for a guided product walkthrough.",
-          href: ROUTES.bookDemo,
+          href: productDemoRoute,
         },
         {
           iconKey: "headphones" as const,
@@ -313,7 +324,7 @@ export default function ProductContactPage({
       text: item.description ?? "",
       href: item.buttonLink ?? "#contact-form",
     }));
-  }, [heroSection?.items]);
+  }, [heroSection?.items, productDemoRoute]);
 
   const quickCards = useMemo(() => {
     if (!quickContactSection?.items?.length) {
@@ -434,7 +445,7 @@ export default function ProductContactPage({
                   <Link
                     to={
                       ((heroSection?.settings?.secondaryButtonLink as string | undefined) ??
-                        ROUTES.bookDemo)
+                        productDemoRoute)
                     }
                   >
                     {(heroSection?.settings?.secondaryButtonText as string | undefined) ??
@@ -838,7 +849,7 @@ export default function ProductContactPage({
                       <Link
                         to={
                           ((ctaSection?.settings?.secondaryButtonLink as string | undefined) ??
-                            ROUTES.bookDemo)
+                            productDemoRoute)
                         }
                       >
                         {(ctaSection?.settings?.secondaryButtonText as string | undefined) ??

@@ -13,6 +13,7 @@ import {
 import TopNavbar from "@/components/site/TopNavbar";
 import MainNavbar from "@/components/site/MainNavbar";
 import Footer from "@/components/site/Footer";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 const heroMetrics = [
   { label: "Speed", value: "Shorten the hiring cycle" },
@@ -199,7 +200,7 @@ export default function RecruitmentPage() {
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <a href="/company/book-demo" className="btn-primary">
+                  <a href={ROUTES.bookDemo} className="btn-primary">
                     Get Recruit
                   </a>
                   <a href="#workflow" className="btn-outline">
@@ -602,10 +603,10 @@ export default function RecruitmentPage() {
               </div>
 
               <div className="mt-6 grid gap-3">
-                <a href="/company/book-demo" className="btn-primary justify-center">
+                <a href={ROUTES.bookDemo} className="btn-primary justify-center">
                   See AI hiring demo
                 </a>
-                <a href="/products/expense-management" className="btn-outline justify-center">
+                <a href={ROUTES.expenseManagement} className="btn-outline justify-center">
                   Back to expense management
                 </a>
               </div>

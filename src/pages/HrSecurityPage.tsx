@@ -39,6 +39,7 @@ import MainNavbar from "@/components/site/MainNavbar";
 import { resolveSiteUrl } from "@/lib/siteUrl";
 import TopNavbar from "@/components/site/TopNavbar";
 import { cn } from "@/lib/utils";
+import { ROUTES } from "@/routes/routeConfig.js";
 import {
   Accordion,
   AccordionContent,
@@ -939,7 +940,7 @@ function HeroStrip() {
 }
 
 export default function HrSecurityPage() {
-  usePageMeta(pageTitle, pageDescription, "/hrms-security");
+  usePageMeta(pageTitle, pageDescription, ROUTES.security);
 
   const [selectedRole, setSelectedRole] = useState<(typeof roles)[number]>("HR Administrator");
   const [selectedModuleId, setSelectedModuleId] = useState(moduleCards[0].id);
@@ -983,10 +984,10 @@ export default function HrSecurityPage() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <a href="/company/book-demo" className="btn-primary">
+                <a href={ROUTES.bookDemo} className="btn-primary">
                   Book Free Demo
                 </a>
-                <a href="/company/contact-us" className="btn-outline">
+                <a href={ROUTES.contact} className="btn-outline">
                   Talk to Our Expert
                 </a>
               </div>
@@ -2185,10 +2186,10 @@ export default function HrSecurityPage() {
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-3">
-                    <a href="/company/book-demo" className="btn-primary">
+                    <a href={ROUTES.bookDemo} className="btn-primary">
                       Book Your Free Demo Today
                     </a>
-                    <a href="/company/contact-us" className="btn-outline">
+                    <a href={ROUTES.contact} className="btn-outline">
                       Talk to Our Security Expert
                     </a>
                   </div>

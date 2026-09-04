@@ -20,6 +20,7 @@ import { ScrollReveal, StaggerReveal } from "@/components/site/ScrollReveal";
 import { usePublicContent } from "@/hooks/usePublicContent";
 import { cn } from "@/lib/utils";
 import { fetchPageByKey } from "@/services/pageService";
+import type { ProductNamespace } from "@/services/pageService";
 import { getSeedPageFallback } from "@/services/seedFallback";
 import { getSectionItems, getSetting } from "@/services/cmsHelpers";
 import type { PublicCmsItem, PublicCmsSection } from "@/services/cmsTypes";
@@ -878,12 +879,22 @@ export default function ManagedCmsShowcasePage({
   fallbackDescription,
   pricingAccess,
 }: ManagedCmsShowcasePageProps) {
+  const productNamespace: ProductNamespace =
+    navbarVariant === "bulkEmail"
+      ? "bulk-email"
+      : navbarVariant === "assetManagement"
+        ? "asset-management"
+        : "hrms";
   const seedContent = useMemo(() => getSeedPageFallback(pageKey), [pageKey]);
   const {
     data: remoteContent,
     error,
     loading,
-  } = usePublicContent(() => fetchPageByKey(pageKey), [pageKey], seedContent);
+  } = usePublicContent(
+    () => fetchPageByKey(pageKey, productNamespace),
+    [pageKey, productNamespace],
+    seedContent,
+  );
   const heroSection =
     remoteContent?.sections.find((section) => section.sectionType === "hero") ?? null;
   const bodySections =

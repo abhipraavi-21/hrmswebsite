@@ -31,6 +31,7 @@ import {
 import Footer from "@/components/site/Footer";
 import MainNavbar from "@/components/site/MainNavbar";
 import { resolveSiteUrl } from "@/lib/siteUrl";
+import { ROUTES } from "@/routes/routeConfig.js";
 import TopNavbar from "@/components/site/TopNavbar";
 import {
   Accordion,
@@ -586,7 +587,7 @@ function usePageMeta(title: string, description: string) {
       canonical.rel = "canonical";
       head.appendChild(canonical);
     }
-    canonical.href = resolveSiteUrl("/industry-solutions");
+    canonical.href = resolveSiteUrl(ROUTES.industrySolutions);
 
     return () => {
       document.title = previousTitle;
@@ -689,7 +690,7 @@ function IndustrySolutionCard({ item }: { item: IndustrySolution }) {
             ))}
           </div>
           <a
-            href="/company/book-demo"
+            href={ROUTES.bookDemo}
             className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
           >
             {item.cta}
@@ -769,7 +770,7 @@ export default function IndustrySolutionsPage() {
               </p>
 
               <div className="mt-7 flex flex-wrap gap-3">
-                <a href="/company/book-demo" className="btn-primary">
+                <a href={ROUTES.bookDemo} className="btn-primary">
                   Book Free Demo
                 </a>
                 <a href="#industries" className="btn-outline">
@@ -1169,10 +1170,10 @@ export default function IndustrySolutionsPage() {
                 </div>
 
                 <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
-                  <a href="/company/book-demo" className="btn-primary">
+                  <a href={ROUTES.bookDemo} className="btn-primary">
                     Book Free Demo
                   </a>
-                  <a href="/company/contact-us" className="btn-outline">
+                  <a href={ROUTES.contact} className="btn-outline">
                     Request Demo
                   </a>
                 </div>

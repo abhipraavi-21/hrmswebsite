@@ -64,7 +64,7 @@ const quickLinks = [
   { label: "Asset Maintenance", href: ROUTES.bulkEmailAssetMaintenance },
   { label: "Asset Reports", href: ROUTES.bulkEmailAssetReports },
   { label: "Pricing", href: ROUTES.assetManagementPricing },
-  { label: "Book Demo", href: ROUTES.bookDemo },
+  { label: "Book Demo", href: ROUTES.assetManagementBookDemo },
   { label: "About Us", href: ROUTES.bulkEmailAbout },
   { label: "Help Center", href: ROUTES.support },
   { label: "FAQs", href: ROUTES.assetManagementFaq },
@@ -645,7 +645,7 @@ export default function BulkEmailAssetManagementPage() {
               </p>
 
               <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-                <Link to={ROUTES.bookDemo} className="btn-primary">
+                <Link to={ROUTES.assetManagementBookDemo} className="btn-primary">
                   Book Free Demo
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -944,7 +944,7 @@ export default function BulkEmailAssetManagementPage() {
                 </div>
 
                 <div className="flex flex-wrap gap-3 lg:justify-end">
-                  <Link to={ROUTES.bookDemo} className="btn-primary">
+                  <Link to={ROUTES.assetManagementBookDemo} className="btn-primary">
                     Book Free Demo
                     <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -962,4 +962,3 @@ export default function BulkEmailAssetManagementPage() {
     </div>
   );
 }
-

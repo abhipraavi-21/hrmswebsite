@@ -16,6 +16,7 @@ import TopNavbar from "@/components/site/TopNavbar";
 import MainNavbar from "@/components/site/MainNavbar";
 import Footer from "@/components/site/Footer";
 import { modelScreenshots } from "@/lib/modelScreenshots";
+import { ROUTES } from "@/routes/routeConfig.js";
 
 const heroMetrics = [
   { label: "Focus", value: "Goals aligned to business priorities" },
@@ -127,7 +128,7 @@ export default function PerformanceManagementPage() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <a href="/company/book-demo" className="btn-primary">
+                <a href={ROUTES.bookDemo} className="btn-primary">
                   Book a demo
                 </a>
                 <a href="#cycle" className="btn-outline">
@@ -292,7 +293,7 @@ export default function PerformanceManagementPage() {
                 </div>
 
                 <div className="grid gap-3">
-                  <a href="/company/book-demo" className="btn-primary justify-center">
+                  <a href={ROUTES.bookDemo} className="btn-primary justify-center">
                     Talk to us
                   </a>
                   <a href="/" className="btn-outline justify-center">
