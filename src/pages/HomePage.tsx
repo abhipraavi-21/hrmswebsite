@@ -359,7 +359,7 @@ export default function HomePage() {
                   Engineering Intelligent Systems for Business Automation.
                 </h1>
 
-                <h2 className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
+                <h2 className="mx-auto mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
                   One Platform. One Brand. Multiple solutions
                 </h2>
 

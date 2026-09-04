@@ -685,7 +685,7 @@ export default function BulkEmailAssetReportsPage() {
                     Manage Every Campus Asset from One Centralized Platform
                   </h1>
 
-                  <h2 className="mt-4 text-2xl font-semibold tracking-tight text-primary sm:text-3xl">
+                  <h2 className="mt-4 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
                     Educational Institution Asset Management Software Built for Modern Campuses
                   </h2>
 

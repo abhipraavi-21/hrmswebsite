@@ -590,7 +590,7 @@ export default function BulkEmailAssetTrackingPage() {
 
             <div className="mt-10 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
               <ScrollReveal variant="fade-up" className="text-center lg:text-left">
-                <h2 className="max-w-3xl text-2xl font-semibold tracking-tight text-primary sm:text-3xl lg:mx-0">
+                <h2 className="max-w-3xl text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:mx-0">
                   An asset record that stays accurate as assets move through the business
                 </h2>
                 <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-ink-soft sm:text-lg lg:mx-0">

@@ -624,7 +624,7 @@ function AssetManagementAboutUsPage() {
 
             <div className="mt-10 grid gap-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
               <ScrollReveal variant="fade-up" className="text-center lg:text-left">
-                <h2 className="max-w-3xl text-2xl font-semibold tracking-tight text-primary sm:text-3xl lg:mx-0">
+                <h2 className="max-w-3xl text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:mx-0">
                   A single, cloud-based system to manage assets from registration to reporting
                 </h2>
 
