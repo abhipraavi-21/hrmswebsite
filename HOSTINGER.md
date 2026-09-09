@@ -76,6 +76,7 @@ not prefix them with `VITE_` (Vite variables are included in browser bundles).
 
 ```dotenv
 NODE_ENV=production
+PORT=3000
 APP_URL=https://altroztech.com
 FRONTEND_URL=https://altroztech.com
 ADMIN_URL=https://altroztech.com/admin
@@ -100,7 +101,9 @@ VITE_SITE_URL=https://altroztech.com
 MAX_FILE_SIZE_MB=100
 ```
 
-The app reads Hostinger's assigned `PORT`; leave that platform setting in place.
+Set `PORT=3000` for Hostinger's Node.js runtime. The app also defaults to 3000 in
+production when no port is supplied, and to 5000 in local development. An explicitly
+configured `PORT` takes precedence.
 `TRUST_PROXY_HOPS=1` assumes one reverse proxy in front of Express. If Hostinger
 reports a different proxy configuration, adjust the hop count to match it.
 
@@ -137,3 +140,4 @@ and enable auto-deployment from `main`. Future source changes can be published w
 - [Hostinger Node.js setup, GitHub reconnection and domain migration](https://www.hostinger.com/support/how-to-deploy-a-nodejs-website-in-hostinger/)
 - [Hostinger MySQL connection guide](https://www.hostinger.com/support/connecting-a-hostinger-mysql-database-to-a-node-js-application/)
 - [Hostinger deployment environment variables](https://www.hostinger.com/support/how-to-add-environment-variables-during-node-js-application-deployment/)
+- [Hostinger runtime port and deployment troubleshooting](https://www.hostinger.com/support/fix-failed-to-build-application-error-hostinger-node-js/)
