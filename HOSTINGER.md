@@ -70,6 +70,10 @@ for that release. Never use `db:reset` against production.
 
 ## 4. Add environment variables in hPanel
 
+The complete import template is [deployment/hostinger/.env.example](./deployment/hostinger/.env.example).
+The completed `deployment/hostinger/.env` stays local and is ignored by Git.
+Pushing the template does not update Hostinger's saved environment variables.
+
 Add these through the Node.js deployment's **Environment variables** screen.
 Replace every placeholder. Keep passwords and API secrets out of GitHub and do
 not prefix them with `VITE_` (Vite variables are included in browser bundles).
