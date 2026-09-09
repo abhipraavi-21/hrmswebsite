@@ -6,6 +6,7 @@ dotenv.config();
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().int().positive().default(5000),
+  TRUST_PROXY_HOPS: z.coerce.number().int().nonnegative().default(0),
   APP_URL: z.string().url().default("http://localhost:5000"),
   FRONTEND_URL: z.string().url().default("http://localhost:8080"),
   ADMIN_URL: z.string().url().default("http://localhost:5174"),

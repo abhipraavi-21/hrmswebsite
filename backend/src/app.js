@@ -10,11 +10,13 @@ import { authLimiter, generalLimiter } from "./middleware/rateLimiters.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
 import { sanitizeRequest } from "./middleware/sanitizeRequest.js";
+import { mountFrontend } from "./middleware/frontend.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+app.set("trust proxy", env.TRUST_PROXY_HOPS);
 const allowedOrigins = buildAllowedOrigins([
   env.FRONTEND_URL,
   env.ADMIN_URL,
@@ -36,10 +38,9 @@ function buildAllowedOrigins(origins) {
       continue;
     }
 
-    expandedOrigins.add(origin);
-
     try {
       const url = new URL(origin);
+      expandedOrigins.add(url.origin);
 
       if (url.hostname === "localhost" || url.hostname === "127.0.0.1") {
         url.hostname = url.hostname === "localhost" ? "127.0.0.1" : "localhost";
@@ -64,7 +65,7 @@ app.use(cookieParser());
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true, limit: "2mb" }));
 app.use(sanitizeRequest);
-app.use(generalLimiter);
+app.use("/api", generalLimiter);
 
 app.use(
   "/uploads",
@@ -72,7 +73,7 @@ app.use(
     response.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
     next();
   },
-  express.static(path.join(__dirname, "uploads")),
+  express.static(path.resolve(process.cwd(), env.UPLOAD_DIR)),
 );
 app.use("/api/admin/auth", authLimiter);
 app.use("/api/public/customer-auth", authLimiter);
@@ -81,6 +82,14 @@ app.use("/api", apiRouter);
 app.get("/health", (_request, response) => {
   response.json({ success: true, message: "OK", data: { status: "healthy" } });
 });
+
+// Missing API endpoints and uploads must never return the React HTML page.
+app.use(["/api", "/uploads"], notFoundHandler);
+
+if (env.NODE_ENV === "production") {
+  mountFrontend(app, "/admin", path.resolve(__dirname, "../../admin/dist"));
+  mountFrontend(app, "/", path.resolve(__dirname, "../../dist"));
+}
 
 app.use(notFoundHandler);
 app.use(errorHandler);

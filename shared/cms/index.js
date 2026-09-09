@@ -1785,20 +1785,6 @@ const managedSolutionPages = [
     secondaryButtonLink: `${ROUTES.bulkEmailHrCommunication}#features`,
   }),
   createManagedCmsPage({
-    pageKey: "asset-management-product",
-    pageName: "Asset Management Product",
-    route: ROUTES.assetManagement,
-    title: "Asset Management Software for Businesses | Altroz HR",
-    description:
-      "Manage company assets with Altroz HR Asset Management Software. Track allocation, issue-return, maintenance, warranty, reports, QR codes, and audit-ready records.",
-    keywords: ["asset management software", "asset register", "asset allocation", "asset audits"],
-    heroEyebrow: "Asset Management",
-    heroTitle: "Asset Management Software to Track, Allocate and Manage Company Assets",
-    heroDescription:
-      "Register, assign, track and maintain company assets from one central dashboard built for HR, Admin and IT teams.",
-    secondaryButtonLink: `${ROUTES.assetManagement}#features`,
-  }),
-  createManagedCmsPage({
     pageKey: "asset-management-suite",
     pageName: "Asset Management Suite",
     route: ROUTES.assetManagementHome,

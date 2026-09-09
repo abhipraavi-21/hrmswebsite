@@ -8,6 +8,9 @@ This repository keeps the existing public HRMS website intact while adding:
 
 The public site still lives at the repository root. The admin app and backend are intentionally separated.
 
+For one-domain production hosting of all three apps through GitHub, follow
+[the Hostinger deployment guide](./HOSTINGER.md).
+
 ## Stack
 
 - Public frontend: React, Vite, Tailwind, React Router, Axios

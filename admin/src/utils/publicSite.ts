@@ -1,6 +1,8 @@
 import { getManagedPagePresentation } from "../data/managedCmsPages";
 
-const DEFAULT_PUBLIC_SITE_URL = "http://localhost:8080";
+const DEFAULT_PUBLIC_SITE_URL = import.meta.env.PROD
+  ? window.location.origin
+  : "http://localhost:8080";
 
 function trimTrailingSlash(value: string) {
   return value.replace(/\/+$/, "");

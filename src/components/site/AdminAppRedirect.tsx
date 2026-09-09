@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const DEFAULT_ADMIN_DEV_PORT = "5175";
+const DEFAULT_ADMIN_DEV_PORT = "8081";
 
 function getAdminAppBaseUrl() {
   const configuredUrl = import.meta.env.VITE_ADMIN_APP_URL?.trim();
@@ -16,11 +16,11 @@ function getAdminAppBaseUrl() {
     return window.location.origin;
   }
 
-  if (port === "5173" || port === "8080" || port === "8081") {
+  if (import.meta.env.DEV) {
     return `${protocol}//${hostname}:${DEFAULT_ADMIN_DEV_PORT}`;
   }
 
-  return window.location.origin;
+  return `${window.location.origin}/admin`;
 }
 
 function getAdminTargetUrl(pathname: string, search: string, hash: string) {
