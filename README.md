@@ -157,10 +157,17 @@ Default local URLs:
 
 ## Production Builds
 
-Public site:
+Complete Hostinger deployment (installs dependencies and builds the public site
+and admin panel; leaves existing database data unchanged):
 
 ```bash
 npm run build
+```
+
+Public site only, with dependencies already installed:
+
+```bash
+npm run build:web
 ```
 
 Admin panel:

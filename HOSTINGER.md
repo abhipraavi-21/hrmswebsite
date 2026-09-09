@@ -61,6 +61,12 @@ without running the initial seed step.
 Select the Express/server-side runtime even if automatic detection suggests Vite.
 Publishing only `dist` would omit the running API and admin application.
 
+The default `npm run build` also runs the complete Hostinger build. This supports
+Hostinger's default build-command selection when `NODE_ENV=production`: the build
+installs development dependencies explicitly, including `@vitejs/plugin-react`,
+before compiling either app. For a frontend-only build during local work, use
+`npm run build:web` after installing dependencies.
+
 The build command installs locked dependencies for all three packages and builds
 both React apps. The first-install command additionally runs migrations and the
 initial admin/CMS seeds. After its first success, change the build command to
