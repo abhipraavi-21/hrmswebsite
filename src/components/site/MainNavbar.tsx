@@ -22,16 +22,11 @@ export default function MainNavbar() {
   return (
     <div
       className={cn(
-        "sticky top-16 z-40 hidden border-b border-border bg-primary-soft/70 backdrop-blur-md transition-shadow duration-300 lg:block",
+        "sticky top-[calc(3.5rem+1px)] z-40 hidden border-b border-border bg-primary-soft/70 backdrop-blur-md transition-shadow duration-300 lg:block",
         scrolled && "shadow-[0_10px_28px_rgba(15,23,42,0.08)]",
       )}
     >
-      <div
-        className={cn(
-          "site-container relative grid grid-cols-1 gap-2 overflow-visible py-2 transition-[height,padding] duration-300 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0",
-          scrolled ? "lg:h-10" : "lg:h-12",
-        )}
-      >
+      <div className="site-container relative grid grid-cols-1 gap-2 overflow-visible py-2 lg:h-12 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-3 lg:py-0">
         <Link to={ROUTES.home} className="flex items-center gap-2 shrink-0">
           <BrandMark mode="compact" className="scale-90 origin-left" />
         </Link>

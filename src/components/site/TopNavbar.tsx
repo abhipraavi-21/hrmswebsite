@@ -302,12 +302,7 @@ export function TopNavbarShell({ forceActiveTab = null }: { forceActiveTab?: Mob
         </div>
       </div>
 
-      <div
-        className={cn(
-          "site-container hidden grid-cols-1 gap-2 py-2 transition-[height,padding] duration-300 lg:grid lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-2 lg:py-0",
-          scrolled ? "lg:h-12" : "lg:h-14",
-        )}
-      >
+      <div className="site-container hidden grid-cols-1 gap-2 py-2 lg:grid lg:h-14 lg:grid-cols-[auto_1fr_auto] lg:items-center lg:gap-2 lg:py-0">
         <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">
           <BrandMark mode="wordmark" src="/brand/altroz-blue-wordmark.png" alt="Altroz" />
         </Link>

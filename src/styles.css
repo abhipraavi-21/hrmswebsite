@@ -1390,6 +1390,10 @@
     align-items: center;
   }
 
+  .home-page-theme main > section.hero-gradient:first-child {
+    padding-top: 0 !important;
+  }
+
   main > section.smtp-hero {
     min-height: auto;
     padding: 56px 0 40px !important;

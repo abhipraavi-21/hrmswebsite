@@ -478,66 +478,67 @@ type CoreHrDigitalRow = {
   access: string;
 };
 
+// Fictional employee records for the public product preview.
 const coreHrDigitalRows: CoreHrDigitalRow[] = [
   {
-    employeeId: "Demo1",
-    name: "Nandkishore Phalke",
-    branch: "Pune",
+    employeeId: "EMP001",
+    name: "Alex Morgan",
+    branch: "Branch A",
     employment: "Full Time",
     department: "IT",
     role: "Manager",
-    email: "nandkishore.phalke@demo.com",
-    access: "MANAGERL1",
+    email: "alex.morgan@example.com",
+    access: "MANAGER",
   },
   {
-    employeeId: "Demo2",
-    name: "Pratiksha Pawar",
-    branch: "Pune",
+    employeeId: "EMP002",
+    name: "Jamie Taylor",
+    branch: "Branch A",
     employment: "Full Time",
-    department: "IT",
+    department: "Sales",
     role: "Staff",
-    email: "pratiksha.pawar@demo.com",
-    access: "ALLEMPLOYEE",
+    email: "jamie.taylor@example.com",
+    access: "EMPLOYEE",
   },
   {
-    employeeId: "Demo3",
-    name: "Shraddha Jadhav",
-    branch: "Pune",
+    employeeId: "EMP003",
+    name: "Casey Jordan",
+    branch: "Branch B",
     employment: "Full Time",
-    department: "IT",
+    department: "HR",
     role: "Staff",
-    email: "shraddha.jadhav@demo.com",
+    email: "casey.jordan@example.com",
     access: "HR",
   },
   {
-    employeeId: "Demo4",
-    name: "Pravin More",
-    branch: "Pune",
+    employeeId: "EMP004",
+    name: "Riley Parker",
+    branch: "Branch B",
     employment: "Full Time",
     department: "OPS",
     role: "Manager",
-    email: "nalawadenisha14@gmail.com",
-    access: "PAYROLLAPPROVER",
+    email: "riley.parker@example.com",
+    access: "PAYROLL",
   },
   {
-    employeeId: "Demo5",
-    name: "Kishore Kumar",
-    branch: "Bangalore",
+    employeeId: "EMP005",
+    name: "Sam Carter",
+    branch: "Branch C",
     employment: "Part Time",
     department: "IT",
     role: "Manager",
-    email: "kishore.kumar@demo.com",
-    access: "MANAGERL1",
+    email: "sam.carter@example.com",
+    access: "MANAGER",
   },
   {
-    employeeId: "Demo6",
-    name: "Trupti Rane",
-    branch: "Mumbai",
+    employeeId: "EMP006",
+    name: "Robin Ellis",
+    branch: "Remote",
     employment: "Intern",
     department: "IT",
     role: "Staff",
-    email: "trupti.rane@demo.com",
-    access: "WORKFORCE",
+    email: "robin.ellis@example.com",
+    access: "EMPLOYEE",
   },
 ];
 
@@ -912,7 +913,7 @@ function CoreHrDigitalTablePreview() {
                 <div className="px-3 py-3 text-sm text-ink lg:px-4">{row.branch}</div>
                 <div className="px-3 py-3 lg:px-4">
                   <span
-                    className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getEmploymentTone(
+                    className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-center text-xs font-semibold ${getEmploymentTone(
                       row.employment,
                     )}`}
                   >

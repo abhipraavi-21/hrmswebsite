@@ -179,12 +179,7 @@ export default function AssetManagementNavbar() {
       </div>
 
       <div className="hidden lg:block">
-        <div
-          className={cn(
-            "border-b border-border/70 bg-background/95 transition-[height,padding] duration-300",
-            scrolled ? "lg:h-14" : "lg:h-16",
-          )}
-        >
+        <div className="border-b border-border/70 bg-background/95 lg:h-16">
           <div className="site-container relative flex h-full items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Link to={ROUTES.home} className="flex shrink-0 items-center gap-2 -ml-3">

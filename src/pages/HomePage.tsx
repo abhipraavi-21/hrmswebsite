@@ -814,12 +814,12 @@ function HeroNode({
   body: string;
 }) {
   return (
-    <div className="flex h-full min-h-[12.5rem] flex-col rounded-[1.5rem] border border-border bg-white p-3 shadow-sm">
-      <div className="flex items-start gap-2 text-sm font-bold text-primary">
+    <div className="flex h-full min-h-[12.5rem] flex-col justify-center rounded-[1.5rem] border border-border bg-white p-3 text-center shadow-sm">
+      <div className="flex items-center justify-center gap-2 text-sm font-bold text-primary">
         <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
           {icon}
         </div>
-        <span className="min-w-0 flex-1 text-[0.9rem] leading-tight [overflow-wrap:anywhere]">
+        <span className="min-w-0 text-[0.9rem] leading-tight [overflow-wrap:anywhere]">
           {title}
         </span>
       </div>

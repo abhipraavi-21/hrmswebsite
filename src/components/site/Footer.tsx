@@ -28,13 +28,11 @@ const hrFooterColumns = [
       { label: "Workforce Management", href: ROUTES.workforce },
       { label: "Payroll", href: ROUTES.payroll },
       { label: "Leave Management", href: ROUTES.leaveManagement },
-      { label: "HR Reports", href: ROUTES.reports },
     ],
   },
   {
     title: "Features",
     links: [
-      { label: "Attendance", href: ROUTES.attendanceManagement },
       { label: "HR Automation", href: ROUTES.automation },
       { label: "HR Analytics", href: ROUTES.analytics },
       { label: "HR Security", href: ROUTES.security },
