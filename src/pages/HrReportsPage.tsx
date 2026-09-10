@@ -2034,18 +2034,18 @@ export default function HrReportsPage() {
     reportCategories.find((category) => category.id === activeCategoryId) ?? reportCategories[0];
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background">
+    <div className="hr-reports-page min-h-screen overflow-x-hidden bg-background">
       <TopNavbar />
       <MainNavbar />
 
       <main>
-        <section className="hero-gradient relative overflow-hidden">
+        <section className="hr-reports-hero hero-gradient relative overflow-hidden">
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
           <div className="pointer-events-none absolute right-1/3 top-1/4 h-28 w-28 rounded-full bg-primary/10 blur-2xl" />
 
-          <div className="container-x grid gap-10 py-10 lg:grid-cols-12 lg:items-start lg:py-12">
-            <div className="lg:col-span-8 fade-up motion-reduce:animate-none">
+          <div className="container-x grid gap-8 pt-6 pb-8 lg:grid-cols-12 lg:items-start lg:gap-10 lg:pt-8 lg:pb-12">
+            <div className="lg:col-span-6 fade-up motion-reduce:animate-none">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-3 py-1 text-xs font-semibold text-primary shadow-sm">
                 <Sparkles className="h-3.5 w-3.5" />
                 Smart HR Reports and Analytics
@@ -2088,6 +2088,21 @@ export default function HrReportsPage() {
                     <div className="mt-1 text-sm font-semibold text-ink">{item.value}</div>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            <div className="relative min-w-0 lg:col-span-6 lg:mt-10">
+              <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-primary/10 blur-2xl" />
+              <div className="relative overflow-hidden rounded-[1.75rem] border border-border bg-white p-3 shadow-float sm:p-4">
+                <img
+                  src="/hrms-models/hr-reports-preview.svg"
+                  alt="Altroz HR reports dashboard with sample employee records, attendance trends, payroll totals, and department summaries"
+                  width={960}
+                  height={740}
+                  className="block h-auto w-full rounded-xl"
+                  loading="eager"
+                  decoding="async"
+                />
               </div>
             </div>
           </div>

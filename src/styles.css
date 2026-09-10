@@ -1390,7 +1390,8 @@
     align-items: center;
   }
 
-  .home-page-theme main > section.hero-gradient:first-child {
+  .home-page-theme main > section.hero-gradient:first-child,
+  .hr-reports-page main > section.hr-reports-hero:first-child {
     padding-top: 0 !important;
   }
 
