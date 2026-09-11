@@ -952,11 +952,11 @@ export default function HrSecurityPage() {
     reportRoleOptions.find((item) => item.label === selectedReportRole) ?? reportRoleOptions[3];
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background">
+    <div className="min-h-screen overflow-x-clip bg-background">
       <TopNavbar />
       <MainNavbar />
 
-      <main>
+      <main className="overflow-x-clip">
         <section className="hero-gradient relative overflow-hidden">
           <div className="pointer-events-none absolute -top-24 right-8 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-28 left-0 h-72 w-72 rounded-full bg-success/15 blur-3xl" />
