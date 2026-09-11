@@ -420,10 +420,10 @@ export default function BulkEmailBroadcastPage() {
 
                 <ScrollReveal variant="fade-up" delay={180}>
                   <div className="mt-6 flex flex-wrap gap-3">
-                    <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
+                    <Link to={ROUTES.bulkEmailBookDemo} className="inline-flex items-center justify-center rounded-xl bg-[#EE6801] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(238,104,1,0.25)] transition hover:-translate-y-0.5 hover:bg-[#d95f00]">
                       Book Free Demo
                     </Link>
-                    <a href="#features" className="btn-outline">
+                    <a href="#features" className="inline-flex items-center justify-center rounded-xl border border-[#EE6801] bg-white px-6 py-3 text-sm font-bold text-[#EE6801] transition hover:-translate-y-0.5 hover:bg-[#FFF1E6]">
                       View Features
                     </a>
                   </div>
@@ -702,7 +702,7 @@ export default function BulkEmailBroadcastPage() {
                   broadcast flow, scheduling, delivery tracking and reporting together.
                 </p>
                 <div className="button-group mt-5">
-                  <Link to={ROUTES.bulkEmailBookDemo} className="btn-primary">
+                  <Link to={ROUTES.bulkEmailBookDemo} className="inline-flex items-center justify-center rounded-xl bg-[#EE6801] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(238,104,1,0.25)] transition hover:-translate-y-0.5 hover:bg-[#d95f00]">
                     Book Free Demo
                   </Link>
                   <Link to={ROUTES.bulkEmailContact} className="btn-ghost">

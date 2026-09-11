@@ -50,6 +50,122 @@ const legacyHrmsPlans = [
   },
 ];
 
+const fallbackBulkEmailProduct: BillingProduct = {
+  id: 2,
+  name: "Bulk Email",
+  code: "BULK_EMAIL",
+  slug: "bulk-email",
+  description: "Bulk email plans for business campaigns, scheduling and delivery tracking.",
+  status: "active",
+  displayOrder: 2,
+  plans: [
+    {
+      id: 201,
+      productId: 2,
+      name: "Starter",
+      code: "BULK_EMAIL_STARTER",
+      slug: "starter",
+      description: "For small teams starting with organized campaign broadcasts.",
+      currency: "INR",
+      isPopular: false,
+      status: "active",
+      displayOrder: 1,
+      pricingModel: "flat",
+      monthlyPrice: 999,
+      semiannualPrice: 5499,
+      annualPrice: 9999,
+      features: [
+        { id: 2001, code: "broadcast", name: "Email broadcasts", enabled: true, displayOrder: 1 },
+        { id: 2002, code: "templates", name: "Reusable templates", enabled: true, displayOrder: 2 },
+        { id: 2003, code: "scheduling", name: "Campaign scheduling", enabled: true, displayOrder: 3 },
+        { id: 2004, code: "analytics", name: "Basic delivery analytics", enabled: true, displayOrder: 4 },
+      ],
+      limits: [
+        { id: 2101, code: "emails", name: "Monthly email credits", value: 10000, unit: "emails", isUnlimited: false },
+        { id: 2102, code: "users", name: "Team users", value: 2, unit: "users", isUnlimited: false },
+      ],
+    },
+    {
+      id: 202,
+      productId: 2,
+      name: "Growth",
+      code: "BULK_EMAIL_GROWTH",
+      slug: "growth",
+      description: "For growing teams that need larger sends and stronger reporting.",
+      currency: "INR",
+      isPopular: true,
+      status: "active",
+      displayOrder: 2,
+      pricingModel: "flat",
+      monthlyPrice: 2499,
+      semiannualPrice: 13499,
+      annualPrice: 24999,
+      features: [
+        { id: 2011, code: "broadcast", name: "Email broadcasts", enabled: true, displayOrder: 1 },
+        { id: 2012, code: "templates", name: "Reusable templates", enabled: true, displayOrder: 2 },
+        { id: 2013, code: "scheduling", name: "Campaign scheduling", enabled: true, displayOrder: 3 },
+        { id: 2014, code: "analytics", name: "Advanced delivery analytics", enabled: true, displayOrder: 4 },
+      ],
+      limits: [
+        { id: 2111, code: "emails", name: "Monthly email credits", value: 50000, unit: "emails", isUnlimited: false },
+        { id: 2112, code: "users", name: "Team users", value: 5, unit: "users", isUnlimited: false },
+      ],
+    },
+    {
+      id: 203,
+      productId: 2,
+      name: "Scale",
+      code: "BULK_EMAIL_SCALE",
+      slug: "scale",
+      description: "For high-volume teams that need more capacity and campaign controls.",
+      currency: "INR",
+      isPopular: false,
+      status: "active",
+      displayOrder: 3,
+      pricingModel: "flat",
+      monthlyPrice: 4999,
+      semiannualPrice: 26999,
+      annualPrice: 49999,
+      features: [
+        { id: 2021, code: "broadcast", name: "Email broadcasts", enabled: true, displayOrder: 1 },
+        { id: 2022, code: "templates", name: "Reusable templates", enabled: true, displayOrder: 2 },
+        { id: 2023, code: "scheduling", name: "Campaign scheduling", enabled: true, displayOrder: 3 },
+        { id: 2024, code: "analytics", name: "Advanced delivery analytics", enabled: true, displayOrder: 4 },
+      ],
+      limits: [
+        { id: 2121, code: "emails", name: "Monthly email credits", value: 150000, unit: "emails", isUnlimited: false },
+        { id: 2122, code: "users", name: "Team users", value: 15, unit: "users", isUnlimited: false },
+      ],
+    },
+  ],
+  addons: [
+    {
+      id: 2201,
+      productId: 2,
+      name: "Extra Email Credits",
+      code: "EXTRA_EMAIL_CREDITS",
+      description: "Add more monthly email capacity for larger campaigns.",
+      pricingType: "usage_pack",
+      currency: "INR",
+      status: "active",
+      displayOrder: 1,
+      unitPrice: 500,
+    },
+    {
+      id: 2202,
+      productId: 2,
+      name: "Dedicated Sending Setup",
+      code: "DEDICATED_SENDING_SETUP",
+      description: "Support for a dedicated sending configuration and onboarding.",
+      pricingType: "one_time",
+      currency: "INR",
+      status: "active",
+      displayOrder: 2,
+      unitPrice: 5000,
+    },
+  ],
+};
+
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -244,6 +360,13 @@ export default function PricingPage() {
       })
       .catch(() => {
         if (!isMounted) {
+          return;
+        }
+
+        if (productSlug === "bulk-email") {
+          setProduct(fallbackBulkEmailProduct);
+          setSelectedPlanId(fallbackBulkEmailProduct.plans[0]?.id ?? null);
+          setError(null);
           return;
         }
 

@@ -1785,7 +1785,7 @@ function ChoiceSection({
 
 function StorySectionBlock({ section }: { section: StorySection }) {
   return (
-    <section className="py-20">
+    <section className="py-12 lg:py-14">
       <div className="container-x">
         <SectionHeading
           eyebrow={section.eyebrow}
@@ -1795,22 +1795,24 @@ function StorySectionBlock({ section }: { section: StorySection }) {
 
         <div className="mt-10 grid gap-6 lg:grid-cols-12 lg:items-start">
           <div className={cn("lg:col-span-7", section.reverse && "lg:order-2")}>
-            <div className="grid gap-5 md:grid-cols-2 md:items-start">
-              <Reveal>
-                <DetailCard title={section.challengeTitle} items={section.challengeBullets} />
-              </Reveal>
-              <Reveal delay={60}>
-                <DetailCard title={section.solutionTitle} items={section.solutionBullets} />
-              </Reveal>
-            </div>
+            <div className="grid gap-4 md:grid-cols-2 md:items-start">
+              <div className="flex flex-col gap-3">
+                <Reveal>
+                  <DetailCard title={section.challengeTitle} items={section.challengeBullets} />
+                </Reveal>
+                <Reveal delay={90}>
+                  <DetailCard title={section.modulesTitle} items={section.modules} />
+                </Reveal>
+              </div>
 
-            <div className="mt-5 grid gap-5 md:grid-cols-2 md:items-start">
-              <Reveal delay={90}>
-                <DetailCard title={section.modulesTitle} items={section.modules} />
-              </Reveal>
-              <Reveal delay={120}>
-                <DetailCard title={section.benefitsTitle} items={section.benefits} />
-              </Reveal>
+              <div className="flex flex-col gap-3">
+                <Reveal delay={60}>
+                  <DetailCard title={section.solutionTitle} items={section.solutionBullets} />
+                </Reveal>
+                <Reveal delay={120}>
+                  <DetailCard title={section.benefitsTitle} items={section.benefits} />
+                </Reveal>
+              </div>
             </div>
           </div>
 
@@ -1867,7 +1869,7 @@ export default function CustomersPage() {
   const currentIndustry = industries.find((item) => item.id === selectedIndustry) ?? industries[0];
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen overflow-x-clip bg-background">
       <TopNavbar />
       <MainNavbar />
 
@@ -1917,8 +1919,8 @@ export default function CustomersPage() {
                   { label: "Reduced Manual Work", value: "Fewer routine tasks" },
                   { label: "Structured Reporting", value: "Clearer review flows" },
                 ].map((item, index) => (
-                  <Reveal key={item.label} delay={index * 45}>
-                    <div className="soft-card p-4">
+                  <Reveal key={item.label} delay={index * 45} className="h-full">
+                    <div className="soft-card h-full p-4">
                       <div className="text-xs font-semibold uppercase tracking-wider text-primary">
                         {item.label}
                       </div>
@@ -1963,8 +1965,8 @@ export default function CustomersPage() {
                     </div>
 
                     <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                      <Reveal delay={40}>
-                        <div className="rounded-2xl bg-primary/5 p-4">
+                      <Reveal delay={40} className="h-full">
+                        <div className="h-full rounded-2xl bg-primary/5 p-4">
                           <div className="flex items-center gap-2 text-sm font-semibold text-primary">
                             <Clock3 className="h-4 w-4" />
                             Attendance
@@ -1974,8 +1976,8 @@ export default function CustomersPage() {
                           </p>
                         </div>
                       </Reveal>
-                      <Reveal delay={80}>
-                        <div className="rounded-2xl bg-[#ecfdf3] p-4">
+                      <Reveal delay={80} className="h-full">
+                        <div className="h-full rounded-2xl bg-[#ecfdf3] p-4">
                           <div className="flex items-center gap-2 text-sm font-semibold text-success">
                             <Wallet className="h-4 w-4" />
                             Payroll
@@ -1985,8 +1987,8 @@ export default function CustomersPage() {
                           </p>
                         </div>
                       </Reveal>
-                      <Reveal delay={120}>
-                        <div className="rounded-2xl bg-primary-soft p-4">
+                      <Reveal delay={120} className="h-full">
+                        <div className="h-full rounded-2xl bg-primary-soft p-4">
                           <div className="flex items-center gap-2 text-sm font-semibold text-primary">
                             <LayoutDashboard className="h-4 w-4" />
                             Visibility
@@ -2082,7 +2084,7 @@ export default function CustomersPage() {
                   })}
                 </div>
 
-                <div className="mt-6 grid gap-5 md:grid-cols-2">
+                <div className="mt-5 grid gap-4 md:grid-cols-2">
                   <Reveal>
                     <DetailCard
                       title="Challenge description"
@@ -2100,7 +2102,7 @@ export default function CustomersPage() {
                   </Reveal>
                 </div>
 
-                <div className="mt-5 grid gap-5 md:grid-cols-2">
+                <div className="mt-4 grid gap-4 md:grid-cols-2">
                   <Reveal delay={90}>
                     <DetailCard
                       title="Relevant modules"

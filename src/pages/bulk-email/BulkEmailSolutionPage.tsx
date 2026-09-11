@@ -320,9 +320,6 @@ export default function BulkEmailSolutionPage({
                       <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#1d4ed8]/10 via-white to-[#d97706]/14 text-[#1d4ed8] transition-transform duration-300 group-hover:scale-105">
                         <card.icon className="h-5 w-5" />
                       </span>
-                      <span className="rounded-full bg-gradient-to-r from-white via-[#eff6ff] to-[#fffbf4] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-[#b45309] shadow-sm">
-                        Use case
-                      </span>
                     </div>
                     <div className="mt-4 text-base font-semibold text-ink">{card.title}</div>
                     <p className="mt-2 text-sm leading-6 text-ink-soft">{card.description}</p>
