@@ -409,7 +409,7 @@ function IconCard({ card, index = 0 }: { card: CardData; index?: number }) {
   const Icon = card.icon;
 
   return (
-    <ScrollReveal variant="fade-up" delay={index * 40}>
+    <ScrollReveal variant="fade-up" delay={index * 40} className="h-full">
       <article className="soft-card group h-full p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-float">
         <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-primary/12 via-white to-[#1E4FD1]/14 text-primary shadow-sm transition-transform duration-300 group-hover:scale-105">
           <Icon className="h-5 w-5" />
