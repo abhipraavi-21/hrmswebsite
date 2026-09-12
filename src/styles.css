@@ -728,6 +728,40 @@
     overflow-wrap: anywhere;
   }
 
+
+  @media (max-width: 576px) {
+    h1,
+    h2,
+    h3,
+    h4,
+    .text-balance {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    a,
+    button,
+    span,
+    div,
+    article,
+    section {
+      min-width: 0;
+    }
+
+    .soft-card,
+    .content-card,
+    .btn-primary,
+    .btn-outline {
+      max-width: 100%;
+    }
+
+    .btn-primary,
+    .btn-outline {
+      white-space: normal;
+      text-align: center;
+    }
+  }
   /* Make the small pill-style page labels read as stronger section titles. */
   [class*="inline-flex"][class*="rounded-full"][class*="text-xs"][class*="font-semibold"][class*="border-primary/20"][class*="bg-white"][class*="text-primary"],
   [class*="inline-flex"][class*="rounded-full"][class*="text-xs"][class*="font-semibold"][class*="bg-primary-soft"][class*="text-primary"],

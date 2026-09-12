@@ -117,7 +117,7 @@ function DemoSidebar({
 
   return (
     <aside className="xl:sticky xl:top-24 self-start">
-      <div className="overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
+      <div className="min-w-0 overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
         <div className="border-b border-border bg-[linear-gradient(180deg,_rgba(30,79,209,0.10),_rgba(14,165,165,0.06))] p-6">
           <div className="text-xs font-bold uppercase tracking-[0.28em] text-primary">Book a demo</div>
           <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight text-ink">
@@ -380,21 +380,21 @@ export default function BlogArticlePage() {
           <div className="site-container max-w-7xl">
             <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
               <div>
-                <div className="mb-6 flex flex-wrap items-center gap-2 text-sm text-ink-soft">
+                <div className="mb-6 flex min-w-0 flex-wrap items-center gap-2 text-sm text-ink-soft">
                   <Link to={blogPath} className="font-medium text-primary transition-colors hover:text-primary/80">
                     {pageCopy.badge}
                   </Link>
                   <span>/</span>
-                  <span className="truncate">{resolvedPost.title}</span>
+                  <span className="min-w-0 flex-1 break-words">{resolvedPost.title}</span>
                 </div>
 
-                <article className="overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
-                  <div className="px-6 py-8 sm:px-10 sm:py-10">
+                <article className="min-w-0 overflow-hidden rounded-[2rem] border border-border bg-white shadow-float">
+                  <div className="px-4 py-7 sm:px-10 sm:py-10">
                     <div className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                       Blog
                     </div>
 
-                    <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ink-soft">
+                    <div className="mt-4 flex min-w-0 flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ink-soft">
                       <span className="inline-flex items-center gap-2">
                         <CalendarDays className="h-4 w-4 text-primary" />
                         {publishedDate}
@@ -403,22 +403,22 @@ export default function BlogArticlePage() {
                         <Clock3 className="h-4 w-4 text-primary" />
                         {resolvedPost.readingTimeLabel ?? "Read now"}
                       </span>
-                      <span className="rounded-full border border-primary/15 bg-primary-soft/35 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                      <span className="max-w-full rounded-full border border-primary/15 bg-primary-soft/35 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-primary break-words sm:tracking-[0.18em]">
                         {resolvedPost.category}
                       </span>
                     </div>
 
-                    <h1 className="mt-6 text-3xl font-black tracking-tight text-ink sm:text-4xl lg:text-[2.8rem] lg:leading-tight">
+                    <h1 className="mt-6 max-w-full break-words text-2xl font-black tracking-tight text-ink sm:text-4xl lg:text-[2.8rem] lg:leading-tight">
                       {resolvedPost.title}
                     </h1>
 
                     <SafeRichText
                       html={resolvedPost.descriptionHtml}
-                      className="mt-5 max-w-4xl text-base leading-8 text-ink-soft sm:text-lg [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0 [&_p+*]:mt-4"
+                      className="mt-5 max-w-4xl break-words text-base leading-8 text-ink-soft sm:text-lg [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0 [&_p+*]:mt-4"
                     />
                   </div>
 
-                  <div className="px-6 sm:px-10">
+                  <div className="px-4 sm:px-10">
                     <div className="overflow-hidden rounded-[1.5rem] border border-border bg-surface/30">
                       <img
                         src={resolvedPost.coverImageUrl ?? FALLBACK_BLOG_IMAGE}
@@ -428,7 +428,7 @@ export default function BlogArticlePage() {
                     </div>
                   </div>
 
-                  <div className="px-6 py-8 sm:px-10 sm:py-10">
+                  <div className="px-4 py-7 sm:px-10 sm:py-10">
                     <div className="mx-auto max-w-4xl">
                       <SafeRichText
                         html={resolvedPost.heroSummaryHtml}
@@ -595,7 +595,7 @@ export default function BlogArticlePage() {
                           HR and operations guides.
                         </p>
 
-                        <div className="mt-6 flex flex-wrap gap-3">
+                        <div className="mt-6 flex min-w-0 flex-wrap gap-3">
                           <Link to={pageCopy.primaryCtaHref} className="btn-primary">
                             {pageCopy.primaryCtaLabel}
                           </Link>

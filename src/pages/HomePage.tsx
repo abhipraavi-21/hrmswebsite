@@ -473,9 +473,11 @@ export default function HomePage() {
                         {card.snippet.map((item, index) => (
                           <div
                             key={item}
-                            className="rounded-2xl bg-primary-soft/70 px-3 py-4 text-center"
+                            className="min-w-0 rounded-2xl bg-primary-soft/70 px-2 py-4 text-center"
                           >
-                            <div className="text-xs font-semibold leading-snug text-ink">{item}</div>
+                            <div className="break-words text-[0.7rem] font-semibold leading-snug text-ink sm:text-xs">
+                              {item}
+                            </div>
                           </div>
                         ))}
                       </div>

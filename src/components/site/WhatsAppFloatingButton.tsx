@@ -11,14 +11,14 @@ function WhatsAppLogo() {
 
 export default function WhatsAppFloatingButton() {
   return (
-    <div className="fixed bottom-28 right-4 z-50 flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
+    <div className="fixed bottom-4 right-3 z-50 flex flex-col items-end gap-2 sm:bottom-6 sm:right-6 sm:gap-3">
       <a
         href={callHref}
         aria-label="Call us"
         title="Call us"
-        className="grid h-12 w-12 place-items-center rounded-full bg-primary text-white shadow-[0_16px_34px_rgba(11,92,255,0.28)] transition-transform duration-200 hover:-translate-y-1 hover:bg-[#0a4fda] hover:shadow-[0_22px_42px_rgba(11,92,255,0.36)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:h-14 sm:w-14"
+        className="grid h-10 w-10 place-items-center rounded-full bg-primary text-white shadow-[0_16px_34px_rgba(11,92,255,0.28)] transition-transform duration-200 hover:-translate-y-1 hover:bg-[#0a4fda] hover:shadow-[0_22px_42px_rgba(11,92,255,0.36)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:h-14 sm:w-14"
       >
-        <Phone className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
+        <Phone className="h-4 w-4 sm:h-6 sm:w-6" aria-hidden="true" />
       </a>
 
       <a
@@ -27,9 +27,9 @@ export default function WhatsAppFloatingButton() {
         rel="noopener noreferrer"
         aria-label="Chat with us on WhatsApp"
         title="Chat with us on WhatsApp"
-        className="whatsapp-button grid h-12 w-12 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_16px_34px_rgba(37,211,102,0.32)] transition-transform duration-200 hover:-translate-y-1 hover:bg-[#22c55e] hover:shadow-[0_22px_42px_rgba(37,211,102,0.42)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 sm:h-14 sm:w-14"
+        className="whatsapp-button grid h-10 w-10 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_16px_34px_rgba(37,211,102,0.32)] transition-transform duration-200 hover:-translate-y-1 hover:bg-[#22c55e] hover:shadow-[0_22px_42px_rgba(37,211,102,0.42)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 sm:h-14 sm:w-14"
       >
-        <span className="grid h-6 w-6 place-items-center rounded-full bg-transparent text-white">
+        <span className="grid h-5 w-5 place-items-center rounded-full bg-transparent text-white sm:h-6 sm:w-6">
           <WhatsAppLogo />
         </span>
       </a>

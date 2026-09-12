@@ -754,9 +754,9 @@ function HeroSecurityVisual() {
                   </div>
                 </div>
 
-                <div className="relative flex items-center justify-center py-4 lg:py-0">
-                  <div className="absolute inset-0 mx-auto h-44 w-44 rounded-full border border-primary/15" />
-                  <div className="absolute inset-0 mx-auto h-32 w-32 rounded-full border border-success/15" />
+                <div className="relative flex min-h-[11.5rem] items-center justify-center py-6 lg:min-h-0 lg:py-0">
+                  <div className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/15" />
+                  <div className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border border-success/15" />
                   <div className="grid h-28 w-28 place-items-center rounded-full bg-primary text-white shadow-float">
                     <div className="text-center">
                       <Shield className="mx-auto h-7 w-7" />
